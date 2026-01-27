@@ -137,6 +137,8 @@ $RECYCLE.BIN/
 .vs/
 .idea/
 .gradle/
+.vscode/
+*.slnx
 
 PackageBackups/
 
