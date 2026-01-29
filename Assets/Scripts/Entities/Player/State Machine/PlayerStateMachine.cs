@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -14,23 +15,36 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private float maxJumpHeight = 5f;
     [SerializeField] private float moveAccel = 0.5f;
     [SerializeField] private float stopDrag = 0.6f;
-    [SerializeField] private float gravity = -9.8f;
     [SerializeField] private Transform jumpCheckTransform;
     [SerializeField] private Vector2 jumpCheckSize = new Vector2(1f, 0.25f);
     [SerializeField] private LayerMask environmentLayer;
+
+    [Header("Jump")] 
+    [SerializeField] private float coyoteJumpTimer = 0.1f;
+    
+    [Header("Gravity")]
+    [SerializeField] private float baseGravity = 2;
+    [SerializeField] private float maxFallSpeed = 15;
+    [SerializeField] private float fallSpeedMultiplier = 1.5f;
     
     // State Variables
     private PlayerBaseState _currentState;
     private PlayerBaseState _currentSubState;
     private PlayerStateDictionary _states;
     
+    private Vector2 _previousDirection;
     private float _horizontalMovement;
     private float _verticalMovement;
     private bool _isGrounded;
+    private float _airTime;
+    private bool _canJump;
+
+    public UnityEvent<float> onDirectionChanged;
     
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
     public PlayerBaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
     public PlayerStateDictionary States { get { return _states; } set { _states = value; } }
+    public Rigidbody2D Rigidbody { get { return _rb; } set { _rb = value; } }
 
     private void Awake()
     {
@@ -49,19 +63,29 @@ public class PlayerStateMachine : MonoBehaviour
     void FixedUpdate()
     {
         CheckGrounded();
+        UpdateGravity();
         _rb.linearVelocity = new Vector2(_horizontalMovement, _rb.linearVelocity.y);
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        _horizontalMovement = context.ReadValue<Vector2>().x * maxMoveSpeed;
+        Vector2 direction = context.ReadValue<Vector2>();
+        _horizontalMovement = direction.x * maxMoveSpeed;
+
+        if (context.performed || context.canceled) return; 
+        
+        if (Mathf.Sign(direction.x) != Mathf.Sign(_previousDirection.x))
+        {
+            onDirectionChanged?.Invoke(Mathf.Sign(direction.x));
+        }
+        _previousDirection = direction;
     }
     
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (_isGrounded)
+        if (_canJump)
         {
-            if (context.started || context.performed)
+            if (context.performed)
             {
                 _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, maxJumpHeight);
             }
@@ -75,6 +99,30 @@ public class PlayerStateMachine : MonoBehaviour
     private void CheckGrounded()
     {
         _isGrounded = Physics2D.OverlapBox(jumpCheckTransform.position, jumpCheckSize, 0, environmentLayer);
+        
+        if (!_isGrounded)
+        {
+            _airTime += Time.deltaTime;
+            _canJump = _airTime < coyoteJumpTimer;
+        }
+        else
+        {
+            _airTime = 0;
+            _canJump = true;
+        }
+    }
+
+    private void UpdateGravity()
+    {
+        if (_rb.linearVelocityY < 0)
+        {
+            _rb.gravityScale = baseGravity * fallSpeedMultiplier;
+            _rb.linearVelocityY = Mathf.Max(_rb.linearVelocityY, -maxFallSpeed);
+        }
+        else
+        {
+            _rb.gravityScale = baseGravity;
+        }
     }
 
     private void OnDrawGizmosSelected()
