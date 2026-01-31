@@ -125,6 +125,11 @@ public class PlayerStateMachine : MonoBehaviour
         }
     }
 
+    public void EnemyStomped()
+    {
+        _rb.linearVelocityY = maxJumpHeight;
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

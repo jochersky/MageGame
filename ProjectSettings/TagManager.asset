@@ -13,9 +13,9 @@ TagManager:
   - UI
   - Environment
   - Character
-  - 
-  - 
-  - 
+  - Hitbox
+  - Hurtbox
+  - Stomp
   - 
   - 
   - 
