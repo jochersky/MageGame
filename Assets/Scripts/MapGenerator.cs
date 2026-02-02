@@ -1,16 +1,28 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.WSA;
 
 public class MapGenerator : MonoBehaviour
 {
     [SerializeField] int dimensions = 5;
+    [SerializeField] int prefabResolution = 8; 
     // TODO: Delete this and properly randomize room 0s
     [SerializeField] GameObject room0Prefab;
     [SerializeField] GameObject room1Prefab;
     [SerializeField] GameObject room2Prefab;
     [SerializeField] GameObject room3Prefab;
     [SerializeField] GameObject room4Prefab;
+
+    // Tilemap version
+    [SerializeField] Grid grid;
+    GameObject[] room0s;
+    GameObject[] room1s;
+    GameObject[] room2s;
+    GameObject[] room3s;
+    GameObject[] room4s;
+
+    
     // this is apparently how you do multidimensional arrays
     int[,] map;
     int row = 0;
@@ -25,7 +37,18 @@ public class MapGenerator : MonoBehaviour
     }
     void Awake()
     {
+        // Seems to be an issue with loading outside of specified folder; need to look into it
+        room0s = Resources.LoadAll<GameObject>("Rooms/Room Type 0");
+        room1s = Resources.LoadAll<GameObject>("Rooms/Room Type 1");
+        room2s = Resources.LoadAll<GameObject>("Rooms/Room Type 2");
+        room3s = Resources.LoadAll<GameObject>("Rooms/Room Type 3");
+        room4s = Resources.LoadAll<GameObject>("Rooms/Room Type 4");
         randy = new System.Random();
+        // room0Prefab = room0s[randy.Next(room0s.Length)];
+        // room1Prefab = room1s[randy.Next(room1s.Length)];
+        // room2Prefab = room2s[randy.Next(room2s.Length)];
+        // room3Prefab = room3s[randy.Next(room3s.Length)];
+        // room4Prefab = room4s[randy.Next(room4s.Length)];
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -68,7 +91,6 @@ public class MapGenerator : MonoBehaviour
         int direction = randy.Next(1,6);
         if (direction == 1 || direction == 2)
         {
-             Debug.Log("LEFT");
             // if left is not the edge of the map AND we haven't been there yet, we are good
             if (col - 1 >= 0 && map[row, col-1] == 0)
             {
@@ -80,7 +102,6 @@ public class MapGenerator : MonoBehaviour
         } 
         if (direction == 3 || direction == 4)
         {
-            Debug.Log("RIGHT");
             // if left is not the edge of the map AND we haven't been there yet, we are good
             if (col + 1 < map.GetLength(0) && map[row, col+1] == 0)
             {
@@ -90,7 +111,6 @@ public class MapGenerator : MonoBehaviour
             }
             // fall through (aaaaaahhh)
         }
-         Debug.Log("DOWN");
         // the case where we go down, either because of a 5 or an illegal left/right
         // first, if we are on the bottom floor, just label the room and return true to indicate the exit was found
         if (row + 1 == map.GetLength(0))
@@ -154,16 +174,16 @@ public class MapGenerator : MonoBehaviour
                 int roomNum = map[row,col];
                 switch (roomNum)
                 {
-                    case 1: Instantiate(room1Prefab, new Vector3(x, y, 0), Quaternion.identity); break;
-                    case 2: Instantiate(room2Prefab, new Vector3(x, y, 0), Quaternion.identity); break;
-                    case 3: Instantiate(room3Prefab, new Vector3(x, y, 0), Quaternion.identity); break;
-                    case 4: Instantiate(room4Prefab, new Vector3(x, y, 0), Quaternion.identity); break;
-                    default: Instantiate(room0Prefab, new Vector3(x, y, 0), Quaternion.identity); break;
+                    case 1: Instantiate(room1s[randy.Next(room1s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
+                    case 2: Instantiate(room2s[randy.Next(room2s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
+                    case 3: Instantiate(room3s[randy.Next(room3s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
+                    case 4: Instantiate(room4s[randy.Next(room4s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
+                    default: Instantiate(room0s[randy.Next(room0s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
                 }
-                x += 3;
+                x += prefabResolution;
             }
             x = 0;
-            y -= 3;
+            y -= prefabResolution;
         }
     }
 
