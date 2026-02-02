@@ -960,9 +960,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStateMachine
   maxWalkSpeed: 8
+  maxJumpStrafeSpeed: 6
+  maxFallStrafeSpeed: 1
   maxJumpHeight: 13
   jumpCheckTransform: {fileID: 68438688}
-  jumpCheckSize: {x: 1, y: 0.1}
+  jumpCheckSize: {x: 0.98, y: 0.1}
   environmentLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -970,6 +972,7 @@ MonoBehaviour:
   baseGravity: 3
   maxFallSpeed: 18
   fallSpeedMultiplier: 2
+  _isPressingJump: 0
   onDirectionChanged:
     m_PersistentCalls:
       m_Calls:

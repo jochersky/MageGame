@@ -10,12 +10,14 @@ public class PlayerGroundedState : PlayerBaseState
     
     public override void EnterState()
     {
+        Context.HorizontalMovement = 0;
+        
         InitializeSubState();
     }
 
     public override void UpdateState()
     {
-        // if (!Context.IsGrounded) SwitchState(Dictionary.Fall());
+        if (!Context.IsGrounded) SwitchState(Dictionary.Fall());
     }
 
     public override void ExitState()
