@@ -167,19 +167,28 @@ public class MapGenerator : MonoBehaviour
     {
         int x = 0;
         int y = 0;
-        for (int row = 0; row < map.GetLength(0); row++)
+        // +2 comes from extra top and bottom rows
+        for (int row = -1; row < map.GetLength(0) + 1; row++)
         {
-            for (int col = 0; col < map.GetLength(1); col++)
+            for (int col = -1; col < map.GetLength(1) + 1; col++)
             {
-                int roomNum = map[row,col];
-                switch (roomNum)
+                // top and bottom rows are all filled, as are the leftmost and rightmost columns
+                if (row == -1 || row == map.GetLength(0) || col == -1 || col == map.GetLength(0))
                 {
-                    case 1: Instantiate(room1s[randy.Next(room1s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
-                    case 2: Instantiate(room2s[randy.Next(room2s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
-                    case 3: Instantiate(room3s[randy.Next(room3s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
-                    case 4: Instantiate(room4s[randy.Next(room4s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
-                    default: Instantiate(room0s[randy.Next(room0s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
+                    Instantiate(room0s[0], new Vector3(x, y, 0), Quaternion.identity, grid.transform);
+                } else // normal room creation
+                {
+                   int roomNum = map[row,col];
+                    switch (roomNum)
+                    {
+                        case 1: Instantiate(room1s[randy.Next(room1s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
+                        case 2: Instantiate(room2s[randy.Next(room2s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
+                        case 3: Instantiate(room3s[randy.Next(room3s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
+                        case 4: Instantiate(room4s[randy.Next(room4s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
+                        default: Instantiate(room0s[randy.Next(room0s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
+                } 
                 }
+                
                 x += prefabResolution;
             }
             x = 0;
