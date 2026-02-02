@@ -4,24 +4,23 @@ public class PlayerWalkState : PlayerBaseState
 {
     public PlayerWalkState(PlayerStateMachine context, PlayerStateDictionary playerStateDictionary)
         : base(context, playerStateDictionary) { }
-
-    public override void InitializeSubState()
-    {
-        throw new System.NotImplementedException();
-    }
     
     public override void EnterState()
     {
-        throw new System.NotImplementedException();
+        // TODO: change animation to walk animation
     }
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+        Context.HorizontalMovement = Context.MoveDirection.x * Context.MaxWalkSpeed;
+        if (Context.MoveDirection == Vector2.zero) SwitchState(Dictionary.Idle());
     }
 
     public override void ExitState()
     {
-        throw new System.NotImplementedException();
+    }
+    
+    public override void InitializeSubState()
+    {
     }
 }

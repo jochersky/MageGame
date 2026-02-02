@@ -959,11 +959,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0a6ac059fa56454394cb93d12602f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStateMachine
-  player: {fileID: 0}
-  maxMoveSpeed: 5
+  maxWalkSpeed: 8
   maxJumpHeight: 13
-  moveAccel: 0.5
-  stopDrag: 0.6
   jumpCheckTransform: {fileID: 68438688}
   jumpCheckSize: {x: 1, y: 0.1}
   environmentLayer:

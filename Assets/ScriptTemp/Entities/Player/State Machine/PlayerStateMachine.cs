@@ -6,15 +6,12 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerStateMachine : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private GameObject player;
+    // References
     private Rigidbody2D _rb;
     
     [Header("Movement Properties")]
-    [SerializeField] private float maxMoveSpeed = 1f;
+    [SerializeField] private float maxWalkSpeed = 1f;
     [SerializeField] private float maxJumpHeight = 5f;
-    [SerializeField] private float moveAccel = 0.5f;
-    [SerializeField] private float stopDrag = 0.6f;
     [SerializeField] private Transform jumpCheckTransform;
     [SerializeField] private Vector2 jumpCheckSize = new Vector2(1f, 0.25f);
     [SerializeField] private LayerMask environmentLayer;
@@ -31,7 +28,8 @@ public class PlayerStateMachine : MonoBehaviour
     private PlayerBaseState _currentState;
     private PlayerBaseState _currentSubState;
     private PlayerStateDictionary _states;
-    
+
+    private Vector2 _moveDirection;
     private Vector2 _previousDirection;
     private float _horizontalMovement;
     private float _verticalMovement;
@@ -44,14 +42,27 @@ public class PlayerStateMachine : MonoBehaviour
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
     public PlayerBaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
     public PlayerStateDictionary States { get { return _states; } set { _states = value; } }
+    
+    public Vector2 MoveDirection { get { return _moveDirection; } set { _moveDirection = value; } }
+    
     public Rigidbody2D Rigidbody { get { return _rb; } set { _rb = value; } }
+    public Vector2 LinearVelocity { get { return _rb.linearVelocity; } set { _rb.linearVelocity = value; } }
+    public float LinearVelocityX { get { return _rb.linearVelocityX; } set { _rb.linearVelocityX = value; } }
+    public float LinearVelocityY { get { return _rb.linearVelocityY; } set { _rb.linearVelocityY = value; } }
+    public float HorizontalMovement { get { return _horizontalMovement; } set { _horizontalMovement = value; } }
+    public float VerticalMovement { get { return _verticalMovement; } set { _verticalMovement = value; } }
+    
+    public float MaxWalkSpeed { get { return maxWalkSpeed; } set { maxWalkSpeed = value; } }
+    
+    public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; } }
+    public bool CanJump { get { return _canJump; } set { _canJump = value; } }
 
     private void Awake()
     {
         // State machine + initial state setup
-        // _states = new PlayerStateDictionary(this);
-        // _currentState = _states.Grounded();
-        // _currentState.EnterState();
+        _states = new PlayerStateDictionary(this);
+        _currentState = _states.Grounded();
+        _currentState.EnterState();
     }
     
     void Start()
@@ -64,21 +75,22 @@ public class PlayerStateMachine : MonoBehaviour
     {
         CheckGrounded();
         UpdateGravity();
+        _currentState.UpdateStates();
         _rb.linearVelocity = new Vector2(_horizontalMovement, _rb.linearVelocity.y);
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        Vector2 direction = context.ReadValue<Vector2>();
-        _horizontalMovement = direction.x * maxMoveSpeed;
+        _moveDirection = context.ReadValue<Vector2>();
+        // _horizontalMovement = _moveDirection.x * maxWalkSpeed;
 
+        // Performed and canceled callbacks incorrectly flip the transform, ignore these.
         if (context.performed || context.canceled) return; 
-        
-        if (Mathf.Sign(direction.x) != Mathf.Sign(_previousDirection.x))
+        if (Mathf.Sign(_moveDirection.x) != Mathf.Sign(_previousDirection.x))
         {
-            onDirectionChanged?.Invoke(Mathf.Sign(direction.x));
+            onDirectionChanged?.Invoke(Mathf.Sign(_moveDirection.x));
         }
-        _previousDirection = direction;
+        _previousDirection = _moveDirection;
     }
     
     public void OnJump(InputAction.CallbackContext context)

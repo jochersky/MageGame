@@ -3,25 +3,28 @@ using UnityEngine;
 public class PlayerFallState : PlayerBaseState
 {
     public PlayerFallState(PlayerStateMachine context, PlayerStateDictionary playerStateDictionary)
-        : base(context, playerStateDictionary) { }
-
-    public override void InitializeSubState()
+        : base(context, playerStateDictionary)
     {
-        throw new System.NotImplementedException();
+        IsRootState = true;
     }
     
     public override void EnterState()
     {
-        throw new System.NotImplementedException();
+        InitializeSubState();
     }
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+        if (Context.IsGrounded) SwitchState(Dictionary.Grounded());
     }
 
     public override void ExitState()
     {
-        throw new System.NotImplementedException();
+        
+    }
+    
+    public override void InitializeSubState()
+    {
+        // switch to an attacking or climbing state
     }
 }
