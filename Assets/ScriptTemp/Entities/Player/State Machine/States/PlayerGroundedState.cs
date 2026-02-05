@@ -11,7 +11,6 @@ public class PlayerGroundedState : PlayerBaseState
     public override void EnterState()
     {
         Context.HorizontalMovement = 0;
-        
         InitializeSubState();
     }
 
@@ -28,7 +27,6 @@ public class PlayerGroundedState : PlayerBaseState
     
     public override void InitializeSubState()
     {
-        // switch to idle or walk or run or jump
         if (Context.MoveDirection != Vector2.zero) SetSubState(Dictionary.Walk());
         else if (Context.MoveDirection == Vector2.zero) SetSubState(Dictionary.Idle());
     }

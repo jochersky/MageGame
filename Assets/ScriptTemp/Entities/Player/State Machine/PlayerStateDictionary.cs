@@ -8,10 +8,10 @@ enum PlayerStates
     Grounded,
     Fall,
     Climb,
+    Jump,
     // - Sub States -
     Idle,
     Walk,
-    Jump,
 }
 
 public class PlayerStateDictionary
@@ -23,16 +23,16 @@ public class PlayerStateDictionary
     {
         _context = context;
         
-        // Instantiate states for later use instead of regenerating later for performance
+        // Instantiate states for later use instead of reinstantiating later for performance.
         // - Root States -
         _states[PlayerStates.Grounded] = new PlayerGroundedState(_context, this);
         _states[PlayerStates.Fall] = new PlayerFallState(_context, this);
         _states[PlayerStates.Climb] = new PlayerClimbState(_context, this);
+        _states[PlayerStates.Jump] = new PlayerJumpState(_context, this);
         
         // - Sub States -
         _states[PlayerStates.Idle] = new PlayerIdleState(_context, this);
         _states[PlayerStates.Walk] = new PlayerWalkState(_context, this);
-        _states[PlayerStates.Jump] = new PlayerJumpState(_context, this);
     }
 
     // - Root States -
@@ -52,6 +52,11 @@ public class PlayerStateDictionary
         return _states[PlayerStates.Climb];
     }
     
+    public PlayerBaseState Jump()
+    {
+        return _states[PlayerStates.Jump];
+    }
+    
     // - Sub States -
 
     public PlayerBaseState Idle()
@@ -62,10 +67,5 @@ public class PlayerStateDictionary
     public PlayerBaseState Walk()
     {
         return _states[PlayerStates.Walk];
-    }
-
-    public PlayerBaseState Jump()
-    {
-        return _states[PlayerStates.Jump];
     }
 }

@@ -6,19 +6,21 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerStateMachine : MonoBehaviour
 {
-    // References
+    [Header("References")]
+    [SerializeField] private LayerMask environmentLayer;
     private Rigidbody2D _rb;
     
-    [Header("Movement Properties")]
+    [Header("Walk")]
     [SerializeField] private float maxWalkSpeed = 1f;
-    [SerializeField] private float maxAirborneMoveSpeed = 1f;
+    
+    [Header("Jump")] 
     [SerializeField] private float maxJumpHeight = 5f;
     [SerializeField] private Transform jumpCheckTransform;
     [SerializeField] private Vector2 jumpCheckSize = new Vector2(1f, 0.25f);
-    [SerializeField] private LayerMask environmentLayer;
-
-    [Header("Jump")] 
     [SerializeField] private float coyoteJumpTimer = 0.1f;
+    
+    [Header("Airborne")]
+    [SerializeField] private float maxAirborneMoveSpeed = 1f;
     
     [Header("Gravity")]
     [SerializeField] private float baseGravity = 2;
@@ -47,29 +49,25 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _canClimb;
     private bool _wasClimbing;
 
+    // Event for flipping the transform.
     public UnityEvent<float> onDirectionChanged;
     
+    // State Setters & Getters
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
     public PlayerBaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
     public PlayerStateDictionary States { get { return _states; } set { _states = value; } }
     
-    public Vector2 MoveDirection { get { return _moveDirection; } set { _moveDirection = value; } }
-    
+    // Instance Variables + References Setters & Getters
     public Rigidbody2D Rigidbody { get { return _rb; } set { _rb = value; } }
+    public Vector2 MoveDirection { get { return _moveDirection; } set { _moveDirection = value; } }
     public Vector2 LinearVelocity { get { return _rb.linearVelocity; } set { _rb.linearVelocity = value; } }
     public float LinearVelocityX { get { return _rb.linearVelocityX; } set { _rb.linearVelocityX = value; } }
     public float LinearVelocityY { get { return _rb.linearVelocityY; } set { _rb.linearVelocityY = value; } }
     public float HorizontalMovement { get { return _horizontalMovement; } set { _horizontalMovement = value; } }
-    public float VerticalMovement { get { return _verticalMovement; } set { _verticalMovement = value; } }
     public float GravityScale { get { return _rb.gravityScale; } set { _rb.gravityScale = value; } }
-    
     public float MaxWalkSpeed { get { return maxWalkSpeed; } set { maxWalkSpeed = value; } }
     public float MaxAirborneMoveSpeed { get { return maxAirborneMoveSpeed; } set { maxAirborneMoveSpeed = value; } }
     public float MaxJumpHeight { get { return maxJumpHeight; } set { maxJumpHeight = value; } }
-    public float BaseGravity { get { return baseGravity; } set { baseGravity = value; } }
-    public float MaxFallSpeed { get { return maxFallSpeed; } set { maxFallSpeed = value; } }
-    public float FallSpeedMultiplier { get { return fallSpeedMultiplier; } set { fallSpeedMultiplier = value; } }
-    
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; } }
     public bool CanJump { get { return _canJump; } set { _canJump = value; } }
     public bool IsPressingJump { get { return _isPressingJump; } set { _isPressingJump = value; } }
@@ -78,7 +76,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void Awake()
     {
-        // State machine + initial state setup
+        // State machine initial state setup
         _states = new PlayerStateDictionary(this);
         _currentState = _isGrounded ? _states.Grounded() : _states.Fall();
         _currentState.EnterState();
@@ -99,7 +97,6 @@ public class PlayerStateMachine : MonoBehaviour
         CheckGrounded();
         CheckClimbing();
         UpdateGravity();
-        // _rb.linearVelocity = new Vector2(_horizontalMovement, _rb.linearVelocity.y);
         _rb.linearVelocity = new Vector2(_horizontalMovement, _rb.linearVelocityY);
     }
 
@@ -107,7 +104,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         _moveDirection = context.ReadValue<Vector2>();
 
-        // Performed and canceled callbacks incorrectly flip the transform, ignore these.
+        // Performed and canceled callbacks incorrectly flip the transform. Ignore them.
         if (context.performed || context.canceled) return; 
         if (Mathf.Sign(_moveDirection.x) != Mathf.Sign(_previousDirection.x))
         {
@@ -125,7 +122,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         _isGrounded = Physics2D.OverlapBox(jumpCheckTransform.position, jumpCheckSize, 0, environmentLayer);
         
-        // Allow player extra time to jump after not being grounded
+        // Allow player extra time to jump after not being grounded.
         if (!_isGrounded)
         {
             _airTime += Time.deltaTime;
@@ -137,12 +134,19 @@ public class PlayerStateMachine : MonoBehaviour
             _canJump = true;
         }
     }
+    
+    private void OnDrawGizmosSelected()
+    {
+        // Grounded check gizmo
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(jumpCheckTransform.position, jumpCheckSize);
+    }
 
     private void UpdateGravity()
     {
         if (_currentState == _states.Climb()) return;
         
-        // Player falls down faster when going down
+        // Player falls down faster with negative y-velocity.
         if (_rb.linearVelocityY < 0)
         {
             _rb.gravityScale = baseGravity * fallSpeedMultiplier;
@@ -157,12 +161,6 @@ public class PlayerStateMachine : MonoBehaviour
     public void EnemyStomped()
     {
         _rb.linearVelocityY = maxJumpHeight;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(jumpCheckTransform.position, jumpCheckSize);
     }
 
     private void CheckClimbing()

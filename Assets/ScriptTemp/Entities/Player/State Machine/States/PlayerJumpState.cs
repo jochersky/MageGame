@@ -10,10 +10,6 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void EnterState()
     {
-        // TODO: change animation to jump animation
-        
-        // PerformJump();
-        // Debug.Log("Entered Jump State");
     }
 
     public override void UpdateState()
@@ -38,13 +34,12 @@ public class PlayerJumpState : PlayerBaseState
         {
             if (Context.IsPressingJump)
             {
-                // _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, maxJumpHeight);
                 Context.LinearVelocityY = Context.MaxJumpHeight;
+                // Toggle for when climbing and trying to jump since CanJump is false when climbing.
                 Context.WasClimbing = false;
             }
             else
             {
-                // _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, _rb.linearVelocity.y * 0.5f);
                 Context.LinearVelocityY = Context.MaxJumpHeight * 0.5f;
             }
         }
