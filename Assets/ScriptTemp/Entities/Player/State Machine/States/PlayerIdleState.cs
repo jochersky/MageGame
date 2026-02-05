@@ -16,7 +16,7 @@ public class PlayerIdleState : PlayerBaseState
     public override void UpdateState()
     {
         if (Context.MoveDirection != Vector2.zero) SwitchState(Dictionary.Walk());
-        else if (Context.CanJump && Context.IsPressingJump) SwitchState(Dictionary.Jump());
+        // else if (Context.CanJump && Context.IsPressingJump) SwitchState(Dictionary.Jump());
     }
 
     public override void ExitState()

@@ -12,11 +12,18 @@ public class PlayerClimbState : PlayerBaseState
     {
         Context.Rigidbody.gravityScale = 0;
         Context.LinearVelocityY = 0;
+        Context.WasClimbing = true;
+        // Debug.Log("Entering Climb State");
     }
 
     public override void UpdateState()
     {
-        // SwitchState(Dictionary.Fall());
+        if (Context.IsPressingJump) SwitchState(Dictionary.Jump());
+        else if (Context.MoveDirection.y < 0)
+        {
+            Context.WasClimbing = false;
+            SwitchState(Dictionary.Fall());
+        }
     }
 
     public override void ExitState()

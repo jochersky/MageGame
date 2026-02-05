@@ -45,6 +45,7 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _canJump;
     private bool _isPressingJump;
     private bool _canClimb;
+    private bool _wasClimbing;
 
     public UnityEvent<float> onDirectionChanged;
     
@@ -73,6 +74,7 @@ public class PlayerStateMachine : MonoBehaviour
     public bool CanJump { get { return _canJump; } set { _canJump = value; } }
     public bool IsPressingJump { get { return _isPressingJump; } set { _isPressingJump = value; } }
     public bool CanClimb { get { return _canClimb; } set { _canClimb = value; } }
+    public bool WasClimbing { get { return _wasClimbing; } set { _wasClimbing = value; } }
 
     private void Awake()
     {
@@ -123,6 +125,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         _isGrounded = Physics2D.OverlapBox(jumpCheckTransform.position, jumpCheckSize, 0, environmentLayer);
         
+        // Allow player extra time to jump after not being grounded
         if (!_isGrounded)
         {
             _airTime += Time.deltaTime;
@@ -139,6 +142,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         if (_currentState == _states.Climb()) return;
         
+        // Player falls down faster when going down
         if (_rb.linearVelocityY < 0)
         {
             _rb.gravityScale = baseGravity * fallSpeedMultiplier;

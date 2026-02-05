@@ -18,6 +18,7 @@ public class PlayerGroundedState : PlayerBaseState
     public override void UpdateState()
     {
         if (!Context.IsGrounded) SwitchState(Dictionary.Fall());
+        else if (Context.CanJump && Context.IsPressingJump) SwitchState(Dictionary.Jump());
     }
 
     public override void ExitState()
