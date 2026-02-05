@@ -7,6 +7,7 @@ enum PlayerStates
     // - Root States -
     Grounded,
     Fall,
+    Climb,
     // - Sub States -
     Idle,
     Walk,
@@ -26,6 +27,7 @@ public class PlayerStateDictionary
         // - Root States -
         _states[PlayerStates.Grounded] = new PlayerGroundedState(_context, this);
         _states[PlayerStates.Fall] = new PlayerFallState(_context, this);
+        _states[PlayerStates.Climb] = new PlayerClimbState(_context, this);
         
         // - Sub States -
         _states[PlayerStates.Idle] = new PlayerIdleState(_context, this);
@@ -43,6 +45,11 @@ public class PlayerStateDictionary
     public PlayerBaseState Fall()
     {
         return _states[PlayerStates.Fall];
+    }
+
+    public PlayerBaseState Climb()
+    {
+        return _states[PlayerStates.Climb];
     }
     
     // - Sub States -

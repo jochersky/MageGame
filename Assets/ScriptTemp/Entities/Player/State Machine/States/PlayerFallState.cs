@@ -19,6 +19,7 @@ public class PlayerFallState : PlayerBaseState
         Context.HorizontalMovement = Context.MoveDirection.x * Context.MaxAirborneMoveSpeed;
         
         if (Context.IsGrounded) SwitchState(Dictionary.Grounded());
+        else if (Context.CanClimb && Context.MoveDirection.x != 0) SwitchState(Dictionary.Climb());
     }
 
     public override void ExitState()

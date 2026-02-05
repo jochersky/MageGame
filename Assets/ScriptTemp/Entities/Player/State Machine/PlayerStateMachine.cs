@@ -25,6 +25,12 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private float maxFallSpeed = 15;
     [SerializeField] private float fallSpeedMultiplier = 1.5f;
     
+    [Header("Climbing")]
+    [SerializeField] private Vector2 climbCheckOffset = Vector2.zero;
+    [SerializeField] private Vector2 climbCheckDir = Vector2.right;
+    [SerializeField] private float climbCheckDistance = 0.2f;
+    [SerializeField] private bool climbDebug;
+    
     // State Variables
     private PlayerBaseState _currentState;
     private PlayerBaseState _currentSubState;
@@ -37,7 +43,8 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _isGrounded;
     private float _airTime;
     private bool _canJump;
-    public bool _isPressingJump;
+    private bool _isPressingJump;
+    private bool _canClimb;
 
     public UnityEvent<float> onDirectionChanged;
     
@@ -65,6 +72,7 @@ public class PlayerStateMachine : MonoBehaviour
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; } }
     public bool CanJump { get { return _canJump; } set { _canJump = value; } }
     public bool IsPressingJump { get { return _isPressingJump; } set { _isPressingJump = value; } }
+    public bool CanClimb { get { return _canClimb; } set { _canClimb = value; } }
 
     private void Awake()
     {
@@ -87,6 +95,7 @@ public class PlayerStateMachine : MonoBehaviour
     void FixedUpdate()
     {
         CheckGrounded();
+        CheckClimbing();
         UpdateGravity();
         // _rb.linearVelocity = new Vector2(_horizontalMovement, _rb.linearVelocity.y);
         _rb.linearVelocity = new Vector2(_horizontalMovement, _rb.linearVelocityY);
@@ -95,7 +104,6 @@ public class PlayerStateMachine : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         _moveDirection = context.ReadValue<Vector2>();
-        // _horizontalMovement = _moveDirection.x * maxWalkSpeed;
 
         // Performed and canceled callbacks incorrectly flip the transform, ignore these.
         if (context.performed || context.canceled) return; 
@@ -109,18 +117,6 @@ public class PlayerStateMachine : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         _isPressingJump = context.ReadValueAsButton();
-        
-        // if (_canJump)
-        // {
-        //     if (context.performed)
-        //     {
-        //         _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, maxJumpHeight);
-        //     }
-        //     else if (context.canceled)
-        //     {
-        //         _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, _rb.linearVelocity.y * 0.5f);
-        //     }
-        // }
     }
 
     private void CheckGrounded()
@@ -141,6 +137,8 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void UpdateGravity()
     {
+        if (_currentState == _states.Climb()) return;
+        
         if (_rb.linearVelocityY < 0)
         {
             _rb.gravityScale = baseGravity * fallSpeedMultiplier;
@@ -161,5 +159,22 @@ public class PlayerStateMachine : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(jumpCheckTransform.position, jumpCheckSize);
+    }
+
+    private void CheckClimbing()
+    {
+        float dirSign = Mathf.Sign(_previousDirection.x);
+        Vector2 start = (Vector2)transform.position + climbCheckOffset;
+        Vector2 direction = climbCheckDir * dirSign;
+
+        if (climbDebug)
+        {
+            Debug.DrawRay(start, direction * climbCheckDistance, Color.orange);
+            Debug.DrawRay(start + Vector2.up, direction * climbCheckDistance, Color.orange);
+        }
+
+        _canClimb = !_isGrounded 
+                    && Physics2D.Raycast(start, direction, climbCheckDistance, environmentLayer)
+                    && !Physics2D.Raycast(start + Vector2.up, direction, climbCheckDistance, environmentLayer);
     }
 }
