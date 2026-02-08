@@ -13,10 +13,10 @@ public abstract class RatBaseState
     protected RatStateDictionary Dictionary { get { return _dictionary; } set { _dictionary = value; } }
     
     // Constructor
-    protected RatBaseState(RatStateMachine currentContext, RatStateDictionary playerStateDictionary)
+    protected RatBaseState(RatStateMachine currentContext, RatStateDictionary ratStateDictionary)
     {
         _context = currentContext;
-        _dictionary = playerStateDictionary;
+        _dictionary = ratStateDictionary;
     }
     
     // First method run after a state is entered

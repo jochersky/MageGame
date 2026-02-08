@@ -7,9 +7,7 @@ enum RatStates
     Grounded,
     Fall,
     // - Sub States -
-    Idle,
-    Patrolling,
-    Chase
+    Patrol,
 }
 
 public class RatStateDictionary
@@ -20,5 +18,28 @@ public class RatStateDictionary
     public RatStateDictionary(RatStateMachine context)
     {
         _context = context;
+        
+        // Instantiate states for later use instead of reinstantiating later for performance.
+        // - Root States -
+        _states[RatStates.Grounded] = new RatGroundedState(_context, this);
+        _states[RatStates.Fall] = new RatFallState(_context, this);
+        
+        // - Sub States -
+        _states[RatStates.Patrol] = new RatPatrolState(_context, this);
+    }
+
+    public RatBaseState Grounded()
+    {
+        return _states[RatStates.Grounded];
+    }
+    
+    public RatBaseState Fall()
+    {
+        return _states[RatStates.Fall];
+    }
+
+    public RatBaseState Patrol()
+    {
+        return _states[RatStates.Patrol];
     }
 }
