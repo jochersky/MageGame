@@ -1,26 +1,28 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.WSA;
+using UnityEngine.Tilemaps;
 
 public class MapGenerator : MonoBehaviour
 {
-    [SerializeField] int dimensions = 5;
-    [SerializeField] int prefabResolution = 8; 
-    // TODO: Delete this and properly randomize room 0s
-    [SerializeField] GameObject room0Prefab;
-    [SerializeField] GameObject room1Prefab;
-    [SerializeField] GameObject room2Prefab;
-    [SerializeField] GameObject room3Prefab;
-    [SerializeField] GameObject room4Prefab;
+    [SerializeField] int mapDimensions = 5;
+    [SerializeField] int roomDimensions = 8; 
+    [SerializeField] GameObject tilemapPrefab;
+    [SerializeField] Color32 guaranteeSquareColor;
+    [SerializeField] Color32 highProbabilityColor;
+    [SerializeField] Color32 lowProbabilityColor;
+    [SerializeField] Color32 noSquareColor;
 
     // Tilemap version
     [SerializeField] Grid grid;
-    GameObject[] room0s;
-    GameObject[] room1s;
-    GameObject[] room2s;
-    GameObject[] room3s;
-    GameObject[] room4s;
+    [SerializeField] Tile tile;
+    Sprite[] filledRoom;
+    Sprite[] room0s;
+    Sprite[] room1s;
+    Sprite[] room2s;
+    Sprite[] room3s;
+    Sprite[] room4s;
+    Sprite template;
 
     
     // this is apparently how you do multidimensional arrays
@@ -38,11 +40,12 @@ public class MapGenerator : MonoBehaviour
     void Awake()
     {
         // Seems to be an issue with loading outside of specified folder; need to look into it
-        room0s = Resources.LoadAll<GameObject>("Rooms/Room Type 0");
-        room1s = Resources.LoadAll<GameObject>("Rooms/Room Type 1");
-        room2s = Resources.LoadAll<GameObject>("Rooms/Room Type 2");
-        room3s = Resources.LoadAll<GameObject>("Rooms/Room Type 3");
-        room4s = Resources.LoadAll<GameObject>("Rooms/Room Type 4");
+        filledRoom = Resources.LoadAll<Sprite>("Rooms/Filled Room");
+        room0s = Resources.LoadAll<Sprite>("Rooms/Room Style 0");
+        room1s = Resources.LoadAll<Sprite>("Rooms/Room Style 1");
+        room2s = Resources.LoadAll<Sprite>("Rooms/Room Style 2");
+        room3s = Resources.LoadAll<Sprite>("Rooms/Room Style 3");
+        room4s = Resources.LoadAll<Sprite>("Rooms/Room Style 4");
         randy = new System.Random();
         // room0Prefab = room0s[randy.Next(room0s.Length)];
         // room1Prefab = room1s[randy.Next(room1s.Length)];
@@ -53,7 +56,7 @@ public class MapGenerator : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        map = new int[dimensions, dimensions];
+        map = new int[mapDimensions, mapDimensions];
         genRoomPaths();
         placeMap();
     }
@@ -175,25 +178,97 @@ public class MapGenerator : MonoBehaviour
                 // top and bottom rows are all filled, as are the leftmost and rightmost columns
                 if (row == -1 || row == map.GetLength(0) || col == -1 || col == map.GetLength(0))
                 {
-                    Instantiate(room0s[0], new Vector3(x, y, 0), Quaternion.identity, grid.transform);
+                    InstantiateRoom(filledRoom, x, y);
                 } else // normal room creation
                 {
                    int roomNum = map[row,col];
                     switch (roomNum)
                     {
-                        case 1: Instantiate(room1s[randy.Next(room1s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
-                        case 2: Instantiate(room2s[randy.Next(room2s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
-                        case 3: Instantiate(room3s[randy.Next(room3s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
-                        case 4: Instantiate(room4s[randy.Next(room4s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
-                        default: Instantiate(room0s[randy.Next(room0s.Length)], new Vector3(x, y, 0), Quaternion.identity, grid.transform); break;
-                } 
+                        case 1: InstantiateRoom(room1s, x, y); break;
+                        case 2: InstantiateRoom(room2s, x, y); break;
+                        case 3: InstantiateRoom(room3s, x, y); break;
+                        case 4: InstantiateRoom(room4s, x, y); break;
+                        default: InstantiateRoom(room0s, x, y); break;
+                    } 
                 }
                 
-                x += prefabResolution;
+                x += roomDimensions;
             }
             x = 0;
-            y -= prefabResolution;
+            y -= roomDimensions;
         }
+    }
+
+    void InstantiateRoom(Sprite[] rooms, int x, int y)
+    {
+        GameObject tileMap = Instantiate(tilemapPrefab, new Vector3(x, y, 0), Quaternion.identity, grid.transform);
+        Tilemap tilemap = tileMap.GetComponent<Tilemap>();
+        template = rooms[randy.Next(rooms.Length)];
+        Color32[] pixels = ConvertSpriteToPixelArray(template);
+        int[] room = TranslateColorsToProbailities(pixels);
+        GenerateRoom(room, tilemap);
+    }
+
+    Color32[] ConvertSpriteToPixelArray(Sprite sprite)
+    {
+        Texture2D texture = sprite.texture;
+        if (!texture.isReadable)
+        {
+            Debug.Log("That's an Error! The provided sprite template does not have Read/Write enabled.");
+            return null;
+        }
+        // array starts at bottom left, moves right
+        Color32[] pixels = texture.GetPixels32();
+        return pixels;
+
+
+    }
+
+    int[] TranslateColorsToProbailities(Color32[] pixels)
+    {
+        int[] roomProbs = new int[roomDimensions * roomDimensions];
+        for (int row = 0; row < roomDimensions; row++)
+        {
+            for (int col = 0; col < roomDimensions; col++)
+            {
+                Color32 color = pixels[row * roomDimensions + col];
+                // maybe switch statements hate me. who knows?
+                if (color.Equals(guaranteeSquareColor))
+                {
+                    roomProbs[row * roomDimensions + col] = 100;
+                } else if (color.Equals(highProbabilityColor))
+                {
+                    roomProbs[row * roomDimensions + col] = 75;
+                } else if (color.Equals(lowProbabilityColor))
+                {
+                    roomProbs[row * roomDimensions + col] = 25;
+                } else if (color.Equals(noSquareColor))
+                {
+                    roomProbs[row * roomDimensions + col] = 0;
+                } else
+                {
+                    Debug.Log("That's an Error! The provided sprite template uses colors not specified by probabilities");
+                    Debug.Log("Was: " + color);
+                    return null;
+                }
+            }
+        }
+        return roomProbs;
+    }
+
+    void GenerateRoom(int[] room, Tilemap tilemap)
+    {
+        for (int row = 0; row < roomDimensions; row++)
+        {
+            for (int col = 0; col < roomDimensions; col++)
+            {
+                if (randy.Next(0,100) < room[row * roomDimensions + col])
+                {
+                    tilemap.SetTile(new Vector3Int(col, row, 0), tile);
+                }
+            }
+        }
+
     }
 
     // Update is called once per frame
