@@ -82,24 +82,7 @@ public class RatStateMachine : MonoBehaviour
         CheckGrounded();
         CheckHitWall();
         CheckForLedge();
-        UpdateGravity();
         _rb.linearVelocity = new Vector2(_horizontalMovement, _rb.linearVelocityY);
-    }
-
-    private void UpdateGravity()
-    {
-        // // Player falls down faster with negative y-velocity.
-        // if (_rb.linearVelocityY < 0)
-        // {
-        //     _rb.gravityScale = baseGravity * fallSpeedMultiplier;
-        //     _rb.linearVelocityY = Mathf.Max(_rb.linearVelocityY, -maxFallSpeed);
-        // }
-        // else
-        // {
-        //     _rb.gravityScale = baseGravity;
-        // }
-        
-        // _rb.gravityScale = baseGravity;
     }
 
     private void CheckGrounded()

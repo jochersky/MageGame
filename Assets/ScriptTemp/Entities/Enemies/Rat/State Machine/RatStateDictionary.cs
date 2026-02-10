@@ -7,7 +7,6 @@ enum RatStates
     Grounded,
     Fall,
     // - Sub States -
-    Patrol,
 }
 
 public class RatStateDictionary
@@ -25,9 +24,9 @@ public class RatStateDictionary
         _states[RatStates.Fall] = new RatFallState(_context, this);
         
         // - Sub States -
-        _states[RatStates.Patrol] = new RatPatrolState(_context, this);
     }
-
+    
+    // - Root States -
     public RatBaseState Grounded()
     {
         return _states[RatStates.Grounded];
@@ -37,9 +36,6 @@ public class RatStateDictionary
     {
         return _states[RatStates.Fall];
     }
-
-    public RatBaseState Patrol()
-    {
-        return _states[RatStates.Patrol];
-    }
+    
+    // - Sub States -
 }

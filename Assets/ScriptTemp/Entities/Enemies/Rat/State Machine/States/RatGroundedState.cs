@@ -24,6 +24,5 @@ public class RatGroundedState : RatBaseState
 
     public override void InitializeSubState()
     {
-        SetSubState(Dictionary.Patrol());
     }
 }
