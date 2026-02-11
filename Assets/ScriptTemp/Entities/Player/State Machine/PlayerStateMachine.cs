@@ -32,6 +32,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private Vector2 climbCheckOffset = Vector2.zero;
     [SerializeField] private Vector2 climbCheckDir = Vector2.right;
     [SerializeField] private float climbCheckDistance = 0.2f;
+    [SerializeField] private float climbCheckHeight = 0.7f;
     [SerializeField] private bool climbDebug;
     
     // State Variables
@@ -181,7 +182,7 @@ public class PlayerStateMachine : MonoBehaviour
         if (climbDebug)
         {
             Debug.DrawRay(start, direction * climbCheckDistance, Color.orange);
-            Debug.DrawRay(start + Vector2.up, direction * climbCheckDistance, Color.orange);
+            Debug.DrawRay(start + (Vector2.up * climbCheckHeight), direction * climbCheckDistance, Color.orange);
         }
 
         _canClimb = !_isGrounded 
