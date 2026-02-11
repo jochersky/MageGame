@@ -5,8 +5,8 @@ public class RatStateMachine : MonoBehaviour
 {
     [Header("References")] [SerializeField]
     private LayerMask environmentLayer;
-
     private Rigidbody2D _rb;
+    // private Animator _animator;
 
     [Header("Move Properties")] [SerializeField]
     private float moveSpeed = 3f;
@@ -33,24 +33,10 @@ public class RatStateMachine : MonoBehaviour
     private bool _isGrounded;
 
     // State Setters & Getters
-    public RatBaseState CurrentState
-    {
-        get { return _currentState; }
-        set { _currentState = value; }
-    }
-
-    public RatBaseState CurrentSubState
-    {
-        get { return _currentSubState; }
-        set { _currentSubState = value; }
-    }
-
-    public RatStateDictionary States
-    {
-        get { return _states; }
-        set { _states = value; }
-    }
-
+    public RatBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
+    public RatBaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
+    public RatStateDictionary States { get { return _states; } set { _states = value; } }
+    
     public bool IsGrounded
     {
         get { return _isGrounded; }
@@ -70,6 +56,7 @@ public class RatStateMachine : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        // _animator = GetComponent<Animator>();
     }
 
     private void Update()

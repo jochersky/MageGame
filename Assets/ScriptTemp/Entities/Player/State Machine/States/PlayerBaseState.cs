@@ -5,7 +5,7 @@ public abstract class PlayerBaseState
     private bool _isRootState = false;
     private PlayerStateMachine _context;
     private PlayerStateDictionary _dictionary;
-    private PlayerBaseState _currentSubState;
+    protected PlayerBaseState _currentSubState;
     private PlayerBaseState _currentSuperState;
     
     protected bool IsRootState { set => _isRootState = value; }
@@ -62,5 +62,11 @@ public abstract class PlayerBaseState
     protected void SetSubState(PlayerBaseState newSubState){
         _currentSubState = newSubState;
         newSubState.SetSuperState(this);
+        _currentSubState.EnterState();
+    }
+
+    public override string ToString()
+    {
+        return "PlayerBaseState";
     }
 }

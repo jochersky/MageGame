@@ -10,7 +10,7 @@ public class PlayerFallState : PlayerBaseState
     
     public override void EnterState()
     {
-        InitializeSubState();
+        Context.Animator.CrossFade(Context.Fall, 0, 0);
     }
 
     public override void UpdateState()
@@ -28,5 +28,10 @@ public class PlayerFallState : PlayerBaseState
     
     public override void InitializeSubState()
     {
+    }
+    
+    public override string ToString()
+    {
+        return "PlayerFallState";
     }
 }

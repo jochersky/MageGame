@@ -8,6 +8,7 @@ public class PlayerStateMachine : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private LayerMask environmentLayer;
+    [SerializeField] private Animator animator;
     private Rigidbody2D _rb;
     
     [Header("Walk")]
@@ -38,6 +39,13 @@ public class PlayerStateMachine : MonoBehaviour
     private PlayerBaseState _currentSubState;
     private PlayerStateDictionary _states;
 
+    // Animation Hashes
+    public readonly int Idle = Animator.StringToHash("Idle");
+    public readonly int Walk = Animator.StringToHash("Walk");
+    public readonly int Jump = Animator.StringToHash("Jump");
+    public readonly int Fall = Animator.StringToHash("Fall");
+    public readonly int Climbing = Animator.StringToHash("Climb");
+    
     private Vector2 _moveDirection;
     private Vector2 _previousDirection;
     private float _horizontalMovement;
@@ -49,6 +57,8 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _canClimb;
     private bool _wasClimbing;
 
+    public String stateName = "";
+
     // Event for flipping the transform.
     public UnityEvent<float> onDirectionChanged;
     
@@ -59,6 +69,7 @@ public class PlayerStateMachine : MonoBehaviour
     
     // Instance Variables + References Setters & Getters
     public Rigidbody2D Rigidbody { get { return _rb; } set { _rb = value; } }
+    public Animator Animator { get { return animator; } set { animator = value; } }
     public Vector2 MoveDirection { get { return _moveDirection; } set { _moveDirection = value; } }
     public Vector2 LinearVelocity { get { return _rb.linearVelocity; } set { _rb.linearVelocity = value; } }
     public float LinearVelocityX { get { return _rb.linearVelocityX; } set { _rb.linearVelocityX = value; } }
@@ -73,23 +84,21 @@ public class PlayerStateMachine : MonoBehaviour
     public bool IsPressingJump { get { return _isPressingJump; } set { _isPressingJump = value; } }
     public bool CanClimb { get { return _canClimb; } set { _canClimb = value; } }
     public bool WasClimbing { get { return _wasClimbing; } set { _wasClimbing = value; } }
-
-    private void Awake()
+    
+    void Start()
     {
+        _rb = GetComponent<Rigidbody2D>();
+        
         // State machine initial state setup
         _states = new PlayerStateDictionary(this);
         _currentState = _isGrounded ? _states.Grounded() : _states.Fall();
         _currentState.EnterState();
     }
-    
-    void Start()
-    {
-        _rb = GetComponent<Rigidbody2D>();
-    }
 
     private void Update()
     {
         _currentState.UpdateStates();
+        stateName = _currentState.ToString();
     }
     
     void FixedUpdate()

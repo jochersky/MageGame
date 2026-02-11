@@ -10,6 +10,8 @@ public class PlayerClimbState : PlayerBaseState
 
     public override void EnterState()
     {
+        Context.Animator.CrossFade(Context.Climbing, 0, 0);
+        
         Context.Rigidbody.gravityScale = 0;
         Context.LinearVelocityY = 0;
         // Set so that player can jump when climbing.
@@ -32,5 +34,10 @@ public class PlayerClimbState : PlayerBaseState
 
     public override void InitializeSubState()
     {
+    }
+    
+    public override string ToString()
+    {
+        return "PlayerClimbState";
     }
 }

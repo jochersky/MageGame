@@ -10,6 +10,7 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void EnterState()
     {
+        Context.Animator.CrossFade(Context.Jump, 0, 0);
     }
 
     public override void UpdateState()
@@ -43,5 +44,10 @@ public class PlayerJumpState : PlayerBaseState
                 Context.LinearVelocityY = Context.MaxJumpHeight * 0.5f;
             }
         }
+    }
+    
+    public override string ToString()
+    {
+        return "PlayerJumpState";
     }
 }
