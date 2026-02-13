@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class RatStateMachine : MonoBehaviour
@@ -31,17 +32,16 @@ public class RatStateMachine : MonoBehaviour
     private Vector2 _moveDir = Vector2.right;
     private float _horizontalMovement;
     private bool _isGrounded;
+    
+    // Event for flipping the transform.
+    public UnityEvent<float> onDirectionChanged;
 
     // State Setters & Getters
     public RatBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
     public RatBaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
     public RatStateDictionary States { get { return _states; } set { _states = value; } }
     
-    public bool IsGrounded
-    {
-        get { return _isGrounded; }
-        set { _isGrounded = value; }
-    }
+    public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; } }
 
     private void Awake()
     {
@@ -93,6 +93,7 @@ public class RatStateMachine : MonoBehaviour
         if (Physics2D.Raycast(transform.position, _moveDir, wallCheckDistance, environmentLayer))
         {
             _moveDir = -_moveDir;
+            onDirectionChanged?.Invoke(Mathf.Sign(_moveDir.x));
             _horizontalMovement = _moveDir.x * moveSpeed;
         }
     }
@@ -107,6 +108,7 @@ public class RatStateMachine : MonoBehaviour
         if (!Physics2D.Raycast(start, Vector2.down, 1f, environmentLayer))
         {
             _moveDir = -_moveDir;
+            onDirectionChanged?.Invoke(Mathf.Sign(_moveDir.x));
             _horizontalMovement = _moveDir.x * moveSpeed;
         }
     }
