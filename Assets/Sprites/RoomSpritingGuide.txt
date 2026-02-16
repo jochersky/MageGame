@@ -1,0 +1,16 @@
+Room type 0 has no guaranteed exits
+Room type 1 has exits on the left and right guaranteed
+Room type 2 has exits on the left, right, and bottom (we love the Oxford comma)
+Room type 3 has exits on the left, right, and top
+Room type 4 has exits on the left, right, top, and bottom
+
+Starting rooms are always type 1 or 2
+Ending rooms are always type 1 or 3
+
+Colors:
+Black (0,0,0 or 0x000000) means a 100% chance a block will be placed there
+Dark Purple (60, 61, 88 or 0x3C3D58) means a 75% chance a block will be placed there
+Light Purple (128, 130, 186 or 0x8082BA) means a 25% chance a block will be placed there
+White (255, 255, 255 or 0xFFFFFF) means a 0% chance a block will be placed there
+
+Green (32, 255, 0 or 0x20FF00) means an entrance is placed if it's the starting room, an exit if it's the ending room, or nothing otherwise.

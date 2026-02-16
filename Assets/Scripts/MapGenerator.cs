@@ -1,5 +1,5 @@
 using System;
-using Unity.VisualScripting;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -12,10 +12,13 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Color32 highProbabilityColor;
     [SerializeField] Color32 lowProbabilityColor;
     [SerializeField] Color32 noSquareColor;
+    [SerializeField] Color32 entryExitColor;
+    
 
     // Tilemap version
     [SerializeField] Grid grid;
     [SerializeField] Tile tile;
+    [SerializeField] Tile door;
     Sprite[] filledRoom;
     Sprite[] room0s;
     Sprite[] room1s;
@@ -23,6 +26,9 @@ public class MapGenerator : MonoBehaviour
     Sprite[] room3s;
     Sprite[] room4s;
     Sprite template;
+
+    int entranceCol;
+    int exitCol;
 
     
     // this is apparently how you do multidimensional arrays
@@ -37,6 +43,13 @@ public class MapGenerator : MonoBehaviour
         LEFT,
         RIGHT
     }
+
+    enum ROOM_QUALITY
+    {
+        STARTING,
+        ENDING,
+        REGULAR
+    }
     void Awake()
     {
         // Seems to be an issue with loading outside of specified folder; need to look into it
@@ -47,11 +60,6 @@ public class MapGenerator : MonoBehaviour
         room3s = Resources.LoadAll<Sprite>("Rooms/Room Style 3");
         room4s = Resources.LoadAll<Sprite>("Rooms/Room Style 4");
         randy = new System.Random();
-        // room0Prefab = room0s[randy.Next(room0s.Length)];
-        // room1Prefab = room1s[randy.Next(room1s.Length)];
-        // room2Prefab = room2s[randy.Next(room2s.Length)];
-        // room3Prefab = room3s[randy.Next(room3s.Length)];
-        // room4Prefab = room4s[randy.Next(room4s.Length)];
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -74,7 +82,8 @@ public class MapGenerator : MonoBehaviour
             }
         }
         // pick a starting room from the top row
-        col = randy.Next(3);
+        entranceCol = randy.Next(mapDimensions);
+        col = entranceCol;
         // 1 is tunnel style room: open on the left and right
         bool foundExit = false;
         Debug.Log("Generating...");
@@ -120,6 +129,8 @@ public class MapGenerator : MonoBehaviour
         {
             // we are lying here, because we aren't actually moving anywhere, but want room types 1 and 3 anyway. Should probably fix.
             labelRoomNum(MOVING_TO.LEFT);
+            // store exit column
+            exitCol = col;
             return true;
         } else
         {
@@ -170,25 +181,30 @@ public class MapGenerator : MonoBehaviour
     {
         int x = 0;
         int y = 0;
+        bool isStartingRoom = false;
+        bool isEndingRoom = false;
         // +2 comes from extra top and bottom rows
         for (int row = -1; row < map.GetLength(0) + 1; row++)
         {
             for (int col = -1; col < map.GetLength(1) + 1; col++)
             {
+                // check for starting and ending rooms
+                isStartingRoom = row == 0 && col == entranceCol;
+                isEndingRoom = row == (mapDimensions - 1) && col == exitCol;
                 // top and bottom rows are all filled, as are the leftmost and rightmost columns
                 if (row == -1 || row == map.GetLength(0) || col == -1 || col == map.GetLength(0))
                 {
-                    InstantiateRoom(filledRoom, x, y);
+                    InstantiateRoom(filledRoom, x, y, isStartingRoom, isEndingRoom);
                 } else // normal room creation
                 {
                    int roomNum = map[row,col];
                     switch (roomNum)
                     {
-                        case 1: InstantiateRoom(room1s, x, y); break;
-                        case 2: InstantiateRoom(room2s, x, y); break;
-                        case 3: InstantiateRoom(room3s, x, y); break;
-                        case 4: InstantiateRoom(room4s, x, y); break;
-                        default: InstantiateRoom(room0s, x, y); break;
+                        case 1: InstantiateRoom(room1s, x, y, isStartingRoom, isEndingRoom); break;
+                        case 2: InstantiateRoom(room2s, x, y, isStartingRoom, isEndingRoom); break;
+                        case 3: InstantiateRoom(room3s, x, y, isStartingRoom, isEndingRoom); break;
+                        case 4: InstantiateRoom(room4s, x, y, isStartingRoom, isEndingRoom); break;
+                        default: InstantiateRoom(room0s, x, y, isStartingRoom, isEndingRoom); break;
                     } 
                 }
                 
@@ -199,13 +215,16 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    void InstantiateRoom(Sprite[] rooms, int x, int y)
+    void InstantiateRoom(Sprite[] rooms, int x, int y, bool isStartingRoom, bool isEndingRoom)
     {
+        ROOM_QUALITY room_quality = ROOM_QUALITY.REGULAR;
+        if (isStartingRoom) { room_quality = ROOM_QUALITY.STARTING; }
+        if (isEndingRoom) { room_quality = ROOM_QUALITY.ENDING; }
         GameObject tileMap = Instantiate(tilemapPrefab, new Vector3(x, y, 0), Quaternion.identity, grid.transform);
         Tilemap tilemap = tileMap.GetComponent<Tilemap>();
         template = rooms[randy.Next(rooms.Length)];
         Color32[] pixels = ConvertSpriteToPixelArray(template);
-        int[] room = TranslateColorsToProbailities(pixels);
+        int[] room = TranslateColorsToProbabilities(pixels, room_quality);
         GenerateRoom(room, tilemap);
     }
 
@@ -224,7 +243,7 @@ public class MapGenerator : MonoBehaviour
 
     }
 
-    int[] TranslateColorsToProbailities(Color32[] pixels)
+    int[] TranslateColorsToProbabilities(Color32[] pixels, ROOM_QUALITY room_quality)
     {
         int[] roomProbs = new int[roomDimensions * roomDimensions];
         for (int row = 0; row < roomDimensions; row++)
@@ -242,9 +261,19 @@ public class MapGenerator : MonoBehaviour
                 } else if (color.Equals(lowProbabilityColor))
                 {
                     roomProbs[row * roomDimensions + col] = 25;
-                } else if (color.Equals(noSquareColor))
+                } else if (color.Equals(entryExitColor))
+                {
+                    if (room_quality == ROOM_QUALITY.STARTING || room_quality == ROOM_QUALITY.ENDING)
+                    {
+                        roomProbs[row * roomDimensions + col] = -99;
+                    } else {
+                        roomProbs[row * roomDimensions + col] = 0;
+                    }
+                }
+                else if (color.Equals(noSquareColor))
                 {
                     roomProbs[row * roomDimensions + col] = 0;
+
                 } else
                 {
                     Debug.Log("That's an Error! The provided sprite template uses colors not specified by probabilities");
@@ -256,13 +285,19 @@ public class MapGenerator : MonoBehaviour
         return roomProbs;
     }
 
+
     void GenerateRoom(int[] room, Tilemap tilemap)
     {
         for (int row = 0; row < roomDimensions; row++)
         {
             for (int col = 0; col < roomDimensions; col++)
             {
-                if (randy.Next(0,100) < room[row * roomDimensions + col])
+                // check for special value indicating a door
+                if (room[row * roomDimensions + col] == -99)
+                {
+                    tilemap.SetTile(new Vector3Int(col, row, 0), door);
+                }
+                else if (randy.Next(0,100) < room[row * roomDimensions + col])
                 {
                     tilemap.SetTile(new Vector3Int(col, row, 0), tile);
                 }
