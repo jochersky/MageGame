@@ -4,13 +4,15 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody2D))]
 public class RatStateMachine : MonoBehaviour
 {
-    [Header("References")] [SerializeField]
-    private LayerMask environmentLayer;
+    [Header("References")]
+    [SerializeField] private PlayerEnteredSensor playerEnteredSensor;
+    [SerializeField] private LayerMask environmentLayer;
     private Rigidbody2D _rb;
     // private Animator _animator;
 
-    [Header("Move Properties")] [SerializeField]
-    private float moveSpeed = 3f;
+    [Header("Move Properties")] 
+    [SerializeField] private float defaultMoveSpeed = 3f;
+    [SerializeField] private float aggroMoveSpeed = 6f;
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheckTransform;
@@ -29,6 +31,7 @@ public class RatStateMachine : MonoBehaviour
     private RatBaseState _currentSubState;
     private RatStateDictionary _states;
 
+    private float _currentMoveSpeed;
     private Vector2 _moveDir = Vector2.right;
     private float _horizontalMovement;
     private bool _isGrounded;
@@ -45,8 +48,9 @@ public class RatStateMachine : MonoBehaviour
 
     private void Awake()
     {
-        _horizontalMovement = _moveDir.x * moveSpeed;
-
+        _currentMoveSpeed = defaultMoveSpeed;
+        _horizontalMovement = _moveDir.x * _currentMoveSpeed;
+        
         // State machine initial state setup
         _states = new RatStateDictionary(this);
         _currentState = _isGrounded ? States.Grounded(): States.Fall();
@@ -57,6 +61,12 @@ public class RatStateMachine : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         // _animator = GetComponent<Animator>();
+
+        playerEnteredSensor.OnPlayerSighted += () =>
+        {
+            _currentMoveSpeed = aggroMoveSpeed;
+            _horizontalMovement = _moveDir.x * _currentMoveSpeed;
+        };
     }
 
     private void Update()
@@ -94,7 +104,7 @@ public class RatStateMachine : MonoBehaviour
         {
             _moveDir = -_moveDir;
             onDirectionChanged?.Invoke(Mathf.Sign(_moveDir.x));
-            _horizontalMovement = _moveDir.x * moveSpeed;
+            _horizontalMovement = _moveDir.x * _currentMoveSpeed;
         }
     }
 
@@ -109,7 +119,7 @@ public class RatStateMachine : MonoBehaviour
         {
             _moveDir = -_moveDir;
             onDirectionChanged?.Invoke(Mathf.Sign(_moveDir.x));
-            _horizontalMovement = _moveDir.x * moveSpeed;
+            _horizontalMovement = _moveDir.x * _currentMoveSpeed;
         }
     }
 }
