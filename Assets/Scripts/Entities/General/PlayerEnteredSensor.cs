@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,6 +19,7 @@ public class PlayerEnteredSensor : MonoBehaviour
 
     private void Start()
     {
+        _environmentLayer = LayerMask.GetMask("Environment");
         _hitLayers = LayerMask.GetMask("Character", "Environment");
     }
 
@@ -32,15 +34,25 @@ public class PlayerEnteredSensor : MonoBehaviour
         
         if (debug) Debug.DrawRay(transform.position, rayVector * transform.localScale.x, Color.purple);
         
-        Physics2D.RaycastNonAlloc(transform.position, rayVector * transform.localScale.x, _hits, rayVector.magnitude, _hitLayers);
-        foreach (RaycastHit2D hit in _hits)
+        int numHits = Physics2D.RaycastNonAlloc(transform.position, rayVector * transform.localScale.x, _hits, rayVector.magnitude, _hitLayers);
+        if (numHits > 1)
         {
+            Array.Sort(_hits, (a, b) => a.distance.CompareTo(b.distance));
+        }
+        for (int i = 0; i < numHits; i++)
+        {
+            RaycastHit2D hit = _hits[i];
             if (!hit) break;
-            
+            // Player should not be visible behind walls
+            if (Math.Pow(2, hit.collider.gameObject.layer) == _environmentLayer.value)
+            {
+                break;
+            }
             if (hit.collider.gameObject.name == "Player")
             {
                 OnPlayerSighted?.Invoke();
                 if (disableOnEnter) _playerFound = true;
+                break;
             }
         }
     }

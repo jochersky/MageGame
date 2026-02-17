@@ -171,12 +171,6 @@ MonoBehaviour:
   rayVector: {x: 6, y: 0}
   disableOnEnter: 1
   debug: 1
-  environmentLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &2015006608
 GameObject:
   m_ObjectHideFlags: 0
@@ -1515,6 +1509,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8863640782204810548, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8863640782204810548, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
