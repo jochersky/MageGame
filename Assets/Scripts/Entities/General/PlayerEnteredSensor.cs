@@ -48,7 +48,7 @@ public class PlayerEnteredSensor : MonoBehaviour
             {
                 break;
             }
-            if (hit.collider.gameObject.name == "Player")
+            if (hit.collider.gameObject.CompareTag("Player"))
             {
                 OnPlayerSighted?.Invoke();
                 if (disableOnEnter) _playerFound = true;

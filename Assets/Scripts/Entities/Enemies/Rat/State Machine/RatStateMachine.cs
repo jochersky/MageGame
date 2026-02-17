@@ -13,6 +13,9 @@ public class RatStateMachine : MonoBehaviour
     [Header("Move Properties")] 
     [SerializeField] private float defaultMoveSpeed = 3f;
     [SerializeField] private float aggroMoveSpeed = 6f;
+    [SerializeField] private float lungeTime = 2f;
+    [SerializeField] private float lungeVelocityX = 1;
+    [SerializeField] private float lungeVelocityY = 1;
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheckTransform;
@@ -35,6 +38,8 @@ public class RatStateMachine : MonoBehaviour
     private Vector2 _moveDir = Vector2.right;
     private float _horizontalMovement;
     private bool _isGrounded;
+    private bool _isAggroed;
+    private float _lungeTimer;
     
     // Event for flipping the transform.
     public UnityEvent<float> onDirectionChanged;
@@ -66,6 +71,7 @@ public class RatStateMachine : MonoBehaviour
         {
             _currentMoveSpeed = aggroMoveSpeed;
             _horizontalMovement = _moveDir.x * _currentMoveSpeed;
+            _isAggroed = true;
         };
     }
 
@@ -79,7 +85,18 @@ public class RatStateMachine : MonoBehaviour
         CheckGrounded();
         CheckHitWall();
         CheckForLedge();
+        
         _rb.linearVelocity = new Vector2(_horizontalMovement, _rb.linearVelocityY);
+
+        if (_isAggroed)
+        {
+            _lungeTimer += Time.fixedDeltaTime;
+            if (_isGrounded && _lungeTimer >= lungeTime)
+            {
+                _rb.linearVelocity = new Vector2(lungeVelocityX * _moveDir.x, lungeVelocityY);
+                _lungeTimer = 0;
+            }
+        }
     }
 
     private void CheckGrounded()
@@ -110,6 +127,8 @@ public class RatStateMachine : MonoBehaviour
 
     private void CheckForLedge()
     {
+        if (!_isGrounded) return;
+        
         Vector2 start = (Vector2)transform.position + _moveDir * ledgeCheckDistance;
         if (ledgeCheckDebug)
         {
