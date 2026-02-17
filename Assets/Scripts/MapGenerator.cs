@@ -15,13 +15,14 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Color32 entryExitColor;
     [SerializeField] Color32 spikeOrBlockColor;
     [SerializeField] Color32 spikeOrSpaceColor;
-    
+    [SerializeField] Color32 falseFloorColor;    
 
     // Tilemap version
     [SerializeField] Grid grid;
     [SerializeField] Tile tile;
     [SerializeField] Tile door;
     [SerializeField] Tile spikes;
+    [SerializeField] Tile falseFloor;
     Sprite[] filledRoom;
     Sprite[] room0s;
     Sprite[] room1s;
@@ -270,6 +271,9 @@ public class MapGenerator : MonoBehaviour
                 } else if (color.Equals(spikeOrSpaceColor))
                 {
                     roomProbs[row * roomDimensions + col] = -25;
+                } else if (color.Equals(falseFloorColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -88;
                 } else if (color.Equals(entryExitColor))
                 {
                     if (room_quality == ROOM_QUALITY.STARTING || room_quality == ROOM_QUALITY.ENDING)
@@ -316,6 +320,11 @@ public class MapGenerator : MonoBehaviour
                     {
                         tilemap.SetTile(new Vector3Int(col, row, 0), tile);
                     }
+                }
+                // check for special value indicating false floor
+                if (roomProbability == -88)
+                {
+                    tilemap.SetTile(new Vector3Int(col, row, 0), falseFloor);
                 }
                 else if (randy.Next(0,100) < roomProbability)
                 {
