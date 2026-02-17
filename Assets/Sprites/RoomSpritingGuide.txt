@@ -14,3 +14,5 @@ Light Purple (128, 130, 186 or 0x8082BA) means a 25% chance a block will be plac
 White (255, 255, 255 or 0xFFFFFF) means a 0% chance a block will be placed there
 
 Green (32, 255, 0 or 0x20FF00) means an entrance is placed if it's the starting room, an exit if it's the ending room, or nothing otherwise.
+Dark Red (134, 4, 4 or 0x860404) means 25% chance of spikes, 75% chance of a block
+Light Red (232, 136, 136 or 0xE88888) means 25% chance of spikes, 75% chance of no block

@@ -13,12 +13,15 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Color32 lowProbabilityColor;
     [SerializeField] Color32 noSquareColor;
     [SerializeField] Color32 entryExitColor;
+    [SerializeField] Color32 spikeOrBlockColor;
+    [SerializeField] Color32 spikeOrSpaceColor;
     
 
     // Tilemap version
     [SerializeField] Grid grid;
     [SerializeField] Tile tile;
     [SerializeField] Tile door;
+    [SerializeField] Tile spikes;
     Sprite[] filledRoom;
     Sprite[] room0s;
     Sprite[] room1s;
@@ -261,6 +264,12 @@ public class MapGenerator : MonoBehaviour
                 } else if (color.Equals(lowProbabilityColor))
                 {
                     roomProbs[row * roomDimensions + col] = 25;
+                } else if (color.Equals(spikeOrBlockColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -75;
+                } else if (color.Equals(spikeOrSpaceColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -25;
                 } else if (color.Equals(entryExitColor))
                 {
                     if (room_quality == ROOM_QUALITY.STARTING || room_quality == ROOM_QUALITY.ENDING)
@@ -292,12 +301,23 @@ public class MapGenerator : MonoBehaviour
         {
             for (int col = 0; col < roomDimensions; col++)
             {
+                int roomProbability = room[row * roomDimensions + col];
                 // check for special value indicating a door
-                if (room[row * roomDimensions + col] == -99)
+                if (roomProbability == -99)
                 {
                     tilemap.SetTile(new Vector3Int(col, row, 0), door);
                 }
-                else if (randy.Next(0,100) < room[row * roomDimensions + col])
+                // check for special value indicating spikes
+                else if (roomProbability == -75 || roomProbability == -25){
+                    if (randy.Next(0,100) < 25)
+                    {
+                        tilemap.SetTile(new Vector3Int(col, row, 0), spikes);
+                    } else if (roomProbability == -75)
+                    {
+                        tilemap.SetTile(new Vector3Int(col, row, 0), tile);
+                    }
+                }
+                else if (randy.Next(0,100) < roomProbability)
                 {
                     tilemap.SetTile(new Vector3Int(col, row, 0), tile);
                 }
