@@ -17,3 +17,4 @@ Green (32, 255, 0 or 0x20FF00) means an entrance is placed if it's the starting 
 Dark Red (134, 4, 4 or 0x860404) means 25% chance of spikes, 75% chance of a block
 Light Red (232, 136, 136 or 0xE88888) means 25% chance of spikes, 75% chance of no block
 Blue (0, 90, 248 or 0x005AF8) means 100% chance of a false floor
+Orange (255, 79, 0 or 0xFF4F00) means 25% chance of flamethrower, 75% of a block

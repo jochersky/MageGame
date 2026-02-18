@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -15,7 +16,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Color32 entryExitColor;
     [SerializeField] Color32 spikeOrBlockColor;
     [SerializeField] Color32 spikeOrSpaceColor;
-    [SerializeField] Color32 falseFloorColor;    
+    [SerializeField] Color32 falseFloorColor; 
+    [SerializeField] Color32 flamethrowerColor;   
 
     // Tilemap version
     [SerializeField] Grid grid;
@@ -23,6 +25,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Tile door;
     [SerializeField] Tile spikes;
     [SerializeField] Tile falseFloor;
+    [SerializeField] Tile flamethrower;
     Sprite[] filledRoom;
     Sprite[] room0s;
     Sprite[] room1s;
@@ -274,6 +277,9 @@ public class MapGenerator : MonoBehaviour
                 } else if (color.Equals(falseFloorColor))
                 {
                     roomProbs[row * roomDimensions + col] = -88;
+                } else if (color.Equals(flamethrowerColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -55;
                 } else if (color.Equals(entryExitColor))
                 {
                     if (room_quality == ROOM_QUALITY.STARTING || room_quality == ROOM_QUALITY.ENDING)
@@ -325,6 +331,16 @@ public class MapGenerator : MonoBehaviour
                 if (roomProbability == -88)
                 {
                     tilemap.SetTile(new Vector3Int(col, row, 0), falseFloor);
+                }
+                // check for special value indicating flamethrower
+                else if (roomProbability == -55){
+                    if (randy.Next(0,100) < 25)
+                    {
+                        tilemap.SetTile(new Vector3Int(col, row, 0), flamethrower);
+                    } else
+                    {
+                        tilemap.SetTile(new Vector3Int(col, row, 0), tile);
+                    }
                 }
                 else if (randy.Next(0,100) < roomProbability)
                 {
