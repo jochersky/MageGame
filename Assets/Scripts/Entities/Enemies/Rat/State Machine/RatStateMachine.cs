@@ -5,10 +5,10 @@ using UnityEngine.Events;
 public class RatStateMachine : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private Animator animator;
     [SerializeField] private PlayerEnteredSensor playerEnteredSensor;
     [SerializeField] private LayerMask environmentLayer;
     private Rigidbody2D _rb;
-    // private Animator _animator;
 
     [Header("Move Properties")] 
     [SerializeField] private float defaultMoveSpeed = 3f;
@@ -34,6 +34,11 @@ public class RatStateMachine : MonoBehaviour
     private RatBaseState _currentSubState;
     private RatStateDictionary _states;
 
+    // Animation Hashes
+    public readonly int Grounded = Animator.StringToHash("Grounded");
+    public readonly int Fall = Animator.StringToHash("Fall");
+    public readonly int Lunge = Animator.StringToHash("Lunge");
+    
     private float _currentMoveSpeed;
     private Vector2 _moveDir = Vector2.right;
     private float _horizontalMovement;
@@ -48,8 +53,14 @@ public class RatStateMachine : MonoBehaviour
     public RatBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
     public RatBaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
     public RatStateDictionary States { get { return _states; } set { _states = value; } }
-    
+    public Animator Animator { get { return animator; } }
+    public float LungeVelocityX { get { return lungeVelocityX; } }
+    public float LungeVelocityY { get { return lungeVelocityY; } }
+    public float LinearVelocityX { get { return _rb.linearVelocityX; } set { _rb.linearVelocityX = value; } }
+    public float LinearVelocityY { get { return _rb.linearVelocityY; } set { _rb.linearVelocityY = value; } }
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; } }
+    public bool IsAggroed { get { return _isAggroed; } set { _isAggroed = value; } }
+    public float LungeTime { get { return lungeTime; } set { lungeTime = value; } }
 
     private void Awake()
     {
@@ -65,7 +76,6 @@ public class RatStateMachine : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        // _animator = GetComponent<Animator>();
 
         playerEnteredSensor.OnPlayerSighted += () =>
         {
@@ -87,16 +97,6 @@ public class RatStateMachine : MonoBehaviour
         CheckForLedge();
         
         _rb.linearVelocity = new Vector2(_horizontalMovement, _rb.linearVelocityY);
-
-        if (_isAggroed)
-        {
-            _lungeTimer += Time.fixedDeltaTime;
-            if (_isGrounded && _lungeTimer >= lungeTime)
-            {
-                _rb.linearVelocity = new Vector2(lungeVelocityX * _moveDir.x, lungeVelocityY);
-                _lungeTimer = 0;
-            }
-        }
     }
 
     private void CheckGrounded()

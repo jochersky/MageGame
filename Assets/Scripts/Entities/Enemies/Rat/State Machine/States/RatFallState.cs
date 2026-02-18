@@ -12,6 +12,7 @@ public class RatFallState : RatBaseState
 
     public override void EnterState()
     {
+        Context.Animator.CrossFade(Context.Fall, 0, 0);
     }
 
     public override void UpdateState()
