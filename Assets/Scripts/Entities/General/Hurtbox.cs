@@ -21,4 +21,9 @@ public class Hurtbox : MonoBehaviour
             OnDamageTaken?.Invoke(hitbox.damageAmt);
         }
     }
+
+    public void Stomped(int damageAmt)
+    {
+        OnDamageTaken?.Invoke(damageAmt);
+    }
 }
