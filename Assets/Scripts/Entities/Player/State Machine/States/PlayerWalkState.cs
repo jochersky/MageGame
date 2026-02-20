@@ -12,6 +12,8 @@ public class PlayerWalkState : PlayerBaseState
 
     public override void UpdateState()
     {
+        if (Context.IsDead) SwitchState(Dictionary.Dead());
+        
         Context.HorizontalMovement = Context.MoveDirection.x * Context.MaxWalkSpeed;
         
         if (Context.MoveDirection == Vector2.zero) SwitchState(Dictionary.Idle());

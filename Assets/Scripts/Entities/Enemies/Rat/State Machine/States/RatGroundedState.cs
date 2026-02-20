@@ -17,6 +17,8 @@ public class RatGroundedState : RatBaseState
 
     public override void UpdateState()
     {
+        if (Context.IsDead) SwitchState(Dictionary.Dead());
+        
         if (Context.IsAggroed)
         {
             _lungeTimer += Time.deltaTime;

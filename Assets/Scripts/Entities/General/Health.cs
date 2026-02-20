@@ -14,6 +14,9 @@ public class Health : MonoBehaviour
     private int _currentHealth;
     private bool _isInvulnerable;
     
+    public delegate void death();
+    public event death OnDeath;
+    
     private void Awake()
     {
         _currentHealth = maxHealth;
@@ -34,6 +37,12 @@ public class Health : MonoBehaviour
         _currentHealth -= damageAmt;
         StartCoroutine(Invulnerable());
         if (damageFlash) damageFlash.StartFlash();
+        if (_currentHealth <= 0f) OnDeath?.Invoke();
+    }
+
+    public void ActivateInvulnerability()
+    {
+        StartCoroutine(Invulnerable());
     }
 
     private IEnumerator Invulnerable()

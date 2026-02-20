@@ -151,6 +151,17 @@ Transform:
   - {fileID: 2065630092}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1366647209 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3793943062346547927, guid: 7a854991a1bb57544896e3f99c05779c, type: 3}
+  m_PrefabInstance: {fileID: 638830119184647144}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac7a9eba2942d234ca7f7d55869318f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &2015006608
 GameObject:
   m_ObjectHideFlags: 0
@@ -1324,6 +1335,17 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!114 &2063852022 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5235543416708208417, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+  m_PrefabInstance: {fileID: 2436304925489385303}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac7a9eba2942d234ca7f7d55869318f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
 --- !u!1 &2065630091
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,6 +1391,17 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!114 &2082845462 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2583082123830694234, guid: 7a854991a1bb57544896e3f99c05779c, type: 3}
+  m_PrefabInstance: {fileID: 638830119184647144}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deb1f8faa37c4b14c8da9e574a901bb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1001 &638830119184647144
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1417,6 +1450,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3793943062346547927, guid: 7a854991a1bb57544896e3f99c05779c, type: 3}
+      propertyPath: maxHealth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6827455858764700748, guid: 7a854991a1bb57544896e3f99c05779c, type: 3}
+      propertyPath: health
+      value: 
+      objectReference: {fileID: 1366647209}
+    - target: {fileID: 6827455858764700748, guid: 7a854991a1bb57544896e3f99c05779c, type: 3}
+      propertyPath: hitbox
+      value: 
+      objectReference: {fileID: 2082845462}
     - target: {fileID: 8871767491910850251, guid: 7a854991a1bb57544896e3f99c05779c, type: 3}
       propertyPath: m_Name
       value: Rat
@@ -1434,6 +1479,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1389070659067755822, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: health
+      value: 
+      objectReference: {fileID: 2063852022}
+    - target: {fileID: 2273229650790971593, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: onEnemyStomped.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2273229650790971593, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: onEnemyStomped.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2273229650790971593, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: onEnemyStomped.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2063852022}
+    - target: {fileID: 2273229650790971593, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: onEnemyStomped.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2273229650790971593, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: onEnemyStomped.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ActivateInvulnerability
+      objectReference: {fileID: 0}
+    - target: {fileID: 2273229650790971593, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: onEnemyStomped.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Health, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2273229650790971593, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: onEnemyStomped.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3863422753505901973, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5
@@ -1473,6 +1550,14 @@ PrefabInstance:
     - target: {fileID: 3863422753505901973, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8263345666997329926, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: m_Size.y
+      value: 0.20608291
+      objectReference: {fileID: 0}
+    - target: {fileID: 8263345666997329926, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.061105832
       objectReference: {fileID: 0}
     - target: {fileID: 8863640782204810548, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
       propertyPath: m_Name

@@ -9,6 +9,7 @@ public class PlayerStateMachine : MonoBehaviour
     [Header("References")]
     [SerializeField] private LayerMask environmentLayer;
     [SerializeField] private Animator animator;
+    [SerializeField] private Health health;
     private Rigidbody2D _rb;
     
     [Header("Walk")]
@@ -46,6 +47,7 @@ public class PlayerStateMachine : MonoBehaviour
     public readonly int Jump = Animator.StringToHash("Jump");
     public readonly int Fall = Animator.StringToHash("Fall");
     public readonly int Climbing = Animator.StringToHash("Climb");
+    public readonly int Dead = Animator.StringToHash("Dead");
     
     private Vector2 _moveDirection;
     private Vector2 _previousDirection;
@@ -57,6 +59,7 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _isPressingJump;
     private bool _canClimb;
     private bool _wasClimbing;
+    private bool _isDead;
 
     public String stateName = "";
 
@@ -85,10 +88,13 @@ public class PlayerStateMachine : MonoBehaviour
     public bool IsPressingJump { get { return _isPressingJump; } set { _isPressingJump = value; } }
     public bool CanClimb { get { return _canClimb; } set { _canClimb = value; } }
     public bool WasClimbing { get { return _wasClimbing; } set { _wasClimbing = value; } }
+    public bool IsDead { get { return _isDead; } set { _isDead = value; } }
     
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+
+        health.OnDeath += () => { _isDead = true; };
         
         // State machine initial state setup
         _states = new PlayerStateDictionary(this);
@@ -112,6 +118,8 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        if (_isDead) return;
+        
         _moveDirection = context.ReadValue<Vector2>();
 
         // Performed and canceled callbacks incorrectly flip the transform. Ignore them.

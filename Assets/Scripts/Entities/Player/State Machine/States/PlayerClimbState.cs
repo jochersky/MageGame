@@ -20,6 +20,8 @@ public class PlayerClimbState : PlayerBaseState
 
     public override void UpdateState()
     {
+        if (Context.IsDead) SwitchState(Dictionary.Dead());
+        
         if (Context.IsPressingJump) SwitchState(Dictionary.Jump());
         else if (Context.MoveDirection.y < 0)
         {

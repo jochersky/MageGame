@@ -6,7 +6,8 @@ enum RatStates
     // - Root States -
     Grounded,
     Fall,
-    Lunge
+    Lunge,
+    Dead
     // - Sub States -
 }
 
@@ -24,6 +25,7 @@ public class RatStateDictionary
         _states[RatStates.Grounded] = new RatGroundedState(_context, this);
         _states[RatStates.Fall] = new RatFallState(_context, this);
         _states[RatStates.Lunge] = new RatLungeState(_context, this);
+        _states[RatStates.Dead] = new RatDeadState(_context, this);
 
         // - Sub States -
     }
@@ -42,6 +44,11 @@ public class RatStateDictionary
     public RatBaseState Lunge()
     {
         return _states[RatStates.Lunge];
+    }
+
+    public RatBaseState Dead()
+    {
+        return _states[RatStates.Dead];
     }
     
     // - Sub States -

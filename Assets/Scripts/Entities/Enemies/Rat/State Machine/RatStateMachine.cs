@@ -8,6 +8,8 @@ public class RatStateMachine : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private PlayerEnteredSensor playerEnteredSensor;
     [SerializeField] private LayerMask environmentLayer;
+    [SerializeField] private Health health;
+    [SerializeField] private Hitbox hitbox;
     private Rigidbody2D _rb;
 
     [Header("Move Properties")] 
@@ -38,6 +40,7 @@ public class RatStateMachine : MonoBehaviour
     public readonly int Grounded = Animator.StringToHash("Grounded");
     public readonly int Fall = Animator.StringToHash("Fall");
     public readonly int Lunge = Animator.StringToHash("Lunge");
+    public readonly int Dead = Animator.StringToHash("Dead");
     
     private float _currentMoveSpeed;
     private Vector2 _moveDir = Vector2.right;
@@ -45,6 +48,7 @@ public class RatStateMachine : MonoBehaviour
     private bool _isGrounded;
     private bool _isAggroed;
     private float _lungeTimer;
+    private bool _isDead;
     
     // Event for flipping the transform.
     public UnityEvent<float> onDirectionChanged;
@@ -58,9 +62,11 @@ public class RatStateMachine : MonoBehaviour
     public float LungeVelocityY { get { return lungeVelocityY; } }
     public float LinearVelocityX { get { return _rb.linearVelocityX; } set { _rb.linearVelocityX = value; } }
     public float LinearVelocityY { get { return _rb.linearVelocityY; } set { _rb.linearVelocityY = value; } }
+    public float HorizontalMovement { get { return _horizontalMovement; } set { _horizontalMovement = value; } }
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; } }
     public bool IsAggroed { get { return _isAggroed; } set { _isAggroed = value; } }
     public float LungeTime { get { return lungeTime; } set { lungeTime = value; } }
+    public bool IsDead { get { return _isDead; } set { _isDead = value; } }
 
     private void Awake()
     {
@@ -77,8 +83,16 @@ public class RatStateMachine : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
 
+        health.OnDeath += () =>
+        {
+            _isDead = true;
+            hitbox.gameObject.SetActive(false);
+            health.gameObject.SetActive(false);
+        };
+
         playerEnteredSensor.OnPlayerSighted += () =>
         {
+            if (_isDead) return;
             _currentMoveSpeed = aggroMoveSpeed;
             _horizontalMovement = _moveDir.x * _currentMoveSpeed;
             _isAggroed = true;
@@ -113,6 +127,8 @@ public class RatStateMachine : MonoBehaviour
 
     private void CheckHitWall()
     {
+        if (_isDead) return;
+        
         if (wallCheckDebug)
         {
             Debug.DrawRay(transform.position, _moveDir * wallCheckDistance, Color.red);
@@ -127,7 +143,7 @@ public class RatStateMachine : MonoBehaviour
 
     private void CheckForLedge()
     {
-        if (!_isGrounded) return;
+        if (!_isGrounded || _isDead) return;
         
         Vector2 start = (Vector2)transform.position + _moveDir * ledgeCheckDistance;
         if (ledgeCheckDebug)
