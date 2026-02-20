@@ -26,7 +26,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Tile spikes;
     [SerializeField] Tile falseFloor;
     [SerializeField] Tile flamethrower;
-    Tilemap tilemap;
+    [SerializeField] Tilemap colliderTilemap;
+    [SerializeField] Tilemap nonColliderTilemap;
     Sprite[] filledRoom;
     Sprite[] room0s;
     Sprite[] room1s;
@@ -68,7 +69,6 @@ public class MapGenerator : MonoBehaviour
         room3s = Resources.LoadAll<Sprite>("Rooms/Room Style 3");
         room4s = Resources.LoadAll<Sprite>("Rooms/Room Style 4");
         randy = new System.Random();
-        tilemap = grid.GetComponentInChildren<Tilemap>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -319,36 +319,36 @@ public class MapGenerator : MonoBehaviour
                 // check for special value indicating a door
                 if (roomProbability == -99)
                 {
-                    tilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), door);
+                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), door);
                 }
                 // check for special value indicating spikes
                 else if (roomProbability == -75 || roomProbability == -25){
                     if (randy.Next(0,100) < 25)
                     {
-                        tilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), spikes);
+                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), spikes);
                     } else if (roomProbability == -75)
                     {
-                        tilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
+                        colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
                     }
                 }
                 // check for special value indicating false floor
                 if (roomProbability == -88)
                 {
-                    tilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), falseFloor);
+                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), falseFloor);
                 }
                 // check for special value indicating flamethrower
                 else if (roomProbability == -55){
                     if (randy.Next(0,100) < 25)
                     {
-                        tilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), flamethrower);
+                        colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), flamethrower);
                     } else
                     {
-                        tilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
+                        colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
                     }
                 }
                 else if (randy.Next(0,100) < roomProbability)
                 {
-                    tilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
+                    colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
                 }
             }
         }
