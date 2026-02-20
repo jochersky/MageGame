@@ -26,6 +26,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Tile spikes;
     [SerializeField] Tile falseFloor;
     [SerializeField] Tile flamethrower;
+    Tilemap tilemap;
     Sprite[] filledRoom;
     Sprite[] room0s;
     Sprite[] room1s;
@@ -67,6 +68,7 @@ public class MapGenerator : MonoBehaviour
         room3s = Resources.LoadAll<Sprite>("Rooms/Room Style 3");
         room4s = Resources.LoadAll<Sprite>("Rooms/Room Style 4");
         randy = new System.Random();
+        tilemap = grid.GetComponentInChildren<Tilemap>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -227,12 +229,12 @@ public class MapGenerator : MonoBehaviour
         ROOM_QUALITY room_quality = ROOM_QUALITY.REGULAR;
         if (isStartingRoom) { room_quality = ROOM_QUALITY.STARTING; }
         if (isEndingRoom) { room_quality = ROOM_QUALITY.ENDING; }
-        GameObject tileMap = Instantiate(tilemapPrefab, new Vector3(x, y, 0), Quaternion.identity, grid.transform);
-        Tilemap tilemap = tileMap.GetComponent<Tilemap>();
+        // GameObject tileMap = Instantiate(tilemapPrefab, new Vector3(x, y, 0), Quaternion.identity, grid.transform);
+        // Tilemap tilemap = tileMap.GetComponent<Tilemap>();
         template = rooms[randy.Next(rooms.Length)];
         Color32[] pixels = ConvertSpriteToPixelArray(template);
         int[] room = TranslateColorsToProbabilities(pixels, room_quality);
-        GenerateRoom(room, tilemap);
+        GenerateRoom(room, x, y);
     }
 
     Color32[] ConvertSpriteToPixelArray(Sprite sprite)
@@ -305,46 +307,48 @@ public class MapGenerator : MonoBehaviour
     }
 
 
-    void GenerateRoom(int[] room, Tilemap tilemap)
+    void GenerateRoom(int[] room, int xOffset, int yOffset)
     {
         for (int row = 0; row < roomDimensions; row++)
         {
             for (int col = 0; col < roomDimensions; col++)
             {
+                int xCoord = col + xOffset;
+                int yCoord = row + yOffset;
                 int roomProbability = room[row * roomDimensions + col];
                 // check for special value indicating a door
                 if (roomProbability == -99)
                 {
-                    tilemap.SetTile(new Vector3Int(col, row, 0), door);
+                    tilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), door);
                 }
                 // check for special value indicating spikes
                 else if (roomProbability == -75 || roomProbability == -25){
                     if (randy.Next(0,100) < 25)
                     {
-                        tilemap.SetTile(new Vector3Int(col, row, 0), spikes);
+                        tilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), spikes);
                     } else if (roomProbability == -75)
                     {
-                        tilemap.SetTile(new Vector3Int(col, row, 0), tile);
+                        tilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
                     }
                 }
                 // check for special value indicating false floor
                 if (roomProbability == -88)
                 {
-                    tilemap.SetTile(new Vector3Int(col, row, 0), falseFloor);
+                    tilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), falseFloor);
                 }
                 // check for special value indicating flamethrower
                 else if (roomProbability == -55){
                     if (randy.Next(0,100) < 25)
                     {
-                        tilemap.SetTile(new Vector3Int(col, row, 0), flamethrower);
+                        tilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), flamethrower);
                     } else
                     {
-                        tilemap.SetTile(new Vector3Int(col, row, 0), tile);
+                        tilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
                     }
                 }
                 else if (randy.Next(0,100) < roomProbability)
                 {
-                    tilemap.SetTile(new Vector3Int(col, row, 0), tile);
+                    tilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
                 }
             }
         }
