@@ -15,6 +15,8 @@ public class PlayerFallState : PlayerBaseState
 
     public override void UpdateState()
     {
+        if (Context.IsDead) SwitchState(Dictionary.Dead());
+        
         Context.HorizontalMovement = Context.MoveDirection.x * Context.MaxAirborneMoveSpeed;
         
         if (Context.IsGrounded) SwitchState(Dictionary.Grounded());

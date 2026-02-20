@@ -13,6 +13,8 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void UpdateState()
     {
+        if (Context.IsDead) SwitchState(Dictionary.Dead());
+        
         if (Context.MoveDirection != Vector2.zero) SwitchState(Dictionary.Walk());
     }
 

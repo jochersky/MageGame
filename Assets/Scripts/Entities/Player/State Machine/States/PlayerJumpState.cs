@@ -15,6 +15,8 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void UpdateState()
     {
+        if (Context.IsDead) SwitchState(Dictionary.Dead());
+        
         PerformJump();
         Context.HorizontalMovement = Context.MoveDirection.x * Context.MaxAirborneMoveSpeed;
         

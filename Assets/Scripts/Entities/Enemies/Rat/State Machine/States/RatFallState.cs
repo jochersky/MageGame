@@ -8,14 +8,16 @@ public class RatFallState : RatBaseState
     {
         IsRootState = true;
     }
-
-
+    
     public override void EnterState()
     {
+        Context.Animator.CrossFade(Context.Fall, 0, 0);
     }
 
     public override void UpdateState()
     {
+        if (Context.IsDead) SwitchState(Dictionary.Dead());
+        
         if (Context.IsGrounded) SwitchState(Dictionary.Grounded());
     }
 
