@@ -244,7 +244,7 @@ MonoBehaviour:
     serializedVersion: 2
     rgba: 4278210559
   grid: {fileID: 1863320436}
-  tile: {fileID: 11400000, guid: d503a806e9a39714bb4442f802b700f6, type: 2}
+  tile: {fileID: 11400000, guid: 72f6b968cb404b8489151337c64654d9, type: 2}
   door: {fileID: 11400000, guid: 32eb5a2894890a54a93871a3a1a7bece, type: 2}
   spikes: {fileID: 11400000, guid: c7fb55743a60b8a4a97982ae258bb709, type: 2}
   falseFloor: {fileID: 11400000, guid: 6df3b948b797eeb4898d45e88b29b85a, type: 2}

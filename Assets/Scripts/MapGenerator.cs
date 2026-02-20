@@ -21,7 +21,7 @@ public class MapGenerator : MonoBehaviour
 
     // Tilemap version
     [SerializeField] Grid grid;
-    [SerializeField] Tile tile;
+    [SerializeField] RuleTile tile;
     [SerializeField] Tile door;
     [SerializeField] Tile spikes;
     [SerializeField] Tile falseFloor;
