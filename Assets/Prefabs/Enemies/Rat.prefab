@@ -31,7 +31,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7174740962594784607}
+  m_Father: {fileID: 1813099872700834164}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2583082123830694234
 MonoBehaviour:
@@ -101,13 +101,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7174740962594784607}
-  - component: {fileID: 5142286529436448351}
   - component: {fileID: 7912539075776798278}
-  - component: {fileID: 2940791025548066090}
   - component: {fileID: 480664531493528183}
   - component: {fileID: 7609593824775675632}
   m_Layer: 7
-  m_Name: FlipTransform
+  m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,23 +123,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2015638958787253349}
-  - {fileID: 8566765608166308782}
+  m_Children: []
   m_Father: {fileID: 1813099872700834164}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5142286529436448351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4804057573241477981}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ff69e77d02324544b3796087d92772f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FlipTransform
 --- !u!212 &7912539075776798278
 SpriteRenderer:
   serializedVersion: 2
@@ -201,21 +185,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &2940791025548066090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4804057573241477981}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52768d5127b1147468861276bb2c6489, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerEnteredSensor
-  rayVector: {x: 6, y: 0}
-  disableOnEnter: 1
-  debug: 1
 --- !u!95 &480664531493528183
 Animator:
   serializedVersion: 7
@@ -348,7 +317,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7174740962594784607}
+  m_Father: {fileID: 1813099872700834164}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3793943062346547927
 MonoBehaviour:
@@ -438,6 +407,8 @@ GameObject:
   - component: {fileID: 3049434516177286224}
   - component: {fileID: 1109635798513200253}
   - component: {fileID: 1494723891627694278}
+  - component: {fileID: 8278106934900616929}
+  - component: {fileID: 4863647061312629515}
   m_Layer: 7
   m_Name: Rat
   m_TagString: Untagged
@@ -460,6 +431,8 @@ Transform:
   m_Children:
   - {fileID: 4193381868981806982}
   - {fileID: 7174740962594784607}
+  - {fileID: 2015638958787253349}
+  - {fileID: 8566765608166308782}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6827455858764700748
@@ -475,7 +448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RatStateMachine
   animator: {fileID: 480664531493528183}
-  playerEnteredSensor: {fileID: 2940791025548066090}
+  playerEnteredSensor: {fileID: 4863647061312629515}
   environmentLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -493,7 +466,7 @@ MonoBehaviour:
   onDirectionChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5142286529436448351}
+      - m_Target: {fileID: 8278106934900616929}
         m_TargetAssemblyTypeName: FlipTransform, Assembly-CSharp
         m_MethodName: Flip
         m_Mode: 0
@@ -578,7 +551,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.19711164, y: -0.032396317}
+  m_Offset: {x: 0.19711167, y: -0.06613648}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -588,5 +561,32 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.80531114, y: 0.5990162}
+  m_Size: {x: 0.67341435, y: 0.53438616}
   m_EdgeRadius: 0
+--- !u!114 &8278106934900616929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8871767491910850251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ff69e77d02324544b3796087d92772f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlipTransform
+--- !u!114 &4863647061312629515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8871767491910850251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52768d5127b1147468861276bb2c6489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerEnteredSensor
+  rayVector: {x: 6, y: 0}
+  disableOnEnter: 1
+  debug: 1
