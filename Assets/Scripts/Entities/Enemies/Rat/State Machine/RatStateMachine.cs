@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,6 +12,7 @@ public class RatStateMachine : MonoBehaviour
     [SerializeField] private Health health;
     [SerializeField] private Hitbox hitbox;
     private Rigidbody2D _rb;
+    private Collider2D _ownCollider;
 
     [Header("Move Properties")] 
     [SerializeField] private float defaultMoveSpeed = 3f;
@@ -22,8 +24,9 @@ public class RatStateMachine : MonoBehaviour
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheckTransform;
     [SerializeField] private Vector2 groundCheckSize = new Vector2(1f, 0.25f);
-    
-    [Header("Wall Check")]
+
+    [Header("Wall Check")] 
+    [SerializeField] private Vector2 wallCheckOffset;
     [SerializeField] private float wallCheckDistance = 0.75f;
     [SerializeField] private bool wallCheckDebug;
 
@@ -42,6 +45,7 @@ public class RatStateMachine : MonoBehaviour
     public readonly int Lunge = Animator.StringToHash("Lunge");
     public readonly int Dead = Animator.StringToHash("Dead");
     
+    private LayerMask _hitLayers;
     private float _currentMoveSpeed;
     private Vector2 _moveDir = Vector2.right;
     private float _horizontalMovement;
@@ -82,6 +86,7 @@ public class RatStateMachine : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _ownCollider = GetComponent<Collider2D>();
 
         health.OnDeath += () =>
         {
@@ -97,6 +102,8 @@ public class RatStateMachine : MonoBehaviour
             _horizontalMovement = _moveDir.x * _currentMoveSpeed;
             _isAggroed = true;
         };
+        
+        _hitLayers = LayerMask.GetMask("Character", "Environment");
     }
 
     private void Update()
@@ -128,12 +135,14 @@ public class RatStateMachine : MonoBehaviour
     private void CheckHitWall()
     {
         if (_isDead) return;
-        
+
+        Vector2 start = (Vector2)transform.position + wallCheckOffset * Math.Sign(_moveDir.x);
         if (wallCheckDebug)
         {
-            Debug.DrawRay(transform.position, _moveDir * wallCheckDistance, Color.red);
+            Debug.DrawRay(start, _moveDir * wallCheckDistance, Color.red);
         }
-        if (Physics2D.Raycast(transform.position, _moveDir, wallCheckDistance, environmentLayer))
+        RaycastHit2D hit = Physics2D.Raycast(start, _moveDir, wallCheckDistance, _hitLayers);
+        if (hit && hit.collider != _ownCollider)
         {
             _moveDir = -_moveDir;
             onDirectionChanged?.Invoke(Mathf.Sign(_moveDir.x));

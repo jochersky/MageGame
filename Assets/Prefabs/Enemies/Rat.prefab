@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7784417621114260720}
   m_Layer: 8
   m_Name: RatHitbox
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -334,7 +334,7 @@ MonoBehaviour:
   damageFlash: {fileID: 7609593824775675632}
   hurtboxes:
   - {fileID: 7924654570294326910}
-  maxHealth: 10
+  maxHealth: 1
   invulnerabilityTime: 0
 --- !u!114 &7924654570294326910
 MonoBehaviour:
@@ -348,6 +348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 999abbb11e3a71f408ed7bed986aa3be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  ignoreTag: Enemy
 --- !u!61 &6083625883421748770
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -452,6 +453,8 @@ MonoBehaviour:
   environmentLayer:
     serializedVersion: 2
     m_Bits: 64
+  health: {fileID: 3793943062346547927}
+  hitbox: {fileID: 2583082123830694234}
   defaultMoveSpeed: 3
   aggroMoveSpeed: 6
   lungeTime: 2
@@ -459,6 +462,7 @@ MonoBehaviour:
   lungeVelocityY: 10
   groundCheckTransform: {fileID: 4193381868981806982}
   groundCheckSize: {x: 0.68, y: 0.08}
+  wallCheckOffset: {x: 0, y: 0}
   wallCheckDistance: 0.75
   wallCheckDebug: 1
   ledgeCheckDistance: 0.75
