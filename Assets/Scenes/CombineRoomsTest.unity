@@ -176,6 +176,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8863640782204810548, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -314,32 +318,32 @@ Tilemap:
   m_TileAssetArray:
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  m_TileSpriteArray:
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  m_TileSpriteArray: []
   m_TileMatrixArray:
   - m_RefCount: 0
     m_Data:
-      e00: 2.5111042e+15
+      e00: 1e-45
       e01: 0
-      e02: 2.5110956e+15
-      e03: 3.1691325e+29
-      e10: 3.2e-44
+      e02: -4.8419252e+33
+      e03: -4.0000076
+      e10: 1e-45
       e11: 0
-      e12: 3.2e-44
-      e13: 5.7e-43
-      e20: -7.5044753e+37
+      e12: 3.45e-43
+      e13: 8.3e-43
+      e20: -1.0644174e-26
       e21: 0
-      e22: -3.42168e+22
-      e23: -0.000000044712607
-      e30: 4.5912e-41
+      e22: 3.955983e+19
+      e23: 6.1797555e-29
+      e30: 4.5911e-41
       e31: 0
-      e32: 5.75e-43
-      e33: 5.7e-43
+      e32: 8.34e-43
+      e33: 8.31e-43
   m_TileColorArray:
   - m_RefCount: 0
-    m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
-  m_TileObjectToInstantiateArray: []
+    m_Data: {r: -8.087053e+22, g: -8.087053e+22, b: -8.087053e+22, a: -8.087053e+22}
+  m_TileObjectToInstantiateArray:
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: 0, z: 0}
@@ -425,8 +429,8 @@ MonoBehaviour:
   grid: {fileID: 1863320436}
   tile: {fileID: 11400000, guid: 72f6b968cb404b8489151337c64654d9, type: 2}
   door: {fileID: 11400000, guid: 32eb5a2894890a54a93871a3a1a7bece, type: 2}
-  spikes: {fileID: 11400000, guid: c7fb55743a60b8a4a97982ae258bb709, type: 2}
-  falseFloor: {fileID: 11400000, guid: 6df3b948b797eeb4898d45e88b29b85a, type: 2}
+  spikes: {fileID: 11400000, guid: 1d81b4590a495a24e83a272ccbd9fc79, type: 2}
+  falseFloor: {fileID: 11400000, guid: 6aac9c5e4da061545a0027833ace09d4, type: 2}
   flamethrower: {fileID: 11400000, guid: 24da13e2ebcffb340bf740079839b7ca, type: 2}
   colliderTilemap: {fileID: 1499513124}
   nonColliderTilemap: {fileID: 1012570190}

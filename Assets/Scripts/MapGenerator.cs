@@ -22,10 +22,10 @@ public class MapGenerator : MonoBehaviour
     // Tilemap version
     [SerializeField] Grid grid;
     [SerializeField] RuleTile tile;
-    [SerializeField] Tile door;
-    [SerializeField] Tile spikes;
-    [SerializeField] Tile falseFloor;
-    [SerializeField] Tile flamethrower;
+    [SerializeField] TileBase door;
+    [SerializeField] TileBase spikes;
+    [SerializeField] TileBase falseFloor;
+    [SerializeField] TileBase flamethrower;
     [SerializeField] Tilemap colliderTilemap;
     [SerializeField] Tilemap nonColliderTilemap;
     Sprite[] filledRoom;
