@@ -16,12 +16,6 @@ public class PlayerGroundedState : PlayerBaseState
 
     public override void UpdateState()
     {
-        // if (_currentSubState == null)
-        // {
-        //     if (Context.MoveDirection != Vector2.zero) SetSubState(Dictionary.Walk());
-        //     else if (Context.MoveDirection == Vector2.zero) SetSubState(Dictionary.Idle());
-        // }
-        
         if (!Context.IsGrounded) SwitchState(Dictionary.Fall());
         else if (Context.CanJump && Context.IsPressingJump) SwitchState(Dictionary.Jump());
     }
