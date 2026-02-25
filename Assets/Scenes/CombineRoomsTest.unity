@@ -431,7 +431,7 @@ MonoBehaviour:
   door: {fileID: 11400000, guid: 32eb5a2894890a54a93871a3a1a7bece, type: 2}
   spikes: {fileID: 11400000, guid: 1d81b4590a495a24e83a272ccbd9fc79, type: 2}
   falseFloor: {fileID: 11400000, guid: 6aac9c5e4da061545a0027833ace09d4, type: 2}
-  flamethrower: {fileID: 11400000, guid: 24da13e2ebcffb340bf740079839b7ca, type: 2}
+  flamethrower: {fileID: 11400000, guid: 152f6c1f63b56b54ab107587298646fb, type: 2}
   colliderTilemap: {fileID: 1499513124}
   nonColliderTilemap: {fileID: 1012570190}
 --- !u!4 &1084018517
