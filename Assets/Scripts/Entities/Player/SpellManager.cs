@@ -15,8 +15,11 @@ public class SpellManager : MonoBehaviour
     [SerializeField] Sprite manaEmptyIcon;
     [SerializeField] SPELL_NAMES spell1;
     [SerializeField] SPELL_NAMES spell2;
-    [SerializeField] float windForce = 10f;
+    readonly float windForce = 75f;
     [SerializeField] float spellCooldown = 0.2f;
+    [SerializeField] GameObject windSpell;
+    [SerializeField] GameObject fireSpell;
+    [SerializeField] GameObject lightSpell;
     Rigidbody2D player;
     int currentMana = 100;
     int startingMana = 100;
@@ -71,6 +74,7 @@ public class SpellManager : MonoBehaviour
             Debug.Log("CASTING WINDLORD'S BLESSING");
             currentMana -= manaCost;
             UpdateMana();
+            Instantiate(windSpell, player.position, Quaternion.identity);
             player.linearVelocity = Vector2.zero;
             player.angularVelocity = 0f;
             player.AddForce(new Vector2(0f, windForce), ForceMode2D.Impulse);

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9134315338889326898}
   - component: {fileID: 4737180672532356201}
   - component: {fileID: 4463621034555044245}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4946,7 +4946,7 @@ GameObject:
   - component: {fileID: 6733792079447504657}
   - component: {fileID: 388104920566176892}
   - component: {fileID: 7355868764089401270}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Flamethrower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
