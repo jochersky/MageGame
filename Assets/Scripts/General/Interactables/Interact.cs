@@ -8,7 +8,7 @@ public class Interact : MonoBehaviour
     
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (_interactable == null) return;
+        if (context.performed || context.canceled || _interactable == null) return;
         
         _interactable.Interact();
     }
@@ -16,9 +16,9 @@ public class Interact : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log(collision.gameObject.name + " entered " + gameObject.name);
-        if (collision.gameObject.TryGetComponent<IInteractable>(out IInteractable _interactable))
+        if (collision.gameObject.TryGetComponent<IInteractable>(out IInteractable interactable))
         {
-            _interactable.Interact();
+            _interactable = interactable;
         }
     }
 
