@@ -10,6 +10,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private LayerMask environmentLayer;
     [SerializeField] private Animator animator;
     [SerializeField] private Health health;
+    [SerializeField] private Inventory inventory;
     private Rigidbody2D _rb;
     
     [Header("Walk")]
@@ -134,6 +135,16 @@ public class PlayerStateMachine : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         _isPressingJump = context.ReadValueAsButton();
+    }
+
+    public void OnUseConsumable(InputAction.CallbackContext context)
+    {
+        if (context.performed || context.canceled || _isDead) return;
+
+        if (inventory.GetConsumableCount(ConsumableTypes.Bombs) > 0)
+        {
+            inventory.UpdateConsumable(ConsumableTypes.Bombs, -1);
+        }
     }
 
     private void CheckGrounded()
