@@ -116,7 +116,6 @@ GameObject:
   - component: {fileID: -67333848096535099}
   - component: {fileID: 6368769929938703076}
   - component: {fileID: -8755222714929660602}
-  - component: {fileID: 547282110490429356}
   m_Layer: 5
   m_Name: Light
   m_TagString: Untagged
@@ -237,17 +236,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &547282110490429356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2925046190798210206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abc1a4d5899772e43b2d76c998f725a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Torch
-  light: {fileID: 3626464143671839104}
-  isLit: 1

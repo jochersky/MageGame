@@ -17,6 +17,9 @@ public class Fireball : MonoBehaviour
         if (collision.CompareTag("Environment"))
         {
             Destroy(gameObject);
+        } else if (collision.CompareTag("Enemy"))
+        {
+            collision.GetComponent<Enemy>().Die();
         }
     }
 }
