@@ -847,9 +847,11 @@ MonoBehaviour:
   mana25Icon: {fileID: 21300000, guid: d84e723566227224083a7c7f13335c0d, type: 3}
   manaEmptyIcon: {fileID: 21300000, guid: 98131216194656747b8c39042828e6f7, type: 3}
   spell1: 1
-  spell2: 0
-  windForce: 75
+  spell2: 2
   spellCooldown: 0.5
+  windSpell: {fileID: 1520654259017512536, guid: 928eae153f26e2049bb640dd20911d79, type: 3}
+  fireSpell: {fileID: 4265959885888012626, guid: 2a4e0687454cd414581151397be7a982, type: 3}
+  lightSpell: {fileID: 2925046190798210206, guid: 9251c340a02cdc34e8708fea0b1f496b, type: 3}
 --- !u!1 &1499513121
 GameObject:
   m_ObjectHideFlags: 0
@@ -866,7 +868,7 @@ GameObject:
   - component: {fileID: 1499513125}
   m_Layer: 6
   m_Name: ColliderTilemap
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
