@@ -326,6 +326,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3863422753505901973}
   - component: {fileID: 1389070659067755822}
+  - component: {fileID: 223572393874008116}
   - component: {fileID: 8788688971398276464}
   - component: {fileID: 3546341051548346016}
   - component: {fileID: 7011849334598943597}
@@ -404,6 +405,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &223572393874008116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8863640782204810548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9f459a2c8f6bc4408073aac295f3b98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpellManager
+  manaSymbol: {fileID: 0}
+  manaFullIcon: {fileID: 21300000, guid: a9f170d3a7e2e8b4fbfdd3ac7c8386c0, type: 3}
+  mana75Icon: {fileID: 21300000, guid: 350db1df31556df4e980c97793683f56, type: 3}
+  manaHalfIcon: {fileID: 21300000, guid: 50baa394e81b8944abac01cb4839b771, type: 3}
+  mana25Icon: {fileID: 21300000, guid: d84e723566227224083a7c7f13335c0d, type: 3}
+  manaEmptyIcon: {fileID: 21300000, guid: 98131216194656747b8c39042828e6f7, type: 3}
+  spell1: 1
+  spell2: 0
+  spellCooldown: 0.2
+  windSpell: {fileID: 1520654259017512536, guid: 928eae153f26e2049bb640dd20911d79, type: 3}
+  fireSpell: {fileID: 4265959885888012626, guid: 2a4e0687454cd414581151397be7a982, type: 3}
+  lightSpell: {fileID: 2925046190798210206, guid: 9251c340a02cdc34e8708fea0b1f496b, type: 3}
 --- !u!114 &8788688971398276464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -450,7 +475,19 @@ MonoBehaviour:
     m_ActionId: f82ea912-4ba5-448d-990f-3b80d8b3122d
     m_ActionName: 'Player/Look[/Mouse/delta,/Pen/delta]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 223572393874008116}
+        m_TargetAssemblyTypeName: SpellManager, Assembly-CSharp
+        m_MethodName: OnSpell1Cast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 33d08c10-6793-4e61-a575-ce10e0a982f8
     m_ActionName: 'Player/Fire[/Mouse/leftButton]'
   - m_PersistentCalls:
@@ -509,6 +546,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 644cab8c-97ec-40b6-beb0-7fdf11cee32a
     m_ActionName: 'Player/Jump[/Keyboard/space]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 223572393874008116}
+        m_TargetAssemblyTypeName: SpellManager, Assembly-CSharp
+        m_MethodName: OnSpell2Cast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bfa07293-f962-4d0d-bd21-f903608298d8
+    m_ActionName: 'Player/Spell 2[/Mouse/rightButton]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

@@ -39,6 +39,13 @@ public class MapGenerator : MonoBehaviour
     int entranceCol;
     int exitCol;
 
+    // Reference to player
+    [SerializeField] GameObject player;
+    [SerializeField] float startingPositionOffset;
+    Vector2 startingPosition;
+    bool startingPositionAssigned = false;
+    Vector2 exitPosition;
+
     
     // this is apparently how you do multidimensional arrays
     int[,] map;
@@ -76,6 +83,8 @@ public class MapGenerator : MonoBehaviour
         map = new int[mapDimensions, mapDimensions];
         genRoomPaths();
         placeMap();
+        // teleport player to starting position
+        player.transform.position = startingPosition;
     }
 
 
@@ -101,6 +110,7 @@ public class MapGenerator : MonoBehaviour
             foundExit = pathfind();
         }    
         Debug.Log("Generation complete!");
+    
         // Potentially print array here for debugging porpoises
 
     }
@@ -319,7 +329,16 @@ public class MapGenerator : MonoBehaviour
                 // check for special value indicating a door
                 if (roomProbability == -99)
                 {
+                    // this can be simplified I believe
                     nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), door);
+                    if (!startingPositionAssigned)
+                    {
+                        startingPosition = new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset);
+                        startingPositionAssigned = true;
+                    } else
+                    {
+                        exitPosition = new Vector2(xCoord, yCoord);
+                    }
                 }
                 // check for special value indicating spikes
                 else if (roomProbability == -75 || roomProbability == -25){
