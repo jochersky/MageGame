@@ -14,8 +14,12 @@ public class Health : MonoBehaviour
     private int _currentHealth;
     private bool _isInvulnerable;
     
-    public delegate void death();
-    public event death OnDeath;
+    public int CurrentHealth { get => _currentHealth; set => _currentHealth = value; }
+    
+    public delegate void HealthChange(int newHealth);
+    public event HealthChange OnHealthChanged;
+    public delegate void Death();
+    public event Death OnDeath;
     
     private void Awake()
     {
@@ -36,8 +40,17 @@ public class Health : MonoBehaviour
         
         _currentHealth -= damageAmt;
         StartCoroutine(Invulnerable());
+        
+        OnHealthChanged?.Invoke(_currentHealth);
         if (damageFlash) damageFlash.StartFlash();
         if (_currentHealth <= 0f) OnDeath?.Invoke();
+    }
+
+    private void Heal(int healAmt)
+    {
+        _currentHealth += healAmt;
+        
+        OnHealthChanged?.Invoke(_currentHealth);
     }
 
     public void ActivateInvulnerability()
