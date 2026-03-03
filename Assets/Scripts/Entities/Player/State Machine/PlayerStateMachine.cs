@@ -144,6 +144,7 @@ public class PlayerStateMachine : MonoBehaviour
         if (inventory.GetConsumableCount(ConsumableTypes.Bombs) > 0)
         {
             inventory.UpdateConsumable(ConsumableTypes.Bombs, -1);
+            
         }
     }
 
