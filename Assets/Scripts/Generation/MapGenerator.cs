@@ -356,7 +356,10 @@ public class MapGenerator : MonoBehaviour
                 // check for special value indicating an enemy spawn
                 if (roomProbability == -33)
                 {
-                    Instantiate(enemy, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
+                    if (randy.Next(0,100) < 33)
+                    {
+                        Instantiate(enemy, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
+                    }
                 }
                 // check for special value indicating false floor
                 else if (roomProbability == -88)
