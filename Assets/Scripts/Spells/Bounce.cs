@@ -25,7 +25,6 @@ public class Bounce : MonoBehaviour
 
     void Fade()
     {
-        Debug.Log(alpha);
         alpha -= fadeStep;
         spriteRenderer.color = new Color(red, green, blue, alpha);
     }

@@ -17,7 +17,9 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Color32 spikeOrBlockColor;
     [SerializeField] Color32 spikeOrSpaceColor;
     [SerializeField] Color32 falseFloorColor; 
-    [SerializeField] Color32 flamethrowerColor;   
+    [SerializeField] Color32 flamethrowerColor;
+    [SerializeField] Color32 enemyColor;
+    [SerializeField] GameObject enemy;   
 
     // Tilemap version
     [SerializeField] Grid grid;
@@ -239,8 +241,6 @@ public class MapGenerator : MonoBehaviour
         ROOM_QUALITY room_quality = ROOM_QUALITY.REGULAR;
         if (isStartingRoom) { room_quality = ROOM_QUALITY.STARTING; }
         if (isEndingRoom) { room_quality = ROOM_QUALITY.ENDING; }
-        // GameObject tileMap = Instantiate(tilemapPrefab, new Vector3(x, y, 0), Quaternion.identity, grid.transform);
-        // Tilemap tilemap = tileMap.GetComponent<Tilemap>();
         template = rooms[randy.Next(rooms.Length)];
         Color32[] pixels = ConvertSpriteToPixelArray(template);
         int[] room = TranslateColorsToProbabilities(pixels, room_quality);
@@ -292,6 +292,9 @@ public class MapGenerator : MonoBehaviour
                 } else if (color.Equals(flamethrowerColor))
                 {
                     roomProbs[row * roomDimensions + col] = -55;
+                } else if (color.Equals(enemyColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -33;
                 } else if (color.Equals(entryExitColor))
                 {
                     if (room_quality == ROOM_QUALITY.STARTING || room_quality == ROOM_QUALITY.ENDING)
@@ -350,8 +353,13 @@ public class MapGenerator : MonoBehaviour
                         colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
                     }
                 }
+                // check for special value indicating an enemy spawn
+                if (roomProbability == -33)
+                {
+                    Instantiate(enemy, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
+                }
                 // check for special value indicating false floor
-                if (roomProbability == -88)
+                else if (roomProbability == -88)
                 {
                     nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), falseFloor);
                 }
