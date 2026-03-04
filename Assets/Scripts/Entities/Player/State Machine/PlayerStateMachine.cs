@@ -11,6 +11,9 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private Health health;
     [SerializeField] private Inventory inventory;
+    [SerializeField] private Transform consumableSpawnTransform;
+    [SerializeField] private Transform consumableParentTransform;
+    [SerializeField] private GameObject bombPrefab;
     private Rigidbody2D _rb;
     
     [Header("Walk")]
@@ -141,10 +144,13 @@ public class PlayerStateMachine : MonoBehaviour
     {
         if (context.performed || context.canceled || _isDead) return;
 
-        if (inventory.GetConsumableCount(ConsumableTypes.Bombs) > 0)
+        if (inventory.GetConsumableCount(ConsumableTypes.Bomb) > 0)
         {
-            inventory.UpdateConsumable(ConsumableTypes.Bombs, -1);
-            
+            inventory.UpdateConsumable(ConsumableTypes.Bomb, -1);
+            GameObject inst = Instantiate(bombPrefab, consumableParentTransform);
+            inst.transform.position = consumableSpawnTransform.position;
+            Rigidbody2D rb = inst.GetComponent<Rigidbody2D>();
+            rb.linearVelocityX = _previousDirection.x * 15f;
         }
     }
 

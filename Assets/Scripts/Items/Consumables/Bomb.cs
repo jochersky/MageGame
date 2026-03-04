@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Bomb : MonoBehaviour
+public class Bomb : Consumable
 {
     [SerializeField] private Collider2D explosionCollider;
     [SerializeField] private Collider2D hitboxCollider;
@@ -10,6 +10,7 @@ public class Bomb : MonoBehaviour
     private void Start()
     {
         hitboxCollider.enabled = false;
+        explosionCollider.enabled = false;
         StartCoroutine(InitiateExplode());
     }
 
@@ -27,6 +28,7 @@ public class Bomb : MonoBehaviour
             yield return null;
         }
         hitboxCollider.enabled = true;
+        explosionCollider.enabled = true;
         yield return new WaitForSeconds(0.1f);
         Explode();
     }

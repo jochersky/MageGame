@@ -4,12 +4,27 @@ using UnityEngine;
 
 public enum ConsumableTypes
 {
-    Bombs,
+    Bomb,
 } 
 
 public class Inventory : MonoBehaviour
 {
     public int[] consumables = new int[1];
+
+    // singleton instance
+    public static Inventory Instance { get; private set; }
+
+    private void Awake()
+    {
+        // ensure only one instance of the inventory exists globally
+        if (Instance && Instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+
+        Instance = this;
+    }
 
     private int GetConsumableIndex(ConsumableTypes type)
     {

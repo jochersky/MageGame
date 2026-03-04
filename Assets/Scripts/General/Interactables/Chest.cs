@@ -39,5 +39,9 @@ public class Chest : MonoBehaviour, IInteractable
         _animator.CrossFade(_open, 0, 0);
         _boxCollider2D.enabled = false;
         _itemFramePrefabInstance.SetActive(true);
+        if (itemPrefab.TryGetComponent<Consumable>(out Consumable consumable))
+        {
+            Inventory.Instance.UpdateConsumable(consumable.consumableType, consumable.count);
+        }
     }
 }
