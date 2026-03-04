@@ -5,12 +5,11 @@ public class Spikes : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
-            
-            collision.GetComponentInChildren<SpriteRenderer>().color = Color.red;
+            // Debug.Log("Triggered!");
         }
-        Debug.Log("Triggered!");
+        
     }
 
 }

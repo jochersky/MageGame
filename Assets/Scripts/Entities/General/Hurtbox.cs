@@ -10,6 +10,7 @@ public class Hurtbox : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("HitboxTrigger");
         if (ignoreTag != "" && other.CompareTag(ignoreTag)) return;
         
         if (other.TryGetComponent<Hitbox>(out Hitbox hitbox))
