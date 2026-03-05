@@ -149,8 +149,9 @@ public class PlayerStateMachine : MonoBehaviour
             inventory.UpdateConsumable(ConsumableTypes.Bomb, -1);
             GameObject inst = Instantiate(bombPrefab, consumableParentTransform);
             inst.transform.position = consumableSpawnTransform.position;
-            Rigidbody2D rb = inst.GetComponent<Rigidbody2D>();
+            Rigidbody2D rb = inst.GetComponentInChildren<Rigidbody2D>();
             rb.linearVelocityX = _previousDirection.x * 15f;
+            rb.linearVelocityY = _rb.linearVelocityY * 2f;
         }
     }
 

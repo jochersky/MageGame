@@ -12,9 +12,6 @@ public class Explosion : MonoBehaviour
     {
         if (other.TryGetComponent<Tilemap>(out Tilemap tilemap))
         {
-            // TODO: destroy tiles
-            
-
             for (int x = -explosionSize.x; x <= explosionSize.x; x++)
             {
                 for (int y = -explosionSize.y; y <= explosionSize.y; y++)
@@ -31,13 +28,8 @@ public class Explosion : MonoBehaviour
                     }
                 }
             }
-            
-            // Vector3 worldPos = transform.position - tilemap.cellSize * 0.5f;
-            // Vector3Int pos = tilemap.WorldToCell(worldPos);
-            // if (tilemap.GetTile(pos))
-            // {
-            //     tilemap.SetTile(pos, null);
-            // }
         }
     }
+    
+    
 }

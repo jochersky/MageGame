@@ -16,6 +16,9 @@ public class DamageFlash : MonoBehaviour
     // Material property hashes
     private static readonly int _flashColorHash = Shader.PropertyToID("_FlashColor");
     private static readonly int _flashAmountHash = Shader.PropertyToID("_FlashAmount");
+
+    public delegate void DamageFlashComplete();
+    public event DamageFlashComplete OnDamageFlashComplete;
     
     private void Start()
     {
@@ -30,14 +33,15 @@ public class DamageFlash : MonoBehaviour
 
     private IEnumerator Flash()
     {
-        _material.SetColor(_flashColorHash, flashColor);
+        if (_material) _material.SetColor(_flashColorHash, flashColor);
         float timer = 0f;
         while (timer < 1f)
         {
             timer += Time.deltaTime;
             float currentFlashAmount = Mathf.Lerp(1f, _flashSpeedCurve.Evaluate(timer), timer / flashTime);
-            _material.SetFloat(_flashAmountHash, currentFlashAmount);
+            if (_material) _material.SetFloat(_flashAmountHash, currentFlashAmount);
             yield return null;
         }
+        OnDamageFlashComplete?.Invoke();
     }
 }
