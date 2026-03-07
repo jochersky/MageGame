@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 222474595198698520}
   - component: {fileID: 6598269427403251041}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Breaking Sound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 1286328151948003526}
   - component: {fileID: 1487401834756060828}
   - component: {fileID: 5819977897044189673}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4977,7 +4977,7 @@ GameObject:
   - component: {fileID: 6733792079447504657}
   - component: {fileID: 388104920566176892}
   - component: {fileID: 8507247725306244218}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: FalseFloorPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}

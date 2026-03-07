@@ -78,6 +78,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Rigidbody2D Rigidbody { get { return _rb; } set { _rb = value; } }
     public Animator Animator { get { return animator; } set { animator = value; } }
     public Vector2 MoveDirection { get { return _moveDirection; } set { _moveDirection = value; } }
+    public Vector2 PreviousDirection { get { return _previousDirection; } set { _previousDirection = value; } }
     public Vector2 LinearVelocity { get { return _rb.linearVelocity; } set { _rb.linearVelocity = value; } }
     public float LinearVelocityX { get { return _rb.linearVelocityX; } set { _rb.linearVelocityX = value; } }
     public float LinearVelocityY { get { return _rb.linearVelocityY; } set { _rb.linearVelocityY = value; } }
