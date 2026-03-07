@@ -10,6 +10,9 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private LayerMask environmentLayer;
     [SerializeField] private Animator animator;
     [SerializeField] private Health health;
+    [SerializeField] private Transform consumableSpawnTransform;
+    [SerializeField] private Transform consumableParentTransform;
+    [SerializeField] private GameObject bombPrefab;
     private Rigidbody2D _rb;
     
     [Header("Walk")]
@@ -135,6 +138,21 @@ public class PlayerStateMachine : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         _isPressingJump = context.ReadValueAsButton();
+    }
+
+    public void OnUseConsumable(InputAction.CallbackContext context)
+    {
+        if (context.performed || context.canceled || _isDead) return;
+
+        if (InventoryManager.Instance.GetConsumableCount(ConsumableTypes.Bomb) > 0)
+        {
+            InventoryManager.Instance.UpdateConsumable(ConsumableTypes.Bomb, -1);
+            GameObject inst = Instantiate(bombPrefab, consumableParentTransform);
+            inst.transform.position = consumableSpawnTransform.position;
+            Rigidbody2D rb = inst.GetComponentInChildren<Rigidbody2D>();
+            rb.linearVelocityX = _previousDirection.x * 15f;
+            rb.linearVelocityY = _rb.linearVelocityY * 2f;
+        }
     }
 
     private void CheckGrounded()

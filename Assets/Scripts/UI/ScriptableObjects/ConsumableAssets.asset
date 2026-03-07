@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cacc17ed912809f49a7670c3e4dd82bd, type: 3}
+  m_Name: ConsumableAssets
+  m_EditorClassIdentifier: Assembly-CSharp::ConsumableAssets
+  bombSprite: {fileID: -2613247888821195678, guid: 3d02a1c594a81f94ebc6c94f75a0ce0b, type: 3}
+  branchTorchSprite: {fileID: 21300000, guid: 1a3e6059cabc1c947ad4d225a169c4b2, type: 3}
