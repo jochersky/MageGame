@@ -59,6 +59,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SwitchConsumable",
+                    "type": "Button",
+                    "id": "2e72a4a1-e95b-4b0d-a838-4d0fc5d64665",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -329,11 +338,22 @@
                 {
                     "name": "",
                     "id": "bacea731-181a-4e49-acce-fdb8ea7abd1c",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "UseConsumable",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4421ff14-531b-42d6-a7e3-f1606d1f0607",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchConsumable",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

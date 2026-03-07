@@ -5,14 +5,18 @@ using UnityEngine;
 public enum ConsumableTypes
 {
     Bomb,
+    BranchTorch
 } 
 
-public class Inventory : MonoBehaviour
+public class InventoryManager : MonoBehaviour
 {
-    public int[] consumables = new int[1];
+    public int[] consumables = new int[2];
 
     // singleton instance
-    public static Inventory Instance { get; private set; }
+    public static InventoryManager Instance { get; private set; }
+
+    public delegate void ConsumableCountUpdated(int count, ConsumableTypes type);
+    public event ConsumableCountUpdated OnConsumableCountUpdated;
 
     private void Awake()
     {
@@ -30,7 +34,8 @@ public class Inventory : MonoBehaviour
     {
         int index = (int)type;
         if (index == 0) return 0;
-        if (index > 0)
+        if (index == 1) return 1;
+        else if (index > 1)
         {
             index = (int)Mathf.Log(index, 2);
         }
@@ -48,6 +53,7 @@ public class Inventory : MonoBehaviour
     {
         int index = GetConsumableIndex(type);
         consumables[index] += amt;
+        OnConsumableCountUpdated?.Invoke(consumables[index], type);
     }
 
     public void AddSpell(Spell spell)

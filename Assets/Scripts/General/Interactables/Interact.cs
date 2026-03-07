@@ -15,7 +15,6 @@ public class Interact : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.gameObject.name + " entered " + gameObject.name);
         if (collision.gameObject.TryGetComponent<IInteractable>(out IInteractable interactable))
         {
             _interactable = interactable;

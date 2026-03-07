@@ -25,23 +25,20 @@ public class Chest : MonoBehaviour, IInteractable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.gameObject.name + " entered " + gameObject.name);
     }
     
     private void OnTriggerExit2D(Collider2D other)
     {
-        
     }
 
     public void Interact()
     {
-        Debug.Log("Interacting with chest");
         _animator.CrossFade(_open, 0, 0);
         _boxCollider2D.enabled = false;
         _itemFramePrefabInstance.SetActive(true);
         if (itemPrefab.TryGetComponent<Consumable>(out Consumable consumable))
         {
-            Inventory.Instance.UpdateConsumable(consumable.consumableType, consumable.count);
+            InventoryManager.Instance.UpdateConsumable(consumable.consumableType, consumable.count);
         }
     }
 }

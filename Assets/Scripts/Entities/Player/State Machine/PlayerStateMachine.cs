@@ -10,7 +10,6 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private LayerMask environmentLayer;
     [SerializeField] private Animator animator;
     [SerializeField] private Health health;
-    [SerializeField] private Inventory inventory;
     [SerializeField] private Transform consumableSpawnTransform;
     [SerializeField] private Transform consumableParentTransform;
     [SerializeField] private GameObject bombPrefab;
@@ -144,9 +143,9 @@ public class PlayerStateMachine : MonoBehaviour
     {
         if (context.performed || context.canceled || _isDead) return;
 
-        if (inventory.GetConsumableCount(ConsumableTypes.Bomb) > 0)
+        if (InventoryManager.Instance.GetConsumableCount(ConsumableTypes.Bomb) > 0)
         {
-            inventory.UpdateConsumable(ConsumableTypes.Bomb, -1);
+            InventoryManager.Instance.UpdateConsumable(ConsumableTypes.Bomb, -1);
             GameObject inst = Instantiate(bombPrefab, consumableParentTransform);
             inst.transform.position = consumableSpawnTransform.position;
             Rigidbody2D rb = inst.GetComponentInChildren<Rigidbody2D>();
