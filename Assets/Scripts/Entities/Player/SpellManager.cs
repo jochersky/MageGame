@@ -78,10 +78,10 @@ public class SpellManager : MonoBehaviour
         if (currentMana < manaCost)
         {
             // spell fizzle sounds
-            Debug.Log("CAN'T CAST NO MANA HAHAHAHA");
+            // Debug.Log("CAN'T CAST NO MANA HAHAHAHA");
         } else
         {
-            Debug.Log("CASTING WINDLORD'S BLESSING");
+            // Debug.Log("CASTING WINDLORD'S BLESSING");
             currentMana -= manaCost;
             UpdateMana();
             Instantiate(windSpell, player.position, windSpell.transform.rotation);
@@ -99,10 +99,10 @@ public class SpellManager : MonoBehaviour
         if (currentMana < manaCost)
         {
             // spell fizzle sounds
-            Debug.Log("CAN'T CAST NO MANA HAHAHAHA");
+            // Debug.Log("CAN'T CAST NO MANA HAHAHAHA");
         } else
         {
-            Debug.Log("CASTING FURY OF THE DRAGON");
+            // Debug.Log("CASTING FURY OF THE DRAGON");
             currentMana -= manaCost;
             UpdateMana();
             // there has to be a more elegant solution but I can't find it
@@ -123,10 +123,10 @@ public class SpellManager : MonoBehaviour
         if (currentMana < manaCost)
         {
             // spell fizzle sounds
-            Debug.Log("CAN'T CAST NO MANA HAHAHAHA");
+            // Debug.Log("CAN'T CAST NO MANA HAHAHAHA");
         } else
         {
-            Debug.Log("CASTING GIFT OF LIGHT");
+            // Debug.Log("CASTING GIFT OF LIGHT");
             currentMana -= manaCost;
             UpdateMana();
             Vector2 abovePlayersHead = new(player.position.x, player.position.y + distanceAbovePlayersHead);

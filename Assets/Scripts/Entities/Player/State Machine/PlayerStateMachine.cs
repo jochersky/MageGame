@@ -143,6 +143,7 @@ public class PlayerStateMachine : MonoBehaviour
     public void OnUseConsumable(InputAction.CallbackContext context)
     {
         if (context.performed || context.canceled || _isDead) return;
+        // TODO: implement other consumable to use equipped consumable, not just bomb
         if (InventoryManager.Instance.EquippedConsumable != ConsumableTypes.Bomb) return;
         
         if (InventoryManager.Instance.GetConsumableCount(ConsumableTypes.Bomb) > 0)
@@ -154,6 +155,13 @@ public class PlayerStateMachine : MonoBehaviour
             rb.linearVelocityX = _previousDirection.x * 15f;
             rb.linearVelocityY = _rb.linearVelocityY * 2f;
         }
+    }
+
+    public void OnSpell1Pressed(InputAction.CallbackContext context)
+    {
+        if (context.performed || context.canceled || _isDead) return;
+        
+        InventoryManager.Instance.equippedSpell1.CastSpell();
     }
 
     private void CheckGrounded()

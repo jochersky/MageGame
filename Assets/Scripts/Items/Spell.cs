@@ -2,15 +2,12 @@ using UnityEngine;
 
 public class Spell : Item
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public SpellTypes spellType;
+    [SerializeField] protected float spellCooldown;
+    protected bool casting = false;
+    
+    public virtual void CastSpell()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log("Spell being casted");
     }
 }

@@ -7,19 +7,36 @@ public enum ConsumableTypes
 {
     Bomb,
     BranchTorch
-} 
+}
+
+public enum SpellTypes
+{
+    GiftOfLight,
+    WindLordsBlessing,
+    FuryOfTheDragon
+}
 
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private GameObject inventoryUI;
+    [SerializeField] private List<GameObject> spellGameObjects;
+    
+    // Consumables
     public int[] consumables = new int[2];
     private ConsumableTypes _equippedConsumable = ConsumableTypes.Bomb;
     
+    // Spells
+    public List<Spell> spells = new List<Spell>();
+    public Spell equippedSpell1;
+    public Spell equippedSpell2;
+    
+    // Getters & Setters
     public ConsumableTypes EquippedConsumable => _equippedConsumable;
 
-    // singleton instance
+    // Singleton instance
     public static InventoryManager Instance { get; private set; }
 
+    // Events
     public delegate void ConsumableSwitched(ConsumableTypes consumable);
     public event ConsumableSwitched OnConsumableSwitched;
     public delegate void ConsumableCountUpdated(int count, ConsumableTypes type);
@@ -27,7 +44,7 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
-        // ensure only one instance of the inventory exists globally
+        // Ensure only one instance of the inventory exists globally
         if (Instance && Instance != this)
         {
             Destroy(this);
@@ -40,6 +57,15 @@ public class InventoryManager : MonoBehaviour
     private void Start()
     {
         inventoryUI.SetActive(false);
+
+        foreach (GameObject g in spellGameObjects)
+        {
+            GameObject inst = Instantiate(g);
+            if (inst.TryGetComponent<Spell>(out Spell spell))
+            {
+                AddSpell(spell);
+            }
+        }
     }
 
     public void OnInventoryPressed(InputAction.CallbackContext context)
@@ -86,6 +112,14 @@ public class InventoryManager : MonoBehaviour
 
     public void AddSpell(Spell spell)
     {
-        
+        spells.Add(spell);
+        if (!equippedSpell1)
+        {
+            equippedSpell1 = spell;
+        }
+        else if (!equippedSpell2)
+        {
+            equippedSpell2 = spell;
+        }
     }
 }
