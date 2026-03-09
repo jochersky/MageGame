@@ -143,7 +143,8 @@ public class PlayerStateMachine : MonoBehaviour
     public void OnUseConsumable(InputAction.CallbackContext context)
     {
         if (context.performed || context.canceled || _isDead) return;
-
+        if (InventoryManager.Instance.EquippedConsumable != ConsumableTypes.Bomb) return;
+        
         if (InventoryManager.Instance.GetConsumableCount(ConsumableTypes.Bomb) > 0)
         {
             InventoryManager.Instance.UpdateConsumable(ConsumableTypes.Bomb, -1);

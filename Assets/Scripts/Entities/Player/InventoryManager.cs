@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum ConsumableTypes
 {
@@ -10,11 +11,17 @@ public enum ConsumableTypes
 
 public class InventoryManager : MonoBehaviour
 {
+    [SerializeField] private GameObject inventoryUI;
     public int[] consumables = new int[2];
+    private ConsumableTypes _equippedConsumable = ConsumableTypes.Bomb;
+    
+    public ConsumableTypes EquippedConsumable => _equippedConsumable;
 
     // singleton instance
     public static InventoryManager Instance { get; private set; }
 
+    public delegate void ConsumableSwitched(ConsumableTypes consumable);
+    public event ConsumableSwitched OnConsumableSwitched;
     public delegate void ConsumableCountUpdated(int count, ConsumableTypes type);
     public event ConsumableCountUpdated OnConsumableCountUpdated;
 
@@ -28,6 +35,27 @@ public class InventoryManager : MonoBehaviour
         }
 
         Instance = this;
+    }
+
+    private void Start()
+    {
+        inventoryUI.SetActive(false);
+    }
+
+    public void OnInventoryPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed || context.canceled) return;
+        
+        inventoryUI.SetActive(!inventoryUI.activeSelf);
+    }
+    
+    public void OnSwitchConsumable(InputAction.CallbackContext context)
+    {
+        if (context.performed || context.canceled) return;
+
+        _equippedConsumable = _equippedConsumable == ConsumableTypes.Bomb ? ConsumableTypes.BranchTorch : ConsumableTypes.Bomb;
+        Debug.Log(_equippedConsumable);
+        OnConsumableSwitched?.Invoke(_equippedConsumable);
     }
 
     private int GetConsumableIndex(ConsumableTypes type)
