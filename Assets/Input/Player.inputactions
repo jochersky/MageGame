@@ -284,6 +284,17 @@
                 },
                 {
                     "name": "",
+                    "id": "5e386765-6b76-4cad-b298-b42fa6bc39d8",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Spell 1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "e2adf953-5741-4c21-8673-fa8262709d50",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -311,6 +322,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
+                    "action": "Spell 2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "075bafc7-d3b8-4c9e-b331-7cb80d67946a",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Spell 2",
                     "isComposite": false,
                     "isPartOfComposite": false
