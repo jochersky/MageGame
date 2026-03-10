@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1509232733536110325}
   - component: {fileID: 2550294762271171424}
   m_Layer: 0
-  m_Name: LightSpell
+  m_Name: LightSpellItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4933775b6fd169142a5cd50e901603f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LightballSpell
-  itemFramePrefab: {fileID: 0}
+  itemFramePrefab: {fileID: 1486984147235753439, guid: 7daf832230fd5ea43a45ed991873d542, type: 3}
   spellType: 0
   spellCooldown: 0.5
   projectilePrefab: {fileID: 2925046190798210206, guid: 9251c340a02cdc34e8708fea0b1f496b, type: 3}

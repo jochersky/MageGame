@@ -3,6 +3,7 @@ using UnityEngine;
 public class Chest : MonoBehaviour, IInteractable
 {
     [SerializeField] private GameObject itemPrefab;
+    [SerializeField] private Transform itemFrameTransform;
     
     private Animator _animator;
     private BoxCollider2D _boxCollider2D;
@@ -19,7 +20,7 @@ public class Chest : MonoBehaviour, IInteractable
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _itemPrefabInstance = Instantiate(itemPrefab);
         _item = _itemPrefabInstance.GetComponent<Item>();
-        _itemFramePrefabInstance = Instantiate(_item.itemFramePrefab);
+        _itemFramePrefabInstance = Instantiate(_item.itemFramePrefab, itemFrameTransform);
         _itemFramePrefabInstance.SetActive(false);
     }
 
@@ -36,9 +37,13 @@ public class Chest : MonoBehaviour, IInteractable
         _animator.CrossFade(_open, 0, 0);
         _boxCollider2D.enabled = false;
         _itemFramePrefabInstance.SetActive(true);
-        if (itemPrefab.TryGetComponent<Consumable>(out Consumable consumable))
+        if (_itemPrefabInstance.TryGetComponent<Consumable>(out Consumable consumable))
         {
             InventoryManager.Instance.UpdateConsumable(consumable.consumableType, consumable.count);
+        }
+        else if (_itemPrefabInstance.TryGetComponent<Spell>(out Spell spell))
+        {
+            InventoryManager.Instance.AddSpell(spell);
         }
     }
 }

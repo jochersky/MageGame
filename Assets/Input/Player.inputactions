@@ -355,6 +355,17 @@
                 },
                 {
                     "name": "",
+                    "id": "61583a59-a5c5-4a20-930f-1e7e6f9299d7",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "bacea731-181a-4e49-acce-fdb8ea7abd1c",
                     "path": "<Keyboard>/x",
                     "interactions": "",
