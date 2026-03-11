@@ -1,48 +1,39 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EquippedUI : MonoBehaviour
+public class InventoryUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI consumableCountText;
-    [SerializeField] private Image consumableImage;
+    [SerializeField] private TextMeshProUGUI bombCountText;
+    [SerializeField] private TextMeshProUGUI branchTorchCountText;
     [SerializeField] private Image spell1Image;
     [SerializeField] private Image spell2Image;
     [SerializeField] private ConsumableAssets consumableAssets;
     [SerializeField] private SpellItemAssets spellItemAssets;
     
-    private ConsumableTypes _equippedConsumableType = ConsumableTypes.Bomb;
-    
     void Start()
     {
         // Subscribe to events
-        InventoryManager.Instance.OnConsumableSwitched += UpdateEquippedConsumableUI;
         InventoryManager.Instance.OnConsumableCountUpdated += UpdateConsumableCountUI;
         InventoryManager.Instance.OnSpell1Equipped += UpdateEquippedSpell1UI;
         InventoryManager.Instance.OnSpell2Equipped += UpdateEquippedSpell2UI;
         
-        // Populate text for labels
-        UpdateEquippedConsumableUI(InventoryManager.Instance.EquippedConsumable);
-        UpdateConsumableCountUI(InventoryManager.Instance.GetConsumableCount(_equippedConsumableType), _equippedConsumableType);
+        UpdateConsumableCountUI(InventoryManager.Instance.GetConsumableCount(ConsumableTypes.Bomb), ConsumableTypes.Bomb);
+        UpdateConsumableCountUI(InventoryManager.Instance.GetConsumableCount(ConsumableTypes.BranchTorch), ConsumableTypes.BranchTorch);
         
         spell1Image.enabled = false;
         spell2Image.enabled = false;
     }
-
-    private void UpdateEquippedConsumableUI(ConsumableTypes consumableType)
-    {
-        consumableCountText.text = InventoryManager.Instance.GetConsumableCount(consumableType).ToString();
-        consumableImage.sprite = consumableType == ConsumableTypes.Bomb ? consumableAssets.bombSprite : consumableAssets.branchTorchSprite;
-    }
     
     private void UpdateConsumableCountUI(int count, ConsumableTypes type)
     {
-        if (type != _equippedConsumableType) return;
-        
-        consumableCountText.text = count.ToString();
+        switch (type)
+        {
+            case ConsumableTypes.Bomb: bombCountText.text = count.ToString(); break;
+            case ConsumableTypes.BranchTorch: branchTorchCountText.text = count.ToString(); break;
+        }
     }
-    
+
     private void UpdateEquippedSpell1UI(SpellTypes spell)
     {
         spell1Image.enabled = true;

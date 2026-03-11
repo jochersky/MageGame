@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public enum ConsumableTypes
 {
@@ -9,16 +10,10 @@ public enum ConsumableTypes
     BranchTorch
 }
 
-public enum SpellTypes
-{
-    GiftOfLight,
-    WindLordsBlessing,
-    FuryOfTheDragon
-}
-
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private GameObject inventoryUI;
+    [SerializeField] private Image spellItemImage;
     [SerializeField] private List<GameObject> spellGameObjects;
     
     // Consumables
@@ -27,8 +22,6 @@ public class InventoryManager : MonoBehaviour
     
     // Spells
     public List<Spell> spells = new List<Spell>();
-    public Spell equippedSpell1;
-    public Spell equippedSpell2;
     
     // Getters & Setters
     public ConsumableTypes EquippedConsumable => _equippedConsumable;
@@ -37,10 +30,16 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance { get; private set; }
 
     // Events
+    // - consumables
     public delegate void ConsumableSwitched(ConsumableTypes consumable);
     public event ConsumableSwitched OnConsumableSwitched;
     public delegate void ConsumableCountUpdated(int count, ConsumableTypes type);
     public event ConsumableCountUpdated OnConsumableCountUpdated;
+    // - spells
+    public delegate void Spell1Equipped(SpellTypes spell);
+    public event Spell1Equipped OnSpell1Equipped;
+    public delegate void Spell2Equipped(SpellTypes spell);
+    public event Spell2Equipped OnSpell2Equipped;
 
     private void Awake()
     {
@@ -113,13 +112,16 @@ public class InventoryManager : MonoBehaviour
     public void AddSpell(Spell spell)
     {
         spells.Add(spell);
-        if (!equippedSpell1)
+        
+        if (!SpellManager1.Instance.equippedSpell1)
         {
-            equippedSpell1 = spell;
+            OnSpell1Equipped?.Invoke(spell.spellType);
+            SpellManager1.Instance.EquipSpell1(spell);
         }
-        else if (!equippedSpell2)
+        else if (!SpellManager1.Instance.equippedSpell2)
         {
-            equippedSpell2 = spell;
+            OnSpell2Equipped?.Invoke(spell.spellType);
+            SpellManager1.Instance.EquipSpell2(spell);
         }
     }
 }

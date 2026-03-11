@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fcf86f31ecc5f143b5f5d870b0b8f3e, type: 3}
+  m_Name: SpellItemAssets
+  m_EditorClassIdentifier: Assembly-CSharp::SpellItemAssets
+  fireballSprite: {fileID: -6607481912129624618, guid: 18591eb2529793e4f8e267a1763aeb82, type: 3}
+  lightSprite: {fileID: 21300000, guid: a049ecf093365ee4e80f0628ac0ab1dc, type: 3}

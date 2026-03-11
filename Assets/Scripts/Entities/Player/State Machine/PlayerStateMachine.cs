@@ -157,22 +157,6 @@ public class PlayerStateMachine : MonoBehaviour
         }
     }
 
-    public void OnSpell1Pressed(InputAction.CallbackContext context)
-    {
-        if (context.performed || context.canceled || _isDead) return;
-        if (!InventoryManager.Instance.equippedSpell1) return;
-        
-        InventoryManager.Instance.equippedSpell1.CastSpell();
-    }
-    
-    public void OnSpell2Pressed(InputAction.CallbackContext context)
-    {
-        if (context.performed || context.canceled || _isDead) return;
-        if (!InventoryManager.Instance.equippedSpell2) return;
-        
-        InventoryManager.Instance.equippedSpell2.CastSpell();
-    }
-
     private void CheckGrounded()
     {
         _isGrounded = Physics2D.OverlapBox(jumpCheckTransform.position, jumpCheckSize, 0, environmentLayer);

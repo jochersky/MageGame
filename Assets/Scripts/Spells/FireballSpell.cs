@@ -4,7 +4,6 @@ using UnityEngine;
 public class FireballSpell : Spell
 {
     [SerializeField] private GameObject projectilePrefab;
-    public Transform spawnTransform;
     
     public override void CastSpell()
     {
@@ -16,7 +15,8 @@ public class FireballSpell : Spell
     private IEnumerator FuryOfTheDragon()
     {
         casting = true;
-        Instantiate(projectilePrefab); 
+        GameObject inst = Instantiate(projectilePrefab, spawnTransform);
+        inst.transform.parent = parentTransform;
         yield return new WaitForSeconds(spellCooldown);
         casting = false;
     }

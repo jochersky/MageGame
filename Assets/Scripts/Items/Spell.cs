@@ -3,6 +3,8 @@ using UnityEngine;
 public class Spell : Item
 {
     public SpellTypes spellType;
+    public Transform spawnTransform;
+    public Transform parentTransform;
     [SerializeField] protected float spellCooldown;
     protected bool casting = false;
     
