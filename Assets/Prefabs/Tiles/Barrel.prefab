@@ -5118,3 +5118,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d38a1aaf652f844a380bcc9c6204ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Barrel
+  enemy: {fileID: 8871767491910850251, guid: 7a854991a1bb57544896e3f99c05779c, type: 3}
