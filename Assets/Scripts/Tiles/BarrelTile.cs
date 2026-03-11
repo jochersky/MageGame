@@ -6,12 +6,10 @@ using UnityEngine.Tilemaps;
 
 public class BarrelTile : TileBase
 {
-    [SerializeField] Sprite TileSprite;
     [SerializeField] GameObject TileAssociatedPrefab;
 
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
     {
-        tileData.sprite = TileSprite;
 
         if (TileAssociatedPrefab && tileData.gameObject == null)
         {

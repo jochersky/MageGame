@@ -1,15 +1,18 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class Barrel : MonoBehaviour
 {
+    bool triggered = false;
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("TRIGGERED!");
-        if (collision.TryGetComponent(out Hitbox hitbox))
+        if (collision.TryGetComponent(out Hitbox hitbox) && !triggered)
         {
-            Debug.Log("TRIGGERED HITBOX!");
-            Destroy(gameObject);
+            triggered = true;
+            GetComponent<SpriteRenderer>().enabled = false;
+            GetComponentInChildren<ParticleSystem>().Play();
+            GetComponentInChildren<AudioSource>().Play();
         }
     }
 }
