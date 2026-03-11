@@ -3,53 +3,54 @@ using UnityEngine;
 
 public class Flamethrower : MonoBehaviour
 {
-    bool isInRange = false;
-    bool firing = false;
-    float triggerDelay = 0.5f;
-    float duration = 2f;
+    bool triggered = false;
+    [SerializeField] float triggerDelay = 0.5f;
+    [SerializeField] float damageDelay = 0.2f;
+    [SerializeField] float duration = 2f;
+    [SerializeField] Collider2D hitbox;
     Collider2D player;
+
+    void Start()
+    {
+        hitbox.enabled = false;
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
             player = collision;
-            isInRange = true;
-            if (!firing)
+            if (!triggered)
             {
                 GetComponentInChildren<AudioSource>().Play();
-                StartCoroutine(throwFlames());
+                StartCoroutine(ThrowFlames());
             }
            
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.tag == "Player")
-        {
-            isInRange = false;
-        }
-    }
 
-    IEnumerator throwFlames()
+
+    IEnumerator ThrowFlames()
     {
+        triggered = true;
         yield return new WaitForSeconds(triggerDelay);
-        firing = true;
+        hitbox.enabled = true;
         GetComponentInChildren<ParticleSystem>().Play();
         yield return new WaitForSeconds(duration);
         GetComponentInChildren<ParticleSystem>().Stop();
-        firing = false;
+        hitbox.enabled = false;
+        triggered = false;
     }
 
+    // should probably be an event
     private void Update()
     {
-        if (isInRange && firing)
-        {
-            player.GetComponentInChildren<SpriteRenderer>().color = Color.orange;
-        }
+        // if (firing)
+        // {
+        //     hitbox.enabled = true;
         // } else
         // {
-        //     player.GetComponentInChildren<SpriteRenderer>().color = Color.clear;
+        //     hitbox.enabled = false;
         // }
     }
 }
