@@ -511,7 +511,6 @@ GameObject:
   - component: {fileID: 3863422753505901973}
   - component: {fileID: 1389070659067755822}
   - component: {fileID: 223572393874008116}
-  - component: {fileID: 2075645296998738086}
   - component: {fileID: 8788688971398276464}
   - component: {fileID: 3546341051548346016}
   - component: {fileID: 7011849334598943597}
@@ -614,19 +613,6 @@ MonoBehaviour:
   windSpell: {fileID: 1520654259017512536, guid: 928eae153f26e2049bb640dd20911d79, type: 3}
   fireSpell: {fileID: 4265959885888012626, guid: 2a4e0687454cd414581151397be7a982, type: 3}
   lightSpell: {fileID: 2925046190798210206, guid: 9251c340a02cdc34e8708fea0b1f496b, type: 3}
---- !u!114 &2075645296998738086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8863640782204810548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 837a1cc3f9959e04da74acc86900a53a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AttackManager
-  staff: {fileID: 2615795943972236996}
 --- !u!114 &8788688971398276464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -760,22 +746,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: bfa07293-f962-4d0d-bd21-f903608298d8
     m_ActionName: 'Player/Spell 2[/Mouse/rightButton]'
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2075645296998738086}
-        m_TargetAssemblyTypeName: AttackManager, Assembly-CSharp
-        m_MethodName: Swing
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: a2f7aa79-d2dc-4007-ac06-c39b6e5c2b90
-    m_ActionName: 'Player/Attack[/Keyboard/k]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
