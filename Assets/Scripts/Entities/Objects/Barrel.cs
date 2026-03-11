@@ -22,7 +22,7 @@ public class Barrel : MonoBehaviour
 
 
             // Spawn random item
-            if (randy.Next(0, 100) < 99)
+            if (randy.Next(0, 100) < 25)
             {
                 Instantiate(enemy, transform);
             }
