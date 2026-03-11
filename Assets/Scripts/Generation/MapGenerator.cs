@@ -18,6 +18,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Color32 spikeOrSpaceColor;
     [SerializeField] Color32 falseFloorColor; 
     [SerializeField] Color32 flamethrowerColor;
+    [SerializeField] Color32 decorationColor;
+
     [SerializeField] Color32 enemyColor;
     [SerializeField] GameObject enemy;   
 
@@ -28,6 +30,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] TileBase spikes;
     [SerializeField] TileBase falseFloor;
     [SerializeField] TileBase flamethrower;
+    [SerializeField] TileBase barrel;
     [SerializeField] Tilemap colliderTilemap;
     [SerializeField] Tilemap nonColliderTilemap;
     Sprite[] filledRoom;
@@ -292,6 +295,9 @@ public class MapGenerator : MonoBehaviour
                 } else if (color.Equals(flamethrowerColor))
                 {
                     roomProbs[row * roomDimensions + col] = -55;
+                } else if (color.Equals(decorationColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -44;
                 } else if (color.Equals(enemyColor))
                 {
                     roomProbs[row * roomDimensions + col] = -33;
@@ -351,6 +357,15 @@ public class MapGenerator : MonoBehaviour
                     } else if (roomProbability == -75)
                     {
                         colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
+                    }
+                }
+                // check for special value indicating a decoration
+                else if (roomProbability == -44)
+                {
+                    if (randy.Next(0,100) < 50)
+                    {
+                        // currently only decoration is barrels, in future more could be added
+                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), barrel);
                     }
                 }
                 // check for special value indicating an enemy spawn

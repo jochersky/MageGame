@@ -7,7 +7,6 @@ public class Spikes : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            // Debug.Log("Triggered!");
         }
         
     }
