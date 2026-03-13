@@ -36,6 +36,8 @@ public class InventoryManager : MonoBehaviour
     public delegate void ConsumableCountUpdated(int count, ConsumableTypes type);
     public event ConsumableCountUpdated OnConsumableCountUpdated;
     // - spells
+    public delegate void SpellAdded(Spell spell);
+    public event SpellAdded OnSpellAdded;
     public delegate void Spell1Equipped(SpellTypes spell);
     public event Spell1Equipped OnSpell1Equipped;
     public delegate void Spell2Equipped(SpellTypes spell);
@@ -112,6 +114,7 @@ public class InventoryManager : MonoBehaviour
     public void AddSpell(Spell spell)
     {
         spells.Add(spell);
+        OnSpellAdded?.Invoke(spell);
         
         if (!SpellManager1.Instance.equippedSpell1)
         {

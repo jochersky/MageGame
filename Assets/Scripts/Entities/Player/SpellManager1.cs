@@ -38,8 +38,7 @@ public class SpellManager1 : MonoBehaviour
     
     public void OnSpell1Pressed(InputAction.CallbackContext context)
     {
-        // TODO: don't allow casting when player is dead
-        if (context.performed || context.canceled) return;
+        if (context.performed || context.canceled || _psm.IsDead) return;
         if (!equippedSpell1) return;
         
         equippedSpell1.CastSpell();
@@ -47,8 +46,7 @@ public class SpellManager1 : MonoBehaviour
     
     public void OnSpell2Pressed(InputAction.CallbackContext context)
     {
-        // TODO: don't allow casting when player is dead
-        if (context.performed || context.canceled) return;
+        if (context.performed || context.canceled || _psm.IsDead) return;
         if (!equippedSpell2) return;
         
         equippedSpell2.CastSpell();
