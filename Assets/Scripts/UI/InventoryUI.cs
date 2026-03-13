@@ -57,7 +57,6 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    // TODO: connect this to InventoryManager event when spell is added
     private void AddSpellToSpellSelection(Spell spell)
     {
         GameObject inst = Instantiate(spellListItemPrefab, spellSelectionMenu.transform);
@@ -65,5 +64,6 @@ public class InventoryUI : MonoBehaviour
         {
             listItem.Initialize(spell);
         }
+        InventoryManager.Instance.AddSpellListItem(inst, spell);
     }
 }

@@ -22,6 +22,7 @@ public class InventoryManager : MonoBehaviour
     
     // Spells
     public List<Spell> spells = new List<Spell>();
+    public Dictionary<GameObject, Spell> SpellListItemInstances = new Dictionary<GameObject, Spell>();
     
     // Getters & Setters
     public ConsumableTypes EquippedConsumable => _equippedConsumable;
@@ -126,5 +127,17 @@ public class InventoryManager : MonoBehaviour
             OnSpell2Equipped?.Invoke(spell.spellType);
             SpellManager1.Instance.EquipSpell2(spell);
         }
+    }
+
+    public void AddSpellListItem(GameObject spellListItemGO, Spell spell)
+    {
+        SpellListItemInstances.Add(spellListItemGO, spell);
+    }
+
+    public void EquipSpell(GameObject spellListItemGO)
+    {
+        Spell spell = SpellListItemInstances[spellListItemGO];
+        OnSpell1Equipped?.Invoke(spell.spellType);
+        SpellManager1.Instance.EquipSpell1(spell);
     }
 }
