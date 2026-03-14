@@ -12,7 +12,6 @@ public enum ConsumableTypes
 
 public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] private GameObject inventoryUI;
     [SerializeField] private Image spellItemImage;
     [SerializeField] private List<GameObject> spellGameObjects;
     
@@ -23,6 +22,7 @@ public class InventoryManager : MonoBehaviour
     // Spells
     public List<Spell> spells = new List<Spell>();
     public Dictionary<GameObject, Spell> SpellListItemInstances = new Dictionary<GameObject, Spell>();
+    [HideInInspector] public int spellToEquip = 0;
     
     // Getters & Setters
     public ConsumableTypes EquippedConsumable => _equippedConsumable;
@@ -58,8 +58,6 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
-        inventoryUI.SetActive(false);
-
         foreach (GameObject g in spellGameObjects)
         {
             GameObject inst = Instantiate(g);
@@ -69,20 +67,12 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
-
-    public void OnInventoryPressed(InputAction.CallbackContext context)
-    {
-        if (context.performed || context.canceled) return;
-        
-        inventoryUI.SetActive(!inventoryUI.activeSelf);
-    }
     
     public void OnSwitchConsumable(InputAction.CallbackContext context)
     {
         if (context.performed || context.canceled) return;
 
         _equippedConsumable = _equippedConsumable == ConsumableTypes.Bomb ? ConsumableTypes.BranchTorch : ConsumableTypes.Bomb;
-        Debug.Log(_equippedConsumable);
         OnConsumableSwitched?.Invoke(_equippedConsumable);
     }
 
@@ -134,10 +124,40 @@ public class InventoryManager : MonoBehaviour
         SpellListItemInstances.Add(spellListItemGO, spell);
     }
 
-    public void EquipSpell(GameObject spellListItemGO)
+    public bool EquipSpell(GameObject spellListItemGO)
     {
         Spell spell = SpellListItemInstances[spellListItemGO];
-        OnSpell1Equipped?.Invoke(spell.spellType);
-        SpellManager1.Instance.EquipSpell1(spell);
+        // if (SpellManager1.Instance.equippedSpell1 == spell || SpellManager1.Instance.equippedSpell2 == spell)
+        //     return false;
+        
+        switch (spellToEquip)
+        {
+            case 1:
+                // Already equipped spells swap slots
+                if (SpellManager1.Instance.equippedSpell2 == spell)
+                {
+                    Spell spell1 = SpellManager1.Instance.equippedSpell1;
+                    OnSpell2Equipped?.Invoke(spell1.spellType);
+                    SpellManager1.Instance.EquipSpell2(spell1);
+                }
+                    
+                OnSpell1Equipped?.Invoke(spell.spellType); 
+                SpellManager1.Instance.EquipSpell1(spell);
+                return true;
+            case 2: 
+                // Already equipped spells swap slots
+                if (SpellManager1.Instance.equippedSpell1 == spell)
+                {
+                    Spell spell2 = SpellManager1.Instance.equippedSpell2;
+                    OnSpell1Equipped?.Invoke(spell2.spellType);
+                    SpellManager1.Instance.EquipSpell1(spell2);
+                }
+                
+                OnSpell2Equipped?.Invoke(spell.spellType); 
+                SpellManager1.Instance.EquipSpell2(spell);
+                return true;
+        }
+        
+        return false;
     }
 }

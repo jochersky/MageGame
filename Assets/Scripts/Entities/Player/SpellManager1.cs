@@ -54,7 +54,6 @@ public class SpellManager1 : MonoBehaviour
 
     public void EquipSpell1(Spell spell)
     {
-        Debug.Log("Equipping " + spell.spellType);
         equippedSpell1 = spell;
         spell.spawnTransform = spellCastTransform;
         spell.parentTransform = spellParentTransform;

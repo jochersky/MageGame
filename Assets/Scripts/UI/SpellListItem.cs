@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 public class SpellListItem : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private TextMeshProUGUI spellName;
+    [SerializeField] private GameObject equippedIcon;
 
     public void Initialize(Spell spell)
     {
@@ -15,7 +16,9 @@ public class SpellListItem : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button != PointerEventData.InputButton.Left) return;
 
-        InventoryManager.Instance.EquipSpell(this.gameObject);
-        Debug.Log("Pressing to equip " + spellName.text);
+        if (InventoryManager.Instance.EquipSpell(gameObject))
+        {
+            equippedIcon.SetActive(true);
+        }
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerStateMachine : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private PlayerInput playerInput;
     [SerializeField] private LayerMask environmentLayer;
     [SerializeField] private Animator animator;
     [SerializeField] private Health health;
@@ -14,6 +15,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private Transform consumableParentTransform;
     [SerializeField] private GameObject bombPrefab;
     private Rigidbody2D _rb;
+    private InputActionMap _playerInputMap;
     
     [Header("Walk")]
     [SerializeField] private float maxWalkSpeed = 1f;
@@ -63,6 +65,7 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _canClimb;
     private bool _wasClimbing;
     private bool _isDead;
+    private bool _inputDisabled;
 
     public String stateName = "";
 
@@ -97,6 +100,7 @@ public class PlayerStateMachine : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _playerInputMap = playerInput.actions.actionMaps[0];
 
         health.OnDeath += () => { _isDead = true; };
         
@@ -138,6 +142,22 @@ public class PlayerStateMachine : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         _isPressingJump = context.ReadValueAsButton();
+    }
+    
+    public void OnInventoryPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed || context.canceled) return;
+
+        _inputDisabled = !_inputDisabled;
+        
+        foreach (InputAction action in _playerInputMap.actions)
+        {
+            if (action.name != "Inventory")
+            {
+                if (_inputDisabled) action.Disable();
+                else action.Enable();
+            }
+        }
     }
 
     public void OnUseConsumable(InputAction.CallbackContext context)

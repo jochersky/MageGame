@@ -81,7 +81,7 @@
                 {
                     "name": "Inventory",
                     "type": "Button",
-                    "id": "852df553-ac3d-4f3c-831c-705f8281ba37",
+                    "id": "e6e235fb-c613-4ebb-b394-1d44f58a3ae5",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -388,7 +388,7 @@
                 },
                 {
                     "name": "",
-                    "id": "3540e293-ef4e-4b28-8965-bc8b87b93d63",
+                    "id": "ee609ea5-4cc1-4099-a27b-9cabcff1563e",
                     "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",

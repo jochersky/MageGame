@@ -1,13 +1,18 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
+    [SerializeField] private GameObject UIElements;
+    [SerializeField] private GameObject HUD;
     [SerializeField] private TextMeshProUGUI bombCountText;
     [SerializeField] private TextMeshProUGUI branchTorchCountText;
     [SerializeField] private Image spell1Image;
     [SerializeField] private Image spell2Image;
+    [SerializeField] private EquippedSpellIcon equippedSpell1;
+    [SerializeField] private EquippedSpellIcon equippedSpell2;
     [SerializeField] private GameObject spellSelectionMenu;
     [SerializeField] private GameObject spellListItemPrefab;
     [SerializeField] private ConsumableAssets consumableAssets;
@@ -19,6 +24,8 @@ public class InventoryUI : MonoBehaviour
         InventoryManager.Instance.OnConsumableCountUpdated += UpdateConsumableCountUI;
         InventoryManager.Instance.OnSpell1Equipped += UpdateEquippedSpell1UI;
         InventoryManager.Instance.OnSpell2Equipped += UpdateEquippedSpell2UI;
+        equippedSpell1.OnEquippedSpellPressed += ShowSpellSelectionMenu;
+        equippedSpell2.OnEquippedSpellPressed += ShowSpellSelectionMenu;
         InventoryManager.Instance.OnSpellAdded += AddSpellToSpellSelection;
         
         UpdateConsumableCountUI(InventoryManager.Instance.GetConsumableCount(ConsumableTypes.Bomb), ConsumableTypes.Bomb);
@@ -26,6 +33,8 @@ public class InventoryUI : MonoBehaviour
         
         spell1Image.enabled = false;
         spell2Image.enabled = false;
+        HideSpellSelectionMenu();
+        UIElements.SetActive(false);
     }
     
     private void UpdateConsumableCountUI(int count, ConsumableTypes type)
@@ -65,5 +74,35 @@ public class InventoryUI : MonoBehaviour
             listItem.Initialize(spell);
         }
         InventoryManager.Instance.AddSpellListItem(inst, spell);
+    }
+
+    private void ShowSpellSelectionMenu(int spellID)
+    {
+        spellSelectionMenu.SetActive(true);
+        InventoryManager.Instance.spellToEquip = spellID;
+    }
+
+    private void HideSpellSelectionMenu()
+    {
+        spellSelectionMenu.SetActive(false);
+    }
+
+    private void ShowHUD()
+    {
+        HUD.SetActive(true);
+    }
+
+    private void HideHUD()
+    {
+        HUD.SetActive(false);
+    }
+
+    public void OnInventoryPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed || context.canceled) return;
+        
+        HideSpellSelectionMenu();
+        UIElements.SetActive(!UIElements.activeSelf);
+        HUD.SetActive(!UIElements.activeSelf);
     }
 }
