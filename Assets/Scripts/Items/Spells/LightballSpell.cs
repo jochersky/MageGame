@@ -1,10 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
-public class LightballSpell : Spell
+public class LightballSpell : ActiveSpell
 {
-    [SerializeField] private GameObject projectilePrefab;
-    
     public override void CastSpell()
     {
         if (casting) return;

@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class Spell : Item
 {
+    [Header("Spell")]
+    [SerializeField] protected GameObject projectilePrefab;
+    
     public SpellTypes spellType;
     public Transform spawnTransform;
     public Transform parentTransform;

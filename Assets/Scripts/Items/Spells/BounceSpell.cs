@@ -1,9 +1,7 @@
 using UnityEngine;
 
-public class BounceSpell : Spell
+public class BounceSpell : PassiveSpell
 {
-    [SerializeField] private GameObject projectilePrefab;
-    
     public override void CastSpell()
     {
         if (casting) return;

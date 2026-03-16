@@ -1,10 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
-public class FireballSpell : Spell
+public class FireballSpell : ActiveSpell
 {
-    [SerializeField] private GameObject projectilePrefab;
-    
     public override void CastSpell()
     {
         if (casting) return;

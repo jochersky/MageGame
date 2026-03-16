@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -14,6 +15,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private Transform consumableSpawnTransform;
     [SerializeField] private Transform consumableParentTransform;
     [SerializeField] private GameObject bombPrefab;
+    [SerializeField] private PassiveSpellAffects passiveSpellAffects;
     private Rigidbody2D _rb;
     private InputActionMap _playerInputMap;
     
@@ -22,6 +24,7 @@ public class PlayerStateMachine : MonoBehaviour
     
     [Header("Jump")] 
     [SerializeField] private float maxJumpHeight = 5f;
+    [SerializeField] private float maxDoubleJumpHeight = 10f;
     [SerializeField] private Transform jumpCheckTransform;
     [SerializeField] private Vector2 jumpCheckSize = new Vector2(1f, 0.25f);
     [SerializeField] private float coyoteJumpTimer = 0.1f;
@@ -60,12 +63,15 @@ public class PlayerStateMachine : MonoBehaviour
     private float _verticalMovement;
     private bool _isGrounded;
     private float _airTime;
-    private bool _canJump;
-    private bool _isPressingJump;
+    public bool _canJump;
+    public bool _justPressedJump;
+    public bool _isPressingJump;
+    private bool _newJumpPress;
     private bool _canClimb;
     private bool _wasClimbing;
     private bool _isDead;
     private bool _inputDisabled;
+    public int _numDoubleJumps;
 
     public String stateName = "";
 
@@ -90,9 +96,13 @@ public class PlayerStateMachine : MonoBehaviour
     public float MaxWalkSpeed { get { return maxWalkSpeed; } set { maxWalkSpeed = value; } }
     public float MaxAirborneMoveSpeed { get { return maxAirborneMoveSpeed; } set { maxAirborneMoveSpeed = value; } }
     public float MaxJumpHeight { get { return maxJumpHeight; } set { maxJumpHeight = value; } }
+    public float MaxDoubleJumpHeight { get { return maxDoubleJumpHeight; } set { maxDoubleJumpHeight = value; } }
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; } }
     public bool CanJump { get { return _canJump; } set { _canJump = value; } }
+    public int NumDoubleJumps { get { return _numDoubleJumps; } set { _numDoubleJumps = value; } }
+    public bool JustPressedJump { get { return _justPressedJump; } set { _justPressedJump = value; } }
     public bool IsPressingJump { get { return _isPressingJump; } set { _isPressingJump = value; } }
+    public bool NewJumpPress { get { return _newJumpPress; } set { _newJumpPress = value; } }
     public bool CanClimb { get { return _canClimb; } set { _canClimb = value; } }
     public bool WasClimbing { get { return _wasClimbing; } set { _wasClimbing = value; } }
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
@@ -101,12 +111,15 @@ public class PlayerStateMachine : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _playerInputMap = playerInput.actions.actionMaps[0];
+        
+        // Passive spell affects initialization
+        _numDoubleJumps = passiveSpellAffects.doubleJumps;
 
         health.OnDeath += () => { _isDead = true; };
         
         // State machine initial state setup
         _states = new PlayerStateDictionary(this);
-        _currentState = _isGrounded ? _states.Grounded() : _states.Fall();
+        _currentState = _isGrounded ? _states.Grounded() : _states.Jump();
         _currentState.EnterState();
     }
 
@@ -142,6 +155,8 @@ public class PlayerStateMachine : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         _isPressingJump = context.ReadValueAsButton();
+        _justPressedJump = context.started;
+        if (context.started && _numDoubleJumps > 0) _newJumpPress = true;
     }
     
     public void OnInventoryPressed(InputAction.CallbackContext context)
@@ -150,6 +165,8 @@ public class PlayerStateMachine : MonoBehaviour
 
         _inputDisabled = !_inputDisabled;
         
+        // Disable all actions besides the ability to open/close inventory 
+        // so that the player cannot move while it is open
         foreach (InputAction action in _playerInputMap.actions)
         {
             if (action.name != "Inventory")
@@ -191,6 +208,7 @@ public class PlayerStateMachine : MonoBehaviour
         {
             _airTime = 0;
             _canJump = true;
+            _numDoubleJumps = passiveSpellAffects.doubleJumps;
         }
     }
     
