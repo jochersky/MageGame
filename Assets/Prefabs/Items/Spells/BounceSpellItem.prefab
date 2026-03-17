@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c80479529ea47c4eb78ac4269a2bca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BounceSpell
-  itemFramePrefab: {fileID: 0}
-  projectilePrefab: {fileID: 0}
+  itemFramePrefab: {fileID: 4650241091672463663, guid: 5689488ba4c2c324f857767bda11b89a, type: 3}
+  projectilePrefab: {fileID: 1520654259017512536, guid: 928eae153f26e2049bb640dd20911d79, type: 3}
   spellType: 1
   spawnTransform: {fileID: 0}
   parentTransform: {fileID: 0}

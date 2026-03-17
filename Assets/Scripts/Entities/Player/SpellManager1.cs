@@ -14,8 +14,10 @@ public class SpellManager1 : MonoBehaviour
     [SerializeField] private Transform spellCastTransform;
     [SerializeField] private Transform spellParentTransform;
     private PlayerStateMachine _psm;
-    public Spell equippedSpell1;
-    public Spell equippedSpell2;
+    public ActiveSpell equippedSpell1;
+    public ActiveSpell equippedSpell2;
+    public PassiveSpell equippedPassiveSpell1;
+    public PassiveSpell equippedPassiveSpell2;
 
     public static SpellManager1 Instance { get; private set; }
     
@@ -52,16 +54,30 @@ public class SpellManager1 : MonoBehaviour
         equippedSpell2.CastSpell();
     }
 
-    public void EquipSpell1(Spell spell)
+    public void EquipSpell1(ActiveSpell spell)
     {
         equippedSpell1 = spell;
         spell.spawnTransform = spellCastTransform;
         spell.parentTransform = spellParentTransform;
     }
     
-    public void EquipSpell2(Spell spell)
+    public void EquipSpell2(ActiveSpell spell)
     {
         equippedSpell2 = spell;
+        spell.spawnTransform = spellCastTransform;
+        spell.parentTransform = spellParentTransform;
+    }
+
+    public void EquipPassiveSpell1(PassiveSpell spell)
+    {
+        equippedPassiveSpell1 = spell;
+        spell.spawnTransform = spellCastTransform;
+        spell.parentTransform = spellParentTransform;
+    }
+
+    public void EquipPassiveSpell2(PassiveSpell spell)
+    {
+        equippedPassiveSpell2 = spell;
         spell.spawnTransform = spellCastTransform;
         spell.parentTransform = spellParentTransform;
     }

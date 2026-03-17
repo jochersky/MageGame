@@ -63,16 +63,17 @@ public class PlayerStateMachine : MonoBehaviour
     private float _verticalMovement;
     private bool _isGrounded;
     private float _airTime;
-    public bool _canJump;
-    public bool _justPressedJump;
-    public bool _isPressingJump;
+    private bool _canJump;
+    private bool _justPressedJump;
+    private bool _isPressingJump;
     private bool _newJumpPress;
     private bool _canClimb;
     private bool _wasClimbing;
     private bool _isDead;
     private bool _inputDisabled;
-    public int _numDoubleJumps;
+    private int _numDoubleJumps;
 
+    [Header("State Debug")]
     public String stateName = "";
 
     // Event for flipping the transform.

@@ -41,9 +41,14 @@ public class Chest : MonoBehaviour, IInteractable
         {
             InventoryManager.Instance.UpdateConsumable(consumable.consumableType, consumable.count);
         }
-        else if (_itemPrefabInstance.TryGetComponent<Spell>(out Spell spell))
+        // TODO
+        else if (_itemPrefabInstance.TryGetComponent<ActiveSpell>(out ActiveSpell spell))
         {
             InventoryManager.Instance.AddSpell(spell);
+        }
+        else if (_itemPrefabInstance.TryGetComponent<PassiveSpell>(out PassiveSpell passiveSpell))
+        {
+            InventoryManager.Instance.AddPassiveSpell(passiveSpell);
         }
     }
 }

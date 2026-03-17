@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SpellListItem : MonoBehaviour, IPointerClickHandler
+public class PassiveSpellListItem : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private TextMeshProUGUI spellName;
 
@@ -15,6 +15,6 @@ public class SpellListItem : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button != PointerEventData.InputButton.Left) return;
 
-        InventoryManager.Instance.EquipActiveSpell(gameObject);
+        InventoryManager.Instance.EquipPassiveSpell(gameObject);
     }
 }

@@ -5,6 +5,5 @@ using UnityEngine;
  */
 public class PassiveSpell : Spell
 {
-    [Header("Passive Spell")] 
-    public SpellTypes[] spells;
+    // [Header("Passive Spell")] 
 }
