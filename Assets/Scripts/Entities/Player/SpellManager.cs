@@ -156,4 +156,10 @@ public class SpellManager : MonoBehaviour
             manaSymbol.sprite = manaEmptyIcon;
         }
     }
+
+    public void AddMana(int mana)
+    {
+        currentMana += mana;
+        UpdateMana();
+    }
 }
