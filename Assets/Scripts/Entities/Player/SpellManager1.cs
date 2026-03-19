@@ -1,0 +1,89 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public enum SpellTypes
+{
+    GiftOfLight,
+    WindLordsBlessing,
+    FuryOfTheDragon
+}
+
+[RequireComponent(typeof(PlayerStateMachine))]
+public class SpellManager1 : MonoBehaviour
+{
+    [SerializeField] private bool debug = true;
+    [SerializeField] private PassiveSpellAffects passiveSpellAffects;
+    [SerializeField] private Transform spellCastTransform;
+    [SerializeField] private Transform spellParentTransform;
+    private PlayerStateMachine _psm;
+    public ActiveSpell equippedSpell1;
+    public ActiveSpell equippedSpell2;
+    public PassiveSpell equippedPassiveSpell1;
+    public PassiveSpell equippedPassiveSpell2;
+
+    public static SpellManager1 Instance { get; private set; }
+    
+    private void Awake()
+    {
+        // Ensure only one instance of the inventory exists globally
+        if (Instance && Instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+
+        Instance = this;
+    }
+
+    private void Start()
+    {
+        _psm = GetComponent<PlayerStateMachine>();
+        if (debug) passiveSpellAffects.ClearAffects();
+    }
+    
+    public void OnSpell1Pressed(InputAction.CallbackContext context)
+    {
+        if (context.performed || context.canceled || _psm.IsDead) return;
+        if (!equippedSpell1) return;
+        
+        equippedSpell1.CastSpell();
+    }
+    
+    public void OnSpell2Pressed(InputAction.CallbackContext context)
+    {
+        if (context.performed || context.canceled || _psm.IsDead) return;
+        if (!equippedSpell2) return;
+        
+        equippedSpell2.CastSpell();
+    }
+
+    public void EquipSpell1(ActiveSpell spell)
+    {
+        equippedSpell1 = spell;
+        spell.spawnTransform = spellCastTransform;
+        spell.parentTransform = spellParentTransform;
+    }
+    
+    public void EquipSpell2(ActiveSpell spell)
+    {
+        equippedSpell2 = spell;
+        spell.spawnTransform = spellCastTransform;
+        spell.parentTransform = spellParentTransform;
+    }
+
+    public void EquipPassiveSpell1(PassiveSpell spell)
+    {
+        equippedPassiveSpell1 = spell;
+        spell.AddSpellAffects(passiveSpellAffects);
+        spell.spawnTransform = spellCastTransform;
+        spell.parentTransform = spellParentTransform;
+    }
+
+    public void EquipPassiveSpell2(PassiveSpell spell)
+    {
+        equippedPassiveSpell2 = spell;
+        spell.AddSpellAffects(passiveSpellAffects);
+        spell.spawnTransform = spellCastTransform;
+        spell.parentTransform = spellParentTransform;
+    }
+}
