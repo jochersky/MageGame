@@ -17,7 +17,11 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Color32 spikeOrBlockColor;
     [SerializeField] Color32 spikeOrSpaceColor;
     [SerializeField] Color32 falseFloorColor; 
-    [SerializeField] Color32 flamethrowerColor;   
+    [SerializeField] Color32 flamethrowerColor;
+    [SerializeField] Color32 decorationColor;
+
+    [SerializeField] Color32 enemyColor;
+    [SerializeField] GameObject enemy;   
 
     // Tilemap version
     [SerializeField] Grid grid;
@@ -26,6 +30,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] TileBase spikes;
     [SerializeField] TileBase falseFloor;
     [SerializeField] TileBase flamethrower;
+    [SerializeField] TileBase barrel;
     [SerializeField] Tilemap colliderTilemap;
     [SerializeField] Tilemap nonColliderTilemap;
     Sprite[] filledRoom;
@@ -38,6 +43,13 @@ public class MapGenerator : MonoBehaviour
 
     int entranceCol;
     int exitCol;
+
+    // Reference to player
+    [SerializeField] GameObject player;
+    [SerializeField] float startingPositionOffset;
+    Vector2 startingPosition;
+    bool startingPositionAssigned = false;
+    Vector2 exitPosition;
 
     
     // this is apparently how you do multidimensional arrays
@@ -76,6 +88,8 @@ public class MapGenerator : MonoBehaviour
         map = new int[mapDimensions, mapDimensions];
         genRoomPaths();
         placeMap();
+        // teleport player to starting position
+        player.transform.position = startingPosition;
     }
 
 
@@ -101,6 +115,7 @@ public class MapGenerator : MonoBehaviour
             foundExit = pathfind();
         }    
         Debug.Log("Generation complete!");
+    
         // Potentially print array here for debugging porpoises
 
     }
@@ -229,8 +244,6 @@ public class MapGenerator : MonoBehaviour
         ROOM_QUALITY room_quality = ROOM_QUALITY.REGULAR;
         if (isStartingRoom) { room_quality = ROOM_QUALITY.STARTING; }
         if (isEndingRoom) { room_quality = ROOM_QUALITY.ENDING; }
-        // GameObject tileMap = Instantiate(tilemapPrefab, new Vector3(x, y, 0), Quaternion.identity, grid.transform);
-        // Tilemap tilemap = tileMap.GetComponent<Tilemap>();
         template = rooms[randy.Next(rooms.Length)];
         Color32[] pixels = ConvertSpriteToPixelArray(template);
         int[] room = TranslateColorsToProbabilities(pixels, room_quality);
@@ -282,6 +295,12 @@ public class MapGenerator : MonoBehaviour
                 } else if (color.Equals(flamethrowerColor))
                 {
                     roomProbs[row * roomDimensions + col] = -55;
+                } else if (color.Equals(decorationColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -44;
+                } else if (color.Equals(enemyColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -33;
                 } else if (color.Equals(entryExitColor))
                 {
                     if (room_quality == ROOM_QUALITY.STARTING || room_quality == ROOM_QUALITY.ENDING)
@@ -319,7 +338,16 @@ public class MapGenerator : MonoBehaviour
                 // check for special value indicating a door
                 if (roomProbability == -99)
                 {
+                    // this can be simplified I believe
                     nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), door);
+                    if (!startingPositionAssigned)
+                    {
+                        startingPosition = new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset);
+                        startingPositionAssigned = true;
+                    } else
+                    {
+                        exitPosition = new Vector2(xCoord, yCoord);
+                    }
                 }
                 // check for special value indicating spikes
                 else if (roomProbability == -75 || roomProbability == -25){
@@ -331,8 +359,25 @@ public class MapGenerator : MonoBehaviour
                         colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
                     }
                 }
+                // check for special value indicating a decoration
+                else if (roomProbability == -44)
+                {
+                    if (randy.Next(0,100) < 50)
+                    {
+                        // currently only decoration is barrels, in future more could be added
+                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), barrel);
+                    }
+                }
+                // check for special value indicating an enemy spawn
+                if (roomProbability == -33)
+                {
+                    if (randy.Next(0,100) < 33)
+                    {
+                        Instantiate(enemy, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
+                    }
+                }
                 // check for special value indicating false floor
-                if (roomProbability == -88)
+                else if (roomProbability == -88)
                 {
                     nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), falseFloor);
                 }

@@ -95,7 +95,7 @@ public class SpellManager : MonoBehaviour
 
     private IEnumerator FuryOfTheDragon()
     {
-        int manaCost = 25;
+        int manaCost = 10;
         if (currentMana < manaCost)
         {
             // spell fizzle sounds
@@ -111,7 +111,7 @@ public class SpellManager : MonoBehaviour
             {
                 spellRotation = Quaternion.Inverse(spellRotation);
             }
-            Instantiate(fireSpell, player.position, spellRotation); 
+            Instantiate(fireSpell, player.position + psm.PreviousDirection, spellRotation); 
         }
         yield return new WaitForSeconds(spellCooldown);
         casting = false;

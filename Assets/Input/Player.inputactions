@@ -79,9 +79,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Inventory",
+                    "name": "Attack",
                     "type": "Button",
-                    "id": "e6e235fb-c613-4ebb-b394-1d44f58a3ae5",
+                    "id": "4b139800-7e6e-43ed-80a9-f7efd26f1287",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -311,6 +311,17 @@
                 },
                 {
                     "name": "",
+                    "id": "5e386765-6b76-4cad-b298-b42fa6bc39d8",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Spell 1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "e2adf953-5741-4c21-8673-fa8262709d50",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -388,12 +399,23 @@
                 },
                 {
                     "name": "",
-                    "id": "ee609ea5-4cc1-4099-a27b-9cabcff1563e",
-                    "path": "<Keyboard>/tab",
+                    "id": "075bafc7-d3b8-4c9e-b331-7cb80d67946a",
+                    "path": "<Keyboard>/l",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Inventory",
+                    "action": "Spell 2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6e725d8a-5534-45b2-afae-e34014b2fc4b",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

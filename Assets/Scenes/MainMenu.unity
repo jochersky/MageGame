@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5d061201323653489ddae55203a42d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuButtons
-  gameStartScene: CombineRoomsTest
+  gameStartScene: Level 1
   clickSFX: {fileID: 8300000, guid: 417624938cdb2844eaf60addf8238ded, type: 3}
 --- !u!4 &82404274
 Transform:
