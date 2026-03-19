@@ -11,6 +11,8 @@ public enum SpellTypes
 [RequireComponent(typeof(PlayerStateMachine))]
 public class SpellManager1 : MonoBehaviour
 {
+    [SerializeField] private bool debug = true;
+    [SerializeField] private PassiveSpellAffects passiveSpellAffects;
     [SerializeField] private Transform spellCastTransform;
     [SerializeField] private Transform spellParentTransform;
     private PlayerStateMachine _psm;
@@ -36,6 +38,7 @@ public class SpellManager1 : MonoBehaviour
     private void Start()
     {
         _psm = GetComponent<PlayerStateMachine>();
+        if (debug) passiveSpellAffects.ClearAffects();
     }
     
     public void OnSpell1Pressed(InputAction.CallbackContext context)
@@ -71,6 +74,7 @@ public class SpellManager1 : MonoBehaviour
     public void EquipPassiveSpell1(PassiveSpell spell)
     {
         equippedPassiveSpell1 = spell;
+        spell.AddSpellAffects(passiveSpellAffects);
         spell.spawnTransform = spellCastTransform;
         spell.parentTransform = spellParentTransform;
     }
@@ -78,6 +82,7 @@ public class SpellManager1 : MonoBehaviour
     public void EquipPassiveSpell2(PassiveSpell spell)
     {
         equippedPassiveSpell2 = spell;
+        spell.AddSpellAffects(passiveSpellAffects);
         spell.spawnTransform = spellCastTransform;
         spell.parentTransform = spellParentTransform;
     }

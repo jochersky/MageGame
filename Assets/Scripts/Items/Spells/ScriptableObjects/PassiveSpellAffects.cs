@@ -5,4 +5,9 @@ public class PassiveSpellAffects : ScriptableObject
 {
     [Header("Jump Effects")]
     public int doubleJumps = 0;
+
+    public void ClearAffects()
+    {
+        doubleJumps = 0;
+    }
 }

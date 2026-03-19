@@ -12,9 +12,6 @@ public enum ConsumableTypes
 
 public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] private Image spellItemImage;
-    [SerializeField] private List<GameObject> spellGameObjects;
-    
     // Consumables
     public int[] consumables = new int[2];
     private ConsumableTypes _equippedConsumable = ConsumableTypes.Bomb;
@@ -46,12 +43,10 @@ public class InventoryManager : MonoBehaviour
     public event SpellAdded OnSpellAdded;
     public delegate void PassiveSpellAdded(PassiveSpell spell);
     public event PassiveSpellAdded OnPassiveSpellAdded;
-    
     public delegate void Spell1Equipped(SpellTypes spell);
     public event Spell1Equipped OnSpell1Equipped;
     public delegate void Spell2Equipped(SpellTypes spell);
     public event Spell2Equipped OnSpell2Equipped;
-    
     public delegate void PassiveSpell1Equipped(SpellTypes spell);
     public event PassiveSpell1Equipped OnPassiveSpell1Equipped;
     public delegate void PassiveSpell2Equipped(SpellTypes spell);
