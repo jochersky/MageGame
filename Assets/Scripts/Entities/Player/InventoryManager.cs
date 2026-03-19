@@ -63,19 +63,6 @@ public class InventoryManager : MonoBehaviour
 
         Instance = this;
     }
-
-    private void Start()
-    {
-        // TODO: make sure this isn't required for anything
-        // foreach (GameObject g in spellGameObjects)
-        // {
-        //     GameObject inst = Instantiate(g);
-        //     if (inst.TryGetComponent<Spell>(out Spell spell))
-        //     {
-        //         AddSpell(spell);
-        //     }
-        // }
-    }
     
     // Consumables
     
@@ -120,15 +107,15 @@ public class InventoryManager : MonoBehaviour
         activeSpells.Add(spell);
         OnSpellAdded?.Invoke(spell);
         
-        if (!SpellManager1.Instance.equippedSpell1)
+        if (!SpellManager.Instance.equippedSpell1)
         {
             OnSpell1Equipped?.Invoke(spell.spellType);
-            SpellManager1.Instance.EquipSpell1(spell);
+            SpellManager.Instance.EquipSpell1(spell);
         }
-        else if (!SpellManager1.Instance.equippedSpell2)
+        else if (!SpellManager.Instance.equippedSpell2)
         {
             OnSpell2Equipped?.Invoke(spell.spellType);
-            SpellManager1.Instance.EquipSpell2(spell);
+            SpellManager.Instance.EquipSpell2(spell);
         }
     }
 
@@ -137,15 +124,15 @@ public class InventoryManager : MonoBehaviour
         passiveSpells.Add(spell);
         OnPassiveSpellAdded?.Invoke(spell);
         
-        if (!SpellManager1.Instance.equippedPassiveSpell1)
+        if (!SpellManager.Instance.equippedPassiveSpell1)
         {
             OnPassiveSpell1Equipped?.Invoke(spell.spellType);
-            SpellManager1.Instance.EquipPassiveSpell1(spell);
+            SpellManager.Instance.EquipPassiveSpell1(spell);
         }
-        else if (!SpellManager1.Instance.equippedPassiveSpell2)
+        else if (!SpellManager.Instance.equippedPassiveSpell2)
         {
             OnPassiveSpell2Equipped?.Invoke(spell.spellType);
-            SpellManager1.Instance.EquipPassiveSpell2(spell);
+            SpellManager.Instance.EquipPassiveSpell2(spell);
         }
     }
 
@@ -167,27 +154,27 @@ public class InventoryManager : MonoBehaviour
         {
             case 1:
                 // Already equipped spells swap slots
-                if (SpellManager1.Instance.equippedSpell2 == spell)
+                if (SpellManager.Instance.equippedSpell2 == spell)
                 {
-                    ActiveSpell spell1 = SpellManager1.Instance.equippedSpell1;
+                    ActiveSpell spell1 = SpellManager.Instance.equippedSpell1;
                     OnSpell2Equipped?.Invoke(spell1.spellType);
-                    SpellManager1.Instance.EquipSpell2(spell1);
+                    SpellManager.Instance.EquipSpell2(spell1);
                 }
                     
                 OnSpell1Equipped?.Invoke(spell.spellType); 
-                SpellManager1.Instance.EquipSpell1(spell);
+                SpellManager.Instance.EquipSpell1(spell);
                 return true;
             case 2: 
                 // Already equipped spells swap slots
-                if (SpellManager1.Instance.equippedSpell1 == spell)
+                if (SpellManager.Instance.equippedSpell1 == spell)
                 {
-                    ActiveSpell spell2 = SpellManager1.Instance.equippedSpell2;
+                    ActiveSpell spell2 = SpellManager.Instance.equippedSpell2;
                     OnSpell1Equipped?.Invoke(spell2.spellType);
-                    SpellManager1.Instance.EquipSpell1(spell2);
+                    SpellManager.Instance.EquipSpell1(spell2);
                 }
                 
                 OnSpell2Equipped?.Invoke(spell.spellType); 
-                SpellManager1.Instance.EquipSpell2(spell);
+                SpellManager.Instance.EquipSpell2(spell);
                 return true;
         }
         
@@ -202,27 +189,27 @@ public class InventoryManager : MonoBehaviour
         {
             case 1:
                 // Already equipped spells swap slots
-                if (SpellManager1.Instance.equippedPassiveSpell2 == spell)
+                if (SpellManager.Instance.equippedPassiveSpell2 == spell)
                 {
-                    PassiveSpell spell1 = SpellManager1.Instance.equippedPassiveSpell1;
+                    PassiveSpell spell1 = SpellManager.Instance.equippedPassiveSpell1;
                     OnPassiveSpell2Equipped?.Invoke(spell1.spellType);
-                    SpellManager1.Instance.EquipPassiveSpell2(spell1);
+                    SpellManager.Instance.EquipPassiveSpell2(spell1);
                 }
                     
                 OnPassiveSpell1Equipped?.Invoke(spell.spellType);
-                SpellManager1.Instance.EquipPassiveSpell1(spell);
+                SpellManager.Instance.EquipPassiveSpell1(spell);
                 return true;
             case 2: 
                 // Already equipped spells swap slots
-                if (SpellManager1.Instance.equippedPassiveSpell1 == spell)
+                if (SpellManager.Instance.equippedPassiveSpell1 == spell)
                 {
-                    PassiveSpell spell2 = SpellManager1.Instance.equippedPassiveSpell2;
+                    PassiveSpell spell2 = SpellManager.Instance.equippedPassiveSpell2;
                     OnPassiveSpell1Equipped?.Invoke(spell2.spellType);
-                    SpellManager1.Instance.EquipPassiveSpell1(spell2);
+                    SpellManager.Instance.EquipPassiveSpell1(spell2);
                 }
                 
                 OnPassiveSpell2Equipped?.Invoke(spell.spellType);
-                SpellManager1.Instance.EquipPassiveSpell2(spell);
+                SpellManager.Instance.EquipPassiveSpell2(spell);
                 return true;
         }
         
