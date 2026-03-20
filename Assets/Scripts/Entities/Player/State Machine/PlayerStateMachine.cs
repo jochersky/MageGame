@@ -44,6 +44,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private Vector2 climbCheckDir = Vector2.right;
     [SerializeField] private float climbCheckDistance = 0.2f;
     [SerializeField] private float climbCheckHeight = 0.7f;
+    [SerializeField] private float climbAboveBelowCheckLength = 0.5f;
     [SerializeField] private bool climbDebug;
     
     // State Variables
@@ -258,12 +259,16 @@ public class PlayerStateMachine : MonoBehaviour
         {
             Debug.DrawRay(start, direction * climbCheckDistance, Color.orange);
             Debug.DrawRay(start + (Vector2.up * climbCheckHeight), direction * climbCheckDistance, Color.orange);
+            Debug.DrawRay(transform.position, Vector2.down * climbAboveBelowCheckLength, Color.orange);
+            Debug.DrawRay(transform.position, Vector3.up * climbAboveBelowCheckLength, Color.orange);
         }
 
         RaycastHit2D wallToClimb = Physics2D.Raycast(start, direction, climbCheckDistance, environmentLayer);
-        _canClimb = !_isGrounded 
+        _canClimb = !_isGrounded
                     && wallToClimb
-                    && !Physics2D.Raycast(start + (Vector2.up * climbCheckHeight), direction, climbCheckDistance, environmentLayer);
+                    && !Physics2D.Raycast(start + (Vector2.up * climbCheckHeight), direction, climbCheckDistance, environmentLayer)
+                    && !Physics2D.Raycast(transform.position, Vector2.down, climbAboveBelowCheckLength, environmentLayer)
+                    && !Physics2D.Raycast(transform.position, Vector2.up, climbAboveBelowCheckLength, environmentLayer);
         
         // Climb state uses the tilemap obtained from this raycast to climb onto
         if (_canClimb && wallToClimb.collider.TryGetComponent<Tilemap>(out Tilemap tilemap))
