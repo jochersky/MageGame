@@ -3,6 +3,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerStateMachine : MonoBehaviour
@@ -36,8 +37,9 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private float baseGravity = 2;
     [SerializeField] private float maxFallSpeed = 15;
     [SerializeField] private float fallSpeedMultiplier = 1.5f;
-    
-    [Header("Climbing")]
+
+    [Header("Climbing")] 
+    [SerializeField, Range(0.25f, 2)] private float climbDistanceFromWall = 1.25f;
     [SerializeField] private Vector2 climbCheckOffset = Vector2.zero;
     [SerializeField] private Vector2 climbCheckDir = Vector2.right;
     [SerializeField] private float climbCheckDistance = 0.2f;
@@ -57,6 +59,7 @@ public class PlayerStateMachine : MonoBehaviour
     public readonly int Climbing = Animator.StringToHash("Climb");
     public readonly int Dead = Animator.StringToHash("Dead");
     
+    // Context Variables
     private Vector2 _moveDirection;
     private Vector2 _previousDirection;
     private float _horizontalMovement;
@@ -67,11 +70,13 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _justPressedJump;
     private bool _isPressingJump;
     private bool _newJumpPress;
+    private int _numDoubleJumps;
     private bool _canClimb;
     private bool _wasClimbing;
+    private Vector2 _climbPosition;
+    // private Tilemap _climbingTilemap;
     private bool _isDead;
     private bool _inputDisabled;
-    private int _numDoubleJumps;
 
     [Header("State Debug")]
     public String stateName = "";
@@ -106,6 +111,8 @@ public class PlayerStateMachine : MonoBehaviour
     public bool NewJumpPress { get { return _newJumpPress; } set { _newJumpPress = value; } }
     public bool CanClimb { get { return _canClimb; } set { _canClimb = value; } }
     public bool WasClimbing { get { return _wasClimbing; } set { _wasClimbing = value; } }
+    public Vector2 ClimbPosition { get { return _climbPosition; } set { _climbPosition = value; } }
+    // public Tilemap ClimbingTilemap { get { return _climbingTilemap; } set { _climbingTilemap = value; } }
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
     
     void Start()
@@ -253,8 +260,23 @@ public class PlayerStateMachine : MonoBehaviour
             Debug.DrawRay(start + (Vector2.up * climbCheckHeight), direction * climbCheckDistance, Color.orange);
         }
 
+        RaycastHit2D wallToClimb = Physics2D.Raycast(start, direction, climbCheckDistance, environmentLayer);
         _canClimb = !_isGrounded 
-                    && Physics2D.Raycast(start, direction, climbCheckDistance, environmentLayer)
-                    && !Physics2D.Raycast(start + Vector2.up, direction, climbCheckDistance, environmentLayer);
+                    && wallToClimb
+                    && !Physics2D.Raycast(start + (Vector2.up * climbCheckHeight), direction, climbCheckDistance, environmentLayer);
+        
+        // Climb state uses the tilemap obtained from this raycast to climb onto
+        if (_canClimb && wallToClimb.collider.TryGetComponent<Tilemap>(out Tilemap tilemap))
+        {   
+            Vector3Int tilePos = tilemap.WorldToCell(start + (direction * climbCheckDistance));
+            Vector3 tileCenter = tilemap.GetCellCenterWorld(tilePos);
+            Vector3 tileOffset = Vector3.right * (climbDistanceFromWall * -dirSign);
+            _climbPosition = tileCenter + tileOffset;
+            if (climbDebug) Debug.DrawLine(tileCenter, _climbPosition, Color.red);
+        }
+        else
+        {
+            _canClimb = false;
+        }
     }
 }

@@ -30,6 +30,4 @@ public class Explosion : MonoBehaviour
             }
         }
     }
-    
-    
 }
