@@ -4993,7 +4993,7 @@ Transform:
   m_GameObject: {fileID: 5706288909747184313}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 34.80607, y: 9.758978, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5119,3 +5119,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Barrel
   enemy: {fileID: 8871767491910850251, guid: 7a854991a1bb57544896e3f99c05779c, type: 3}
+  manaCapsule: {fileID: 750826186759836841, guid: f21ee968bed055544b2491626e3a95ca, type: 3}

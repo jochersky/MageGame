@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
@@ -5,11 +7,15 @@ using UnityEngine;
 public class Barrel : MonoBehaviour
 {
     [SerializeField] GameObject enemy; 
+    [SerializeField] GameObject manaCapsule;
+    readonly List<GameObject> potentialDrops = new();
     bool triggered = false;
     System.Random randy;
     void Start()
     {
         randy = new System.Random();
+        potentialDrops.Add(enemy);
+        potentialDrops.Add(manaCapsule);
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -21,10 +27,12 @@ public class Barrel : MonoBehaviour
             GetComponentInChildren<AudioSource>().Play();
 
 
-            // Spawn random item
-            if (randy.Next(0, 100) < 25)
+            // Spawn random drop at 25% chance
+            if (randy.Next(0, 100) < 75)
             {
-                Instantiate(enemy, transform);
+                int temp = randy.Next(0, potentialDrops.Count);
+                Debug.Log(temp);
+                Instantiate(potentialDrops[temp], transform);
             }
         }
     }
