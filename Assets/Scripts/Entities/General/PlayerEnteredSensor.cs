@@ -20,7 +20,7 @@ public class PlayerEnteredSensor : MonoBehaviour
     private void Start()
     {
         _environmentLayer = LayerMask.GetMask("Environment");
-        _hitLayers = LayerMask.GetMask("Character", "Environment");
+        _hitLayers = LayerMask.GetMask("Player", "Environment");
     }
 
     private void FixedUpdate()
