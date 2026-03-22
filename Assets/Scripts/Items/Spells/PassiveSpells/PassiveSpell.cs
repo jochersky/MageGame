@@ -9,6 +9,12 @@ public class PassiveSpell : Spell
     // Called everytime a condition's value is changed.
     protected virtual void CheckCastSpellConditions() { }
     
+    // Used to subscribe methods to update conditions based on player's actions on equip.
+    public virtual void SubscribeConditions(PlayerStateMachine psm) { }
+    
+    // Used to unsubscribe methods from player events on unequip.
+    public virtual void UnsubscribeConditions(PlayerStateMachine psm) { }
+    
     // Add affects to the player's PassiveSpellAffects.
     // Called on equip.
     public virtual void AddSpellAffects(PassiveSpellAffects passiveSpellAffects) { }

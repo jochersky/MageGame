@@ -84,6 +84,9 @@ public class PlayerStateMachine : MonoBehaviour
 
     // Event for flipping the transform.
     public UnityEvent<float> onDirectionChanged;
+
+    public delegate void DoubleJumpComplete();
+    public event DoubleJumpComplete OnDoubleJumpComplete;
     
     // State Setters & Getters
     public PlayerBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
@@ -113,7 +116,6 @@ public class PlayerStateMachine : MonoBehaviour
     public bool CanClimb { get { return _canClimb; } set { _canClimb = value; } }
     public bool WasClimbing { get { return _wasClimbing; } set { _wasClimbing = value; } }
     public Vector2 ClimbPosition { get { return _climbPosition; } set { _climbPosition = value; } }
-    // public Tilemap ClimbingTilemap { get { return _climbingTilemap; } set { _climbingTilemap = value; } }
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
     
     void Start()
@@ -197,9 +199,14 @@ public class PlayerStateMachine : MonoBehaviour
             InventoryManager.Instance.UpdateConsumable(ConsumableTypes.Bomb, -1);
             GameObject inst = Instantiate(bombPrefab, consumableParentTransform);
             inst.transform.position = consumableSpawnTransform.position;
-            Rigidbody2D rb = inst.GetComponentInChildren<Rigidbody2D>();
-            rb.linearVelocityX = _previousDirection.x * 15f;
-            rb.linearVelocityY = _rb.linearVelocityY * 2f;
+            
+            // Player won't throw bomb if they are too close to a wall
+            if (!Physics2D.Raycast(consumableSpawnTransform.transform.position, _previousDirection, 1, environmentLayer))
+            {
+                Rigidbody2D rb = inst.GetComponentInChildren<Rigidbody2D>();
+                rb.linearVelocityX = _previousDirection.x * 15f;
+                rb.linearVelocityY = _rb.linearVelocityY * 2f;
+            }
         }
     }
 
@@ -283,5 +290,10 @@ public class PlayerStateMachine : MonoBehaviour
         {
             _canClimb = false;
         }
+    }
+
+    public void InvokeDoubleJumpComplete()
+    {
+        OnDoubleJumpComplete?.Invoke();
     }
 }

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1193ee0ff4c02b642bc403885addce3a, type: 3}
   m_Name: PassiveSpellAffects
   m_EditorClassIdentifier: Assembly-CSharp::PassiveSpellEffects
-  doubleJumps: 0
+  doubleJumps: 3
