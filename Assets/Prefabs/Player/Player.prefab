@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5577571645946893149}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: ConsumableSpawnTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 280627015625706992}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -646,7 +646,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1587937387225483812}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: JumpCheckTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -903,7 +903,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3772056237199473288}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: SpellCastTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -919,7 +919,7 @@ Transform:
   m_GameObject: {fileID: 7629117981062267960}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.75, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1002,10 +1002,12 @@ MonoBehaviour:
   baseGravity: 3
   maxFallSpeed: 18
   fallSpeedMultiplier: 2
+  climbDistanceFromWall: 0.8
   climbCheckOffset: {x: 0, y: 0}
   climbCheckDir: {x: 1, y: 0}
   climbCheckDistance: 0.75
   climbCheckHeight: 0.55
+  climbAboveBelowCheckLength: 1
   climbDebug: 1
   stateName: 
   onDirectionChanged:
@@ -1448,7 +1450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   damageAmt: 1
-  stompAngleLimit: 50
+  stompAngleLimit: 95
   debug: 1
   onEnemyStomped:
     m_PersistentCalls:
