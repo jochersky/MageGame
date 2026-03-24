@@ -14,8 +14,11 @@ public class PlayerClimbState : PlayerBaseState
         
         Context.Rigidbody.gravityScale = 0;
         Context.LinearVelocityY = 0;
+        Context.HorizontalMovement = 0;
         // Set so that player can jump when climbing.
         Context.WasClimbing = true;
+
+        Context.transform.position = Context.ClimbPosition;
     }
 
     public override void UpdateState()
@@ -35,6 +38,10 @@ public class PlayerClimbState : PlayerBaseState
     }
 
     public override void InitializeSubState()
+    {
+    }
+
+    private void SnapToClimbPosition()
     {
     }
     

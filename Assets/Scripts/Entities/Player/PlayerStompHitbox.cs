@@ -16,9 +16,10 @@ public class PlayerStompHitbox : MonoBehaviour
             Vector2 collisionDirectionVector = (Vector2)transform.position - contactPoint;
             if (debug)
             {
-                Debug.DrawRay(transform.position, collisionDirectionVector.normalized, Color.red, 10);
+                Debug.DrawRay(transform.position, Vector2.down, Color.red, 3);
+                Debug.DrawRay(transform.position, collisionDirectionVector.normalized, Color.red, 3);
             }
-            if (Vector2.Angle(Vector2.down, collisionDirectionVector.normalized) <= stompAngleLimit)
+            if (Vector2.Angle(Vector2.down, collisionDirectionVector.normalized) >= stompAngleLimit)
             {
                 // Player gets jump boost
                 onEnemyStomped?.Invoke();

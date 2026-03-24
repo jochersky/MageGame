@@ -23,6 +23,8 @@ public class SpellManager : MonoBehaviour
 
     public static SpellManager Instance { get; private set; }
     
+    private LayerMask _layerMask;
+    
     private void Awake()
     {
         // Ensure only one instance of the inventory exists globally
@@ -38,6 +40,8 @@ public class SpellManager : MonoBehaviour
     private void Start()
     {
         _psm = GetComponent<PlayerStateMachine>();
+        _layerMask = LayerMask.GetMask("Environment");
+        
         if (debug) passiveSpellAffects.ClearAffects();
     }
     
@@ -46,7 +50,12 @@ public class SpellManager : MonoBehaviour
         if (context.performed || context.canceled || _psm.IsDead) return;
         if (!equippedSpell1) return;
         
-        equippedSpell1.CastSpell();
+        // Player will get hit by their own spell if they cast it towards a wall
+        Vector2 dir = spellCastTransform.position - transform.position;
+        if (equippedSpell1.changePositionOnObstruction && Physics2D.Raycast(transform.position, dir, dir.magnitude, _layerMask)) 
+            equippedSpell1.CastSpell(_psm.gameObject.transform.position);
+        else 
+            equippedSpell1.CastSpell();
     }
     
     public void OnSpell2Pressed(InputAction.CallbackContext context)
@@ -54,7 +63,12 @@ public class SpellManager : MonoBehaviour
         if (context.performed || context.canceled || _psm.IsDead) return;
         if (!equippedSpell2) return;
         
-        equippedSpell2.CastSpell();
+        // Player will get hit by their own spell if they cast it towards a wall
+        Vector2 dir = spellCastTransform.position - transform.position;
+        if (equippedSpell1.changePositionOnObstruction && Physics2D.Raycast(transform.position, dir, dir.magnitude, _layerMask)) 
+            equippedSpell2.CastSpell(_psm.gameObject.transform.position);
+        else 
+            equippedSpell2.CastSpell();
     }
 
     public void EquipSpell1(ActiveSpell spell)
@@ -70,20 +84,34 @@ public class SpellManager : MonoBehaviour
         spell.spawnTransform = spellCastTransform;
         spell.parentTransform = spellParentTransform;
     }
+    
+    // TODO
+    public void UnequipSpell1() { }
 
+    // TODO
+    public void UnequipSpell2() { }
+    
     public void EquipPassiveSpell1(PassiveSpell spell)
     {
         equippedPassiveSpell1 = spell;
         spell.AddSpellAffects(passiveSpellAffects);
-        spell.spawnTransform = spellCastTransform;
+        spell.spawnTransform = _psm.gameObject.transform;
         spell.parentTransform = spellParentTransform;
+        spell.SubscribeConditions(_psm);
     }
 
     public void EquipPassiveSpell2(PassiveSpell spell)
     {
         equippedPassiveSpell2 = spell;
         spell.AddSpellAffects(passiveSpellAffects);
-        spell.spawnTransform = spellCastTransform;
+        spell.spawnTransform = _psm.gameObject.transform;
         spell.parentTransform = spellParentTransform;
+        spell.SubscribeConditions(_psm);
     }
+    
+    // TODO
+    public void UnequipPassiveSpell1() { }
+
+    // TODO
+    public void UnequipPassiveSpell2() { }
 }

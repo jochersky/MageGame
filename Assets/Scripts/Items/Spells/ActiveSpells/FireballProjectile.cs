@@ -1,10 +1,11 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Fireball : MonoBehaviour
+public class FireballProjectile : MonoBehaviour
 {
     Rigidbody2D rb;
     [SerializeField] float speed = 50f;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,6 +18,10 @@ public class Fireball : MonoBehaviour
         if (collision.CompareTag("Environment"))
         {
             Destroy(gameObject);
+        } 
+        else if (collision.CompareTag("Enemy"))
+        {
+            collision.GetComponent<Enemy>().Die();
         }
     }
 }

@@ -45,7 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireballSpell
   itemFramePrefab: {fileID: 5935847884321273063, guid: 9bb3f9c0699ffc441b163ad3906f8f35, type: 3}
-  spellType: 2
-  spellCooldown: 0.5
   projectilePrefab: {fileID: 4265959885888012626, guid: 2a4e0687454cd414581151397be7a982, type: 3}
+  spellType: 2
   spawnTransform: {fileID: 0}
+  parentTransform: {fileID: 0}
+  spellCooldown: 0.5
+  changePositionOnObstruction: 1

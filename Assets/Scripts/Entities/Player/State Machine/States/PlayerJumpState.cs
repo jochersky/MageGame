@@ -47,6 +47,7 @@ public class PlayerJumpState : PlayerBaseState
         {
             Context.LinearVelocityY = Context.MaxDoubleJumpHeight;
             Context.NumDoubleJumps--;
+            Context.InvokeDoubleJumpComplete();
         }
     }
     

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7569185745512489387}
   - component: {fileID: 9094088721800162779}
   - component: {fileID: 3651512714393299390}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ExplosionCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 1792518207167032602}
   - component: {fileID: 7769748791784570209}
   - component: {fileID: 2504636434573036654}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: PhysicsCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

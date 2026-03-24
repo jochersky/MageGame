@@ -13,7 +13,6 @@ public class BounceSpell : PassiveSpell
     {
         if (casting) return;
         StartCoroutine(WindLordsBlessing());
-        Debug.Log("Bounce being casted");
     }
 
     public override void AddSpellAffects(PassiveSpellAffects passiveSpellAffects)
@@ -26,10 +25,25 @@ public class BounceSpell : PassiveSpell
         passiveSpellAffects.doubleJumps -= numDoubleJumpsGranted;
     }
 
+    public override void SubscribeConditions(PlayerStateMachine psm)
+    {
+        psm.OnDoubleJumpComplete += UpdateDoubleJump;
+    }
+
+    public override void UnsubscribeConditions(PlayerStateMachine psm)
+    {
+        psm.OnDoubleJumpComplete -= UpdateDoubleJump;
+    }
+
+    private void UpdateDoubleJump()
+    {
+        DoubleJumping = true;
+    }
+    
     protected override void CheckCastSpellConditions()
     {
         // Passive spell must have all conditions met in order to be cast
-        if (!_doubleJumping) return;
+        if (!casting && !_doubleJumping) return;
         
         CastSpell();
         

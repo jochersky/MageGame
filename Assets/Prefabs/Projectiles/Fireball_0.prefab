@@ -91,8 +91,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4309190061662518694}
+  - component: {fileID: 1591611922793140162}
   - component: {fileID: 703598685739847293}
-  - component: {fileID: 5853945508807419513}
   - component: {fileID: 1073190888896906650}
   - component: {fileID: 2008056552770632048}
   - component: {fileID: 6849870913289862809}
@@ -121,6 +121,19 @@ Transform:
   - {fileID: 6480287016830944274}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+--- !u!114 &1591611922793140162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4265959885888012626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90a8c2096c8cb7a47a07417cd80d1dca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireballProjectile
+  speed: 12
 --- !u!212 &703598685739847293
 SpriteRenderer:
   serializedVersion: 2
@@ -180,19 +193,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &5853945508807419513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4265959885888012626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99b329892048e4d4799538717058d96d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Fireball
-  speed: 10
 --- !u!95 &1073190888896906650
 Animator:
   serializedVersion: 7
