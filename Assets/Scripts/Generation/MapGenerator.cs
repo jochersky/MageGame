@@ -26,7 +26,8 @@ public class MapGenerator : MonoBehaviour
     // Tilemap version
     [SerializeField] Grid grid;
     [SerializeField] RuleTile tile;
-    [SerializeField] TileBase door;
+    [SerializeField] TileBase entryDoor;
+    [SerializeField] TileBase exitDoor;
     [SerializeField] TileBase spikes;
     [SerializeField] TileBase falseFloor;
     [SerializeField] TileBase flamethrower;
@@ -339,13 +340,15 @@ public class MapGenerator : MonoBehaviour
                 if (roomProbability == -99)
                 {
                     // this can be simplified I believe
-                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), door);
+                    
                     if (!startingPositionAssigned)
                     {
+                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), entryDoor);
                         startingPosition = new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset);
                         startingPositionAssigned = true;
                     } else
                     {
+                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), exitDoor);
                         exitPosition = new Vector2(xCoord, yCoord);
                     }
                 }
