@@ -5120,3 +5120,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Barrel
   enemy: {fileID: 8871767491910850251, guid: 7a854991a1bb57544896e3f99c05779c, type: 3}
   manaCapsule: {fileID: 750826186759836841, guid: f21ee968bed055544b2491626e3a95ca, type: 3}
+  coin: {fileID: 6066504846624555413, guid: 9c4bbc5a137e1dc4c85d9d8ccdc08e13, type: 3}
