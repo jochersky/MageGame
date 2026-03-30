@@ -1,160 +1,103 @@
-using System;
-using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
+public enum SpellTypes
+{
+    GiftOfLight,
+    WindLordsBlessing,
+    FuryOfTheDragon
+}
+
 [RequireComponent(typeof(PlayerStateMachine))]
 public class SpellManager : MonoBehaviour
 {
-    [SerializeField] Image manaSymbol;
-    [SerializeField] Sprite manaFullIcon;
-    [SerializeField] Sprite mana75Icon;
-    [SerializeField] Sprite manaHalfIcon;
-    [SerializeField] Sprite mana25Icon;
-    [SerializeField] Sprite manaEmptyIcon;
-    [SerializeField] SPELL_NAMES spell1;
-    [SerializeField] SPELL_NAMES spell2;
-    readonly float windForce = 75f;
-    [SerializeField] float spellCooldown = 0.2f;
-    [SerializeField] GameObject windSpell;
-    [SerializeField] GameObject fireSpell;
-    [SerializeField] GameObject lightSpell;
-    Rigidbody2D player;
-    PlayerStateMachine psm;
-    int currentMana = 100;
-    int startingMana = 100;
-    bool casting = false;
-    float distanceAbovePlayersHead = 2f;
+    [SerializeField] private bool debug = true;
+    [SerializeField] private PassiveSpellAffects passiveSpellAffects;
+    [SerializeField] private Transform spellCastTransform;
+    [SerializeField] private Transform spellParentTransform;
+    private PlayerStateMachine _psm;
+    public ActiveSpell equippedSpell1;
+    public ActiveSpell equippedSpell2;
+    public PassiveSpell equippedPassiveSpell1;
+    public PassiveSpell equippedPassiveSpell2;
 
-    enum SPELL_NAMES
+    public static SpellManager Instance { get; private set; }
+    
+    private LayerMask _layerMask;
+    
+    private void Awake()
     {
-        GIFT_OF_LIGHT,
-        WINDLORDS_BLESSING,
-        FURY_OF_THE_DRAGON
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        player = GetComponent<Rigidbody2D>();
-        psm = GetComponent<PlayerStateMachine>();
-        currentMana = startingMana;
-    }
-
-    public void OnSpell1Cast()
-    {
-        if (!casting)
+        // Ensure only one instance of the inventory exists globally
+        if (Instance && Instance != this)
         {
-            casting = true;
-            Cast(spell1);
+            Destroy(this);
+            return;
         }
+
+        Instance = this;
     }
 
-    public void OnSpell2Cast()
+    private void Start()
     {
-        if (!casting)
-        {
-            casting = true;
-            Cast(spell2);
-        }
+        _psm = GetComponent<PlayerStateMachine>();
+        _layerMask = LayerMask.GetMask("Environment");
+        
+        if (debug) passiveSpellAffects.ClearAffects();
+    }
+    
+    public void OnSpell1Pressed(InputAction.CallbackContext context)
+    {
+        if (context.performed || context.canceled || _psm.IsDead) return;
+        if (!equippedSpell1) return;
+        
+        // Player will get hit by their own spell if they cast it towards a wall
+        Vector2 dir = spellCastTransform.position - transform.position;
+        if (equippedSpell1.changePositionOnObstruction && Physics2D.Raycast(transform.position, dir, dir.magnitude, _layerMask)) 
+            equippedSpell1.CastSpell(_psm.gameObject.transform.position);
+        else 
+            equippedSpell1.CastSpell();
+    }
+    
+    public void OnSpell2Pressed(InputAction.CallbackContext context)
+    {
+        if (context.performed || context.canceled || _psm.IsDead) return;
+        if (!equippedSpell2) return;
+        
+        // Player will get hit by their own spell if they cast it towards a wall
+        Vector2 dir = spellCastTransform.position - transform.position;
+        if (equippedSpell1.changePositionOnObstruction && Physics2D.Raycast(transform.position, dir, dir.magnitude, _layerMask)) 
+            equippedSpell2.CastSpell(_psm.gameObject.transform.position);
+        else 
+            equippedSpell2.CastSpell();
     }
 
-    void Cast(SPELL_NAMES spellName)
+    public void EquipSpell1(ActiveSpell spell)
     {
-        switch (spellName)
-        {
-            case SPELL_NAMES.GIFT_OF_LIGHT: StartCoroutine(GiftOfLight()); break;
-            case SPELL_NAMES.WINDLORDS_BLESSING: StartCoroutine(WindlordsBlessing()); break;
-            case SPELL_NAMES.FURY_OF_THE_DRAGON: StartCoroutine(FuryOfTheDragon()); break;
-        }
+        equippedSpell1 = spell;
+        spell.spawnTransform = spellCastTransform;
+        spell.parentTransform = spellParentTransform;
     }
-
-    // maybe this should be a class thing, not a method thing
-
-    private IEnumerator WindlordsBlessing()
+    
+    public void EquipSpell2(ActiveSpell spell)
     {
-        int manaCost = 25;
-        if (currentMana < manaCost)
-        {
-            // spell fizzle sounds
-            Debug.Log("CAN'T CAST NO MANA HAHAHAHA");
-        } else
-        {
-            Debug.Log("CASTING WINDLORD'S BLESSING");
-            currentMana -= manaCost;
-            UpdateMana();
-            Instantiate(windSpell, player.position, windSpell.transform.rotation);
-            player.linearVelocity = Vector2.zero;
-            player.angularVelocity = 0f;
-            player.AddForce(new Vector2(0f, windForce), ForceMode2D.Impulse);
-        }
-        yield return new WaitForSeconds(spellCooldown);
-        casting = false;
+        equippedSpell2 = spell;
+        spell.spawnTransform = spellCastTransform;
+        spell.parentTransform = spellParentTransform;
     }
+    
+    // TODO
+    public void UnequipSpell1() { }
 
-    private IEnumerator FuryOfTheDragon()
+    // TODO
+    public void UnequipSpell2() { }
+    
+    public void EquipPassiveSpell1(PassiveSpell spell)
     {
-        int manaCost = 10;
-        if (currentMana < manaCost)
-        {
-            // spell fizzle sounds
-            Debug.Log("CAN'T CAST NO MANA HAHAHAHA");
-        } else
-        {
-            Debug.Log("CASTING FURY OF THE DRAGON");
-            currentMana -= manaCost;
-            UpdateMana();
-            // there has to be a more elegant solution but I can't find it
-            Quaternion spellRotation = fireSpell.transform.rotation;
-            if (psm.PreviousDirection.x < 0)
-            {
-                spellRotation = Quaternion.Inverse(spellRotation);
-            }
-            Instantiate(fireSpell, player.position + psm.PreviousDirection, spellRotation); 
-        }
-        yield return new WaitForSeconds(spellCooldown);
-        casting = false;
-    }
-
-    private IEnumerator GiftOfLight()
-    {
-        int manaCost = 25;
-        if (currentMana < manaCost)
-        {
-            // spell fizzle sounds
-            Debug.Log("CAN'T CAST NO MANA HAHAHAHA");
-        } else
-        {
-            Debug.Log("CASTING GIFT OF LIGHT");
-            currentMana -= manaCost;
-            UpdateMana();
-            Vector2 abovePlayersHead = new(player.position.x, player.position.y + distanceAbovePlayersHead);
-            Instantiate(lightSpell, abovePlayersHead, player.transform.rotation, transform);
-        }
-        yield return new WaitForSeconds(spellCooldown);
-        casting = false;
-    }
-
-
-    void UpdateMana()
-    {
-        if (currentMana > 75)
-        {
-            manaSymbol.sprite = manaFullIcon;
-        } else if (currentMana > 50)
-        {
-            manaSymbol.sprite = mana75Icon;
-        } else if (currentMana > 25)
-        {
-            manaSymbol.sprite = manaHalfIcon;
-        } else if (currentMana > 0)
-        {
-            manaSymbol.sprite = mana25Icon;
-        } else
-        {
-            manaSymbol.sprite = manaEmptyIcon;
-        }
+        equippedPassiveSpell1 = spell;
+        spell.AddSpellAffects(passiveSpellAffects);
+        spell.spawnTransform = _psm.gameObject.transform;
+        spell.parentTransform = spellParentTransform;
+        spell.SubscribeConditions(_psm);
     }
 
     public void AddMana(int mana)
@@ -162,4 +105,18 @@ public class SpellManager : MonoBehaviour
         currentMana += mana;
         UpdateMana();
     }
+    public void EquipPassiveSpell2(PassiveSpell spell)
+    {
+        equippedPassiveSpell2 = spell;
+        spell.AddSpellAffects(passiveSpellAffects);
+        spell.spawnTransform = _psm.gameObject.transform;
+        spell.parentTransform = spellParentTransform;
+        spell.SubscribeConditions(_psm);
+    }
+    
+    // TODO
+    public void UnequipPassiveSpell1() { }
+
+    // TODO
+    public void UnequipPassiveSpell2() { }
 }

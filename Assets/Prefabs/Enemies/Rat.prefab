@@ -520,6 +520,7 @@ MonoBehaviour:
   wallCheckDebug: 1
   ledgeCheckDistance: 0.75
   ledgeCheckDebug: 1
+  stateName: 
   onDirectionChanged:
     m_PersistentCalls:
       m_Calls:
@@ -563,7 +564,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 3
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 7e744b58c8f30b54fae166ab1ab0b268, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

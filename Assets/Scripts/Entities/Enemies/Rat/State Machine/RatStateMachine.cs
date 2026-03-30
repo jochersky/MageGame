@@ -34,6 +34,9 @@ public class RatStateMachine : MonoBehaviour
     [SerializeField] private float ledgeCheckDistance = 0.75f;
     [SerializeField] private bool ledgeCheckDebug;
     
+    [Header("State Debug")]
+    public String stateName = "";
+    
     // State Variables
     private RatBaseState _currentState;
     private RatBaseState _currentSubState;
@@ -53,6 +56,7 @@ public class RatStateMachine : MonoBehaviour
     private bool _isAggroed;
     private float _lungeTimer;
     private bool _isDead;
+    private RaycastHit2D[] _hits = new RaycastHit2D[3];
     
     // Event for flipping the transform.
     public UnityEvent<float> onDirectionChanged;
@@ -109,6 +113,7 @@ public class RatStateMachine : MonoBehaviour
     private void Update()
     {
         _currentState.UpdateStates();
+        stateName = _currentState.ToString();
     }
 
     private void FixedUpdate()
@@ -141,12 +146,22 @@ public class RatStateMachine : MonoBehaviour
         {
             Debug.DrawRay(start, _moveDir * wallCheckDistance, Color.red);
         }
-        RaycastHit2D hit = Physics2D.Raycast(start, _moveDir, wallCheckDistance, _hitLayers);
-        if (hit && hit.collider != _ownCollider)
+        int numHits = Physics2D.RaycastNonAlloc(start, _moveDir, _hits, wallCheckDistance, _hitLayers);
+        if (numHits > 1)
         {
-            _moveDir = -_moveDir;
-            onDirectionChanged?.Invoke(Mathf.Sign(_moveDir.x));
-            _horizontalMovement = _moveDir.x * _currentMoveSpeed;
+            Array.Sort(_hits, (a, b) => a.distance.CompareTo(b.distance));
+        }
+        for (int i = 0; i < numHits; i++)
+        {
+            RaycastHit2D hit = _hits[i];
+            if (!hit) break;
+            if (hit.collider != _ownCollider)
+            {
+                _moveDir = -_moveDir;
+                onDirectionChanged?.Invoke(Mathf.Sign(_moveDir.x));
+                _horizontalMovement = _moveDir.x * _currentMoveSpeed;
+                break;
+            }
         }
     }
 
