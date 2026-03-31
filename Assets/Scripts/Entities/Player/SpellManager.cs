@@ -102,8 +102,8 @@ public class SpellManager : MonoBehaviour
 
     public void AddMana(int mana)
     {
-        currentMana += mana;
-        UpdateMana();
+        // currentMana += mana;
+        // UpdateMana();
     }
     public void EquipPassiveSpell2(PassiveSpell spell)
     {
