@@ -9,6 +9,7 @@ public class Barrel : MonoBehaviour
     [SerializeField] GameObject enemy; 
     [SerializeField] GameObject manaCapsule;
     [SerializeField] GameObject coin;
+    [SerializeField] GameObject heart;
     readonly List<GameObject> potentialDrops = new();
     bool triggered = false;
     System.Random randy;
@@ -18,6 +19,7 @@ public class Barrel : MonoBehaviour
         potentialDrops.Add(enemy);
         potentialDrops.Add(manaCapsule);
         potentialDrops.Add(coin);
+        potentialDrops.Add(heart);
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
