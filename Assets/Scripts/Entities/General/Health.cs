@@ -31,6 +31,7 @@ public class Health : MonoBehaviour
         foreach (Hurtbox hurtbox in hurtboxes)
         {
             hurtbox.OnDamageTaken += TakeDamage;
+            hurtbox.OnHeal += Heal;
         }
     }
 

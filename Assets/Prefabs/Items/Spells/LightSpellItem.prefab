@@ -105,7 +105,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LightballSpell
   itemFramePrefab: {fileID: 1486984147235753439, guid: 7daf832230fd5ea43a45ed991873d542, type: 3}
-  spellType: 0
-  spellCooldown: 0.5
   projectilePrefab: {fileID: 2925046190798210206, guid: 9251c340a02cdc34e8708fea0b1f496b, type: 3}
+  spellType: 0
   spawnTransform: {fileID: 0}
+  parentTransform: {fileID: 0}
+  spellCooldown: 0.5
+  manaCost: 15
+  changePositionOnObstruction: 0

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
@@ -11,6 +10,7 @@ public class Barrel : MonoBehaviour
     [SerializeField] GameObject coin;
     [SerializeField] GameObject heart;
     [SerializeField] GameObject bomb;
+    private int _enemyIndex = 0;
     readonly List<GameObject> potentialDrops = new();
     bool triggered = false;
     System.Random randy;
@@ -37,8 +37,12 @@ public class Barrel : MonoBehaviour
             if (randy.Next(0, 100) < 75)
             {
                 int temp = randy.Next(0, potentialDrops.Count);
-                Debug.Log(temp);
-                Instantiate(potentialDrops[temp], transform);
+                GameObject spawned = Instantiate(potentialDrops[temp], transform);
+                // if its an enemy, give it I-frames
+                if (spawned.TryGetComponent<Health>(out var enemy)) 
+                {
+                    enemy.ActivateInvulnerability();
+                }
             }
         }
     }

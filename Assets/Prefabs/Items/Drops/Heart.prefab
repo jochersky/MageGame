@@ -265,7 +265,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2236070659235606591}
   - component: {fileID: 951936452570120829}
-  - component: {fileID: 4969198970285118938}
+  - component: {fileID: 2440804080587685555}
   m_Layer: 0
   m_Name: Collection Region
   m_TagString: Untagged
@@ -325,7 +325,7 @@ CapsuleCollider2D:
   m_Offset: {x: -0.03609347, y: 0.02622873}
   m_Size: {x: 0.5964357, y: 0.5964357}
   m_Direction: 0
---- !u!114 &4969198970285118938
+--- !u!114 &2440804080587685555
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -334,7 +334,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6805360209109167861}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: deb1f8faa37c4b14c8da9e574a901bb7, type: 3}
+  m_Script: {fileID: 11500000, guid: c458b42632bb20f47a4e469a63340ea8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Hitbox
-  damageAmt: -1
+  m_EditorClassIdentifier: Assembly-CSharp::Healbox
+  healAmt: 1

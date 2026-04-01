@@ -50,4 +50,5 @@ MonoBehaviour:
   spawnTransform: {fileID: 0}
   parentTransform: {fileID: 0}
   spellCooldown: 0.5
+  manaCost: 10
   changePositionOnObstruction: 1

@@ -7,6 +7,8 @@ public class Hurtbox : MonoBehaviour
     
     public delegate void damageTaken(int damageAmt);
     public event damageTaken OnDamageTaken;
+    public delegate void healed(int healAmt);
+    public event healed OnHeal;
     
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -15,6 +17,11 @@ public class Hurtbox : MonoBehaviour
         if (other.TryGetComponent<Hitbox>(out Hitbox hitbox))
         {
             OnDamageTaken?.Invoke(hitbox.damageAmt);
+        }
+
+        if (other.TryGetComponent<Healbox>(out Healbox healbox))
+        {
+            OnHeal?.Invoke(healbox.healAmt);
         }
     }
 
@@ -25,6 +32,11 @@ public class Hurtbox : MonoBehaviour
         if (other.TryGetComponent<Hitbox>(out Hitbox hitbox))
         {
             OnDamageTaken?.Invoke(hitbox.damageAmt);
+        }
+
+        if (other.TryGetComponent<Healbox>(out Healbox healbox))
+        {
+            OnHeal?.Invoke(healbox.healAmt);
         }
     }
 

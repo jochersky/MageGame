@@ -24,6 +24,8 @@ public class SpellManager : MonoBehaviour
     public static SpellManager Instance { get; private set; }
     
     private LayerMask _layerMask;
+
+    [SerializeField] int mana = 100;
     
     private void Awake()
     {
@@ -49,7 +51,9 @@ public class SpellManager : MonoBehaviour
     {
         if (context.performed || context.canceled || _psm.IsDead) return;
         if (!equippedSpell1) return;
-        
+        int manaCost = equippedSpell1.GetManaCost();
+        if (manaCost > mana) return;
+        mana -= manaCost;
         // Player will get hit by their own spell if they cast it towards a wall
         Vector2 dir = spellCastTransform.position - transform.position;
         if (equippedSpell1.changePositionOnObstruction && Physics2D.Raycast(transform.position, dir, dir.magnitude, _layerMask)) 
@@ -62,6 +66,9 @@ public class SpellManager : MonoBehaviour
     {
         if (context.performed || context.canceled || _psm.IsDead) return;
         if (!equippedSpell2) return;
+        int manaCost = equippedSpell2.GetManaCost();
+        if (manaCost > mana) return;
+        mana -= manaCost;
         
         // Player will get hit by their own spell if they cast it towards a wall
         Vector2 dir = spellCastTransform.position - transform.position;

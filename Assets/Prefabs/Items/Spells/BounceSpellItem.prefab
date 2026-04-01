@@ -50,3 +50,5 @@ MonoBehaviour:
   spawnTransform: {fileID: 0}
   parentTransform: {fileID: 0}
   spellCooldown: 0
+  manaCost: 5
+  numDoubleJumpsGranted: 1
