@@ -5122,3 +5122,4 @@ MonoBehaviour:
   manaCapsule: {fileID: 750826186759836841, guid: f21ee968bed055544b2491626e3a95ca, type: 3}
   coin: {fileID: 6066504846624555413, guid: 9c4bbc5a137e1dc4c85d9d8ccdc08e13, type: 3}
   heart: {fileID: 750826186759836841, guid: 9955f9c8779813b4689aeb277d7e2397, type: 3}
+  bomb: {fileID: 6415621097088706008, guid: 4fca7f1e70ac3564caeeb5f7bf24a375, type: 3}
