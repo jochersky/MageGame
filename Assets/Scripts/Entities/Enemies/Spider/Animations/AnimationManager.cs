@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
+// [RequireComponent(typeof(Animator))]
 public class AnimationManager : MonoBehaviour
 {
     private Animator animator;
@@ -12,7 +12,7 @@ public class AnimationManager : MonoBehaviour
     
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        // animator = GetComponent<Animator>();
     }
 
     public void Idle()

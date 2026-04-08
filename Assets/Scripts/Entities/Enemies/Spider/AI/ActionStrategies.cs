@@ -12,6 +12,9 @@ public interface IActionStrategy
     void Stop() { }
 }
 
+/*
+ *
+ */
 public class IdleActionStrategy : IActionStrategy
 {
     private AnimationManager animationManager;
@@ -30,7 +33,7 @@ public class IdleActionStrategy : IActionStrategy
     
     public void Start()
     {
-        animationManager.Idle();
+        // animationManager.Idle();
         elapsedTime = 0f;
     } 
 
@@ -44,17 +47,20 @@ public class IdleActionStrategy : IActionStrategy
     }
 }
 
+/*
+ *
+ */
 public class MoveActionStrategy : IActionStrategy
 {
     private AnimationManager animationManager;
     private NavMeshAgent agent;
-    private Func<Vector2> destination;
+    private Func<Vector3> destination;
 
     public bool CanPerform => !Finished;
     // TODO: update to have stopping distance be a range that can be set in a SO
-    public bool Finished => agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending;
+    public bool Finished => agent.remainingDistance <= 2f && !agent.pathPending;
 
-    public MoveActionStrategy(AnimationManager animationManager, NavMeshAgent agent, Func<Vector2> destination)
+    public MoveActionStrategy(AnimationManager animationManager, NavMeshAgent agent, Func<Vector3> destination)
     {
         this.animationManager = animationManager;
         this.agent = agent;
@@ -63,14 +69,20 @@ public class MoveActionStrategy : IActionStrategy
 
     public void Start()
     {
-        animationManager.Move();
+        // animationManager.Move();
         agent.SetDestination(destination());
     }
 
-    public void Update(float deltaTime) { }
+    public void Update(float deltaTime)
+    {
+        if (destination() != agent.destination) agent.SetDestination(destination());
+    }
     public void Stop() => agent.ResetPath();
 }
 
+/*
+ * 
+ */
 public class AttackActionStrategy : IActionStrategy
 {
     private AnimationManager animationManager;
@@ -90,7 +102,7 @@ public class AttackActionStrategy : IActionStrategy
 
     public void Start()
     {
-        animationManager.Attack();
+        // animationManager.Attack();
         elapsedTime = 0f;
     } 
 

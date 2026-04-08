@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,14 +24,29 @@ public class GOAPAgent : MonoBehaviour
     public HashSet<Goal> goals;
 
     private GOAPPlanner goalPlanner;
+
+    private Vector3 _origin;
     
     void Awake()
     {
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.updateRotation = false;
+        navMeshAgent.updateUpAxis = false;
+        
+        animationManager = GetComponent<AnimationManager>();
+
+        goalPlanner = new GOAPPlanner();
+    }
+
+    private void Start()
+    {
+        _origin = transform.position;
+        
+        chaseSensor.OnTargetChanged += HandleTargetChanged;
+        
         SetupBeliefs();
         SetupActions();
         SetupGoals();
-
-        goalPlanner = new GOAPPlanner();
     }
 
     private void SetupBeliefs()
@@ -43,7 +59,9 @@ public class GOAPAgent : MonoBehaviour
         factory.AddBelief("AgentIdle", () => !navMeshAgent.hasPath);
         factory.AddBelief("AgentMoving", () => navMeshAgent.hasPath);
         factory.AddBelief("AttackingEnemy", () => false); // agent can always be attacking an enemy
-
+        
+        factory.AddLocationBelief("AgentAtOrigin", 0.1f, _origin);
+        
         factory.AddSensorBelief("EnemyInChaseRange", chaseSensor);
         factory.AddSensorBelief("EnemyInAttackRange", attackSensor);
     }
@@ -53,8 +71,13 @@ public class GOAPAgent : MonoBehaviour
         actions = new HashSet<Action>();
 
         actions.Add(new Action.Builder("Idle")
-            .WithStrategy(new IdleActionStrategy(animationManager, 5))
+            .WithStrategy(new IdleActionStrategy(animationManager, 1))
             .AddEffect(beliefs["Nothing"])
+            .Build());
+
+        actions.Add(new Action.Builder("ReturnToOrigin")
+            .WithStrategy(new MoveActionStrategy(animationManager, navMeshAgent, () => _origin))
+            .AddEffect(beliefs["AgentAtOrigin"])
             .Build());
 
         actions.Add(new Action.Builder("ChaseEnemy")
@@ -77,6 +100,7 @@ public class GOAPAgent : MonoBehaviour
         goals.Add(new Goal.Builder("WaitForMotivation")
             .WithPriority(1)
             .WithDesiredEffect(beliefs["Nothing"])
+            .WithDesiredEffect(beliefs["AgentAtOrigin"])
             .Build());
         
         goals.Add(new Goal.Builder("KillEnemy")
@@ -85,8 +109,16 @@ public class GOAPAgent : MonoBehaviour
             .Build());
     }
 
+    private void HandleTargetChanged()
+    {
+        Debug.Log("Target Changed");
+        currentAction = null;
+        currentGoal = null;
+    }
+
     void Update()
     {
+
         // Update the plan and current action if there is one
         if (currentAction == null)
         {
@@ -115,6 +147,20 @@ public class GOAPAgent : MonoBehaviour
         if (actionPlan != null && currentAction != null)
         {
             currentAction.Update(Time.deltaTime);
+            
+            // TODO: update look rotation of agent
+            if (navMeshAgent.velocity.magnitude >= 0)
+            {
+                Vector3 moveDirection = new Vector3(navMeshAgent.velocity.x, navMeshAgent.velocity.y, 0f);
+                if (moveDirection != Vector3.zero)
+                {
+                    float angle = Mathf.Atan2(moveDirection.x, moveDirection.y) * Mathf.Rad2Deg;
+
+                    Quaternion lookRotation = Quaternion.AngleAxis(angle, Vector3.back);
+                    // transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+                    transform.rotation = lookRotation;
+                }
+            }
 
             if (currentAction.Finished)
             {

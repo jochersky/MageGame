@@ -32,7 +32,7 @@ public class GOAPPlanner
                     goalNode = cheapestLeaf;
                     actionStack.Push(cheapestLeaf.ActionToPerform);
                 }
-
+                
                 return new ActionPlan(goal, actionStack, goalNode.Cost);
             }
         }

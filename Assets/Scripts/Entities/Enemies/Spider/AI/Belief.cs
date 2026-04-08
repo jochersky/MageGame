@@ -10,6 +10,7 @@ public class BeliefFactory
 
     public BeliefFactory(GOAPAgent agent, Dictionary<string, Belief> beliefs)
     {
+        this.agent = agent;
         this.beliefs = beliefs;
     }
 
@@ -24,18 +25,18 @@ public class BeliefFactory
     {
         beliefs.Add(key, new Belief.Builder(key)
                             .WithCondition(() => sensor.IsTargetInRangeAndVisible)
-                            .WithPosition(() => sensor.TargetPosition)
+                            .WithPosition(() => sensor.TargetPosition())
                             .Build());
     }
 
-    public void AddLocationBelief(string key, float distance, Vector2 position)
+    public void AddLocationBelief(string key, float distance, Vector3 position)
     {
         beliefs.Add(key, new Belief.Builder(key)
                             .WithCondition(() => InRangeOf(position, distance))
                             .WithPosition(() => position)
                             .Build());
     }
-    
+
     bool InRangeOf(Vector2 pos, float range) => Vector2.Distance(agent.transform.position, pos) < range;
 }
 
