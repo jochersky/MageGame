@@ -58,7 +58,7 @@ public class MoveActionStrategy : IActionStrategy
 
     public bool CanPerform => !Finished;
     // TODO: update to have stopping distance be a range that can be set in a SO
-    public bool Finished => agent.remainingDistance <= 2f && !agent.pathPending;
+    public bool Finished => agent.remainingDistance <= 0.5f && !agent.pathPending;
 
     public MoveActionStrategy(AnimationManager animationManager, NavMeshAgent agent, Func<Vector3> destination)
     {
@@ -89,15 +89,14 @@ public class AttackActionStrategy : IActionStrategy
     
     private float timer = 1f;
     private float elapsedTime = 0f;
-    
-    public bool CanPerform { get; }
+
+    public bool CanPerform => true;
     public bool Finished { get; private set; }
 
     public AttackActionStrategy(AnimationManager animationManager)
     {
         this.animationManager = animationManager;
         // this.timer = animationManager.GetAnimationDuration(animationManager.AttackHash);
-        this.timer = 0.15f;
     }
 
     public void Start()
@@ -111,7 +110,10 @@ public class AttackActionStrategy : IActionStrategy
         while (elapsedTime < timer)
         {
             elapsedTime += deltaTime;
-            if (elapsedTime >= timer) Finished = true;
+            if (elapsedTime >= timer)
+            {
+                Finished = true;
+            }
         }
     }
 }

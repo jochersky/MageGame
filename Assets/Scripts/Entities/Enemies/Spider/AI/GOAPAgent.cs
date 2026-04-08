@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 public class GOAPAgent : MonoBehaviour
 {
@@ -13,7 +15,7 @@ public class GOAPAgent : MonoBehaviour
     private GOAPPlanner planner;
     private NavMeshAgent navMeshAgent;
     private AnimationManager animationManager;
-
+    
     private Goal lastGoal;
     public Goal currentGoal;
     public ActionPlan actionPlan;
@@ -118,7 +120,6 @@ public class GOAPAgent : MonoBehaviour
 
     void Update()
     {
-
         // Update the plan and current action if there is one
         if (currentAction == null)
         {
