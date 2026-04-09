@@ -19,6 +19,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Color32 falseFloorColor; 
     [SerializeField] Color32 flamethrowerColor;
     [SerializeField] Color32 decorationColor;
+    [SerializeField] Color32 torchColor;
 
     [SerializeField] Color32 enemyColor;
     [SerializeField] GameObject enemy;   
@@ -32,8 +33,10 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] TileBase falseFloor;
     [SerializeField] TileBase flamethrower;
     [SerializeField] TileBase barrel;
+    [SerializeField] TileBase torch;
     [SerializeField] Tilemap colliderTilemap;
     [SerializeField] Tilemap nonColliderTilemap;
+    
     Sprite[] filledRoom;
     Sprite[] room0s;
     Sprite[] room1s;
@@ -299,6 +302,9 @@ public class MapGenerator : MonoBehaviour
                 } else if (color.Equals(decorationColor))
                 {
                     roomProbs[row * roomDimensions + col] = -44;
+                } else if (color.Equals(torchColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -77;
                 } else if (color.Equals(enemyColor))
                 {
                     roomProbs[row * roomDimensions + col] = -33;
@@ -370,6 +376,14 @@ public class MapGenerator : MonoBehaviour
                         // currently only decoration is barrels, in future more could be added
                         nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), barrel);
                     }
+                }
+                // check for special value indicating a torch
+                else if (roomProbability == -77)
+                {
+                   // if (randy.Next(0,100) < 50)
+                    //{
+                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), torch);
+                    //}
                 }
                 // check for special value indicating an enemy spawn
                 if (roomProbability == -33)

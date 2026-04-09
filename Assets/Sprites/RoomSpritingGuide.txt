@@ -20,3 +20,4 @@ Blue (0, 90, 248 or 0x005AF8) means 100% chance of a false floor
 Orange (255, 79, 0 or 0xFF4F00) means 25% chance of flamethrower, 75% of a block
 Magenta (184, 0, 255 or 0xB800FF) means 33% chance of an enemy, 67% chance of nothing
 Yellow (255, 219, 0 or 0xFFDB00) means 50% chance of a decoration, 50% chance of nothing
+Bright Orange (244, 140, 0 or 0xF48C00) means 50% of unlit torch 50% lit torch
