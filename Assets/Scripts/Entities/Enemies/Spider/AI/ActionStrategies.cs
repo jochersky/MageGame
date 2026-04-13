@@ -117,3 +117,23 @@ public class AttackActionStrategy : IActionStrategy
         }
     }
 }
+
+/*
+ * 
+ */
+public class ConsumeActionStrategy : IActionStrategy
+{
+    private AnimationManager animationManager;
+    
+    public bool CanPerform => true;
+    public bool Finished { get; private set; }
+
+    public ConsumeActionStrategy(AnimationManager animationManager)
+    {
+        this.animationManager = animationManager;
+    }
+    
+    public void Start() { }
+    public void Update(float deltaTime) { }
+    public void Stop() { }
+}

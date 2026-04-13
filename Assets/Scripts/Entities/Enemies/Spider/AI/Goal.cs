@@ -12,6 +12,11 @@ public class Goal
         Name = name;
     }
 
+    public void UpdatePriority(int newPriority)
+    {
+        Priority = newPriority;
+    }
+
     public class Builder
     {
         private readonly Goal goal;

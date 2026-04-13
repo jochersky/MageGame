@@ -11,7 +11,7 @@ public class Health : MonoBehaviour
     [SerializeField] private int maxHealth = 5;
     [SerializeField] private float invulnerabilityTime = 1.5f;
     
-    private int _currentHealth;
+    public int _currentHealth;
     private bool _isInvulnerable;
     
     public int CurrentHealth { get => _currentHealth; set => _currentHealth = value; }
