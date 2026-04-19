@@ -28,6 +28,8 @@ public class Explosion : MonoBehaviour
                     }
                 }
             }
+            
+            EventBus.Instance.HandleTileMapChanged();
         }
     }
 }

@@ -1,8 +1,10 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 public class PlayerStompHitbox : MonoBehaviour
 {
     public int damageAmt;
+    [SerializeField] private string[] tagsToIgnore;
     [SerializeField] private float stompAngleLimit = 30f;
     [SerializeField] private bool debug;
     
@@ -10,6 +12,8 @@ public class PlayerStompHitbox : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (tagsToIgnore.Contains(other.tag)) return;
+        
         if (other.TryGetComponent<Hurtbox>(out Hurtbox hurtbox))
         {
             Vector2 contactPoint = other.ClosestPoint(transform.position);

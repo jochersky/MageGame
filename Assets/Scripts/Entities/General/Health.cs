@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
@@ -10,8 +11,10 @@ public class Health : MonoBehaviour
     [Header("Properties")]
     [SerializeField] private int maxHealth = 5;
     [SerializeField] private float invulnerabilityTime = 1.5f;
+    [SerializeField] private bool capHealth = true;
     
-    private int _currentHealth;
+    public int _currentHealth;
+    public int MaxHealth { get => maxHealth; set => maxHealth = value; }
     private bool _isInvulnerable;
     
     public int CurrentHealth { get => _currentHealth; set => _currentHealth = value; }
@@ -20,6 +23,8 @@ public class Health : MonoBehaviour
     public event HealthChange OnHealthChanged;
     public delegate void Death();
     public event Death OnDeath;
+    public delegate void Destroyed();
+    public event Destroyed OnDestroyed;
     
     private void Awake()
     {
@@ -43,11 +48,14 @@ public class Health : MonoBehaviour
         
         OnHealthChanged?.Invoke(_currentHealth);
         if (damageFlash) damageFlash.StartFlash();
+        if (_currentHealth < 0f) OnDestroyed?.Invoke();
         if (_currentHealth <= 0f) OnDeath?.Invoke();
     }
 
-    private void Heal(int healAmt)
+    public void Heal(int healAmt)
     {
+        if (capHealth && _currentHealth + healAmt >= maxHealth) return;
+        
         _currentHealth += healAmt;
         
         OnHealthChanged?.Invoke(_currentHealth);
