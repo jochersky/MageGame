@@ -16,6 +16,7 @@ public class GOAPAgent : MonoBehaviour
     [Header("Stats")] 
     [SerializeField] private Health health;
     [SerializeField] private Hitbox hitbox;
+    [SerializeField] private Hurtbox hurtbox;
     
     private GOAPPlanner planner;
     private NavMeshAgent navMeshAgent;
@@ -40,6 +41,22 @@ public class GOAPAgent : MonoBehaviour
     private int _killEnemyPriorityWithLowHealth = 1;
     private int _stayAwayFromDangerPriorityWithLowHealth = 2;
     private int _gainHealthPriorityWithLowHealth = 3;
+    
+    Dictionary<string, int> initialPriorities = new()
+    {
+        ["WaitForMotivation"] = 1,
+        ["KillEnemy"] = 3,
+        ["StayAwayFromDanger"] = 1,
+        ["GainHealth"] = 1,
+    };
+    
+    Dictionary<string, int> lowHealthPriorities = new()
+    {
+        ["WaitForMotivation"] = 1,
+        ["KillEnemy"] = 1,
+        ["StayAwayFromDanger"] = 2,
+        ["GainHealth"] = 3,
+    };
     
     private bool _dead = false;
     private float _previousHealth;
@@ -70,6 +87,8 @@ public class GOAPAgent : MonoBehaviour
         {
             _dead = true;
             hitbox.Disable();
+            navMeshAgent.ResetPath();
+            hurtbox.gameObject.SetActive(false);
         };
             
         SetupBeliefs();
@@ -157,23 +176,23 @@ public class GOAPAgent : MonoBehaviour
         goals = new HashSet<Goal>();
         
         goals.Add(new Goal.Builder("WaitForMotivation")
-            .WithPriority(1)
+            .WithPriority(initialPriorities["WaitForMotivation"])
             .WithDesiredEffect(beliefs["Nothing"])
             .WithDesiredEffect(beliefs["AgentAtOrigin"])
             .Build());
         
         goals.Add(new Goal.Builder("KillEnemy")
-            .WithPriority(_killEnemyInitialPriority)
+            .WithPriority(initialPriorities["KillEnemy"])
             .WithDesiredEffect(beliefs["TargetDead"])
             .Build());
 
         goals.Add(new Goal.Builder("StayAwayFromDanger")
-            .WithPriority(_stayAwayFromDangerInitialPriority)
+            .WithPriority(initialPriorities["StayAwayFromDanger"])
             .WithDesiredEffect(beliefs["AvoidingEnemy"])
             .Build());
 
         goals.Add(new Goal.Builder("GainHealth")
-            .WithPriority(_gainHealthInitialPriority)
+            .WithPriority(initialPriorities["GainHealth"])
             .WithDesiredEffect(beliefs["GainedHealth"])
             .Build());
     }
@@ -218,24 +237,26 @@ public class GOAPAgent : MonoBehaviour
         {
             foreach (Goal goal in goals)
             {
-                if (goal.Name == "KillEnemy")
-                    goal.UpdatePriority(_killEnemyPriorityWithLowHealth);
-                else if (goal.Name == "StayAwayFromDanger")
-                    goal.UpdatePriority(_stayAwayFromDangerPriorityWithLowHealth);
-                else if (goal.Name == "GainHealth") 
-                    goal.UpdatePriority(_gainHealthPriorityWithLowHealth);
+                goal.UpdatePriority(lowHealthPriorities[goal.Name]);
+                // if (goal.Name == "KillEnemy")
+                //     goal.UpdatePriority(_killEnemyPriorityWithLowHealth);
+                // else if (goal.Name == "StayAwayFromDanger")
+                //     goal.UpdatePriority(_stayAwayFromDangerPriorityWithLowHealth);
+                // else if (goal.Name == "GainHealth") 
+                //     goal.UpdatePriority(_gainHealthPriorityWithLowHealth);
             }
         }
         else if (_previousHealth <= 2 && newHealth > 2)
         {
             foreach (Goal goal in goals)
             {
-                if (goal.Name == "KillEnemy")
-                    goal.UpdatePriority(_killEnemyInitialPriority);
-                else if (goal.Name == "StayAwayFromDanger")
-                    goal.UpdatePriority(_stayAwayFromDangerInitialPriority);
-                else if (goal.Name == "GainHealth") 
-                    goal.UpdatePriority(_gainHealthInitialPriority);
+                goal.UpdatePriority(initialPriorities[goal.Name]);
+                // if (goal.Name == "KillEnemy")
+                //     goal.UpdatePriority(_killEnemyInitialPriority);
+                // else if (goal.Name == "StayAwayFromDanger")
+                //     goal.UpdatePriority(_stayAwayFromDangerInitialPriority);
+                // else if (goal.Name == "GainHealth") 
+                //     goal.UpdatePriority(_gainHealthInitialPriority);
             }
         }
         RecomputeGoal();
