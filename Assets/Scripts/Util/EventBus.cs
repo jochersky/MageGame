@@ -24,6 +24,7 @@ public class EventBus : MonoBehaviour
 
     public void HandleTileMapChanged()
     {
+        // ok for this coroutine to be interrupted and called
         StartCoroutine(UpdateTileMapAtEndOfFrame());
     }
 

@@ -16,6 +16,11 @@ public class Goal
     {
         Priority = newPriority;
     }
+    
+    public override string ToString()
+    {
+        return Name;
+    }
 
     public class Builder
     {

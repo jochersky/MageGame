@@ -11,6 +11,7 @@ public class GOAPAgent : MonoBehaviour
     [Header("Sensors")] 
     [SerializeField] private Sensor chaseSensor;
     [SerializeField] private Sensor attackSensor;
+    [SerializeField] private Sensor gibSensor;
 
     [Header("Stats")] 
     [SerializeField] private Health health;
@@ -34,16 +35,17 @@ public class GOAPAgent : MonoBehaviour
     // normal
     private int _killEnemyInitialPriority = 3;
     private int _stayAwayFromDangerInitialPriority = 1;
+    private int _gainHealthInitialPriority = 1;
     // low health
     private int _killEnemyPriorityWithLowHealth = 1;
     private int _stayAwayFromDangerPriorityWithLowHealth = 2;
+    private int _gainHealthPriorityWithLowHealth = 3;
     
     private bool _dead = false;
     private float _previousHealth;
     private Vector3 _origin;
-    private GameObject _currentTarget;
-    private Health _currentTargetHealth;
-    
+    public Health _currentTargetHealth;
+    private Health _gibHealth;
     
     void Awake()
     {
@@ -62,9 +64,13 @@ public class GOAPAgent : MonoBehaviour
         _previousHealth = health.CurrentHealth;
         
         chaseSensor.OnTargetChanged += HandleTargetChanged;
-        health.OnDeath += () => _dead = true;
-        health.OnDeath += () => hitbox.Disable();
+        gibSensor.OnTargetChanged += HandleGibFound;
         health.OnHealthChanged += HandleHealthChanged;
+        health.OnDeath += () =>
+        {
+            _dead = true;
+            hitbox.Disable();
+        };
             
         SetupBeliefs();
         SetupActions();
@@ -81,15 +87,18 @@ public class GOAPAgent : MonoBehaviour
         factory.AddBelief("AgentIdle", () => !navMeshAgent.hasPath);
         factory.AddBelief("AgentMoving", () => navMeshAgent.hasPath);
         factory.AddBelief("AttackingEnemy", () => false); // agent can always be attacking an enemy
+        factory.AddBelief("TargetDead", () => _currentTargetHealth && _currentTargetHealth.CurrentHealth <= 0);
         factory.AddBelief("AvoidingEnemy", () => false); // agent can always be avoiding
         factory.AddBelief("LowHealth", () => health.CurrentHealth <= 2);
-        factory.AddBelief("GainedHealth", () => false); // agent can always be gaining health
-        factory.AddBelief("TargetDead", () => _currentTargetHealth && _currentTargetHealth.CurrentHealth <= 0);
+        factory.AddBelief("GainedHealth", () => _previousHealth < health.CurrentHealth); 
+        factory.AddBelief("GibConsumed", () => _gibHealth && _gibHealth.CurrentHealth <= 0);
         
         factory.AddLocationBelief("AgentAtOrigin", 0.1f, _origin);
         
         factory.AddSensorBelief("EnemyInChaseRange", chaseSensor);
         factory.AddSensorBelief("EnemyInAttackRange", attackSensor);
+        factory.AddSensorBelief("GibInRange", gibSensor);
+        factory.AddSensorBelief("GibInConsumeRange", attackSensor);
     }
 
     private void SetupActions()
@@ -108,8 +117,9 @@ public class GOAPAgent : MonoBehaviour
             .Build());
 
         actions.Add(new Action.Builder("RunFromEnemy")
-            .WithStrategy(new MoveActionStrategy(animationManager, navMeshAgent, () => _origin))
+            .WithStrategy(new MoveActionStrategy(animationManager, navMeshAgent, GetRunPosition))
             .AddPrecondition(beliefs["LowHealth"])
+            .AddPrecondition(beliefs["EnemyInChaseRange"])
             .AddEffect(beliefs["AvoidingEnemy"])
             .AddEffect(beliefs["AgentMoving"])
             .Build());
@@ -124,14 +134,22 @@ public class GOAPAgent : MonoBehaviour
         actions.Add(new Action.Builder("AttackEnemy")
             .WithStrategy(new AttackActionStrategy(animationManager))
             .AddPrecondition(beliefs["EnemyInAttackRange"])
+            .AddEffect(beliefs["AttackingEnemy"])
             .AddEffect(beliefs["TargetDead"])
             .Build());
 
-        // actions.Add(new Action.Builder("Consume")
-        //     .AddPrecondition(beliefs["EnemyInAttackRange"])
-        //     .AddPrecondition(beliefs["DeadEnemyPositionKnown"])
-        //     .AddEffect(beliefs["GainedHealth"])
-        //     .Build());
+        actions.Add(new Action.Builder("MoveToGib")
+            .WithStrategy(new MoveActionStrategy(animationManager, navMeshAgent, () => beliefs["GibInRange"].Position))
+            .AddPrecondition(beliefs["GibInRange"])
+            .AddEffect(beliefs["GibInConsumeRange"])
+            .Build());
+
+        actions.Add(new Action.Builder("ConsumeGib")
+            .WithStrategy(new AttackActionStrategy(animationManager))
+            .AddPrecondition(beliefs["GibInConsumeRange"])
+            .AddEffect(beliefs["GibConsumed"])
+            .AddEffect(beliefs["GainedHealth"])
+            .Build());
     }
 
     private void SetupGoals()
@@ -154,10 +172,10 @@ public class GOAPAgent : MonoBehaviour
             .WithDesiredEffect(beliefs["AvoidingEnemy"])
             .Build());
 
-        // goals.Add(new Goal.Builder("GainHealth")
-        //     .WithPriority(1)
-        //     .WithDesiredEffect(beliefs["GainedHealth"])
-        //     .Build());
+        goals.Add(new Goal.Builder("GainHealth")
+            .WithPriority(_gainHealthInitialPriority)
+            .WithDesiredEffect(beliefs["GainedHealth"])
+            .Build());
     }
 
     private void RecomputeGoal()
@@ -177,11 +195,23 @@ public class GOAPAgent : MonoBehaviour
         {
             _currentTargetHealth = null;
         }
-        _currentTarget = newTarget;
         
         RecomputeGoal();
     }
 
+    private void HandleGibFound(GameObject newGib)
+    {
+        if (newGib)
+        {
+            Health h = newGib.GetComponentInChildren<Health>();
+            _gibHealth = h;
+        }
+        else
+        {
+            _gibHealth = null;
+        }
+    }
+    
     private void HandleHealthChanged(int newHealth)
     {
         if (_previousHealth > 2 && newHealth <= 2)
@@ -192,6 +222,8 @@ public class GOAPAgent : MonoBehaviour
                     goal.UpdatePriority(_killEnemyPriorityWithLowHealth);
                 else if (goal.Name == "StayAwayFromDanger")
                     goal.UpdatePriority(_stayAwayFromDangerPriorityWithLowHealth);
+                else if (goal.Name == "GainHealth") 
+                    goal.UpdatePriority(_gainHealthPriorityWithLowHealth);
             }
         }
         else if (_previousHealth <= 2 && newHealth > 2)
@@ -202,9 +234,19 @@ public class GOAPAgent : MonoBehaviour
                     goal.UpdatePriority(_killEnemyInitialPriority);
                 else if (goal.Name == "StayAwayFromDanger")
                     goal.UpdatePriority(_stayAwayFromDangerInitialPriority);
+                else if (goal.Name == "GainHealth") 
+                    goal.UpdatePriority(_gainHealthInitialPriority);
             }
         }
         RecomputeGoal();
+    }
+
+    private Vector3 GetRunPosition()
+    {
+        Vector3 runPosition = transform.position;
+        Vector3 targetPosition = chaseSensor.TargetPosition();
+        runPosition = (runPosition - targetPosition) * 5f;
+        return runPosition;
     }
 
     void Update()
@@ -260,6 +302,10 @@ public class GOAPAgent : MonoBehaviour
                 currentAction = null;
 
                 // TODO: create function that runs through and evaluates all beliefs to activate other behavior
+                if (beliefs["GibConsumed"].Evaluate())
+                {
+                    health.Heal(_gibHealth.MaxHealth);
+                }
                 if (beliefs["TargetDead"].Evaluate())
                 {
                     chaseSensor.RemoveCurrentTarget();

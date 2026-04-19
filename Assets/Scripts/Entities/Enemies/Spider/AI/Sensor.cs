@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.XR;
 
 // TODO: fully implement this class
 public class Sensor : MonoBehaviour
 {
+    [SerializeField] private string[] tagsToSense;
     [SerializeField] Transform LineOfSightTransform;
     [SerializeField] float maxLineOfSightDistance;
     private LayerMask _mask;
@@ -60,51 +60,24 @@ public class Sensor : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent(out PlayerStateMachine player))
+        if (!tagsToSense.Contains(other.tag)) return;
+
+        if (other.TryGetComponent<Health>(out Health health))
         {
-            if (player.IsDead) return;
+            if (health.CurrentHealth <= 0) return;
             
             if (!_currentTarget && _nextTargets.Count < 1) 
                 HandleNewTargetSet(other.gameObject);
             else
-                _nextTargets.Add(other.gameObject);
-        }
-        else if (other.TryGetComponent(out RatStateMachine rat))
-        {
-            if (rat.IsDead) return;
-            
-            if (!_currentTarget && _nextTargets.Count < 1) 
-                HandleNewTargetSet(other.gameObject);
-            else 
                 _nextTargets.Add(other.gameObject);
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.TryGetComponent(out PlayerStateMachine player))
-        {
-            if (other.gameObject == _currentTarget)
-            {
-                if (_nextTargets.Count < 1)
-                {
-                    IsTargetInRangeAndVisible = false;
-                    TargetPosition = () => LastSeenPosition;
-                    _currentTarget = null;
-                    OnTargetChanged?.Invoke(null);
-                }
-                else
-                {
-                    var targetList = _nextTargets.ToList();
-                    HandleNewTargetSet(targetList[0]);
-                }
-            }
-            else
-            {
-                _nextTargets.Remove(other.gameObject);
-            }
-        }
-        else if (other.TryGetComponent(out RatStateMachine rat))
+        if (!tagsToSense.Contains(other.tag)) return;
+        
+        if (other.TryGetComponent<Health>(out Health health))
         {
             if (other.gameObject == _currentTarget)
             {

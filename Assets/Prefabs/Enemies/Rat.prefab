@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   damageAmt: 1
+  colliders: []
 --- !u!61 &7784417621114260720
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -347,7 +348,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2015638958787253349}
-  - component: {fileID: 3793943062346547927}
   - component: {fileID: 7924654570294326910}
   - component: {fileID: 6083625883421748770}
   m_Layer: 9
@@ -372,23 +372,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1813099872700834164}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3793943062346547927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8177436420209925595}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac7a9eba2942d234ca7f7d55869318f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  damageFlash: {fileID: 7609593824775675632}
-  hurtboxes:
-  - {fileID: 7924654570294326910}
-  maxHealth: 1
-  invulnerabilityTime: 0
 --- !u!114 &7924654570294326910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -463,6 +446,8 @@ GameObject:
   - component: {fileID: 1494723891627694278}
   - component: {fileID: 8278106934900616929}
   - component: {fileID: 4863647061312629515}
+  - component: {fileID: 2338991868819308851}
+  - component: {fileID: 6414141270941766223}
   m_Layer: 7
   m_Name: Rat
   m_TagString: Enemy
@@ -506,8 +491,10 @@ MonoBehaviour:
   environmentLayer:
     serializedVersion: 2
     m_Bits: 64
-  health: {fileID: 3793943062346547927}
+  health: {fileID: 2338991868819308851}
   hitbox: {fileID: 2583082123830694234}
+  hurtbox: {fileID: 7924654570294326910}
+  gibSpawner: {fileID: 6414141270941766223}
   defaultMoveSpeed: 3
   aggroMoveSpeed: 6
   lungeTime: 2
@@ -648,3 +635,36 @@ MonoBehaviour:
   rayVector: {x: 6, y: 0}
   disableOnEnter: 1
   debug: 1
+--- !u!114 &2338991868819308851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8871767491910850251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac7a9eba2942d234ca7f7d55869318f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  damageFlash: {fileID: 7609593824775675632}
+  hurtboxes:
+  - {fileID: 7924654570294326910}
+  maxHealth: 1
+  invulnerabilityTime: 0
+  capHealth: 1
+  _currentHealth: 0
+--- !u!114 &6414141270941766223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8871767491910850251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 479dd2e3041b6a648aacd898d3464817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  prefab: {fileID: 948560983991040983, guid: 3bdec0d7a02cbfc49b32eb3888e14d25, type: 3}
+  parentTransform: {fileID: 0}
