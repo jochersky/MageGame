@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.Mathematics;
 using UnityEngine;
@@ -20,6 +22,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Color32 flamethrowerColor;
     [SerializeField] Color32 decorationColor;
     [SerializeField] Color32 torchColor;
+    [SerializeField] Color32 chestColor;
 
     [SerializeField] Color32 enemyColor;
     [SerializeField] GameObject enemy;   
@@ -34,10 +37,12 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] TileBase flamethrower;
     [SerializeField] TileBase barrel;
     [SerializeField] TileBase torch;
+    [SerializeField] TileBase chest;
     [SerializeField] Tilemap colliderTilemap;
     [SerializeField] Tilemap nonColliderTilemap;
     
     Sprite[] filledRoom;
+    Sprite[] chestRoom;
     Sprite[] room0s;
     Sprite[] room1s;
     Sprite[] room2s;
@@ -54,6 +59,9 @@ public class MapGenerator : MonoBehaviour
     Vector2 startingPosition;
     bool startingPositionAssigned = false;
     Vector2 exitPosition;
+
+    int numChestRooms = 3;
+    List<(int x, int y)> chestRoomCoords = new List<(int x, int y)>();
 
     
     // this is apparently how you do multidimensional arrays
@@ -79,6 +87,7 @@ public class MapGenerator : MonoBehaviour
     {
         // Seems to be an issue with loading outside of specified folder; need to look into it
         filledRoom = Resources.LoadAll<Sprite>("Rooms/Filled Room");
+        chestRoom = Resources.LoadAll<Sprite>("Rooms/Chest Room");
         room0s = Resources.LoadAll<Sprite>("Rooms/Room Style 0");
         room1s = Resources.LoadAll<Sprite>("Rooms/Room Style 1");
         room2s = Resources.LoadAll<Sprite>("Rooms/Room Style 2");
@@ -116,7 +125,7 @@ public class MapGenerator : MonoBehaviour
         Debug.Log("Generating...");
         while (!foundExit)
         {
-            foundExit = pathfind();
+            foundExit = Pathfind();
         }    
         Debug.Log("Generation complete!");
     
@@ -124,7 +133,7 @@ public class MapGenerator : MonoBehaviour
 
     }
 
-    private bool pathfind()
+    private bool Pathfind()
     {
         // Randomly pick 1-5
         // 1,2 means left. 3,4 means right. 5 means down
@@ -135,6 +144,7 @@ public class MapGenerator : MonoBehaviour
             if (col - 1 >= 0 && map[row, col-1] == 0)
             {
                 labelRoomNum(MOVING_TO.LEFT);
+                markPotentialChestRooms(MOVING_TO.LEFT);
                 col -= 1;
                 return false;
             }
@@ -142,10 +152,11 @@ public class MapGenerator : MonoBehaviour
         } 
         if (direction == 3 || direction == 4)
         {
-            // if left is not the edge of the map AND we haven't been there yet, we are good
+            // if right is not the edge of the map AND we haven't been there yet, we are good
             if (col + 1 < map.GetLength(0) && map[row, col+1] == 0)
             {
                 labelRoomNum(MOVING_TO.RIGHT);
+                markPotentialChestRooms(MOVING_TO.RIGHT);
                 col += 1;
                 return false;
             }
@@ -157,6 +168,8 @@ public class MapGenerator : MonoBehaviour
         {
             // we are lying here, because we aren't actually moving anywhere, but want room types 1 and 3 anyway. Should probably fix.
             labelRoomNum(MOVING_TO.LEFT);
+            // for the purposes of chest rooms, we are moving down
+            markPotentialChestRooms(MOVING_TO.BELOW);
             // store exit column
             exitCol = col;
             return true;
@@ -164,8 +177,35 @@ public class MapGenerator : MonoBehaviour
         {
           // standard case, actually move down a floor
           labelRoomNum(MOVING_TO.BELOW);
+          markPotentialChestRooms(MOVING_TO.BELOW);
           row += 1;
           return false;  
+        }
+    }
+
+    private void markPotentialChestRooms(MOVING_TO direction)
+    {
+        // if we are moving left or down
+        if (direction == MOVING_TO.LEFT || direction == MOVING_TO.BELOW)
+        {
+            // and there exists a room to our right that is unvisited
+            if (col + 1 < map.GetLength(0) && map[row, col+1] == 0)
+            {
+                // mark it as a potential chest room
+                map[row, col + 1] = 5;
+            }
+            
+        }
+        // if we are moving right or down
+        if (direction == MOVING_TO.RIGHT || direction == MOVING_TO.BELOW)
+        {
+            // and there exists a room to our left that is unvisited
+            if (col - 1 >= 0 && map[row, col-1] == 0)
+            {
+                // mark it as a potential chest room
+                map[row, col - 1] = 5;
+            }
+            
         }
     }
 
@@ -232,6 +272,7 @@ public class MapGenerator : MonoBehaviour
                         case 2: InstantiateRoom(room2s, x, y, isStartingRoom, isEndingRoom); break;
                         case 3: InstantiateRoom(room3s, x, y, isStartingRoom, isEndingRoom); break;
                         case 4: InstantiateRoom(room4s, x, y, isStartingRoom, isEndingRoom); break;
+                        case 5: chestRoomCoords.Add((x,y)); break;
                         default: InstantiateRoom(room0s, x, y, isStartingRoom, isEndingRoom); break;
                     } 
                 }
@@ -240,6 +281,25 @@ public class MapGenerator : MonoBehaviour
             }
             x = 0;
             y -= roomDimensions;
+        }
+        InstantiateChestRooms(numChestRooms);
+    }
+
+    private void InstantiateChestRooms(int numRooms)
+    {
+        // instantiate chest rooms
+        for (int room = 0; room < numRooms; room++)
+        {
+            int randIdx = randy.Next(0, chestRoomCoords.Count);
+            (int x, int y) rand_coord = chestRoomCoords[randIdx];
+            chestRoomCoords.RemoveAt(randIdx);
+            InstantiateRoom(chestRoom, rand_coord.x,  rand_coord.y, false, false);
+        }
+        // instantiate all remaining marked rooms as 0s
+        for (int room = 0; room < chestRoomCoords.Count; room++)
+        {
+            (int x, int y) coord = chestRoomCoords[room];
+            InstantiateRoom(room0s, coord.x,  coord.y, false, false);
         }
     }
 
@@ -305,6 +365,9 @@ public class MapGenerator : MonoBehaviour
                 } else if (color.Equals(torchColor))
                 {
                     roomProbs[row * roomDimensions + col] = -77;
+                } else if (color.Equals(chestColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -66;
                 } else if (color.Equals(enemyColor))
                 {
                     roomProbs[row * roomDimensions + col] = -33;
@@ -376,6 +439,14 @@ public class MapGenerator : MonoBehaviour
                         // currently only decoration is barrels, in future more could be added
                         nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), barrel);
                     }
+                }
+                 // check for special value indicating a chest
+                else if (roomProbability == -66)
+                {
+                   // if (randy.Next(0,100) < 50)
+                    //{
+                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), chest);
+                    //}
                 }
                 // check for special value indicating a torch
                 else if (roomProbability == -77)

@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2107dfd93c09eef41bb3dd2a1cd29117, type: 3}
+  m_Name: Chest Tile
+  m_EditorClassIdentifier: Assembly-CSharp::ChestTile
+  TileSprite: {fileID: 0}
+  TileAssociatedPrefab: {fileID: 5369546599424313923, guid: 2243d88e43bf809439bda32aca71ce8c, type: 3}
