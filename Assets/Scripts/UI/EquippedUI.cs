@@ -50,6 +50,7 @@ public class EquippedUI : MonoBehaviour
         {
             case SpellTypes.FuryOfTheDragon: spell1Image.sprite = spellItemAssets.fireballSprite; break;
             case SpellTypes.GiftOfLight: spell1Image.sprite = spellItemAssets.lightSprite; break;
+            case SpellTypes.ReverseFootsteps: spell1Image.sprite = spellItemAssets.reverseFootstepsSprite; break;
         }
     }
 
@@ -60,6 +61,7 @@ public class EquippedUI : MonoBehaviour
         {
             case SpellTypes.FuryOfTheDragon: spell2Image.sprite = spellItemAssets.fireballSprite; break;
             case SpellTypes.GiftOfLight: spell2Image.sprite = spellItemAssets.lightSprite; break;
+            case SpellTypes.ReverseFootsteps: spell1Image.sprite = spellItemAssets.reverseFootstepsSprite; break;
         }
     } 
 }

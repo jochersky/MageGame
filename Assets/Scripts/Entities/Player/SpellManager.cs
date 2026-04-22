@@ -5,7 +5,8 @@ public enum SpellTypes
 {
     GiftOfLight,
     WindLordsBlessing,
-    FuryOfTheDragon
+    FuryOfTheDragon,
+    ReverseFootsteps,
 }
 
 [RequireComponent(typeof(PlayerStateMachine))]
@@ -15,7 +16,7 @@ public class SpellManager : MonoBehaviour
     [SerializeField] private PassiveSpellAffects passiveSpellAffects;
     [SerializeField] private Transform spellCastTransform;
     [SerializeField] private Transform spellParentTransform;
-    private PlayerStateMachine _psm;
+    [HideInInspector] public PlayerStateMachine psm;
     public ActiveSpell equippedSpell1;
     public ActiveSpell equippedSpell2;
     public PassiveSpell equippedPassiveSpell1;
@@ -39,7 +40,7 @@ public class SpellManager : MonoBehaviour
 
     private void Start()
     {
-        _psm = GetComponent<PlayerStateMachine>();
+        psm = GetComponent<PlayerStateMachine>();
         _layerMask = LayerMask.GetMask("Environment");
         
         if (debug) passiveSpellAffects.ClearAffects();
@@ -47,26 +48,26 @@ public class SpellManager : MonoBehaviour
     
     public void OnSpell1Pressed(InputAction.CallbackContext context)
     {
-        if (context.performed || context.canceled || _psm.IsDead) return;
+        if (context.performed || context.canceled || psm.IsDead) return;
         if (!equippedSpell1) return;
         
         // Player will get hit by their own spell if they cast it towards a wall
         Vector2 dir = spellCastTransform.position - transform.position;
         if (equippedSpell1.changePositionOnObstruction && Physics2D.Raycast(transform.position, dir, dir.magnitude, _layerMask)) 
-            equippedSpell1.CastSpell(_psm.gameObject.transform.position);
+            equippedSpell1.CastSpell(psm.gameObject.transform.position);
         else 
             equippedSpell1.CastSpell();
     }
     
     public void OnSpell2Pressed(InputAction.CallbackContext context)
     {
-        if (context.performed || context.canceled || _psm.IsDead) return;
+        if (context.performed || context.canceled || psm.IsDead) return;
         if (!equippedSpell2) return;
         
         // Player will get hit by their own spell if they cast it towards a wall
         Vector2 dir = spellCastTransform.position - transform.position;
         if (equippedSpell1.changePositionOnObstruction && Physics2D.Raycast(transform.position, dir, dir.magnitude, _layerMask)) 
-            equippedSpell2.CastSpell(_psm.gameObject.transform.position);
+            equippedSpell2.CastSpell(psm.gameObject.transform.position);
         else 
             equippedSpell2.CastSpell();
     }
@@ -74,6 +75,7 @@ public class SpellManager : MonoBehaviour
     public void EquipSpell1(ActiveSpell spell)
     {
         equippedSpell1 = spell;
+        spell.OnEquip();
         spell.spawnTransform = spellCastTransform;
         spell.parentTransform = spellParentTransform;
     }
@@ -81,6 +83,7 @@ public class SpellManager : MonoBehaviour
     public void EquipSpell2(ActiveSpell spell)
     {
         equippedSpell2 = spell;
+        spell.OnEquip();
         spell.spawnTransform = spellCastTransform;
         spell.parentTransform = spellParentTransform;
     }
@@ -95,18 +98,18 @@ public class SpellManager : MonoBehaviour
     {
         equippedPassiveSpell1 = spell;
         spell.AddSpellAffects(passiveSpellAffects);
-        spell.spawnTransform = _psm.gameObject.transform;
+        spell.spawnTransform = psm.gameObject.transform;
         spell.parentTransform = spellParentTransform;
-        spell.SubscribeConditions(_psm);
+        spell.SubscribeConditions(psm);
     }
 
     public void EquipPassiveSpell2(PassiveSpell spell)
     {
         equippedPassiveSpell2 = spell;
         spell.AddSpellAffects(passiveSpellAffects);
-        spell.spawnTransform = _psm.gameObject.transform;
+        spell.spawnTransform = psm.gameObject.transform;
         spell.parentTransform = spellParentTransform;
-        spell.SubscribeConditions(_psm);
+        spell.SubscribeConditions(psm);
     }
     
     // TODO

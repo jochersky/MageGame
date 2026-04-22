@@ -6,6 +6,8 @@ using UnityEngine;
 public class ActiveSpell : Spell
 {
     public bool changePositionOnObstruction;
+
+    public virtual void OnEquip() { }
     
     public virtual void CastSpell(Vector2 spawnPosition)
     {
