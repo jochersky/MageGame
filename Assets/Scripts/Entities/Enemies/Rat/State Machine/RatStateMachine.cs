@@ -11,6 +11,8 @@ public class RatStateMachine : MonoBehaviour
     [SerializeField] private LayerMask environmentLayer;
     [SerializeField] private Health health;
     [SerializeField] private Hitbox hitbox;
+    [SerializeField] private Hurtbox hurtbox;
+    [SerializeField] private Spawner gibSpawner;
     private Rigidbody2D _rb;
     private Collider2D _ownCollider;
 
@@ -96,7 +98,8 @@ public class RatStateMachine : MonoBehaviour
         {
             _isDead = true;
             hitbox.gameObject.SetActive(false);
-            health.gameObject.SetActive(false);
+            hurtbox.gameObject.SetActive(false);
+            gibSpawner.SpawnObject(transform);
         };
 
         playerEnteredSensor.OnPlayerSighted += () =>
