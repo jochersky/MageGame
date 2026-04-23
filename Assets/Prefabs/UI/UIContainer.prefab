@@ -6402,6 +6402,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9050349574154630785}
+  - component: {fileID: 8356413045219327096}
   m_Layer: 5
   m_Name: Gold
   m_TagString: Untagged
@@ -6429,6 +6430,19 @@ RectTransform:
   m_AnchoredPosition: {x: -265, y: 115}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8356413045219327096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6026116694674412919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4ac58ac9ca9b3542ac6647cfa2c5a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoneyCounter
+  text: {fileID: 7649794156345665510}
 --- !u!1 &6065583832096387269
 GameObject:
   m_ObjectHideFlags: 0
