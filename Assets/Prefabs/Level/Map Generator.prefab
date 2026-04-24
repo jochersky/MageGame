@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdc0e3ba2e797f1418112184baed32a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapGenerator
-  mapDimensions: 5
+  mapDimensions: 10
   roomDimensions: 8
   tilemapPrefab: {fileID: 4810154845123462041, guid: 8d3b4eb85d948bd44b5b79778c121f29, type: 3}
   guaranteeSquareColor:
@@ -74,11 +74,30 @@ MonoBehaviour:
   flamethrowerColor:
     serializedVersion: 2
     rgba: 4278210559
+  decorationColor:
+    serializedVersion: 2
+    rgba: 4278246399
+  torchColor:
+    serializedVersion: 2
+    rgba: 4278226164
+  chestColor:
+    serializedVersion: 2
+    rgba: 4278205828
+  enemyColor:
+    serializedVersion: 2
+    rgba: 4294901944
+  enemy: {fileID: 8871767491910850251, guid: 7a854991a1bb57544896e3f99c05779c, type: 3}
   grid: {fileID: 0}
   tile: {fileID: 11400000, guid: 72f6b968cb404b8489151337c64654d9, type: 2}
-  door: {fileID: 11400000, guid: 32eb5a2894890a54a93871a3a1a7bece, type: 2}
+  entryDoor: {fileID: 11400000, guid: 4f3938490fe3feb41963981c951e77f7, type: 2}
+  exitDoor: {fileID: 11400000, guid: 4e32aebd6dbda3b4c9e969d11961367c, type: 2}
   spikes: {fileID: 11400000, guid: 1d81b4590a495a24e83a272ccbd9fc79, type: 2}
   falseFloor: {fileID: 11400000, guid: 6aac9c5e4da061545a0027833ace09d4, type: 2}
   flamethrower: {fileID: 11400000, guid: 152f6c1f63b56b54ab107587298646fb, type: 2}
+  barrel: {fileID: 11400000, guid: ceafd5eb455dd0448ace5a760d472bb7, type: 2}
+  torch: {fileID: 11400000, guid: abc05ed79fb116c4390c97a53ad34266, type: 2}
+  chest: {fileID: 11400000, guid: 0773c2d64bb4621468150492cfe88920, type: 2}
   colliderTilemap: {fileID: 0}
   nonColliderTilemap: {fileID: 0}
+  player: {fileID: 0}
+  startingPositionOffset: 0.5
