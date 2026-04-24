@@ -45,7 +45,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 7ca758b51bedd7546aa65877a68e95de, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.15
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4977,6 +4977,7 @@ GameObject:
   - component: {fileID: 1717411244465192580}
   - component: {fileID: 4862004767951857590}
   - component: {fileID: 1560512251404282080}
+  - component: {fileID: 1895664034364096289}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -5123,3 +5124,17 @@ MonoBehaviour:
   coin: {fileID: 6066504846624555413, guid: 9c4bbc5a137e1dc4c85d9d8ccdc08e13, type: 3}
   heart: {fileID: 750826186759836841, guid: 9955f9c8779813b4689aeb277d7e2397, type: 3}
   bomb: {fileID: 6415621097088706008, guid: 4fca7f1e70ac3564caeeb5f7bf24a375, type: 3}
+  hurtbox: {fileID: 1895664034364096289}
+--- !u!114 &1895664034364096289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5706288909747184313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 999abbb11e3a71f408ed7bed986aa3be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hurtbox
+  ignoreTag: Enemy

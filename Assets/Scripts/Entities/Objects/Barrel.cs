@@ -10,12 +10,14 @@ public class Barrel : MonoBehaviour
     [SerializeField] GameObject coin;
     [SerializeField] GameObject heart;
     [SerializeField] GameObject bomb;
+    [SerializeField] Hurtbox hurtbox;
     private int _enemyIndex = 0;
     readonly List<GameObject> potentialDrops = new();
     bool triggered = false;
     System.Random randy;
     void Start()
     {
+        hurtbox.OnDamageTaken += OnDestroyed;
         randy = new System.Random();
         potentialDrops.Add(enemy);
         potentialDrops.Add(manaCapsule);
@@ -23,17 +25,16 @@ public class Barrel : MonoBehaviour
         potentialDrops.Add(heart);
         potentialDrops.Add(bomb);
     }
-    void OnTriggerEnter2D(Collider2D collision)
+
+    void OnDestroyed(int _amt)
     {
-        if (collision.TryGetComponent(out Hitbox hitbox) && !triggered)
+        if (!triggered)
         {
             triggered = true;
             GetComponent<SpriteRenderer>().enabled = false;
             GetComponentInChildren<ParticleSystem>().Play();
             GetComponentInChildren<AudioSource>().Play();
-
-
-            // Spawn random drop at 25% chance
+            // Spawn random drop at 75% chance
             if (randy.Next(0, 100) < 75)
             {
                 int temp = randy.Next(0, potentialDrops.Count);
@@ -45,5 +46,6 @@ public class Barrel : MonoBehaviour
                 }
             }
         }
+       
     }
 }
