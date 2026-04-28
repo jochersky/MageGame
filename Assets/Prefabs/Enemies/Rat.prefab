@@ -651,9 +651,10 @@ MonoBehaviour:
   hurtboxes:
   - {fileID: 7924654570294326910}
   maxHealth: 1
-  invulnerabilityTime: 0
+  invulnerabilityTime: 0.5
   capHealth: 1
   _currentHealth: 0
+  spawnInvulnerable: 1
 --- !u!114 &6414141270941766223
 MonoBehaviour:
   m_ObjectHideFlags: 0

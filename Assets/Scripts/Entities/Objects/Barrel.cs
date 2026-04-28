@@ -38,12 +38,11 @@ public class Barrel : MonoBehaviour
             if (randy.Next(0, 100) < 75)
             {
                 int temp = randy.Next(0, potentialDrops.Count);
-                GameObject spawned = Instantiate(potentialDrops[temp], transform);
-                // if its an enemy, give it I-frames
-                if (spawned.TryGetComponent<Health>(out var enemy)) 
+                if (potentialDrops[temp].TryGetComponent<Health>(out Health health))
                 {
-                    enemy.ActivateInvulnerability();
+                    health.spawnInvulnerable = true;
                 }
+                GameObject spawned = Instantiate(potentialDrops[temp], transform);
             }
         }
        
