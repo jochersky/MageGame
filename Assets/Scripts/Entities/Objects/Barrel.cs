@@ -28,6 +28,7 @@ public class Barrel : MonoBehaviour
 
     void OnDestroyed(int _amt)
     {
+        hurtbox.enabled = false;
         if (!triggered)
         {
             triggered = true;

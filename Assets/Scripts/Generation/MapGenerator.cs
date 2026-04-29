@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.Tilemaps;
 
 public class MapGenerator : MonoBehaviour
@@ -50,6 +51,11 @@ public class MapGenerator : MonoBehaviour
     Sprite[] room4s;
     Sprite template;
 
+    // NPC fields
+    GameObject[] NPCs;
+    readonly string NPCpath = "Characters/";
+    List<(int x, int y)> emptyFloorSpaces = new();
+
     int entranceCol;
     int exitCol;
 
@@ -93,20 +99,24 @@ public class MapGenerator : MonoBehaviour
         room2s = Resources.LoadAll<Sprite>("Rooms/Room Style 2");
         room3s = Resources.LoadAll<Sprite>("Rooms/Room Style 3");
         room4s = Resources.LoadAll<Sprite>("Rooms/Room Style 4");
+        NPCs = Resources.LoadAll<GameObject>(NPCpath);
         randy = new System.Random();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        GatherTileInfo();
         map = new int[mapDimensions, mapDimensions];
-        genRoomPaths();
-        placeMap();
+        GenRoomPaths();
+        PlaceMap();
+        GatherTileInfo();
+        SpawnEntities();
         // teleport player to starting position
         player.transform.position = startingPosition;
     }
 
 
-    private void genRoomPaths()
+    private void GenRoomPaths()
     {
         // All rooms start out as 0s, meaning not on the solution path
         // the Length property is all elements, get length is one dimension
@@ -143,8 +153,8 @@ public class MapGenerator : MonoBehaviour
             // if left is not the edge of the map AND we haven't been there yet, we are good
             if (col - 1 >= 0 && map[row, col-1] == 0)
             {
-                labelRoomNum(MOVING_TO.LEFT);
-                markPotentialChestRooms(MOVING_TO.LEFT);
+                LabelRoomNum(MOVING_TO.LEFT);
+                MarkPotentialChestRooms(MOVING_TO.LEFT);
                 col -= 1;
                 return false;
             }
@@ -155,8 +165,8 @@ public class MapGenerator : MonoBehaviour
             // if right is not the edge of the map AND we haven't been there yet, we are good
             if (col + 1 < map.GetLength(0) && map[row, col+1] == 0)
             {
-                labelRoomNum(MOVING_TO.RIGHT);
-                markPotentialChestRooms(MOVING_TO.RIGHT);
+                LabelRoomNum(MOVING_TO.RIGHT);
+                MarkPotentialChestRooms(MOVING_TO.RIGHT);
                 col += 1;
                 return false;
             }
@@ -167,23 +177,23 @@ public class MapGenerator : MonoBehaviour
         if (row + 1 == map.GetLength(0))
         {
             // we are lying here, because we aren't actually moving anywhere, but want room types 1 and 3 anyway. Should probably fix.
-            labelRoomNum(MOVING_TO.LEFT);
+            LabelRoomNum(MOVING_TO.LEFT);
             // for the purposes of chest rooms, we are moving down
-            markPotentialChestRooms(MOVING_TO.BELOW);
+            MarkPotentialChestRooms(MOVING_TO.BELOW);
             // store exit column
             exitCol = col;
             return true;
         } else
         {
           // standard case, actually move down a floor
-          labelRoomNum(MOVING_TO.BELOW);
-          markPotentialChestRooms(MOVING_TO.BELOW);
+          LabelRoomNum(MOVING_TO.BELOW);
+          MarkPotentialChestRooms(MOVING_TO.BELOW);
           row += 1;
           return false;  
         }
     }
 
-    private void markPotentialChestRooms(MOVING_TO direction)
+    private void MarkPotentialChestRooms(MOVING_TO direction)
     {
         // if we are moving left or down
         if (direction == MOVING_TO.LEFT || direction == MOVING_TO.BELOW)
@@ -214,7 +224,7 @@ public class MapGenerator : MonoBehaviour
     // Room type 2 has exits on the left, right, and bottom (we love the Oxford comma)
     // Room type 3 has exits on the left, right, and top
     // Room type 4 has exits on the left, right, top, and bottom
-    private void labelRoomNum(MOVING_TO direction)
+    private void LabelRoomNum(MOVING_TO direction)
     {
         // if we are moving left or right, then we are either 1 or 3.
         // if the room above us is offscreen, or is of type 0, 1, or 3, then we are type 1.
@@ -245,7 +255,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     
-    private void placeMap()
+    private void PlaceMap()
     {
         int x = 0;
         int y = 0;
@@ -443,18 +453,12 @@ public class MapGenerator : MonoBehaviour
                  // check for special value indicating a chest
                 else if (roomProbability == -66)
                 {
-                   // if (randy.Next(0,100) < 50)
-                    //{
-                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), chest);
-                    //}
+                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), chest);
                 }
                 // check for special value indicating a torch
                 else if (roomProbability == -77)
                 {
-                   // if (randy.Next(0,100) < 50)
-                    //{
-                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), torch);
-                    //}
+                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), torch);
                 }
                 // check for special value indicating an enemy spawn
                 if (roomProbability == -33)
@@ -488,9 +492,35 @@ public class MapGenerator : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    void GatherTileInfo()
     {
-        
+        foreach (Vector3Int tileCoords in colliderTilemap.cellBounds.allPositionsWithin)
+        {
+            if (tileCoords.y == 0)
+            {
+                continue;
+            }
+            Vector3Int below = new(tileCoords.x, tileCoords.y - 1, 0); 
+            TileBase currTile = colliderTilemap.GetTile(tileCoords);
+            TileBase tileBelow = colliderTilemap.GetTile(below);
+            // if the space is blank and there is a solid tile beneath it, record it as a floor tile
+            if (currTile == null && tileBelow != null) //tile.Equals(tileBelow)
+            {
+                emptyFloorSpaces.Add(new (tileCoords.x, tileCoords.y));
+            }
+        }
+        //print(emptyFloorSpaces.Count);
+    }
+
+    void SpawnEntities()
+    {
+        //obtain a random floor tile and spawn Mushelle
+        if (emptyFloorSpaces.Capacity == 0)
+        {
+            print("ERROR:No floor spaces found");
+            return;
+        }
+        (int xCoord, int yCoord) = emptyFloorSpaces[randy.Next(0, emptyFloorSpaces.Count)];
+        Instantiate(NPCs[0], new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
     }
 }
