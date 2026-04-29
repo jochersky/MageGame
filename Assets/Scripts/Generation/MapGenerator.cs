@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.Tilemaps;
@@ -44,6 +45,7 @@ public class MapGenerator : MonoBehaviour
     
     Sprite[] filledRoom;
     Sprite[] chestRoom;
+    Sprite[] specialRooms;
     Sprite[] room0s;
     Sprite[] room1s;
     Sprite[] room2s;
@@ -67,7 +69,7 @@ public class MapGenerator : MonoBehaviour
     Vector2 exitPosition;
 
     int numChestRooms = 3;
-    List<(int x, int y)> chestRoomCoords = new List<(int x, int y)>();
+    List<(int x, int y)> specialRoomCoords = new List<(int x, int y)>();
 
     
     // this is apparently how you do multidimensional arrays
@@ -99,6 +101,7 @@ public class MapGenerator : MonoBehaviour
         room2s = Resources.LoadAll<Sprite>("Rooms/Room Style 2");
         room3s = Resources.LoadAll<Sprite>("Rooms/Room Style 3");
         room4s = Resources.LoadAll<Sprite>("Rooms/Room Style 4");
+        specialRooms = Resources.LoadAll<Sprite>("Rooms/Special Rooms");
         NPCs = Resources.LoadAll<GameObject>(NPCpath);
         randy = new System.Random();
     }
@@ -282,7 +285,7 @@ public class MapGenerator : MonoBehaviour
                         case 2: InstantiateRoom(room2s, x, y, isStartingRoom, isEndingRoom); break;
                         case 3: InstantiateRoom(room3s, x, y, isStartingRoom, isEndingRoom); break;
                         case 4: InstantiateRoom(room4s, x, y, isStartingRoom, isEndingRoom); break;
-                        case 5: chestRoomCoords.Add((x,y)); break;
+                        case 5: specialRoomCoords.Add((x,y)); break;
                         default: InstantiateRoom(room0s, x, y, isStartingRoom, isEndingRoom); break;
                     } 
                 }
@@ -295,21 +298,31 @@ public class MapGenerator : MonoBehaviour
         InstantiateChestRooms(numChestRooms);
     }
 
-    private void InstantiateChestRooms(int numRooms)
+    private void InstantiateChestRooms(int numChestRooms)
     {
         // instantiate chest rooms
-        for (int room = 0; room < numRooms; room++)
+        for (int room = 0; room < numChestRooms; room++)
         {
-            int randIdx = randy.Next(0, chestRoomCoords.Count);
-            (int x, int y) rand_coord = chestRoomCoords[randIdx];
-            chestRoomCoords.RemoveAt(randIdx);
-            InstantiateRoom(chestRoom, rand_coord.x,  rand_coord.y, false, false);
+            int randIdx = randy.Next(0, specialRoomCoords.Count);
+            (int x, int y) = specialRoomCoords[randIdx];
+            specialRoomCoords.RemoveAt(randIdx);
+            InstantiateRoom(chestRoom, x,  y, false, false);
+        }
+        // instantiate other special rooms
+        for (int room = 0; room < specialRooms.Length; room++)
+        {
+            int randIdx = randy.Next(0, specialRoomCoords.Count);
+            (int x, int y) = specialRoomCoords[randIdx];
+            specialRoomCoords.RemoveAt(randIdx);
+            Sprite[] temp_arr = new Sprite[1];
+            temp_arr[0] = specialRooms[room];
+            InstantiateRoom(temp_arr, x,  y, false, false);
         }
         // instantiate all remaining marked rooms as 0s
-        for (int room = 0; room < chestRoomCoords.Count; room++)
+        for (int room = 0; room < specialRoomCoords.Count; room++)
         {
-            (int x, int y) coord = chestRoomCoords[room];
-            InstantiateRoom(room0s, coord.x,  coord.y, false, false);
+            (int x, int y) = specialRoomCoords[room];
+            InstantiateRoom(room0s, x,  y, false, false);
         }
     }
 
