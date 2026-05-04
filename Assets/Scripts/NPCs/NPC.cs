@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Collider2D))]
@@ -15,6 +17,12 @@ public class NPC : MonoBehaviour
     [SerializeField] string[] dialogue;
     // time in seconds between each character appearing
     [SerializeField] float textSpeed = 0;
+    // information for generating any associated room
+    public Sprite room;
+    public Enemy specialEnemy;
+    public TileBase specialTile;
+    public GameObject specialObject;
+    public List<Enemy> specialEnemies = new();
     // current line of dialogue in the list of lines
     int _lineIdx = 0;
     private bool _inRange = false;

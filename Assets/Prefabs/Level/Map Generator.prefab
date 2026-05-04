@@ -83,6 +83,9 @@ MonoBehaviour:
   chestColor:
     serializedVersion: 2
     rgba: 4278205828
+  specialEnemyColor:
+    serializedVersion: 2
+    rgba: 4290707711
   enemyColor:
     serializedVersion: 2
     rgba: 4294901944

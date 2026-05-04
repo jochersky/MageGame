@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Color32 decorationColor;
     [SerializeField] Color32 torchColor;
     [SerializeField] Color32 chestColor;
+    [SerializeField] Color32 specialEnemyColor;
 
     [SerializeField] Color32 enemyColor;
     [SerializeField] GameObject enemy;   
@@ -45,16 +47,16 @@ public class MapGenerator : MonoBehaviour
     
     Sprite[] filledRoom;
     Sprite[] chestRoom;
-    Sprite[] specialRooms;
     Sprite[] room0s;
     Sprite[] room1s;
     Sprite[] room2s;
     Sprite[] room3s;
     Sprite[] room4s;
     Sprite template;
+    Dictionary<string, Sprite> specialRooms;
 
     // NPC fields
-    GameObject[] NPCs;
+    NPC[] NPCs;
     readonly string NPCpath = "Characters/";
     List<(int x, int y)> emptyFloorSpaces = new();
 
@@ -101,8 +103,7 @@ public class MapGenerator : MonoBehaviour
         room2s = Resources.LoadAll<Sprite>("Rooms/Room Style 2");
         room3s = Resources.LoadAll<Sprite>("Rooms/Room Style 3");
         room4s = Resources.LoadAll<Sprite>("Rooms/Room Style 4");
-        specialRooms = Resources.LoadAll<Sprite>("Rooms/Special Rooms");
-        NPCs = Resources.LoadAll<GameObject>(NPCpath);
+        NPCs = Resources.LoadAll<NPC>(NPCpath);
         randy = new System.Random();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -275,18 +276,18 @@ public class MapGenerator : MonoBehaviour
                 // top and bottom rows are all filled, as are the leftmost and rightmost columns
                 if (row == -1 || row == map.GetLength(0) || col == -1 || col == map.GetLength(0))
                 {
-                    InstantiateRoom(filledRoom, x, y, isStartingRoom, isEndingRoom);
+                    InstantiateRoom(filledRoom, x, y, isStartingRoom, isEndingRoom, -1);
                 } else // normal room creation
                 {
                    int roomNum = map[row,col];
                     switch (roomNum)
                     {
-                        case 1: InstantiateRoom(room1s, x, y, isStartingRoom, isEndingRoom); break;
-                        case 2: InstantiateRoom(room2s, x, y, isStartingRoom, isEndingRoom); break;
-                        case 3: InstantiateRoom(room3s, x, y, isStartingRoom, isEndingRoom); break;
-                        case 4: InstantiateRoom(room4s, x, y, isStartingRoom, isEndingRoom); break;
+                        case 1: InstantiateRoom(room1s, x, y, isStartingRoom, isEndingRoom, -1); break;
+                        case 2: InstantiateRoom(room2s, x, y, isStartingRoom, isEndingRoom, -1); break;
+                        case 3: InstantiateRoom(room3s, x, y, isStartingRoom, isEndingRoom, -1); break;
+                        case 4: InstantiateRoom(room4s, x, y, isStartingRoom, isEndingRoom, -1); break;
                         case 5: specialRoomCoords.Add((x,y)); break;
-                        default: InstantiateRoom(room0s, x, y, isStartingRoom, isEndingRoom); break;
+                        default: InstantiateRoom(room0s, x, y, isStartingRoom, isEndingRoom, -1); break;
                     } 
                 }
                 
@@ -295,10 +296,10 @@ public class MapGenerator : MonoBehaviour
             x = 0;
             y -= roomDimensions;
         }
-        InstantiateChestRooms(numChestRooms);
+        InstantiateSpecialRooms(numChestRooms);
     }
 
-    private void InstantiateChestRooms(int numChestRooms)
+    private void InstantiateSpecialRooms(int numChestRooms)
     {
         // instantiate chest rooms
         for (int room = 0; room < numChestRooms; room++)
@@ -306,27 +307,28 @@ public class MapGenerator : MonoBehaviour
             int randIdx = randy.Next(0, specialRoomCoords.Count);
             (int x, int y) = specialRoomCoords[randIdx];
             specialRoomCoords.RemoveAt(randIdx);
-            InstantiateRoom(chestRoom, x,  y, false, false);
+            InstantiateRoom(chestRoom, x,  y, false, false, -1);
         }
         // instantiate other special rooms
-        for (int room = 0; room < specialRooms.Length; room++)
+        for (int npc_idx = 0; npc_idx < NPCs.Length; npc_idx++)
         {
             int randIdx = randy.Next(0, specialRoomCoords.Count);
             (int x, int y) = specialRoomCoords[randIdx];
             specialRoomCoords.RemoveAt(randIdx);
             Sprite[] temp_arr = new Sprite[1];
-            temp_arr[0] = specialRooms[room];
-            InstantiateRoom(temp_arr, x,  y, false, false);
+            // may have to cast
+            temp_arr[0] = NPCs[npc_idx].room;
+            InstantiateRoom(temp_arr, x,  y, false, false, npc_idx);
         }
         // instantiate all remaining marked rooms as 0s
         for (int room = 0; room < specialRoomCoords.Count; room++)
         {
             (int x, int y) = specialRoomCoords[room];
-            InstantiateRoom(room0s, x,  y, false, false);
+            InstantiateRoom(room0s, x,  y, false, false, -1);
         }
     }
 
-    void InstantiateRoom(Sprite[] rooms, int x, int y, bool isStartingRoom, bool isEndingRoom)
+    void InstantiateRoom(Sprite[] rooms, int x, int y, bool isStartingRoom, bool isEndingRoom, int specialIdx)
     {
         ROOM_QUALITY room_quality = ROOM_QUALITY.REGULAR;
         if (isStartingRoom) { room_quality = ROOM_QUALITY.STARTING; }
@@ -334,7 +336,7 @@ public class MapGenerator : MonoBehaviour
         template = rooms[randy.Next(rooms.Length)];
         Color32[] pixels = ConvertSpriteToPixelArray(template);
         int[] room = TranslateColorsToProbabilities(pixels, room_quality);
-        GenerateRoom(room, x, y);
+        GenerateRoom(room, x, y, specialIdx);
     }
 
     Color32[] ConvertSpriteToPixelArray(Sprite sprite)
@@ -361,6 +363,7 @@ public class MapGenerator : MonoBehaviour
             {
                 Color32 color = pixels[row * roomDimensions + col];
                 // maybe switch statements hate me. who knows?
+                //I wonder if we can convert the color into a unique integer
                 if (color.Equals(guaranteeSquareColor))
                 {
                     roomProbs[row * roomDimensions + col] = 100;
@@ -394,6 +397,9 @@ public class MapGenerator : MonoBehaviour
                 } else if (color.Equals(enemyColor))
                 {
                     roomProbs[row * roomDimensions + col] = -33;
+                } else if (color.Equals(specialEnemyColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -34;
                 } else if (color.Equals(entryExitColor))
                 {
                     if (room_quality == ROOM_QUALITY.STARTING || room_quality == ROOM_QUALITY.ENDING)
@@ -419,7 +425,7 @@ public class MapGenerator : MonoBehaviour
     }
 
 
-    void GenerateRoom(int[] room, int xOffset, int yOffset)
+    void GenerateRoom(int[] room, int xOffset, int yOffset, int specialIdx)
     {
         for (int row = 0; row < roomDimensions; row++)
         {
@@ -480,6 +486,10 @@ public class MapGenerator : MonoBehaviour
                     {
                         Instantiate(enemy, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
                     }
+                }
+                else if (roomProbability == -34)
+                {
+                    NPCs[specialIdx].specialEnemies.Add(Instantiate(NPCs[specialIdx].specialEnemy, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity));
                 }
                 // check for special value indicating false floor
                 else if (roomProbability == -88)

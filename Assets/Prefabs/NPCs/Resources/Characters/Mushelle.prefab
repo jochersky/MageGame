@@ -150,6 +150,11 @@ MonoBehaviour:
   - Hi I am Mushelle
   - Goodbye!
   textSpeed: 0.05
+  room: {fileID: 21300000, guid: ed4f7184341efc54da9d5cf1a68b9340, type: 3}
+  specialEnemy: {fileID: 8071334964282173369, guid: 8ecf3d95715f0b642aa2305633b43f40, type: 3}
+  specialTile: {fileID: 0}
+  specialObject: {fileID: 0}
+  specialEnemies: []
   meetLines: []
   successLines: []
   reward: {fileID: 0}
