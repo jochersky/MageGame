@@ -1,9 +1,14 @@
+using System;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public delegate void Died();
+    public event Died OnDied;
     public void Die()
     {
-        Destroy(gameObject);
+        print("Updates");
+        OnDied?.Invoke();
+        //Destroy(gameObject);
     }
 }

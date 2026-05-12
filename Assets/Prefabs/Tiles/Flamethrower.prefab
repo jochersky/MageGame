@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9134315338889326898}
   - component: {fileID: 4737180672532356201}
   - component: {fileID: 4463621034555044245}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3738,7 +3738,7 @@ ParticleSystem:
     m_EnergyLossOnCollision:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.75
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -3795,7 +3795,7 @@ ParticleSystem:
       serializedVersion: 2
       m_Bits: 64
     maxCollisionShapes: 256
-    quality: 2
+    quality: 0
     voxelSize: 0.5
     collisionMessages: 0
     collidesWithDynamic: 1
@@ -5026,6 +5026,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 2
+  colliders: []
 --- !u!1 &7744476860813278961
 GameObject:
   m_ObjectHideFlags: 0

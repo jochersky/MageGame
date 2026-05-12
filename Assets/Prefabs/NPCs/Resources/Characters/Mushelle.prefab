@@ -147,17 +147,21 @@ MonoBehaviour:
   dialogueBox: {fileID: 6306804129121309702}
   text: {fileID: 5623922658667024253}
   dialogue:
-  - Hi I am Mushelle
-  - Goodbye!
-  textSpeed: 0.05
+  - Hi I am Mushelle!
+  - My mush room has been invaded by RATS!
+  - So now I am hiding out here.
+  - If you could clear out those RATS, I can reward you.
+  textSpeed: 0.025
   room: {fileID: 21300000, guid: ed4f7184341efc54da9d5cf1a68b9340, type: 3}
-  specialEnemy: {fileID: 8071334964282173369, guid: 8ecf3d95715f0b642aa2305633b43f40, type: 3}
+  specialEnemy: {fileID: 2399355840495682850, guid: 8ecf3d95715f0b642aa2305633b43f40, type: 3}
   specialTile: {fileID: 0}
   specialObject: {fileID: 0}
   specialEnemies: []
-  meetLines: []
-  successLines: []
-  reward: {fileID: 0}
+  successLines:
+  - Oh, you did it!
+  - Thank you so mush!
+  - I'll be going now, but here is your reward.
+  reward: {fileID: 5369546599424313923, guid: 2243d88e43bf809439bda32aca71ce8c, type: 3}
 --- !u!1 &6631568217333438146
 GameObject:
   m_ObjectHideFlags: 0

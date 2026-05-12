@@ -14,15 +14,15 @@ public class NPC : MonoBehaviour
     [SerializeField] Image dialogueBox;
     [SerializeField] TextMeshProUGUI text;
     // list of lines of dialogue to be spoken right now
-    [SerializeField] string[] dialogue;
+    public string[] dialogue;
     // time in seconds between each character appearing
     [SerializeField] float textSpeed = 0;
     // information for generating any associated room
     public Sprite room;
-    public Enemy specialEnemy;
+    public GameObject specialEnemy;
     public TileBase specialTile;
     public GameObject specialObject;
-    public List<Enemy> specialEnemies = new();
+    public List<GameObject> specialEnemies = new();
     // current line of dialogue in the list of lines
     int _lineIdx = 0;
     private bool _inRange = false;
@@ -30,7 +30,7 @@ public class NPC : MonoBehaviour
     private PlayerInput _input;
     private Coroutine talking;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public virtual void Start()
     {
         // this is only way to do this without disrupting the current event setup it seems
         _input = FindAnyObjectByType<PlayerInput>();
@@ -71,8 +71,7 @@ public class NPC : MonoBehaviour
             _lineIdx += 1;
         } else
         {
-            dialogueBox.enabled = false;
-            _lineIdx = 0;
+            CloseDialogue();
         }
         _isTalking = false;
     }
@@ -88,12 +87,18 @@ public class NPC : MonoBehaviour
         _inRange = false;
         outline.enabled = false;
         text.text = string.Empty;
-        dialogueBox.enabled = false;
-        _lineIdx = 0;
+        CloseDialogue();
         if (talking != null)
         {
             StopCoroutine(talking);
             _isTalking = false;
+            
         }
+    }
+
+    public virtual void CloseDialogue()
+    {
+        dialogueBox.enabled = false;
+        _lineIdx = 0;
     }
 }

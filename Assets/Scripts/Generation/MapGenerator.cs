@@ -56,7 +56,8 @@ public class MapGenerator : MonoBehaviour
     Dictionary<string, Sprite> specialRooms;
 
     // NPC fields
-    NPC[] NPCs;
+    NPC[] NPCPrefabs;
+    List<NPC> NPCInstances = new();
     readonly string NPCpath = "Characters/";
     List<(int x, int y)> emptyFloorSpaces = new();
 
@@ -103,20 +104,28 @@ public class MapGenerator : MonoBehaviour
         room2s = Resources.LoadAll<Sprite>("Rooms/Room Style 2");
         room3s = Resources.LoadAll<Sprite>("Rooms/Room Style 3");
         room4s = Resources.LoadAll<Sprite>("Rooms/Room Style 4");
-        NPCs = Resources.LoadAll<NPC>(NPCpath);
+        NPCPrefabs = Resources.LoadAll<NPC>(NPCpath);
         randy = new System.Random();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GatherTileInfo();
         map = new int[mapDimensions, mapDimensions];
+        SpawnEntities();
         GenRoomPaths();
         PlaceMap();
         GatherTileInfo();
-        SpawnEntities();
+        PlaceEntities();
         // teleport player to starting position
         player.transform.position = startingPosition;
+    }
+
+    void SpawnEntities()
+    {
+        foreach (NPC npc in NPCPrefabs)
+        {
+            NPCInstances.Add(Instantiate(npc, transform));
+        }
     }
 
 
@@ -310,14 +319,14 @@ public class MapGenerator : MonoBehaviour
             InstantiateRoom(chestRoom, x,  y, false, false, -1);
         }
         // instantiate other special rooms
-        for (int npc_idx = 0; npc_idx < NPCs.Length; npc_idx++)
+        for (int npc_idx = 0; npc_idx < NPCInstances.Count; npc_idx++)
         {
             int randIdx = randy.Next(0, specialRoomCoords.Count);
             (int x, int y) = specialRoomCoords[randIdx];
             specialRoomCoords.RemoveAt(randIdx);
             Sprite[] temp_arr = new Sprite[1];
             // may have to cast
-            temp_arr[0] = NPCs[npc_idx].room;
+            temp_arr[0] = NPCInstances[npc_idx].room;
             InstantiateRoom(temp_arr, x,  y, false, false, npc_idx);
         }
         // instantiate all remaining marked rooms as 0s
@@ -489,7 +498,8 @@ public class MapGenerator : MonoBehaviour
                 }
                 else if (roomProbability == -34)
                 {
-                    NPCs[specialIdx].specialEnemies.Add(Instantiate(NPCs[specialIdx].specialEnemy, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity));
+                    GameObject instance = Instantiate(NPCInstances[specialIdx].specialEnemy, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
+                    NPCInstances[specialIdx].specialEnemies.Add(instance);
                 }
                 // check for special value indicating false floor
                 else if (roomProbability == -88)
@@ -535,7 +545,7 @@ public class MapGenerator : MonoBehaviour
         //print(emptyFloorSpaces.Count);
     }
 
-    void SpawnEntities()
+    void PlaceEntities()
     {
         //obtain a random floor tile and spawn Mushelle
         if (emptyFloorSpaces.Capacity == 0)
@@ -544,6 +554,6 @@ public class MapGenerator : MonoBehaviour
             return;
         }
         (int xCoord, int yCoord) = emptyFloorSpaces[randy.Next(0, emptyFloorSpaces.Count)];
-        Instantiate(NPCs[0], new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
+        NPCInstances[0].transform.position = new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset);
     }
 }
