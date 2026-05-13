@@ -23,6 +23,7 @@ public class NPC : MonoBehaviour
     public TileBase specialTile;
     public GameObject specialObject;
     public List<GameObject> specialEnemies = new();
+    public Vector2 spawnPoint;
     // current line of dialogue in the list of lines
     int _lineIdx = 0;
     private bool _inRange = false;

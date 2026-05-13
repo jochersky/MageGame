@@ -27,6 +27,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Color32 torchColor;
     [SerializeField] Color32 chestColor;
     [SerializeField] Color32 specialEnemyColor;
+    [SerializeField] Color32 specialItemColor;
+    [SerializeField] Color32 NPCSpawnColor;
 
     [SerializeField] Color32 enemyColor;
     [SerializeField] GameObject enemy;   
@@ -409,6 +411,12 @@ public class MapGenerator : MonoBehaviour
                 } else if (color.Equals(specialEnemyColor))
                 {
                     roomProbs[row * roomDimensions + col] = -34;
+                } else if (color.Equals(specialItemColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -35;
+                } else if (color.Equals(NPCSpawnColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -36;
                 } else if (color.Equals(entryExitColor))
                 {
                     if (room_quality == ROOM_QUALITY.STARTING || room_quality == ROOM_QUALITY.ENDING)
@@ -501,6 +509,15 @@ public class MapGenerator : MonoBehaviour
                     GameObject instance = Instantiate(NPCInstances[specialIdx].specialEnemy, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
                     NPCInstances[specialIdx].specialEnemies.Add(instance);
                 }
+                else if (roomProbability == -35)
+                {
+                    Instantiate(NPCInstances[specialIdx].specialObject, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
+                }
+                // NPC Spawn value
+                else if (roomProbability == -36)
+                {
+                    NPCInstances[specialIdx].spawnPoint = new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset);
+                }
                 // check for special value indicating false floor
                 else if (roomProbability == -88)
                 {
@@ -547,6 +564,7 @@ public class MapGenerator : MonoBehaviour
 
     void PlaceEntities()
     {
+        // TODO: Loop through NPCS. and place them at their spawn point. If none, spawn at a random floor tile.
         //obtain a random floor tile and spawn Mushelle
         if (emptyFloorSpaces.Capacity == 0)
         {
@@ -555,5 +573,6 @@ public class MapGenerator : MonoBehaviour
         }
         (int xCoord, int yCoord) = emptyFloorSpaces[randy.Next(0, emptyFloorSpaces.Count)];
         NPCInstances[0].transform.position = new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset);
+        NPCInstances[1].transform.position = NPCInstances[1].spawnPoint;
     }
 }

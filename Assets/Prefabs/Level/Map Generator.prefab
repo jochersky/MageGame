@@ -86,6 +86,12 @@ MonoBehaviour:
   specialEnemyColor:
     serializedVersion: 2
     rgba: 4290707711
+  specialItemColor:
+    serializedVersion: 2
+    rgba: 4291910393
+  NPCSpawnColor:
+    serializedVersion: 2
+    rgba: 4293770493
   enemyColor:
     serializedVersion: 2
     rgba: 4294901944
