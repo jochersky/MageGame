@@ -51,12 +51,22 @@ public class Sellable : MonoBehaviour
     {
         _inRange = true;
         outline.enabled = true;
+        if (!purchased)
+        {
+            priceObject.SetActive(true);
+        }
+        print("ENTER");
     }
 
     void OnTriggerExit2D(Collider2D collision)
     {
         _inRange = false;
         outline.enabled = false;
+        if (!purchased)
+        {
+            priceObject.SetActive(false);
+        }
+        print("LEAVE");
     }
 
     // Update is called once per frame
