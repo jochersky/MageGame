@@ -10,4 +10,10 @@ public class MoneyCounter : MonoBehaviour
         money += amt;
         text.text = money.ToString();
     }
+
+
+    public int GetMoney()
+    {
+        return money;
+    }
 }

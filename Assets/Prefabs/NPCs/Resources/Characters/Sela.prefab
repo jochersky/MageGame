@@ -221,7 +221,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 1.75
+  m_Radius: 1
 --- !u!114 &475519187158495715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,12 +241,13 @@ MonoBehaviour:
   - Welcome, traveler, to my store!
   - Everything is for sale, even you!
   - Don't take too long, hehehehe...
-  textSpeed: 0.05
+  textSpeed: 0.025
   room: {fileID: 21300000, guid: 080253f5409301846b423507f7bd83f2, type: 3}
   specialEnemy: {fileID: 0}
   specialTile: {fileID: 0}
-  specialObject: {fileID: 6066504846624555413, guid: 9c4bbc5a137e1dc4c85d9d8ccdc08e13, type: 3}
+  specialObject: {fileID: 7525436396031744547, guid: 6703d3585f7731644aef15d505aeb7b4, type: 3}
   specialEnemies: []
+  spawnPoint: {x: 0, y: 0}
 --- !u!1001 &3826468038402518173
 PrefabInstance:
   m_ObjectHideFlags: 0

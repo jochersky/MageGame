@@ -130,7 +130,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 1.75
+  m_Radius: 1.5
 --- !u!114 &-2281907674378236404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,6 +157,7 @@ MonoBehaviour:
   specialTile: {fileID: 0}
   specialObject: {fileID: 0}
   specialEnemies: []
+  spawnPoint: {x: 0, y: 0}
   successLines:
   - Oh, you did it!
   - Thank you so mush!
