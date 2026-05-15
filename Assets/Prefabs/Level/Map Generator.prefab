@@ -103,10 +103,10 @@ MonoBehaviour:
   spikes: {fileID: 11400000, guid: 1d81b4590a495a24e83a272ccbd9fc79, type: 2}
   falseFloor: {fileID: 11400000, guid: 6aac9c5e4da061545a0027833ace09d4, type: 2}
   flamethrower: {fileID: 11400000, guid: 152f6c1f63b56b54ab107587298646fb, type: 2}
-  barrel: {fileID: 11400000, guid: ceafd5eb455dd0448ace5a760d472bb7, type: 2}
   torch: {fileID: 11400000, guid: abc05ed79fb116c4390c97a53ad34266, type: 2}
   chest: {fileID: 11400000, guid: 0773c2d64bb4621468150492cfe88920, type: 2}
   colliderTilemap: {fileID: 0}
   nonColliderTilemap: {fileID: 0}
+  decorations: {fileID: 11400000, guid: b53f30d3882b6b14a87f92e8771263a4, type: 2}
   player: {fileID: 0}
   startingPositionOffset: 0.5

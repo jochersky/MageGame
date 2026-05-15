@@ -41,11 +41,12 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] TileBase spikes;
     [SerializeField] TileBase falseFloor;
     [SerializeField] TileBase flamethrower;
-    [SerializeField] TileBase barrel;
     [SerializeField] TileBase torch;
     [SerializeField] TileBase chest;
     [SerializeField] Tilemap colliderTilemap;
     [SerializeField] Tilemap nonColliderTilemap;
+
+    [SerializeField] Decorations decorations;
     
     Sprite[] filledRoom;
     Sprite[] chestRoom;
@@ -483,7 +484,7 @@ public class MapGenerator : MonoBehaviour
                     if (randy.Next(0,100) < 50)
                     {
                         // currently only decoration is barrels, in future more could be added
-                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), barrel);
+                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(1, false));
                     }
                 }
                  // check for special value indicating a chest
