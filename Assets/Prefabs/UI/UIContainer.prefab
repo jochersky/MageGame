@@ -7810,6 +7810,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MenuButtons
   gameStartScene: Level 1
   clickSFX: {fileID: 8300000, guid: 417624938cdb2844eaf60addf8238ded, type: 3}
+  eventSystem: {fileID: 2512876017355737559}
+  defaultButton: {fileID: 8592782838917711594}
 --- !u!82 &1839239883607417502
 AudioSource:
   m_ObjectHideFlags: 0
