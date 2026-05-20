@@ -47,6 +47,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Tilemap nonColliderTilemap;
 
     [SerializeField] Decorations decorations;
+    [SerializeField] int numDecorations = 100;
     
     Sprite[] filledRoom;
     Sprite[] chestRoom;
@@ -63,6 +64,7 @@ public class MapGenerator : MonoBehaviour
     List<NPC> NPCInstances = new();
     readonly string NPCpath = "Characters/";
     List<(int x, int y)> emptyFloorSpaces = new();
+    List<(int x, int y)> emptyCeilingSpaces = new();
 
     int entranceCol;
     int exitCol;
@@ -75,7 +77,7 @@ public class MapGenerator : MonoBehaviour
     Vector2 exitPosition;
 
     int numChestRooms = 3;
-    List<(int x, int y)> specialRoomCoords = new List<(int x, int y)>();
+    List<(int x, int y)> specialRoomCoords = new();
 
     
     // this is apparently how you do multidimensional arrays
@@ -481,16 +483,14 @@ public class MapGenerator : MonoBehaviour
                 // check for special value indicating a decoration
                 else if (roomProbability == -44)
                 {
-                    if (randy.Next(0,100) < 50)
-                    {
-                        // currently only decoration is barrels, in future more could be added
-                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(1, false));
-                    }
+                    // TODO: Clean Up
                 }
                  // check for special value indicating a chest
                 else if (roomProbability == -66)
                 {
                     nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), chest);
+                    //TODO: Investigate why this is necessary
+                    emptyFloorSpaces.Remove((xCoord, yCoord));
                 }
                 // check for special value indicating a torch
                 else if (roomProbability == -77)
@@ -547,33 +547,75 @@ public class MapGenerator : MonoBehaviour
     {
         foreach (Vector3Int tileCoords in colliderTilemap.cellBounds.allPositionsWithin)
         {
-            if (tileCoords.y == 0)
-            {
-                continue;
-            }
-            Vector3Int below = new(tileCoords.x, tileCoords.y - 1, 0); 
             TileBase currTile = colliderTilemap.GetTile(tileCoords);
-            TileBase tileBelow = colliderTilemap.GetTile(below);
-            // if the space is blank and there is a solid tile beneath it, record it as a floor tile
-            if (currTile == null && tileBelow != null) //tile.Equals(tileBelow)
+            // We ignore the top row of tiles for obtaining floor tiles
+            if (tileCoords.y != 0)
             {
-                emptyFloorSpaces.Add(new (tileCoords.x, tileCoords.y));
+                Vector3Int below = new(tileCoords.x, tileCoords.y - 1, 0); 
+                TileBase tileBelow = colliderTilemap.GetTile(below);
+                // if the space is blank and there is a solid tile beneath it, record it as a floor tile
+                if (currTile == null && tileBelow != null)
+                {
+                    emptyFloorSpaces.Add(new (tileCoords.x, tileCoords.y));
+                }
+            }
+            // We ignore the bottomr row of tiles for obtaining ceiling tiles
+            if (tileCoords.y != colliderTilemap.cellBounds.yMax)
+            {
+                Vector3Int above = new(tileCoords.x, tileCoords.y + 1, 0); 
+                TileBase tileAbove = colliderTilemap.GetTile(above);
+                // if the space is blank and there is a solid tile above it, record it as a ceiling tile
+                if (currTile == null && tileAbove != null)
+                {
+                    emptyCeilingSpaces.Add(new (tileCoords.x, tileCoords.y));
+                }
             }
         }
-        //print(emptyFloorSpaces.Count);
     }
 
     void PlaceEntities()
     {
-        // TODO: Loop through NPCS. and place them at their spawn point. If none, spawn at a random floor tile.
-        //obtain a random floor tile and spawn Mushelle
-        if (emptyFloorSpaces.Capacity == 0)
+        // sanity check
+        if (emptyFloorSpaces.Capacity == 0 || emptyCeilingSpaces.Capacity == 0)
         {
             print("ERROR:No floor spaces found");
             return;
         }
-        (int xCoord, int yCoord) = emptyFloorSpaces[randy.Next(0, emptyFloorSpaces.Count)];
-        NPCInstances[0].transform.position = new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset);
-        NPCInstances[1].transform.position = NPCInstances[1].spawnPoint;
+        //Loop through NPCS. and place them at their spawn point. If none, spawn at a random floor tile.
+        for (int npcIdx = 0; npcIdx < NPCInstances.Count; npcIdx++)
+        {
+            NPC npc = NPCInstances[npcIdx];
+            if (npc.spawnPoint.x == 0 && npc.spawnPoint.y == 0)
+            {
+                int randIdx = randy.Next(0, emptyFloorSpaces.Count);
+                (int xCoord, int yCoord) = emptyFloorSpaces[randIdx];
+                emptyFloorSpaces.RemoveAt(randIdx);
+                npc.transform.position = new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset);
+            } else
+            {
+                npc.transform.position = npc.spawnPoint;
+            }
+        }
+        // place decorations
+        for (int decNum = 0; decNum < numDecorations; decNum++)
+        {
+            // 75% of decorations will be floor decorations, the rest will be ceiling decor
+            if (randy.Next(0,100) < 75)
+            {
+                int randIdx = randy.Next(0, emptyFloorSpaces.Count);
+                (int xCoord, int yCoord) = emptyFloorSpaces[randIdx];
+                // ensures no repeats
+                emptyFloorSpaces.RemoveAt(randIdx);
+                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(1, false));
+            } else
+            {
+                int randIdx = randy.Next(0, emptyCeilingSpaces.Count);
+                (int xCoord, int yCoord) = emptyCeilingSpaces[randIdx];
+                // ensures no repeats
+                emptyCeilingSpaces.RemoveAt(randIdx);
+                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(1, true));
+            }
+            
+        }
     }
 }

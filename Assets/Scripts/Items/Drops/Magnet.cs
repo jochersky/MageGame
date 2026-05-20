@@ -8,7 +8,6 @@ public class Magnet : MonoBehaviour
     {
         if(collision.CompareTag("Player"))
         {
-             Debug.Log("Triggered 1");
             rb.AddForce((collision.transform.position - gameObject.transform.position) * magneticForce);
         }
     }
