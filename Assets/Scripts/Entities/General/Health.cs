@@ -15,6 +15,7 @@ public class Health : MonoBehaviour
     
     public int _currentHealth;
     public int MaxHealth { get => maxHealth; set => maxHealth = value; }
+    public bool spawnInvulnerable = false;
     private bool _isInvulnerable;
     
     public int CurrentHealth { get => _currentHealth; set => _currentHealth = value; }
@@ -33,6 +34,10 @@ public class Health : MonoBehaviour
     
     private void Start()
     {
+        if (spawnInvulnerable)
+        {
+            ActivateInvulnerability();
+        }
         foreach (Hurtbox hurtbox in hurtboxes)
         {
             hurtbox.OnDamageTaken += TakeDamage;
