@@ -16,7 +16,6 @@ TagManager:
   - Water
   - UI
   - Environment
-  - 
   - Character
   - Hitbox
   - Hurtbox
@@ -24,6 +23,7 @@ TagManager:
   - Interact
   - Player
   - Item
+  - 
   - 
   - 
   - 
