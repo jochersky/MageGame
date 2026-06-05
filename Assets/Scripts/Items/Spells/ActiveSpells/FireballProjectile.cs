@@ -21,7 +21,7 @@ public class FireballProjectile : MonoBehaviour
         } 
         else if (collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<Enemy>().Die();
+            // collision.GetComponent<Enemy>().Die();
         }
     }
 }

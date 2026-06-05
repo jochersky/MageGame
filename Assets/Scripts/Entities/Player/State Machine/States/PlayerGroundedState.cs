@@ -18,6 +18,7 @@ public class PlayerGroundedState : PlayerBaseState
     {
         if (!Context.IsGrounded) SwitchState(Dictionary.Fall());
         else if (Context.CanJump && Context.IsPressingJump) SwitchState(Dictionary.Jump());
+        else if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
     }
 
     public override void ExitState()

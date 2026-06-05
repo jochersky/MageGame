@@ -41,14 +41,10 @@ public class Lightable : MonoBehaviour
         {
             if (isLit && lightable.isLit) return;
             
-            if (!isLit && lightable.IsLit)
-            {
+            if (!isLit && lightable.IsLit) 
                 ActivateLightSource();
-            }
-            else if (isLit && !lightable.IsLit)
-            {
+            else if (isLit && !lightable.IsLit) 
                 lightable.ActivateLightSource();
-            }
         }
     }
 
