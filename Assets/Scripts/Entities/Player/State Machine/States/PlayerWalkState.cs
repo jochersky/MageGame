@@ -17,6 +17,7 @@ public class PlayerWalkState : PlayerBaseState
         Context.HorizontalMovement = Context.MoveDirection.x * Context.MaxWalkSpeed;
         
         if (Context.MoveDirection == Vector2.zero) SwitchState(Dictionary.Idle());
+        else if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
     }
 
     public override void ExitState()

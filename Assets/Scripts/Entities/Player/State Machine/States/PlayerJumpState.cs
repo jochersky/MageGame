@@ -20,7 +20,8 @@ public class PlayerJumpState : PlayerBaseState
         
         Context.HorizontalMovement = Context.MoveDirection.x * Context.MaxAirborneMoveSpeed;
         
-        if (Context.LinearVelocityY < -1 || !Context.IsPressingJump) SwitchState(Dictionary.Fall());
+        if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
+        else if (Context.LinearVelocityY < -1 || !Context.IsPressingJump) SwitchState(Dictionary.Fall());
         else if (Context.IsGrounded) SwitchState(Dictionary.Grounded());
     }
 

@@ -13,10 +13,12 @@ public class Health : MonoBehaviour
     [SerializeField] private float invulnerabilityTime = 1.5f;
     [SerializeField] private bool capHealth = true;
     
-    public int _currentHealth;
-    public int MaxHealth { get => maxHealth; set => maxHealth = value; }
+    private int _currentHealth;
     private bool _isInvulnerable;
+
+    public bool ignore;
     
+    public int MaxHealth { get => maxHealth; set => maxHealth = value; }
     public int CurrentHealth { get => _currentHealth; set => _currentHealth = value; }
     
     public delegate void HealthChange(int newHealth);

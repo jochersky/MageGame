@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpellItemAssets
   fireballSprite: {fileID: -6607481912129624618, guid: 18591eb2529793e4f8e267a1763aeb82, type: 3}
   lightSprite: {fileID: 21300000, guid: a049ecf093365ee4e80f0628ac0ab1dc, type: 3}
-  reverseFootstepsSprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  reverseFootstepsSprite: {fileID: -1206694871680653483, guid: 737a02bd22014bf42968e62259fa606f, type: 3}
+  ObscuredPresenceSprite: {fileID: 3265315782881315703, guid: 2bbf4c65d92bfa2449f91284ab64e7d5, type: 3}
+  WorldAflameSprite: {fileID: 21300000, guid: 6bef3b7aad1ba604caa05595b39c2130, type: 3}
   bounceSprite: {fileID: 21300000, guid: a65c8159c1970ec449cd8029b34f7604, type: 3}

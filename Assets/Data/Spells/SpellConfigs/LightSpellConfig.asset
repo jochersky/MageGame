@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99de463acc2fc024e8d4ba71a20d6567, type: 3}
+  m_Name: LightSpellConfig
+  m_EditorClassIdentifier: Assembly-CSharp::SpellConfig
+  itemType: 0
+  itemName: Light Spell
+  icon: {fileID: 21300000, guid: a049ecf093365ee4e80f0628ac0ab1dc, type: 3}
+  cooldown: 1
+  changePositionOnObstruction: 1
+  strategy: {fileID: 11400000, guid: 28204f17ba2772b4cb519fbc3232b73b, type: 2}
+  effectsStrategy: {fileID: 0}

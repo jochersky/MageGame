@@ -6,15 +6,15 @@ public class SpellListItem : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private TextMeshProUGUI spellName;
 
-    public void Initialize(Spell spell)
+    public void Initialize(SpellConfig spellConfig)
     {
-        spellName.text = spell.spellType.ToString();
+        spellName.text = spellConfig.itemName;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left) return;
 
-        InventoryManager.Instance.EquipActiveSpell(gameObject);
+        InventoryManager.Instance.EquipSpell(gameObject);
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,9 +14,6 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private LayerMask environmentLayer;
     [SerializeField] private Animator animator;
     [SerializeField] private Health health;
-    [SerializeField] private Transform consumableSpawnTransform;
-    [SerializeField] private Transform consumableParentTransform;
-    [SerializeField] private GameObject bombPrefab;
     [SerializeField] private PassiveSpellAffects passiveSpellAffects;
     private Rigidbody2D _rb;
     private InputActionMap _playerInputMap;
@@ -47,6 +45,9 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private float climbAboveBelowCheckLength = 0.5f;
     [SerializeField] private bool climbDebug;
     
+    [Header("Ladder")]
+    [SerializeField] private float ropeClimbSpeed = 0.25f;
+    
     // State Variables
     private PlayerBaseState _currentState;
     private PlayerBaseState _currentSubState;
@@ -62,6 +63,7 @@ public class PlayerStateMachine : MonoBehaviour
     
     // Context Variables
     private Vector2 _moveDirection;
+    private Vector2 _verticalDirection;
     private Vector2 _previousDirection;
     private float _horizontalMovement;
     private float _verticalMovement;
@@ -78,6 +80,8 @@ public class PlayerStateMachine : MonoBehaviour
     // private Tilemap _climbingTilemap;
     private bool _isDead;
     private bool _inputDisabled;
+    private bool _canClimbRope;
+    private bool _isClimbingRope;
 
     [Header("State Debug")]
     public String stateName = "";
@@ -97,11 +101,13 @@ public class PlayerStateMachine : MonoBehaviour
     public Rigidbody2D Rigidbody { get { return _rb; } set { _rb = value; } }
     public Animator Animator { get { return animator; } set { animator = value; } }
     public Vector2 MoveDirection { get { return _moveDirection; } set { _moveDirection = value; } }
+    public Vector2 VerticalDirection { get { return _verticalDirection; } set { _verticalDirection = value; } }
     public Vector2 PreviousDirection { get { return _previousDirection; } set { _previousDirection = value; } }
     public Vector2 LinearVelocity { get { return _rb.linearVelocity; } set { _rb.linearVelocity = value; } }
     public float LinearVelocityX { get { return _rb.linearVelocityX; } set { _rb.linearVelocityX = value; } }
     public float LinearVelocityY { get { return _rb.linearVelocityY; } set { _rb.linearVelocityY = value; } }
     public float HorizontalMovement { get { return _horizontalMovement; } set { _horizontalMovement = value; } }
+    public float VerticalMovement { get { return _verticalMovement; } set { _verticalMovement = value; } }
     public float GravityScale { get { return _rb.gravityScale; } set { _rb.gravityScale = value; } }
     public float MaxWalkSpeed { get { return maxWalkSpeed; } set { maxWalkSpeed = value; } }
     public float MaxAirborneMoveSpeed { get { return maxAirborneMoveSpeed; } set { maxAirborneMoveSpeed = value; } }
@@ -116,6 +122,8 @@ public class PlayerStateMachine : MonoBehaviour
     public bool CanClimb { get { return _canClimb; } set { _canClimb = value; } }
     public bool WasClimbing { get { return _wasClimbing; } set { _wasClimbing = value; } }
     public Vector2 ClimbPosition { get { return _climbPosition; } set { _climbPosition = value; } }
+    public bool CanClimbRope { get { return _canClimbRope; } set { _canClimbRope = value; } }
+    public bool IsClimbingRope { get { return _isClimbingRope; } set { _isClimbingRope = value; } }
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
     
     void Start()
@@ -145,7 +153,29 @@ public class PlayerStateMachine : MonoBehaviour
         CheckGrounded();
         CheckClimbing();
         UpdateGravity();
-        _rb.linearVelocity = new Vector2(_horizontalMovement, _rb.linearVelocityY);
+
+        float x = _horizontalMovement;
+        float y = _rb.linearVelocityY;
+        // lock player onto ladder horizontally until they jump off
+        if (_isClimbingRope)
+        {
+            x = 0;
+            y = _verticalMovement * ropeClimbSpeed;
+        }
+        
+        _rb.linearVelocity = new Vector2(x, y);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Rope"))
+            _canClimbRope = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Rope"))
+            _canClimbRope = false;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -161,6 +191,17 @@ public class PlayerStateMachine : MonoBehaviour
             onDirectionChanged?.Invoke(Mathf.Sign(_moveDirection.x));
         }
         _previousDirection = _moveDirection;
+    }
+    
+    public void OnMoveVertical(InputAction.CallbackContext context)
+    {
+        if (_isDead) return;
+        
+        _verticalDirection = context.ReadValue<Vector2>();
+        
+        // TODO
+        if (_canClimbRope && _verticalDirection.y >= 0.5f)
+            _isClimbingRope = true;
     }
     
     public void OnJump(InputAction.CallbackContext context)
@@ -184,28 +225,6 @@ public class PlayerStateMachine : MonoBehaviour
             {
                 if (_inputDisabled) action.Disable();
                 else action.Enable();
-            }
-        }
-    }
-
-    public void OnUseConsumable(InputAction.CallbackContext context)
-    {
-        if (context.performed || context.canceled || _isDead) return;
-        // TODO: implement other consumable to use equipped consumable, not just bomb
-        if (InventoryManager.Instance.EquippedConsumable != ConsumableTypes.Bomb) return;
-        
-        if (InventoryManager.Instance.GetConsumableCount(ConsumableTypes.Bomb) > 0)
-        {
-            InventoryManager.Instance.UpdateConsumable(ConsumableTypes.Bomb, -1);
-            GameObject inst = Instantiate(bombPrefab, consumableParentTransform);
-            inst.transform.position = consumableSpawnTransform.position;
-            
-            // Player won't throw bomb if they are too close to a wall
-            if (!Physics2D.Raycast(consumableSpawnTransform.transform.position, _previousDirection, 1, environmentLayer))
-            {
-                Rigidbody2D rb = inst.GetComponentInChildren<Rigidbody2D>();
-                rb.linearVelocityX = _previousDirection.x * 15f;
-                rb.linearVelocityY = _rb.linearVelocityY * 2f;
             }
         }
     }
@@ -237,7 +256,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void UpdateGravity()
     {
-        if (_currentState == _states.Climb()) return;
+        if (_currentState == _states.Climb() || _currentState == _states.Rope()) return;
         
         // Player falls down faster with negative y-velocity.
         if (_rb.linearVelocityY < 0)
