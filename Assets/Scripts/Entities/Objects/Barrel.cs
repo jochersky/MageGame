@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
@@ -5,27 +6,46 @@ using UnityEngine;
 public class Barrel : MonoBehaviour
 {
     [SerializeField] GameObject enemy; 
+    [SerializeField] GameObject manaCapsule;
+    [SerializeField] GameObject coin;
+    [SerializeField] GameObject heart;
+    [SerializeField] GameObject bomb;
+    [SerializeField] Hurtbox hurtbox;
+    private int _enemyIndex = 0;
+    readonly List<GameObject> potentialDrops = new();
     bool triggered = false;
     System.Random randy;
     void Start()
     {
+        hurtbox.OnDamageTaken += OnDestroyed;
         randy = new System.Random();
+        potentialDrops.Add(enemy);
+        potentialDrops.Add(manaCapsule);
+        potentialDrops.Add(coin);
+        potentialDrops.Add(heart);
+        potentialDrops.Add(bomb);
     }
-    void OnTriggerEnter2D(Collider2D collision)
+
+    void OnDestroyed(int _amt)
     {
-        if (collision.TryGetComponent(out Hitbox hitbox) && !triggered)
+        hurtbox.enabled = false;
+        if (!triggered)
         {
             triggered = true;
             GetComponent<SpriteRenderer>().enabled = false;
             GetComponentInChildren<ParticleSystem>().Play();
             GetComponentInChildren<AudioSource>().Play();
-
-
-            // Spawn random item
-            if (randy.Next(0, 100) < 25)
+            // Spawn random drop at 75% chance
+            if (randy.Next(0, 100) < 75)
             {
-                Instantiate(enemy, transform);
+                int temp = randy.Next(0, potentialDrops.Count);
+                if (potentialDrops[temp].TryGetComponent<Health>(out Health health))
+                {
+                    health.spawnInvulnerable = true;
+                }
+                GameObject spawned = Instantiate(potentialDrops[temp], transform);
             }
         }
+       
     }
 }

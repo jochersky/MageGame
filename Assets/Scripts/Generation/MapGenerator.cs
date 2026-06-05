@@ -1,8 +1,13 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -19,6 +24,11 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Color32 falseFloorColor; 
     [SerializeField] Color32 flamethrowerColor;
     [SerializeField] Color32 decorationColor;
+    [SerializeField] Color32 torchColor;
+    [SerializeField] Color32 chestColor;
+    [SerializeField] Color32 specialEnemyColor;
+    [SerializeField] Color32 specialItemColor;
+    [SerializeField] Color32 NPCSpawnColor;
 
     [SerializeField] Color32 enemyColor;
     [SerializeField] GameObject enemy;   
@@ -26,20 +36,35 @@ public class MapGenerator : MonoBehaviour
     // Tilemap version
     [SerializeField] Grid grid;
     [SerializeField] RuleTile tile;
-    [SerializeField] TileBase door;
+    [SerializeField] TileBase entryDoor;
+    [SerializeField] TileBase exitDoor;
     [SerializeField] TileBase spikes;
     [SerializeField] TileBase falseFloor;
     [SerializeField] TileBase flamethrower;
-    [SerializeField] TileBase barrel;
+    [SerializeField] TileBase torch;
+    [SerializeField] TileBase chest;
     [SerializeField] Tilemap colliderTilemap;
     [SerializeField] Tilemap nonColliderTilemap;
+
+    [SerializeField] Decorations decorations;
+    [SerializeField] int numDecorations = 100;
+    
     Sprite[] filledRoom;
+    Sprite[] chestRoom;
     Sprite[] room0s;
     Sprite[] room1s;
     Sprite[] room2s;
     Sprite[] room3s;
     Sprite[] room4s;
     Sprite template;
+    Dictionary<string, Sprite> specialRooms;
+
+    // NPC fields
+    NPC[] NPCPrefabs;
+    List<NPC> NPCInstances = new();
+    readonly string NPCpath = "Characters/";
+    List<(int x, int y)> emptyFloorSpaces = new();
+    List<(int x, int y)> emptyCeilingSpaces = new();
 
     int entranceCol;
     int exitCol;
@@ -50,6 +75,9 @@ public class MapGenerator : MonoBehaviour
     Vector2 startingPosition;
     bool startingPositionAssigned = false;
     Vector2 exitPosition;
+
+    int numChestRooms = 3;
+    List<(int x, int y)> specialRoomCoords = new();
 
     
     // this is apparently how you do multidimensional arrays
@@ -75,25 +103,38 @@ public class MapGenerator : MonoBehaviour
     {
         // Seems to be an issue with loading outside of specified folder; need to look into it
         filledRoom = Resources.LoadAll<Sprite>("Rooms/Filled Room");
+        chestRoom = Resources.LoadAll<Sprite>("Rooms/Chest Room");
         room0s = Resources.LoadAll<Sprite>("Rooms/Room Style 0");
         room1s = Resources.LoadAll<Sprite>("Rooms/Room Style 1");
         room2s = Resources.LoadAll<Sprite>("Rooms/Room Style 2");
         room3s = Resources.LoadAll<Sprite>("Rooms/Room Style 3");
         room4s = Resources.LoadAll<Sprite>("Rooms/Room Style 4");
+        NPCPrefabs = Resources.LoadAll<NPC>(NPCpath);
         randy = new System.Random();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         map = new int[mapDimensions, mapDimensions];
-        genRoomPaths();
-        placeMap();
+        SpawnEntities();
+        GenRoomPaths();
+        PlaceMap();
+        GatherTileInfo();
+        PlaceEntities();
         // teleport player to starting position
         player.transform.position = startingPosition;
     }
 
+    void SpawnEntities()
+    {
+        foreach (NPC npc in NPCPrefabs)
+        {
+            NPCInstances.Add(Instantiate(npc, transform));
+        }
+    }
 
-    private void genRoomPaths()
+
+    private void GenRoomPaths()
     {
         // All rooms start out as 0s, meaning not on the solution path
         // the Length property is all elements, get length is one dimension
@@ -112,7 +153,7 @@ public class MapGenerator : MonoBehaviour
         Debug.Log("Generating...");
         while (!foundExit)
         {
-            foundExit = pathfind();
+            foundExit = Pathfind();
         }    
         Debug.Log("Generation complete!");
     
@@ -120,7 +161,7 @@ public class MapGenerator : MonoBehaviour
 
     }
 
-    private bool pathfind()
+    private bool Pathfind()
     {
         // Randomly pick 1-5
         // 1,2 means left. 3,4 means right. 5 means down
@@ -130,7 +171,8 @@ public class MapGenerator : MonoBehaviour
             // if left is not the edge of the map AND we haven't been there yet, we are good
             if (col - 1 >= 0 && map[row, col-1] == 0)
             {
-                labelRoomNum(MOVING_TO.LEFT);
+                LabelRoomNum(MOVING_TO.LEFT);
+                MarkPotentialChestRooms(MOVING_TO.LEFT);
                 col -= 1;
                 return false;
             }
@@ -138,10 +180,11 @@ public class MapGenerator : MonoBehaviour
         } 
         if (direction == 3 || direction == 4)
         {
-            // if left is not the edge of the map AND we haven't been there yet, we are good
+            // if right is not the edge of the map AND we haven't been there yet, we are good
             if (col + 1 < map.GetLength(0) && map[row, col+1] == 0)
             {
-                labelRoomNum(MOVING_TO.RIGHT);
+                LabelRoomNum(MOVING_TO.RIGHT);
+                MarkPotentialChestRooms(MOVING_TO.RIGHT);
                 col += 1;
                 return false;
             }
@@ -152,16 +195,45 @@ public class MapGenerator : MonoBehaviour
         if (row + 1 == map.GetLength(0))
         {
             // we are lying here, because we aren't actually moving anywhere, but want room types 1 and 3 anyway. Should probably fix.
-            labelRoomNum(MOVING_TO.LEFT);
+            LabelRoomNum(MOVING_TO.LEFT);
+            // for the purposes of chest rooms, we are moving down
+            MarkPotentialChestRooms(MOVING_TO.BELOW);
             // store exit column
             exitCol = col;
             return true;
         } else
         {
           // standard case, actually move down a floor
-          labelRoomNum(MOVING_TO.BELOW);
+          LabelRoomNum(MOVING_TO.BELOW);
+          MarkPotentialChestRooms(MOVING_TO.BELOW);
           row += 1;
           return false;  
+        }
+    }
+
+    private void MarkPotentialChestRooms(MOVING_TO direction)
+    {
+        // if we are moving left or down
+        if (direction == MOVING_TO.LEFT || direction == MOVING_TO.BELOW)
+        {
+            // and there exists a room to our right that is unvisited
+            if (col + 1 < map.GetLength(0) && map[row, col+1] == 0)
+            {
+                // mark it as a potential chest room
+                map[row, col + 1] = 5;
+            }
+            
+        }
+        // if we are moving right or down
+        if (direction == MOVING_TO.RIGHT || direction == MOVING_TO.BELOW)
+        {
+            // and there exists a room to our left that is unvisited
+            if (col - 1 >= 0 && map[row, col-1] == 0)
+            {
+                // mark it as a potential chest room
+                map[row, col - 1] = 5;
+            }
+            
         }
     }
 
@@ -170,7 +242,7 @@ public class MapGenerator : MonoBehaviour
     // Room type 2 has exits on the left, right, and bottom (we love the Oxford comma)
     // Room type 3 has exits on the left, right, and top
     // Room type 4 has exits on the left, right, top, and bottom
-    private void labelRoomNum(MOVING_TO direction)
+    private void LabelRoomNum(MOVING_TO direction)
     {
         // if we are moving left or right, then we are either 1 or 3.
         // if the room above us is offscreen, or is of type 0, 1, or 3, then we are type 1.
@@ -201,7 +273,7 @@ public class MapGenerator : MonoBehaviour
     }
 
     
-    private void placeMap()
+    private void PlaceMap()
     {
         int x = 0;
         int y = 0;
@@ -218,17 +290,18 @@ public class MapGenerator : MonoBehaviour
                 // top and bottom rows are all filled, as are the leftmost and rightmost columns
                 if (row == -1 || row == map.GetLength(0) || col == -1 || col == map.GetLength(0))
                 {
-                    InstantiateRoom(filledRoom, x, y, isStartingRoom, isEndingRoom);
+                    InstantiateRoom(filledRoom, x, y, isStartingRoom, isEndingRoom, -1);
                 } else // normal room creation
                 {
                    int roomNum = map[row,col];
                     switch (roomNum)
                     {
-                        case 1: InstantiateRoom(room1s, x, y, isStartingRoom, isEndingRoom); break;
-                        case 2: InstantiateRoom(room2s, x, y, isStartingRoom, isEndingRoom); break;
-                        case 3: InstantiateRoom(room3s, x, y, isStartingRoom, isEndingRoom); break;
-                        case 4: InstantiateRoom(room4s, x, y, isStartingRoom, isEndingRoom); break;
-                        default: InstantiateRoom(room0s, x, y, isStartingRoom, isEndingRoom); break;
+                        case 1: InstantiateRoom(room1s, x, y, isStartingRoom, isEndingRoom, -1); break;
+                        case 2: InstantiateRoom(room2s, x, y, isStartingRoom, isEndingRoom, -1); break;
+                        case 3: InstantiateRoom(room3s, x, y, isStartingRoom, isEndingRoom, -1); break;
+                        case 4: InstantiateRoom(room4s, x, y, isStartingRoom, isEndingRoom, -1); break;
+                        case 5: specialRoomCoords.Add((x,y)); break;
+                        default: InstantiateRoom(room0s, x, y, isStartingRoom, isEndingRoom, -1); break;
                     } 
                 }
                 
@@ -237,9 +310,39 @@ public class MapGenerator : MonoBehaviour
             x = 0;
             y -= roomDimensions;
         }
+        InstantiateSpecialRooms(numChestRooms);
     }
 
-    void InstantiateRoom(Sprite[] rooms, int x, int y, bool isStartingRoom, bool isEndingRoom)
+    private void InstantiateSpecialRooms(int numChestRooms)
+    {
+        // instantiate chest rooms
+        for (int room = 0; room < numChestRooms; room++)
+        {
+            int randIdx = randy.Next(0, specialRoomCoords.Count);
+            (int x, int y) = specialRoomCoords[randIdx];
+            specialRoomCoords.RemoveAt(randIdx);
+            InstantiateRoom(chestRoom, x,  y, false, false, -1);
+        }
+        // instantiate other special rooms
+        for (int npc_idx = 0; npc_idx < NPCInstances.Count; npc_idx++)
+        {
+            int randIdx = randy.Next(0, specialRoomCoords.Count);
+            (int x, int y) = specialRoomCoords[randIdx];
+            specialRoomCoords.RemoveAt(randIdx);
+            Sprite[] temp_arr = new Sprite[1];
+            // may have to cast
+            temp_arr[0] = NPCInstances[npc_idx].room;
+            InstantiateRoom(temp_arr, x,  y, false, false, npc_idx);
+        }
+        // instantiate all remaining marked rooms as 0s
+        for (int room = 0; room < specialRoomCoords.Count; room++)
+        {
+            (int x, int y) = specialRoomCoords[room];
+            InstantiateRoom(room0s, x,  y, false, false, -1);
+        }
+    }
+
+    void InstantiateRoom(Sprite[] rooms, int x, int y, bool isStartingRoom, bool isEndingRoom, int specialIdx)
     {
         ROOM_QUALITY room_quality = ROOM_QUALITY.REGULAR;
         if (isStartingRoom) { room_quality = ROOM_QUALITY.STARTING; }
@@ -247,7 +350,7 @@ public class MapGenerator : MonoBehaviour
         template = rooms[randy.Next(rooms.Length)];
         Color32[] pixels = ConvertSpriteToPixelArray(template);
         int[] room = TranslateColorsToProbabilities(pixels, room_quality);
-        GenerateRoom(room, x, y);
+        GenerateRoom(room, x, y, specialIdx);
     }
 
     Color32[] ConvertSpriteToPixelArray(Sprite sprite)
@@ -274,6 +377,7 @@ public class MapGenerator : MonoBehaviour
             {
                 Color32 color = pixels[row * roomDimensions + col];
                 // maybe switch statements hate me. who knows?
+                //I wonder if we can convert the color into a unique integer
                 if (color.Equals(guaranteeSquareColor))
                 {
                     roomProbs[row * roomDimensions + col] = 100;
@@ -298,9 +402,24 @@ public class MapGenerator : MonoBehaviour
                 } else if (color.Equals(decorationColor))
                 {
                     roomProbs[row * roomDimensions + col] = -44;
+                } else if (color.Equals(torchColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -77;
+                } else if (color.Equals(chestColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -66;
                 } else if (color.Equals(enemyColor))
                 {
                     roomProbs[row * roomDimensions + col] = -33;
+                } else if (color.Equals(specialEnemyColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -34;
+                } else if (color.Equals(specialItemColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -35;
+                } else if (color.Equals(NPCSpawnColor))
+                {
+                    roomProbs[row * roomDimensions + col] = -36;
                 } else if (color.Equals(entryExitColor))
                 {
                     if (room_quality == ROOM_QUALITY.STARTING || room_quality == ROOM_QUALITY.ENDING)
@@ -326,7 +445,7 @@ public class MapGenerator : MonoBehaviour
     }
 
 
-    void GenerateRoom(int[] room, int xOffset, int yOffset)
+    void GenerateRoom(int[] room, int xOffset, int yOffset, int specialIdx)
     {
         for (int row = 0; row < roomDimensions; row++)
         {
@@ -339,13 +458,15 @@ public class MapGenerator : MonoBehaviour
                 if (roomProbability == -99)
                 {
                     // this can be simplified I believe
-                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), door);
+                    
                     if (!startingPositionAssigned)
                     {
+                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), entryDoor);
                         startingPosition = new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset);
                         startingPositionAssigned = true;
                     } else
                     {
+                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), exitDoor);
                         exitPosition = new Vector2(xCoord, yCoord);
                     }
                 }
@@ -362,11 +483,19 @@ public class MapGenerator : MonoBehaviour
                 // check for special value indicating a decoration
                 else if (roomProbability == -44)
                 {
-                    if (randy.Next(0,100) < 50)
-                    {
-                        // currently only decoration is barrels, in future more could be added
-                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), barrel);
-                    }
+                    // TODO: Clean Up
+                }
+                 // check for special value indicating a chest
+                else if (roomProbability == -66)
+                {
+                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), chest);
+                    //TODO: Investigate why this is necessary
+                    emptyFloorSpaces.Remove((xCoord, yCoord));
+                }
+                // check for special value indicating a torch
+                else if (roomProbability == -77)
+                {
+                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), torch);
                 }
                 // check for special value indicating an enemy spawn
                 if (roomProbability == -33)
@@ -375,6 +504,20 @@ public class MapGenerator : MonoBehaviour
                     {
                         Instantiate(enemy, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
                     }
+                }
+                else if (roomProbability == -34)
+                {
+                    GameObject instance = Instantiate(NPCInstances[specialIdx].specialEnemy, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
+                    NPCInstances[specialIdx].specialEnemies.Add(instance);
+                }
+                else if (roomProbability == -35)
+                {
+                    Instantiate(NPCInstances[specialIdx].specialObject, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
+                }
+                // NPC Spawn value
+                else if (roomProbability == -36)
+                {
+                    NPCInstances[specialIdx].spawnPoint = new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset);
                 }
                 // check for special value indicating false floor
                 else if (roomProbability == -88)
@@ -400,9 +543,79 @@ public class MapGenerator : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    void GatherTileInfo()
     {
-        
+        foreach (Vector3Int tileCoords in colliderTilemap.cellBounds.allPositionsWithin)
+        {
+            TileBase currTile = colliderTilemap.GetTile(tileCoords);
+            // We ignore the top row of tiles for obtaining floor tiles
+            if (tileCoords.y != 0)
+            {
+                Vector3Int below = new(tileCoords.x, tileCoords.y - 1, 0); 
+                TileBase tileBelow = colliderTilemap.GetTile(below);
+                // if the space is blank and there is a solid tile beneath it, record it as a floor tile
+                if (currTile == null && tileBelow != null)
+                {
+                    emptyFloorSpaces.Add(new (tileCoords.x, tileCoords.y));
+                }
+            }
+            // We ignore the bottomr row of tiles for obtaining ceiling tiles
+            if (tileCoords.y != colliderTilemap.cellBounds.yMax)
+            {
+                Vector3Int above = new(tileCoords.x, tileCoords.y + 1, 0); 
+                TileBase tileAbove = colliderTilemap.GetTile(above);
+                // if the space is blank and there is a solid tile above it, record it as a ceiling tile
+                if (currTile == null && tileAbove != null)
+                {
+                    emptyCeilingSpaces.Add(new (tileCoords.x, tileCoords.y));
+                }
+            }
+        }
+    }
+
+    void PlaceEntities()
+    {
+        // sanity check
+        if (emptyFloorSpaces.Capacity == 0 || emptyCeilingSpaces.Capacity == 0)
+        {
+            print("ERROR:No floor spaces found");
+            return;
+        }
+        //Loop through NPCS. and place them at their spawn point. If none, spawn at a random floor tile.
+        for (int npcIdx = 0; npcIdx < NPCInstances.Count; npcIdx++)
+        {
+            NPC npc = NPCInstances[npcIdx];
+            if (npc.spawnPoint.x == 0 && npc.spawnPoint.y == 0)
+            {
+                int randIdx = randy.Next(0, emptyFloorSpaces.Count);
+                (int xCoord, int yCoord) = emptyFloorSpaces[randIdx];
+                emptyFloorSpaces.RemoveAt(randIdx);
+                npc.transform.position = new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset);
+            } else
+            {
+                npc.transform.position = npc.spawnPoint;
+            }
+        }
+        // place decorations
+        for (int decNum = 0; decNum < numDecorations; decNum++)
+        {
+            // 75% of decorations will be floor decorations, the rest will be ceiling decor
+            if (randy.Next(0,100) < 75)
+            {
+                int randIdx = randy.Next(0, emptyFloorSpaces.Count);
+                (int xCoord, int yCoord) = emptyFloorSpaces[randIdx];
+                // ensures no repeats
+                emptyFloorSpaces.RemoveAt(randIdx);
+                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(1, false));
+            } else
+            {
+                int randIdx = randy.Next(0, emptyCeilingSpaces.Count);
+                (int xCoord, int yCoord) = emptyCeilingSpaces[randIdx];
+                // ensures no repeats
+                emptyCeilingSpaces.RemoveAt(randIdx);
+                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(1, true));
+            }
+            
+        }
     }
 }

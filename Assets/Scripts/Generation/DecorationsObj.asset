@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f321f9bf33d1184597139ded425854b, type: 3}
+  m_Name: DecorationsObj
+  m_EditorClassIdentifier: Assembly-CSharp::Decorations
+  level1DecorFloor:
+  - {fileID: 11400000, guid: ceafd5eb455dd0448ace5a760d472bb7, type: 2}
+  - {fileID: 11400000, guid: 6678cf1fa0a604d4d9c5ae1adbce0dca, type: 2}
+  - {fileID: 11400000, guid: 9cd548c8dacd6744cad7b49049273ac0, type: 2}
+  level1DecorCeiling:
+  - {fileID: 11400000, guid: 370df276551d93443b2c2d69d3a64af8, type: 2}
+  - {fileID: 11400000, guid: 9e76c976aa97a7d46b94aed71b1380df, type: 2}
+  level2DecorFloor: []
+  level2DecorCeiling: []
+  level3DecorFloor: []
+  level3DecorCeiling: []
+  level4DecorFloor: []
+  level4DecorCeiling: []

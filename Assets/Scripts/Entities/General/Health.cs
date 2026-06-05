@@ -14,6 +14,7 @@ public class Health : MonoBehaviour
     [SerializeField] private bool capHealth = true;
     
     private int _currentHealth;
+    public bool spawnInvulnerable = false;
     private bool _isInvulnerable;
 
     public bool ignore;
@@ -35,9 +36,14 @@ public class Health : MonoBehaviour
     
     private void Start()
     {
+        if (spawnInvulnerable)
+        {
+            ActivateInvulnerability();
+        }
         foreach (Hurtbox hurtbox in hurtboxes)
         {
             hurtbox.OnDamageTaken += TakeDamage;
+            hurtbox.OnHeal += Heal;
         }
     }
 

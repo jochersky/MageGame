@@ -1,0 +1,44 @@
+using UnityEngine;
+using UnityEngine.Tilemaps;
+#if UNITY_EDITOR
+    using UnityEditor;
+#endif
+
+public class ChestTile : TileBase
+{
+    [SerializeField] Sprite TileSprite;
+    [SerializeField] GameObject TileAssociatedPrefab;
+
+    public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
+    {
+        tileData.sprite = TileSprite;
+
+        if (TileAssociatedPrefab && tileData.gameObject == null)
+        {
+            tileData.gameObject = TileAssociatedPrefab;
+        } else
+        {
+            Debug.Log("Error: Tile has no associated prefab");
+        }
+    }
+
+    #if UNITY_EDITOR
+   // This is shown in the Inspector window when a ChestTile asset is selected.
+   [CustomEditor(typeof(ChestTile))]
+   public class ChestTileEditor : Editor
+   {
+       //private ChestTile tile { get { return (target as ChestTile); } }
+
+       // The following is a helper that adds a menu item to create a ChestTile Asset in the project.
+       [MenuItem("Assets/Create/Chest Tile")]
+       public static void CreateChestTile()
+       {
+           string path = EditorUtility.SaveFilePanelInProject("Save Chest Tile", "New Chest Tile", "asset", "Save Chest Tile", "Assets");
+           if (path == "")
+               return;                           
+           AssetDatabase.CreateAsset(CreateInstance<ChestTile>(), path);
+        }
+   }
+#endif
+}
+
