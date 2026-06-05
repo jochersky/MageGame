@@ -184,7 +184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2795594205372897297
 Transform:
   m_ObjectHideFlags: 0
@@ -386,7 +386,7 @@ GameObject:
   m_Component:
   - component: {fileID: 806214431907546344}
   - component: {fileID: 2320967101425146970}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LitBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -925,7 +925,8 @@ GameObject:
   - component: {fileID: 7011849334598943597}
   - component: {fileID: 3518793060113164566}
   - component: {fileID: 5302559506376252669}
-  m_Layer: 7
+  - component: {fileID: 2560371365361338957}
+  m_Layer: 12
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -972,9 +973,6 @@ MonoBehaviour:
     m_Bits: 64
   animator: {fileID: 2522212241446724644}
   health: {fileID: 3518793060113164566}
-  consumableSpawnTransform: {fileID: 5577571645946893149}
-  consumableParentTransform: {fileID: 0}
-  bombPrefab: {fileID: 6415621097088706008, guid: 4fca7f1e70ac3564caeeb5f7bf24a375, type: 3}
   passiveSpellAffects: {fileID: 11400000, guid: 4dd963e0c99e82748a95667a2c7a6379, type: 2}
   maxWalkSpeed: 8
   maxJumpHeight: 8
@@ -993,6 +991,7 @@ MonoBehaviour:
   climbCheckHeight: 0.55
   climbAboveBelowCheckLength: 1
   climbDebug: 1
+  ropeClimbSpeed: 5
   stateName: 
   onDirectionChanged:
     m_PersistentCalls:
@@ -1034,11 +1033,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c24bf22cbbc14c468561402f675957c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  consumables: 0a00000005000000
-  activeSpells: []
+  consumableConfigs: []
+  consumableToEquip: 0
+  spells: []
   spellToEquip: 0
-  passiveSpells: []
-  passiveSpellToEquip: 0
 --- !u!114 &8788688971398276464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1078,17 +1076,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 857c2fd4-9694-4464-8670-49ae7e8a660f
-    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f82ea912-4ba5-448d-990f-3b80d8b3122d
-    m_ActionName: 'Player/Look[/Mouse/delta,/Pen/delta]'
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SpellManager1, Assembly-CSharp
-        m_MethodName: OnSpell1Pressed
+      - m_Target: {fileID: 1389070659067755822}
+        m_TargetAssemblyTypeName: PlayerStateMachine, Assembly-CSharp
+        m_MethodName: OnMoveVertical
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1098,6 +1088,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+    m_ActionId: 857c2fd4-9694-4464-8670-49ae7e8a660f
+    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f82ea912-4ba5-448d-990f-3b80d8b3122d
+    m_ActionName: 'Player/Look[/Mouse/delta,/Pen/delta]'
+  - m_PersistentCalls:
+      m_Calls:
       - m_Target: {fileID: 5302559506376252669}
         m_TargetAssemblyTypeName: NewSpellManager, Assembly-CSharp
         m_MethodName: OnSpell1Pressed
@@ -1206,9 +1204,9 @@ MonoBehaviour:
     m_ActionName: 'Player/Spell 2[/Mouse/rightButton]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8257964444960817894}
-        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
-        m_MethodName: OnSwitchConsumable
+      - m_Target: {fileID: 2560371365361338957}
+        m_TargetAssemblyTypeName: ConsumableManager, Assembly-CSharp
+        m_MethodName: OnSwitchEquippedConsumable
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1222,9 +1220,9 @@ MonoBehaviour:
     m_ActionName: 'Player/SwitchConsumable[/Keyboard/z]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1389070659067755822}
-        m_TargetAssemblyTypeName: PlayerStateMachine, Assembly-CSharp
-        m_MethodName: OnUseConsumable
+      - m_Target: {fileID: 2560371365361338957}
+        m_TargetAssemblyTypeName: ConsumableManager, Assembly-CSharp
+        m_MethodName: OnUseConsumablePressed
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1380,10 +1378,29 @@ MonoBehaviour:
   spellCastTransform: {fileID: 3772056237199473288}
   spellParentTransform: {fileID: 0}
   passiveSpellAffects: {fileID: 11400000, guid: 4dd963e0c99e82748a95667a2c7a6379, type: 2}
+  debug: 1
   spell1: {fileID: 0}
   spell2: {fileID: 0}
   spellConfig1: {fileID: 0}
   spellConfig2: {fileID: 0}
+--- !u!114 &2560371365361338957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8863640782204810548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6c3d1e6b944e1a4cabc29aea99fcdc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConsumableManager
+  consumableSpawnTransform: {fileID: 3772056237199473288}
+  consumableParentTransform: {fileID: 0}
+  bombConfig: {fileID: 11400000, guid: fe7ee66878d01ad43a2755e6c9ec22eb, type: 2}
+  bombStartCount: 3
+  consumableConfig1: {fileID: 0}
+  consumableConfig2: {fileID: 0}
 --- !u!1 &9048644752595768871
 GameObject:
   m_ObjectHideFlags: 0
@@ -1397,7 +1414,7 @@ GameObject:
   - component: {fileID: 2273229650790971593}
   m_Layer: 8
   m_Name: StompHitbox
-  m_TagString: Untagged
+  m_TagString: Stomp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1521,7 +1538,7 @@ GameObject:
   - component: {fileID: 1843362600904055376}
   - component: {fileID: 7473516083193761540}
   - component: {fileID: 1996993977986494432}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: FlipTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
