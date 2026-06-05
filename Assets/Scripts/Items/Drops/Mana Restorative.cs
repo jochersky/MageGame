@@ -7,6 +7,6 @@ public class ManaRestorative : Pickup
     public override void PickUpEffect()
     {
         SpellManager player = FindFirstObjectByType<SpellManager>();
-        player.AddMana(manaRestored);
+        // player.AddMana(manaRestored);
     }
 }

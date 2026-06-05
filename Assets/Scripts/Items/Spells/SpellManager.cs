@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class SpellManager : MonoBehaviour
 {
-    
+    [SerializeField] int mana = 100;
     [SerializeField] private Transform spellCastTransform;
     [SerializeField] private Transform spellParentTransform;
     [SerializeField] private PassiveSpellAffects passiveSpellAffects;
@@ -110,6 +110,9 @@ public class SpellManager : MonoBehaviour
     {
         if (context.performed || context.canceled || _psm.IsDead || castingSpell1 || !spellConfig1 || !spellConfig1.strategy) return;
         
+        if (spellConfig1.manaCost > mana) return;
+        mana -= spellConfig1.manaCost;
+        
         // Player will get hit by their own spell if they cast it towards a wall
         Vector2 dir = spellCastTransform.position - transform.position;
         Debug.DrawRay(transform.position, dir, Color.red, 5);
@@ -124,6 +127,9 @@ public class SpellManager : MonoBehaviour
     public void OnSpell2Pressed(InputAction.CallbackContext context)
     {
         if (context.performed || context.canceled || _psm.IsDead || castingSpell2 || !spellConfig2 || !spellConfig2.strategy) return;
+        
+        if (spellConfig2.manaCost > mana) return;
+        mana -= spellConfig2.manaCost;
         
         // Player will get hit by their own spell if they cast it towards a wall
         Vector2 dir = spellCastTransform.position - transform.position;
