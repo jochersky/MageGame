@@ -30,6 +30,7 @@ public class EquippedUI : MonoBehaviour
 
     private void UpdateEquippedConsumableUI(ConsumableConfig config, int amount)
     {
+        Debug.Log("updating " + config.itemName);
         _equippedConsumable = config;
         UpdateConsumableCountUI(config, amount);
         consumableImage.sprite = config.icon;

@@ -66,10 +66,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         Instance = this;
-    }
-
-    private void Start()
-    {
+        
         _spellManager = GetComponent<SpellManager>();
         _consumableManager = GetComponent<ConsumableManager>();
     }
@@ -86,6 +83,7 @@ public class InventoryManager : MonoBehaviour
 
     public void UpdateConsumableEquipped(ConsumableConfig config, int amount)
     {
+        Debug.Log(config.itemName + " at " + amount);
         OnConsumableSwitched?.Invoke(config, amount);
     }
 
@@ -151,6 +149,7 @@ public class InventoryManager : MonoBehaviour
 
     public void EquipConsumableToSlot1(ConsumableConfig consumableConfig)
     {
+        Debug.Log(_consumableManager);
         OnConsumable1Equipped?.Invoke(1, consumableConfig, _consumableManager.GetConsumableCount(consumableConfig), true);
     }
     
