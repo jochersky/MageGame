@@ -13,6 +13,7 @@ public class MapGenerator : MonoBehaviour
 {
     [SerializeField] int mapDimensions = 5;
     [SerializeField] int roomDimensions = 8; 
+    [SerializeField] int level = 1;
     [SerializeField] GameObject tilemapPrefab;
     [SerializeField] Color32 guaranteeSquareColor;
     [SerializeField] Color32 highProbabilityColor;
@@ -48,6 +49,8 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] Decorations decorations;
     [SerializeField] int numDecorations = 100;
+    Trap[] trapPrefabs;
+    readonly string trapPath = "Traps/";
     
     Sprite[] filledRoom;
     Sprite[] chestRoom;
@@ -110,6 +113,7 @@ public class MapGenerator : MonoBehaviour
         room3s = Resources.LoadAll<Sprite>("Rooms/Room Style 3");
         room4s = Resources.LoadAll<Sprite>("Rooms/Room Style 4");
         NPCPrefabs = Resources.LoadAll<NPC>(NPCpath);
+        trapPrefabs = Resources.LoadAll<Trap>(trapPath);
         randy = new System.Random();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -119,7 +123,6 @@ public class MapGenerator : MonoBehaviour
         SpawnEntities();
         GenRoomPaths();
         PlaceMap();
-        GatherTileInfo();
         PlaceEntities();
         // teleport player to starting position
         player.transform.position = startingPosition;
@@ -246,7 +249,7 @@ public class MapGenerator : MonoBehaviour
     {
         // if we are moving left or right, then we are either 1 or 3.
         // if the room above us is offscreen, or is of type 0, 1, or 3, then we are type 1.
-        // otherwise the room above us is type 2 or 3 which means we need a top exit and are type 3.
+        // otherwise the room above us is type 2 or 4 which means we need a top exit and are type 3.
         if (direction == MOVING_TO.LEFT || direction == MOVING_TO.RIGHT)
         {
             if (row - 1 < 0 || map[row - 1, col] == 0 || map[row - 1, col] == 1 || map[row - 1, col] == 3)
@@ -259,7 +262,7 @@ public class MapGenerator : MonoBehaviour
         }
         // otherwise, we are moving down
         // if the room above us is offscreen, or is of type 0, 1, or 3, then we are type 2.
-        // otherwise the room above us is type 2 or 3 which means we need a top exit and are type 4.
+        // otherwise the room above us is type 2 or 4 which means we need a top exit and are type 4.
         else
         {
             if (row - 1 < 0 || map[row - 1, col] == 0 || map[row - 1, col] == 1 || map[row - 1, col] == 3)
@@ -543,7 +546,19 @@ public class MapGenerator : MonoBehaviour
 
     }
 
-    void GatherTileInfo()
+    void GatherTrapTileInfo(Trap trap)
+    {
+        foreach (Vector3Int tileCoords in colliderTilemap.cellBounds.allPositionsWithin)
+        {
+            TileBase currTile = colliderTilemap.GetTile(tileCoords);
+            if (trap.checkIfValidPosition(currTile, tileCoords, colliderTilemap))
+            {
+                trap.spawnPositions.Add(new (tileCoords.x, tileCoords.y));
+            }
+        }
+    }
+
+    void GatherDecorationTileInfo()
     {
         foreach (Vector3Int tileCoords in colliderTilemap.cellBounds.allPositionsWithin)
         {
@@ -559,7 +574,7 @@ public class MapGenerator : MonoBehaviour
                     emptyFloorSpaces.Add(new (tileCoords.x, tileCoords.y));
                 }
             }
-            // We ignore the bottomr row of tiles for obtaining ceiling tiles
+            // We ignore the bottom row of tiles for obtaining ceiling tiles
             if (tileCoords.y != colliderTilemap.cellBounds.yMax)
             {
                 Vector3Int above = new(tileCoords.x, tileCoords.y + 1, 0); 
@@ -576,11 +591,34 @@ public class MapGenerator : MonoBehaviour
     void PlaceEntities()
     {
         // sanity check
-        if (emptyFloorSpaces.Capacity == 0 || emptyCeilingSpaces.Capacity == 0)
+        // if (emptyFloorSpaces.Capacity == 0 || emptyCeilingSpaces.Capacity == 0)
+        // {
+        //     print("ERROR:No floor spaces found");
+        //     return;
+        // }
+        foreach (Trap trap in trapPrefabs)
         {
-            print("ERROR:No floor spaces found");
-            return;
+            GatherTrapTileInfo(trap);
+            // -1 since arrays are 0-based and our levels are 1-based
+            int numTraps = Mathf.FloorToInt(trap.spawnPositions.Count * trap.levelSpawnRates[level - 1]);
+            for (int trapNum = 0; trapNum < numTraps; trapNum++)
+            {
+                int randIdx = randy.Next(0, trap.spawnPositions.Count);
+                (int xCoord, int yCoord) = trap.spawnPositions[randIdx];
+                // ensures no repeats
+                trap.spawnPositions.RemoveAt(randIdx);
+                if (trap.isCollider)
+                {
+                    colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), trap.trapTile);
+                } else
+                {
+                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), trap.trapTile);
+                }
+                
+            }
         }
+        // after traps have been place, scan again
+        GatherDecorationTileInfo();
         //Loop through NPCS. and place them at their spawn point. If none, spawn at a random floor tile.
         for (int npcIdx = 0; npcIdx < NPCInstances.Count; npcIdx++)
         {
@@ -617,5 +655,6 @@ public class MapGenerator : MonoBehaviour
             }
             
         }
+        
     }
 }

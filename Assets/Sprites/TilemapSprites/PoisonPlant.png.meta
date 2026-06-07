@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 12b2f42cde758bb4fb14a29df9b99a51
+guid: a03d44b36478cb54091162abc569fbbf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5116376288666482605
-    second: BubbleSource_0
+      213: 2447042935249407145
+    second: PoisonPlant_0
+  - first:
+      213: -271981032024435066
+    second: PoisonPlant_1
+  - first:
+      213: 7164821816098029170
+    second: PoisonPlant_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +52,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -101,7 +107,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,23 +119,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BubbleSource_0
+      name: PoisonPlant_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 16
+        y: 16
+        width: 17
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: da772377025010740800000000000000
-      internalID: 5116376288666482605
+      spriteID: 9ac8ba9a594a5f120800000000000000
+      internalID: 2447042935249407145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PoisonPlant_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6861a8041bab93cf0800000000000000
+      internalID: -271981032024435066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PoisonPlant_2
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 0
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27efd7b1b7f8e6360800000000000000
+      internalID: 7164821816098029170
       vertices: []
       indices: 
       edges: []
@@ -138,7 +188,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 3ddb1669d7ff58b4b886e62bf1778757
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +198,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      BubbleSource_0: 5116376288666482605
+      PoisonPlant_0: 2447042935249407145
+      PoisonPlant_1: -271981032024435066
+      PoisonPlant_2: 7164821816098029170
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
