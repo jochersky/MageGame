@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -5,6 +6,7 @@ public class PoisonBubble : MonoBehaviour
 {
     Rigidbody2D rb;
     [SerializeField] float speed = 50f;
+    [SerializeField] TemporaryEffect effects;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,8 +17,9 @@ public class PoisonBubble : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Environment"))
+        if (!collision.isTrigger)
         {
+            Instantiate(effects, transform.position, quaternion.identity);
             Destroy(gameObject);
         } 
     }

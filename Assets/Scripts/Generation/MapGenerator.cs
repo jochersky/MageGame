@@ -330,6 +330,7 @@ public class MapGenerator : MonoBehaviour
         for (int npc_idx = 0; npc_idx < NPCInstances.Count; npc_idx++)
         {
             int randIdx = randy.Next(0, specialRoomCoords.Count);
+            // BUG: randIdx is out of bounds sometimes
             (int x, int y) = specialRoomCoords[randIdx];
             specialRoomCoords.RemoveAt(randIdx);
             Sprite[] temp_arr = new Sprite[1];
