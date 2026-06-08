@@ -4,12 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public enum ConsumableTypes
-{
-    Bomb,
-    BranchTorch
-}
-
 public class InventoryManager : MonoBehaviour
 {
     // Consumables
@@ -55,7 +49,7 @@ public class InventoryManager : MonoBehaviour
     public event Spell1Unequipped OnSpell1Unequipped;
     public delegate void Spell2Unequipped(Sprite spellSprite, bool visible);
     public event Spell2Unequipped OnSpell2Unequipped;
-    
+
     private void Awake()
     {
         // Ensure only one instance of the inventory exists globally
