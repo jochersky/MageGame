@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TemporaryEffect
   duration: 1
-  vfx: {fileID: 7151329029004782070}
+  vfx: {fileID: 0}
   sfx: {fileID: 0}
 --- !u!1 &4307683103557618476
 GameObject:
@@ -4929,7 +4929,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

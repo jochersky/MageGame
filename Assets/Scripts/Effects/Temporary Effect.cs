@@ -14,8 +14,14 @@ public class TemporaryEffect : MonoBehaviour
 
     IEnumerator PlayEffectThenDie()
     {
-        vfx.Play();
-        sfx.Play();
+        if (vfx != null)
+        {
+            vfx.Play();
+        }
+        if (sfx != null)
+        {
+            sfx.Play();
+        }
         yield return new WaitForSeconds(duration);
         Destroy(gameObject);
     }

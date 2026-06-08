@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Bomb : Consumable
@@ -10,6 +11,7 @@ public class Bomb : Consumable
     [SerializeField] private DamageFlash damageFlash;
     [SerializeField, Range(0, 10)] private float explodeTime = 1;
     [SerializeField] private float flashSpeed = 1f;
+    [SerializeField] TemporaryEffect explosionEffect;
 
     private float timer = 0f;
     
@@ -45,6 +47,7 @@ public class Bomb : Consumable
         }
         hitboxCollider.enabled = true;
         explosionCollider.enabled = true;
+        Instantiate(explosionEffect, transform.position, quaternion.identity);
         yield return new WaitForSeconds(0.1f);
         Explode();
     }
