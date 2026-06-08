@@ -28,6 +28,13 @@ public class InventoryUI : MonoBehaviour
     
     void Start()
     {
+        HideConsumableSelectionMenu();
+        HideSpellSelectionMenu();
+        UIElements.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
         // Subscribe to events
         InventoryManager.Instance.OnConsumableCountUpdated += UpdateConsumableCountUI;
         InventoryManager.Instance.OnConsumable1Equipped += UpdateEquippedConsumableUI;
@@ -45,10 +52,6 @@ public class InventoryUI : MonoBehaviour
         equippedSpell1.OnUnequippedSpellPressed += UnequipSpellInSlot;
         equippedSpell2.OnUnequippedSpellPressed += UnequipSpellInSlot;
         InventoryManager.Instance.OnSpellAdded += AddSpellToSpellSelection;
-        
-        HideConsumableSelectionMenu();
-        HideSpellSelectionMenu();
-        UIElements.SetActive(false);
     }
     
     private void UpdateConsumableCountUI(ConsumableConfig consumableConfig, int count)

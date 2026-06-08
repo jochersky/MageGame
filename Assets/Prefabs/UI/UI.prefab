@@ -591,7 +591,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4091028395176649768}
+      - m_Target: {fileID: 7619352499400701073}
         m_TargetAssemblyTypeName: InventoryUI, Assembly-CSharp
         m_MethodName: HideSpellSelectionMenu
         m_Mode: 1
@@ -847,7 +847,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4091028395176649768}
+      - m_Target: {fileID: 7619352499400701073}
         m_TargetAssemblyTypeName: InventoryUI, Assembly-CSharp
         m_MethodName: HideConsumableSelectionMenu
         m_Mode: 1
@@ -1146,8 +1146,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1027896970577213182}
-  - component: {fileID: 4091028395176649768}
   - component: {fileID: 7264206667433868443}
+  - component: {fileID: 7619352499400701073}
   m_Layer: 0
   m_Name: InventoryUI
   m_TagString: Untagged
@@ -1175,34 +1175,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4091028395176649768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2471280711149915061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb2123c6d248db443afa3bdf047f6e05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventoryUI
-  UIElements: {fileID: 694345029689164056}
-  HUD: {fileID: 5358736584763142836}
-  consumable1Image: {fileID: 2082135973408156570}
-  consumable2Image: {fileID: 9180361165127327219}
-  consumable1Text: {fileID: 1861407111855807635}
-  consumable2Text: {fileID: 5246893734328018441}
-  equippedConsumable1: {fileID: 7739714204633929594}
-  equippedConsumable2: {fileID: 2724546908743613791}
-  consumableSelectionMenu: {fileID: 4952267987638936909}
-  consumableListItemPrefab: {fileID: 5116666190696482310, guid: 4bafbb29f9bc2344b8be9d1ebff961fd, type: 3}
-  spell1Image: {fileID: 5065067087481848310}
-  spell2Image: {fileID: 6640007169786821447}
-  equippedSpell1: {fileID: 7589204375286358938}
-  equippedSpell2: {fileID: 6182455321242285885}
-  spellSelectionMenu: {fileID: 2472019975713594527}
-  spellListItemPrefab: {fileID: 2108252100021298958, guid: 82308ff4824331d4faccf4250463d519, type: 3}
 --- !u!114 &7264206667433868443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1266,7 +1238,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Attack[/Keyboard/k]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4091028395176649768}
+      - m_Target: {fileID: 7619352499400701073}
         m_TargetAssemblyTypeName: InventoryUI, Assembly-CSharp
         m_MethodName: OnInventoryPressed
         m_Mode: 0
@@ -1325,6 +1297,34 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &7619352499400701073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2471280711149915061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb2123c6d248db443afa3bdf047f6e05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryUI
+  UIElements: {fileID: 694345029689164056}
+  HUD: {fileID: 5358736584763142836}
+  consumable1Image: {fileID: 2082135973408156570}
+  consumable2Image: {fileID: 9180361165127327219}
+  consumable1Text: {fileID: 1861407111855807635}
+  consumable2Text: {fileID: 5246893734328018441}
+  equippedConsumable1: {fileID: 7739714204633929594}
+  equippedConsumable2: {fileID: 2724546908743613791}
+  consumableSelectionMenu: {fileID: 4952267987638936909}
+  consumableListItemPrefab: {fileID: 5116666190696482310, guid: 4bafbb29f9bc2344b8be9d1ebff961fd, type: 3}
+  spell1Image: {fileID: 5065067087481848310}
+  spell2Image: {fileID: 6640007169786821447}
+  equippedSpell1: {fileID: 7589204375286358938}
+  equippedSpell2: {fileID: 6182455321242285885}
+  spellSelectionMenu: {fileID: 2472019975713594527}
+  spellListItemPrefab: {fileID: 2108252100021298958, guid: 82308ff4824331d4faccf4250463d519, type: 3}
 --- !u!1 &2472019975713594527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1460,7 +1460,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8538846637571180938}
   - component: {fileID: 5733557216702563555}
-  - component: {fileID: 5082100090401511960}
+  - component: {fileID: 4650187031887168795}
   m_Layer: 0
   m_Name: EquippedUI
   m_TagString: Untagged
@@ -1516,7 +1516,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &5082100090401511960
+--- !u!114 &4650187031887168795
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1985,7 +1985,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3416844650312845663}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 

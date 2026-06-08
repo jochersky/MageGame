@@ -16,6 +16,12 @@ public class EquippedUI : MonoBehaviour
     
     void Start()
     {
+        spell1Image.enabled = false;
+        spell2Image.enabled = false;
+    }
+
+    private void OnEnable()
+    {
         // Subscribe to events
         InventoryManager.Instance.OnConsumableSwitched += UpdateEquippedConsumableUI;
         InventoryManager.Instance.OnConsumableCountUpdated += UpdateConsumableCountUI;
@@ -23,14 +29,11 @@ public class EquippedUI : MonoBehaviour
         InventoryManager.Instance.OnSpell2Equipped += UpdateEquippedSpell2UI;
         InventoryManager.Instance.OnSpell1Unequipped += UpdateEquippedSpell1UI;
         InventoryManager.Instance.OnSpell2Unequipped += UpdateEquippedSpell2UI;
-        
-        spell1Image.enabled = false;
-        spell2Image.enabled = false;
     }
 
     private void UpdateEquippedConsumableUI(ConsumableConfig config, int amount)
     {
-        Debug.Log("updating " + config.itemName);
+        consumableImage.enabled = true;
         _equippedConsumable = config;
         UpdateConsumableCountUI(config, amount);
         consumableImage.sprite = config.icon;

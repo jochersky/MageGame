@@ -25,11 +25,9 @@ public class ConsumableManager : MonoBehaviour
     {
         _psm = GetComponent<PlayerStateMachine>();
         _layerMask = LayerMask.GetMask("Environment");
-        
-        InitializeCounts();
     }
 
-    private void InitializeCounts()
+    public void InitializeCounts()
     {
         // Always want to start run with some bombs.
         // Only want to add bombs if there aren't any bombs already.
