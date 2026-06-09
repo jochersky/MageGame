@@ -5,17 +5,17 @@ using UnityEngine.Tilemaps;
 
 public class PoisonPlant : Trap
 {
-    [SerializeField] float interval = 2f;
+    //[SerializeField] float interval = 2f;
     [SerializeField] PoisonBubble poisonBubble;
     [SerializeField] float spawnOffset = 0.5f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        InvokeRepeating(nameof(SpawnBubble), interval, interval);
+        //InvokeRepeating(nameof(SpawnBubble), interval, interval);
     }
 
     // Update is called once per frame
-    void SpawnBubble() 
+    public void SpawnBubble() 
     {
         Instantiate(poisonBubble, new Vector3(transform.position.x, transform.position.y + spawnOffset, transform.position.z), Quaternion.identity);
     }
