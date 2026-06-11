@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -44,6 +45,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private float climbCheckDistance = 0.2f;
     [SerializeField] private float climbCheckHeight = 0.7f;
     [SerializeField] private float climbAboveBelowCheckLength = 0.5f;
+    [SerializeField] private float climbDelayTime = 0.1f;
     [SerializeField] private bool climbDebug;
     
     [Header("Ladder")]
@@ -78,6 +80,8 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _canClimb;
     private bool _wasClimbing;
     private Vector2 _climbPosition;
+    private float _climbDelayTimer;
+    private bool _climbCooldown;
     // private Tilemap _climbingTilemap;
     private bool _isDead;
     private bool _inputDisabled;
@@ -311,6 +315,7 @@ public class PlayerStateMachine : MonoBehaviour
 
         RaycastHit2D wallToClimb = Physics2D.Raycast(start, direction, climbCheckDistance, environmentLayer);
         _canClimb = !_isGrounded
+                    && !_climbCooldown
                     && wallToClimb
                     && !Physics2D.Raycast(start + (Vector2.up * climbCheckHeight), direction, climbCheckDistance, environmentLayer)
                     && !Physics2D.Raycast(transform.position, Vector2.down, climbAboveBelowCheckLength, environmentLayer)
@@ -334,5 +339,22 @@ public class PlayerStateMachine : MonoBehaviour
     public void InvokeDoubleJumpComplete()
     {
         OnDoubleJumpComplete?.Invoke();
+    }
+
+    public void StartClimbDelay()
+    {
+        StartCoroutine(ClimbDelay());
+    }
+    
+    private IEnumerator ClimbDelay()
+    {
+        _climbCooldown = true;
+        _climbDelayTimer = 0f;
+        while (_climbDelayTimer < climbDelayTime)
+        {
+            _climbDelayTimer += Time.deltaTime;
+            yield return null;
+        }
+        _climbCooldown = false;
     }
 }
