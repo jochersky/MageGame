@@ -3,14 +3,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "RopeStrategy", menuName = "Consumable Strategies/RopeStrategy")]
 public class RopeStrategy : PlaceableConsumableStrategy
 {
-    [SerializeField] private LayerMask environmentLayer;
-    [SerializeField] private float maxHeight = 5f;
-    [SerializeField] private Sprite topSprite;
-    [SerializeField] private Sprite topEndSprite;
-    [SerializeField] private Sprite midSprite;
-    [SerializeField] private Sprite botSprite;
+    public LayerMask environmentLayer;
+    public float maxHeight = 5f;
+    public float yMaxMargin = 0.5f;
+    public float yMinMargin = 0.75f;
+    public Sprite topSprite;
+    public Sprite topEndSprite;
+    public Sprite midSprite;
+    public Sprite botSprite;
 
-    [SerializeField] private bool debug = false;
+    public bool debug = false;
     
     public override void UsePlaceableConsumable(Transform spawnTransform, Vector3 spawnPosition)
     {
@@ -22,6 +24,7 @@ public class RopeStrategy : PlaceableConsumableStrategy
             // top
             Vector3 ropeTopP = Vector3.up * (maxHeight - 1);
             GameObject inst = SpawnRope(spawnTransform, spawnPosition + ropeTopP, topSprite);
+            GameObject topInst = inst;
             BoxCollider2D boxCollider = inst.GetComponent<BoxCollider2D>();
             boxCollider.offset = new Vector2(boxCollider.offset.x, -maxHeight / 2 + 0.5f);
             boxCollider.size = new Vector2(boxCollider.size.x, maxHeight);
@@ -36,13 +39,17 @@ public class RopeStrategy : PlaceableConsumableStrategy
             // end
             inst = SpawnRope(spawnTransform, spawnPosition, botSprite);
             inst.GetComponent<BoxCollider2D>().enabled = false;
+            
+            float ropeYPos = boxCollider.transform.position.y + boxCollider.offset.y;
+            SetRopeMinMaxHeight(topInst, ropeYPos - (boxCollider.size.y / 2) + yMinMargin, ropeYPos + (boxCollider.size.y / 2) - yMaxMargin);
         }
         else
         {
             // single tall rope
             if (hit.distance < 1)
             {
-                SpawnRope(spawnTransform, spawnPosition, topEndSprite);
+                GameObject inst = SpawnRope(spawnTransform, spawnPosition, topEndSprite);
+                SetRopeMinMaxHeight(inst, inst.transform.position.y - 0.5f, inst.transform.position.y + 0.5f);
             }
             // variable size rope
             else
@@ -50,6 +57,7 @@ public class RopeStrategy : PlaceableConsumableStrategy
                 // top
                 Vector3 ropeTopP = Vector3.up * (hit.distance - 0.5f);
                 GameObject inst = SpawnRope(spawnTransform, spawnPosition + ropeTopP, topSprite);
+                GameObject topInst = inst;
                 BoxCollider2D boxCollider = inst.GetComponent<BoxCollider2D>();
                 boxCollider.offset = new Vector2(boxCollider.offset.x, -(hit.distance - 0.5f) / 2);
                 boxCollider.size = new Vector2(boxCollider.size.x, hit.distance + 0.5f);
@@ -64,6 +72,9 @@ public class RopeStrategy : PlaceableConsumableStrategy
                 // end
                 inst = SpawnRope(spawnTransform, spawnPosition, botSprite);
                 inst.GetComponent<BoxCollider2D>().enabled = false;
+
+                float ropeYPos = boxCollider.transform.position.y + boxCollider.offset.y;
+                SetRopeMinMaxHeight(topInst, ropeYPos - (boxCollider.size.y / 2) + yMinMargin, ropeYPos + (boxCollider.size.y / 2) - yMaxMargin);
             }
         }
 
@@ -74,6 +85,13 @@ public class RopeStrategy : PlaceableConsumableStrategy
         }
     }
 
+    private void SetRopeMinMaxHeight(GameObject inst, float yMin, float yMax)
+    {
+        Rope rope = inst.GetComponent<Rope>();
+        rope.yMin = yMin;
+        rope.yMax = yMax;
+    }
+    
     private GameObject SpawnRope(Transform spawnTransform, Vector3 spawnPosition, Sprite sprite)
     {
         // using spawn transform lets consumable be flipped
@@ -83,7 +101,7 @@ public class RopeStrategy : PlaceableConsumableStrategy
         inst.transform.parent = null;
         
         inst.GetComponent<SpriteRenderer>().sprite = sprite;
-
+        
         return inst;
     }
 }

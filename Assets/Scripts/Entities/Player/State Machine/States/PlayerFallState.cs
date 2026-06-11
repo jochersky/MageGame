@@ -27,7 +27,7 @@ public class PlayerFallState : PlayerBaseState
 
     public override void ExitState()
     {
-        
+        Context.WasClimbingRope = false;
     }
     
     public override void InitializeSubState()

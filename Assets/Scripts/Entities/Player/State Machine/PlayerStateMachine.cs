@@ -4,6 +4,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -82,6 +83,9 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _inputDisabled;
     private bool _canClimbRope;
     private bool _isClimbingRope;
+    private bool _wasClimbingRope;
+    public float _yRopeMin;
+    public float _yRopeMax;
 
     [Header("State Debug")]
     public String stateName = "";
@@ -124,6 +128,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Vector2 ClimbPosition { get { return _climbPosition; } set { _climbPosition = value; } }
     public bool CanClimbRope { get { return _canClimbRope; } set { _canClimbRope = value; } }
     public bool IsClimbingRope { get { return _isClimbingRope; } set { _isClimbingRope = value; } }
+    public bool WasClimbingRope { get {return _wasClimbingRope; }  set { _wasClimbingRope = value; } }
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
     
     void Start()
@@ -160,7 +165,15 @@ public class PlayerStateMachine : MonoBehaviour
         if (_isClimbingRope)
         {
             x = 0;
-            y = _verticalMovement * ropeClimbSpeed;
+            
+            // player should not be able to "leave" rope by descending or ascending it
+            float posY = Mathf.Clamp(_rb.position.y, _yRopeMin, _yRopeMax);
+            bool inBounds = posY > _yRopeMin && posY < _yRopeMax;
+            // let the player leave edges when their input aligns
+            float sampledPosY = _rb.position.y + _verticalDirection.y;
+            bool sampleInBounds = sampledPosY < _yRopeMax && sampledPosY > _yRopeMin;
+            
+            y = inBounds || sampleInBounds ? _verticalMovement * ropeClimbSpeed : 0;
         }
         
         _rb.linearVelocity = new Vector2(x, y);
@@ -169,13 +182,21 @@ public class PlayerStateMachine : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Rope"))
+        {
             _canClimbRope = true;
+            
+            Rope rope = collision.gameObject.GetComponent<Rope>();
+            _yRopeMin = rope.yMin;
+            _yRopeMax = rope.yMax;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Rope"))
+        {
             _canClimbRope = false;
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -199,7 +220,6 @@ public class PlayerStateMachine : MonoBehaviour
         
         _verticalDirection = context.ReadValue<Vector2>();
         
-        // TODO
         if (_canClimbRope && _verticalDirection.y >= 0.5f)
             _isClimbingRope = true;
     }

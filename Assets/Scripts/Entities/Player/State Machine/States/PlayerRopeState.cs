@@ -21,13 +21,14 @@ public class PlayerRopeState : PlayerBaseState
         
         Context.VerticalMovement = Context.VerticalDirection.y;
         
-        if (Context.IsPressingJump) SwitchState(Dictionary.Jump());
-        else if (!Context.CanClimbRope) SwitchState(Dictionary.Fall());
+        if (Context.IsPressingJump && Context.MoveDirection.x != 0) SwitchState(Dictionary.Jump());
+        else if (!Context.CanClimbRope || Context.IsPressingJump) SwitchState(Dictionary.Fall());
     }
 
     public override void ExitState()
     {
         Context.IsClimbingRope = false;
+        Context.WasClimbingRope = true;
     }
 
     public override void InitializeSubState()
