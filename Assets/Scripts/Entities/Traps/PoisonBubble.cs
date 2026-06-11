@@ -17,7 +17,7 @@ public class PoisonBubble : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.isTrigger)
+        if (!collision.isTrigger || collision.CompareTag("Hitbox"))
         {
             Instantiate(effects, transform.position, quaternion.identity);
             Destroy(gameObject);

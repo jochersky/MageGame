@@ -481,7 +481,7 @@ GameObject:
   - component: {fileID: 1407518287051957407}
   m_Layer: 0
   m_Name: StaffSprite
-  m_TagString: Untagged
+  m_TagString: Hitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1466,6 +1466,7 @@ MonoBehaviour:
   invulnerabilityTime: 1.5
   capHealth: 0
   _currentHealth: 0
+  spawnInvulnerable: 0
 --- !u!1 &8941550617777362682
 GameObject:
   m_ObjectHideFlags: 0

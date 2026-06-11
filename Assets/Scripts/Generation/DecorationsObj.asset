@@ -19,8 +19,15 @@ MonoBehaviour:
   level1DecorCeiling:
   - {fileID: 11400000, guid: 370df276551d93443b2c2d69d3a64af8, type: 2}
   - {fileID: 11400000, guid: 9e76c976aa97a7d46b94aed71b1380df, type: 2}
-  level2DecorFloor: []
-  level2DecorCeiling: []
+  level2DecorFloor:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  level2DecorCeiling:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   level3DecorFloor: []
   level3DecorCeiling: []
   level4DecorFloor: []
