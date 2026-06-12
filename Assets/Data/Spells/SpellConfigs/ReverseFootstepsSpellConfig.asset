@@ -15,7 +15,9 @@ MonoBehaviour:
   itemType: 0
   itemName: Reverse Footsteps
   icon: {fileID: -1206694871680653483, guid: 737a02bd22014bf42968e62259fa606f, type: 3}
-  cooldown: 0
   changePositionOnObstruction: 1
+  manaCost: 1
+  cooldown: 0
+  twoPartCast: 1
   strategy: {fileID: 11400000, guid: 7584a1b116eb01e44bc1704d70158d3f, type: 2}
   effectsStrategy: {fileID: 0}

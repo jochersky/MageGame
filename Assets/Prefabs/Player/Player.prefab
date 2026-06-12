@@ -1094,8 +1094,11 @@ MonoBehaviour:
   climbCheckDistance: 0.75
   climbCheckHeight: 0.55
   climbAboveBelowCheckLength: 1
+  climbDelayTime: 0.2
   climbDebug: 1
   ropeClimbSpeed: 5
+  _yRopeMin: 0
+  _yRopeMax: 0
   stateName: 
   onDirectionChanged:
     m_PersistentCalls:

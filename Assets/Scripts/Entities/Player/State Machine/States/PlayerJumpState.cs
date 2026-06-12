@@ -28,6 +28,7 @@ public class PlayerJumpState : PlayerBaseState
     public override void ExitState()
     {
         Context.NewJumpPress = false;
+        Context.WasClimbingRope = false;
     }
 
     public override void InitializeSubState()
@@ -37,7 +38,7 @@ public class PlayerJumpState : PlayerBaseState
     private void PerformJump()
     {
         // first jump uses CanJump or WasClimbing
-        if ((Context.CanJump || Context.WasClimbing) && Context.IsPressingJump)
+        if ((Context.CanJump || Context.WasClimbing || Context.WasClimbingRope) && Context.IsPressingJump)
         {
             Context.LinearVelocityY = Context.MaxJumpHeight;
             // Toggle for when climbing and trying to jump since CanJump is false when climbing.
