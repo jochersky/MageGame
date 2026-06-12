@@ -18,9 +18,11 @@ public class SpellManager : MonoBehaviour
 
     public SpellConfig spellConfig1;
     private bool castingSpell1;
+    private bool _spell1Part1Casted;
 
     public SpellConfig spellConfig2;
     private bool castingSpell2;
+    private bool _spell2Part1Casted;
     
     void Start()
     {
@@ -111,7 +113,24 @@ public class SpellManager : MonoBehaviour
         if (context.performed || context.canceled || _psm.IsDead || castingSpell1 || !spellConfig1 || !spellConfig1.strategy) return;
         
         if (spellConfig1.manaCost > mana) return;
-        mana -= spellConfig1.manaCost;
+
+        // two-part-cast spells should only use one cast worth of mana
+        if (spellConfig1.twoPartCast)
+        {
+            if (!_spell1Part1Casted)
+            {
+                _spell1Part1Casted = true;
+                mana -= spellConfig1.manaCost;
+            }
+            else
+            {
+                _spell1Part1Casted = false;
+            }
+        }
+        else
+        {
+            mana -= spellConfig1.manaCost;
+        }
         
         // Player will get hit by their own spell if they cast it towards a wall
         Vector2 dir = spellCastTransform.position - transform.position;
@@ -129,7 +148,24 @@ public class SpellManager : MonoBehaviour
         if (context.performed || context.canceled || _psm.IsDead || castingSpell2 || !spellConfig2 || !spellConfig2.strategy) return;
         
         if (spellConfig2.manaCost > mana) return;
-        mana -= spellConfig2.manaCost;
+        
+        // two-part-cast spells should only use one cast worth of mana
+        if (spellConfig2.twoPartCast)
+        {
+            if (!_spell2Part1Casted)
+            {
+                _spell2Part1Casted = true;
+                mana -= spellConfig2.manaCost;
+            }
+            else
+            {
+                _spell2Part1Casted = false;
+            }
+        }
+        else
+        {
+            mana -= spellConfig2.manaCost;
+        }
         
         // Player will get hit by their own spell if they cast it towards a wall
         Vector2 dir = spellCastTransform.position - transform.position;
