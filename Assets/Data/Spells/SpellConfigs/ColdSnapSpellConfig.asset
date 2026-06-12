@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99de463acc2fc024e8d4ba71a20d6567, type: 3}
+  m_Name: ColdSnapSpellConfig
+  m_EditorClassIdentifier: Assembly-CSharp::SpellConfig
+  itemType: 0
+  itemName: Cold Snap
+  icon: {fileID: 21300000, guid: 3ba08bbe2deb0f1458bb989123d6f62f, type: 3}
+  changePositionOnObstruction: 0
+  manaCost: 1
+  cooldown: 0
+  twoPartCast: 0
+  strategy: {fileID: 11400000, guid: fcabc234449a30e478a0aacf72aa00a6, type: 2}
+  effectsStrategy: {fileID: 0}
