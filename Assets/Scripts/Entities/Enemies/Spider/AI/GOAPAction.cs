@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using NUnit.Framework.Constraints;
 using UnityEngine;
 
-public class Action
+public class GOAPAction
 {
     public string Name { get; }
     // Compared to find the most cost-effective action for the plan
@@ -16,7 +16,7 @@ public class Action
     // What the agent knows is true after completing an action
     public HashSet<Belief> Effects { get; } = new();
 
-    protected Action(string name)
+    protected GOAPAction(string name)
     {
         Name = name;
     }
@@ -42,11 +42,11 @@ public class Action
 
     public class Builder
     {
-        private readonly Action action;
+        private readonly GOAPAction _goapAction;
 
         public Builder(string name)
         {
-            action = new Action(name)
+            _goapAction = new GOAPAction(name)
             {
                 Cost = 1
             };
@@ -54,31 +54,31 @@ public class Action
 
         public Builder WithCost(float cost)
         {
-            action.Cost = cost;
+            _goapAction.Cost = cost;
             return this;
         }
 
         public Builder WithStrategy(IActionStrategy actionStrategy)
         {
-            action.actionStrategy = actionStrategy;
+            _goapAction.actionStrategy = actionStrategy;
             return this;
         }
 
         public Builder AddPrecondition(Belief precondition)
         {
-            action.Preconditions.Add(precondition);
+            _goapAction.Preconditions.Add(precondition);
             return this;
         }
 
         public Builder AddEffect(Belief effect)
         {
-            action.Effects.Add(effect);
+            _goapAction.Effects.Add(effect);
             return this;
         }
 
-        public Action Build()
+        public GOAPAction Build()
         {
-            return action;
+            return _goapAction;
         }
     }
 }

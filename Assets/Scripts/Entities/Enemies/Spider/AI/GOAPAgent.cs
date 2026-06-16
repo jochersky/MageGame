@@ -25,10 +25,10 @@ public class GOAPAgent : MonoBehaviour
     private Goal lastGoal;
     public Goal currentGoal;
     public ActionPlan actionPlan;
-    public Action currentAction;
+    public GOAPAction CurrentGoapAction;
     
     public Dictionary<string, Belief> beliefs;
-    public HashSet<Action> actions;
+    public HashSet<GOAPAction> actions;
     public HashSet<Goal> goals;
 
     private GOAPPlanner goalPlanner;
@@ -122,20 +122,20 @@ public class GOAPAgent : MonoBehaviour
 
     private void SetupActions()
     {
-        actions = new HashSet<Action>();
+        actions = new HashSet<GOAPAction>();
 
-        actions.Add(new Action.Builder("Idle")
+        actions.Add(new GOAPAction.Builder("Idle")
             .WithStrategy(new IdleActionStrategy(animationManager, 1))
             .AddEffect(beliefs["Nothing"])
             .Build());
 
-        actions.Add(new Action.Builder("ReturnToOrigin")
+        actions.Add(new GOAPAction.Builder("ReturnToOrigin")
             .WithStrategy(new MoveActionStrategy(animationManager, navMeshAgent, () => _origin))
             .AddEffect(beliefs["AgentAtOrigin"])
             .AddEffect(beliefs["AgentMoving"])
             .Build());
 
-        actions.Add(new Action.Builder("RunFromEnemy")
+        actions.Add(new GOAPAction.Builder("RunFromEnemy")
             .WithStrategy(new MoveActionStrategy(animationManager, navMeshAgent, GetRunPosition))
             .AddPrecondition(beliefs["LowHealth"])
             .AddPrecondition(beliefs["EnemyInChaseRange"])
@@ -143,27 +143,27 @@ public class GOAPAgent : MonoBehaviour
             .AddEffect(beliefs["AgentMoving"])
             .Build());
 
-        actions.Add(new Action.Builder("ChaseEnemy")
+        actions.Add(new GOAPAction.Builder("ChaseEnemy")
             .WithStrategy(new MoveActionStrategy(animationManager, navMeshAgent, () => beliefs["EnemyInChaseRange"].Position))
             .AddPrecondition(beliefs["EnemyInChaseRange"])
             .AddEffect(beliefs["EnemyInAttackRange"])
             .AddEffect(beliefs["AgentMoving"])
             .Build());
 
-        actions.Add(new Action.Builder("AttackEnemy")
+        actions.Add(new GOAPAction.Builder("AttackEnemy")
             .WithStrategy(new AttackActionStrategy(animationManager))
             .AddPrecondition(beliefs["EnemyInAttackRange"])
             .AddEffect(beliefs["AttackingEnemy"])
             .AddEffect(beliefs["TargetDead"])
             .Build());
 
-        actions.Add(new Action.Builder("MoveToGib")
+        actions.Add(new GOAPAction.Builder("MoveToGib")
             .WithStrategy(new MoveActionStrategy(animationManager, navMeshAgent, () => beliefs["GibInRange"].Position))
             .AddPrecondition(beliefs["GibInRange"])
             .AddEffect(beliefs["GibInConsumeRange"])
             .Build());
 
-        actions.Add(new Action.Builder("ConsumeGib")
+        actions.Add(new GOAPAction.Builder("ConsumeGib")
             .WithStrategy(new AttackActionStrategy(animationManager))
             .AddPrecondition(beliefs["GibInConsumeRange"])
             .AddEffect(beliefs["GibConsumed"])
@@ -199,7 +199,7 @@ public class GOAPAgent : MonoBehaviour
 
     private void RecomputeGoal()
     {
-        currentAction = null;
+        CurrentGoapAction = null;
         currentGoal = null;
     }
 
@@ -275,7 +275,7 @@ public class GOAPAgent : MonoBehaviour
         if (_dead) return;
         
         // Update the plan and current action if there is one
-        if (currentAction == null)
+        if (CurrentGoapAction == null)
         {
             CalculatePlan();
 
@@ -284,24 +284,24 @@ public class GOAPAgent : MonoBehaviour
                 navMeshAgent.ResetPath();
 
                 currentGoal = actionPlan.Goal;
-                currentAction = actionPlan.Actions.Pop();
+                CurrentGoapAction = actionPlan.Actions.Pop();
                 // Verify all precondition effects are true
-                if (currentAction.Preconditions.All(b => b.Evaluate()))
+                if (CurrentGoapAction.Preconditions.All(b => b.Evaluate()))
                 {
-                    currentAction.Start();
+                    CurrentGoapAction.Start();
                 }
                 else
                 {
-                    currentAction = null;
+                    CurrentGoapAction = null;
                     currentGoal = null;
                 }
             }
         }
         
         // If we have a current action, execute it
-        if (actionPlan != null && currentAction != null)
+        if (actionPlan != null && CurrentGoapAction != null)
         {
-            currentAction.Update(Time.deltaTime);
+            CurrentGoapAction.Update(Time.deltaTime);
             
             // TODO: update look rotation of agent
             if (navMeshAgent.velocity.magnitude >= 0)
@@ -317,10 +317,10 @@ public class GOAPAgent : MonoBehaviour
                 }
             }
 
-            if (currentAction.Finished)
+            if (CurrentGoapAction.Finished)
             {
-                currentAction.Stop();
-                currentAction = null;
+                CurrentGoapAction.Stop();
+                CurrentGoapAction = null;
 
                 // TODO: create function that runs through and evaluates all beliefs to activate other behavior
                 if (beliefs["GibConsumed"].Evaluate())
