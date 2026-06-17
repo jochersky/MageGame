@@ -17,7 +17,7 @@ public class PlayerFallState : PlayerBaseState
     {
         if (Context.IsDead) SwitchState(Dictionary.Dead());
         
-        Context.HorizontalMovement = Context.MoveDirection.x * Context.MaxAirborneMoveSpeed;
+        Context.HorizontalMovement = Context.MoveDirection.x * Context.Stats.Speed;
 
         if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
         else if (Context.NewJumpPress && Context.NumDoubleJumps > 0) SwitchState(Dictionary.Jump());

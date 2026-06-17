@@ -15,5 +15,6 @@ MonoBehaviour:
   damage: 0
   prefab: {fileID: 0}
   operatorType: 1
-  amount: 1.5
+  buffAmount: 1.5
+  debuffAmount: 0.5
   duration: 3

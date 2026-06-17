@@ -53,6 +53,9 @@ public class StatsMediator
 
     private bool CheckForDuplicateModifier(StatModifier newModifier)
     {
+        // used to ignore other modifiers created by the same scripts
+        if (newModifier.Source == "") return false;
+        
         var node = modifiers.First;
         while (node != null)
         {

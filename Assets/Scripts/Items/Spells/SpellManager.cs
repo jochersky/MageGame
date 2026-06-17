@@ -35,6 +35,12 @@ public class SpellManager : MonoBehaviour
         EquipSpell2(spell2);
     }
 
+    private void Update()
+    {
+        if (spellConfig1 && spellConfig1.strategy) spellConfig1.strategy.Tick(Time.deltaTime);
+        if (spellConfig2 && spellConfig2.strategy) spellConfig2.strategy.Tick(Time.deltaTime);
+    }
+
     public int AddSpell(SpellConfig spellConfig)
     {
         int spellEquipped = 0;

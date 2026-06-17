@@ -12,6 +12,7 @@ public class SpellStrategy : ScriptableObject
     public virtual void Equip(SpellManager spellManager, PlayerStateMachine playerStateMachine) { }
     public virtual void Unequip() { }
     public virtual void CastSpell() { }
+    public virtual void Tick(float deltaTime) { }
     public virtual void Cancel() { }
 
     public virtual void CastSpell(Transform spawnTransform, Vector3 spawnPosition)
