@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpellConfig
   itemType: 0
   itemName: Wind Lord's Blessing
-  icon: {fileID: 21300000, guid: a65c8159c1970ec449cd8029b34f7604, type: 3}
-  cooldown: 0
+  icon: {fileID: 21300000, guid: c8ebf4fb6c33e1f44be96035543e5ec2, type: 3}
   changePositionOnObstruction: 0
+  manaCost: 1
+  cooldown: 0
+  twoPartCast: 0
   strategy: {fileID: 11400000, guid: d5316acf2b6ad084e860e8a05b3247bb, type: 2}
   effectsStrategy: {fileID: 11400000, guid: cdd8c5a76c176234d89dc35b8012f78a, type: 2}
