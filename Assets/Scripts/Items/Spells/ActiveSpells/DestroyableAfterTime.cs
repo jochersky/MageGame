@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WorldAflameRadius : MonoBehaviour
+public class DestroyableAfterTime : MonoBehaviour
 {
     [SerializeField] private float lifetime;
     private float _time = 0f;

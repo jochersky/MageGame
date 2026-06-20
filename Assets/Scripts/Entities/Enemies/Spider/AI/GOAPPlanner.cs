@@ -25,12 +25,12 @@ public class GOAPPlanner
                 // If the goalNode has no leaves and no action to perform try a different goal
                 if (goalNode.IsLeafDead) continue;
                 
-                Stack<Action> actionStack = new Stack<Action>();
+                Stack<GOAPAction> actionStack = new Stack<GOAPAction>();
                 while (goalNode.Leaves.Count > 0)
                 {
                     Node cheapestLeaf = goalNode.Leaves.OrderBy(leaf => leaf.Cost).First();
                     goalNode = cheapestLeaf;
-                    actionStack.Push(cheapestLeaf.ActionToPerform);
+                    actionStack.Push(cheapestLeaf.GoapActionToPerform);
                 }
                 
                 return new ActionPlan(goal, actionStack, goalNode.Cost);
@@ -42,11 +42,11 @@ public class GOAPPlanner
     
     // Search algo to find plan
     // TODO: convert to A*
-    private bool FindPlan(Node parent, HashSet<Action> actions)
+    private bool FindPlan(Node parent, HashSet<GOAPAction> actions)
     {
         var orderedActions = actions.OrderBy(a => a.Cost);
 
-        foreach (Action action in orderedActions)
+        foreach (GOAPAction action in orderedActions)
         {
             var requiredEffects = parent.RequiredEffects;
             
@@ -65,7 +65,7 @@ public class GOAPPlanner
                 newRequiredEffects.ExceptWith(action.Effects);
                 newRequiredEffects.UnionWith(action.Preconditions);
 
-                var newAvailableActions = new HashSet<Action>(actions);
+                var newAvailableActions = new HashSet<GOAPAction>(actions);
                 newAvailableActions.Remove(action);
                 
                 var newNode = new Node(parent, action, newRequiredEffects, parent.Cost + action.Cost);
@@ -74,7 +74,7 @@ public class GOAPPlanner
                 if (FindPlan(newNode, newAvailableActions))
                 {
                     parent.Leaves.Add(newNode);
-                    newRequiredEffects.ExceptWith(newNode.ActionToPerform.Preconditions);
+                    newRequiredEffects.ExceptWith(newNode.GoapActionToPerform.Preconditions);
                 }
                 
                 // If all effects at this depth have been satisfied, return true
@@ -88,26 +88,26 @@ public class GOAPPlanner
         return parent.Leaves.Count > 0;
     }
 
-    private Stack<Action> BuildPlan(Node endingAction)
+    private Stack<GOAPAction> BuildPlan(Node endingAction)
     {
-        return new Stack<Action>();
+        return new Stack<GOAPAction>();
     }
 }
 
 public class Node
 {
     public Node Parent { get; }
-    public Action ActionToPerform { get; }
+    public GOAPAction GoapActionToPerform { get; }
     public HashSet<Belief> RequiredEffects { get; }
     public List<Node> Leaves { get; }
     public float Cost { get; }
 
-    public bool IsLeafDead => Leaves.Count == 0 && ActionToPerform == null;
+    public bool IsLeafDead => Leaves.Count == 0 && GoapActionToPerform == null;
 
-    public Node(Node parent, Action actionToPerform, HashSet<Belief> requiredEffects, float cost)
+    public Node(Node parent, GOAPAction goapActionToPerform, HashSet<Belief> requiredEffects, float cost)
     {
         Parent = parent;
-        ActionToPerform = actionToPerform;
+        GoapActionToPerform = goapActionToPerform;
         RequiredEffects = new HashSet<Belief>(requiredEffects);
         Leaves = new List<Node>();
         Cost = cost;
@@ -117,10 +117,10 @@ public class Node
 public class ActionPlan
 {
     public Goal Goal { get; }
-    public Stack<Action> Actions { get; }
+    public Stack<GOAPAction> Actions { get; }
     public float TotalCost { get; set; }
 
-    public ActionPlan(Goal goal, Stack<Action> actions, float totalCost)
+    public ActionPlan(Goal goal, Stack<GOAPAction> actions, float totalCost)
     {
         Goal = goal;
         Actions = actions;

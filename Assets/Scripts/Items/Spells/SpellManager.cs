@@ -35,6 +35,12 @@ public class SpellManager : MonoBehaviour
         EquipSpell2(spell2);
     }
 
+    private void Update()
+    {
+        if (spellConfig1 && spellConfig1.strategy) spellConfig1.strategy.Tick(Time.deltaTime);
+        if (spellConfig2 && spellConfig2.strategy) spellConfig2.strategy.Tick(Time.deltaTime);
+    }
+
     public int AddSpell(SpellConfig spellConfig)
     {
         int spellEquipped = 0;
@@ -50,12 +56,12 @@ public class SpellManager : MonoBehaviour
             spellEquipped = 2;
         }
         
-        PassiveEffectsStrategy effectsStrategy = spellConfig.effectsStrategy;
-        if (effectsStrategy)
-        {
-            effectsStrategy.AddSpellAffects(passiveSpellAffects);
-            effectsStrategy.SubscribeConditions(_psm);
-        }
+        // PassiveEffectsStrategy effectsStrategy = spellConfig.effectsStrategy;
+        // if (effectsStrategy)
+        // {
+        //     effectsStrategy.AddSpellAffects(passiveSpellAffects);
+        //     // effectsStrategy.SubscribeConditions(_psm);
+        // }
         
         return spellEquipped;
     }
@@ -64,20 +70,38 @@ public class SpellManager : MonoBehaviour
     {
         if (!spellConfig) return;
         
+        UnequipSpell1();
+        
         spellConfig1 = spellConfig;
         spellConfig1.strategy.Equip();
         spellConfig1.strategy.Equip(_psm);
         spellConfig1.strategy.Equip(this, _psm);
+        
+        PassiveEffectsStrategy effectsStrategy = spellConfig1.effectsStrategy;
+        if (effectsStrategy)
+        {
+            effectsStrategy.AddSpellAffects(passiveSpellAffects);
+            effectsStrategy.SubscribeConditions(_psm);
+        }
     }
 
     public void EquipSpell2(SpellConfig spellConfig)
     {
         if (!spellConfig) return;
         
+        UnequipSpell2();
+        
         spellConfig2 = spellConfig;
         spellConfig2.strategy.Equip();
         spellConfig2.strategy.Equip(_psm);
         spellConfig2.strategy.Equip(this, _psm);
+        
+        PassiveEffectsStrategy effectsStrategy = spellConfig2.effectsStrategy;
+        if (effectsStrategy)
+        {
+            effectsStrategy.AddSpellAffects(passiveSpellAffects);
+            effectsStrategy.SubscribeConditions(_psm);
+        }
     }
 
     public void UnequipSpell1()

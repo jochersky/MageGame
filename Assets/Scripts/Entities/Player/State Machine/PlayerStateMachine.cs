@@ -17,8 +17,10 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private Health health;
     [SerializeField] private PassiveSpellAffects passiveSpellAffects;
+    [SerializeField] private BaseStats baseStats;
     private Rigidbody2D _rb;
     private InputActionMap _playerInputMap;
+    private Stats _stats;
     
     [Header("Walk")]
     [SerializeField] private float maxWalkSpeed = 1f;
@@ -107,6 +109,7 @@ public class PlayerStateMachine : MonoBehaviour
     
     // Instance Variables + References Setters & Getters
     public Rigidbody2D Rigidbody { get { return _rb; } set { _rb = value; } }
+    public Stats Stats { get { return _stats; } set { _stats = value; } }
     public Animator Animator { get { return animator; } set { animator = value; } }
     public Vector2 MoveDirection { get { return _moveDirection; } set { _moveDirection = value; } }
     public Vector2 VerticalDirection { get { return _verticalDirection; } set { _verticalDirection = value; } }
@@ -139,6 +142,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _playerInputMap = playerInput.actions.actionMaps[0];
+        _stats = new Stats(new StatsMediator(), baseStats);
         
         // Passive spell affects initialization
         _numDoubleJumps = passiveSpellAffects.doubleJumps;
@@ -154,6 +158,7 @@ public class PlayerStateMachine : MonoBehaviour
     private void Update()
     {
         _currentState.UpdateStates();
+        _stats.Mediator.Update(Time.deltaTime);
         stateName = _currentState.ToString();
     }
     

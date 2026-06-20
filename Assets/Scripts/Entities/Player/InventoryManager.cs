@@ -206,6 +206,7 @@ public class InventoryManager : MonoBehaviour
 
     public void UnequipSpell(int spellID)
     {
+        Debug.Log(spellID);
         switch (spellID)
         {
             case 1: 
