@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07b353ff90a44f86b652f41b62c49741, type: 3}
+  m_Name: SolStoneStrategy
+  m_EditorClassIdentifier: Assembly-CSharp::ThrowableConsumableStrategy
+  prefab: {fileID: 3863092854355046777, guid: 5bd541c03b1c26f4cb59346ca35ecfad, type: 3}
+  horizontalThrowForce: 3
+  verticalThrowForce: 2
