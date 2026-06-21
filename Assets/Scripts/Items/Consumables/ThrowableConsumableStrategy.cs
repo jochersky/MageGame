@@ -3,6 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ThrowableConsumableStrategy", menuName = "Consumable Strategies/ThrowableConsumableStrategy")]
 public class ThrowableConsumableStrategy : ConsumableStrategy
 {
+    [SerializeField] private float horizontalThrowForce = 15f;
+    [SerializeField] private float verticalThrowForce = 2f;
+    
     public override void UseThrowingConsumable(Transform spawnTransform, Vector3 spawnPosition, Vector3 direction, Vector3 velocity)
     {
         // using spawn transform lets consumable be flipped
@@ -13,7 +16,7 @@ public class ThrowableConsumableStrategy : ConsumableStrategy
 
         // "throw" in direction of player movement
         Rigidbody2D rb = inst.GetComponentInChildren<Rigidbody2D>();
-        rb.linearVelocityX = direction.x * 15f;
-        rb.linearVelocityY = velocity.y * 2f;
+        rb.linearVelocityX = direction.x * horizontalThrowForce;
+        rb.linearVelocityY = velocity.y * verticalThrowForce;
     }
 }
