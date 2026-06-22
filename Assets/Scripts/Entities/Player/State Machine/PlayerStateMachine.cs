@@ -91,8 +91,9 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _canClimbRope;
     private bool _isClimbingRope;
     private bool _wasClimbingRope;
-    public float _yRopeMin;
-    public float _yRopeMax;
+    private float _yRopeMin;
+    private float _yRopeMax;
+    private bool _isCrouching;
 
     [Header("State Debug")]
     public String stateName = "";
@@ -137,6 +138,7 @@ public class PlayerStateMachine : MonoBehaviour
     public bool CanClimbRope { get { return _canClimbRope; } set { _canClimbRope = value; } }
     public bool IsClimbingRope { get { return _isClimbingRope; } set { _isClimbingRope = value; } }
     public bool WasClimbingRope { get {return _wasClimbingRope; }  set { _wasClimbingRope = value; } }
+    public bool IsCrouching { get { return _isCrouching; } set { _isCrouching = value; } }
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
     
     void Start()
@@ -238,10 +240,12 @@ public class PlayerStateMachine : MonoBehaviour
         if (!_isClimbingRope && _verticalDirection.y <= -0.5f)
         {
             _cameraManager.ShiftCameraDown();
+            _isCrouching = true;
         }
         else
         {
             _cameraManager.ReturnCameraToOriginalPosition();
+            _isCrouching = false;
         }
     }
     
