@@ -21,6 +21,7 @@ public class PlayerStateMachine : MonoBehaviour
     private Rigidbody2D _rb;
     private InputActionMap _playerInputMap;
     private Stats _stats;
+    private CameraManager _cameraManager;
     
     [Header("Walk")]
     [SerializeField] private float maxWalkSpeed = 1f;
@@ -143,6 +144,7 @@ public class PlayerStateMachine : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _playerInputMap = playerInput.actions.actionMaps[0];
         _stats = new Stats(new StatsMediator(), baseStats);
+        _cameraManager = GetComponentInChildren<CameraManager>();
         
         // Passive spell affects initialization
         _numDoubleJumps = passiveSpellAffects.doubleJumps;
@@ -216,6 +218,7 @@ public class PlayerStateMachine : MonoBehaviour
 
         // Performed and canceled callbacks incorrectly flip the transform. Ignore them.
         if (context.performed || context.canceled) return; 
+        
         if (Mathf.Sign(_moveDirection.x) != Mathf.Sign(_previousDirection.x))
         {
             onDirectionChanged?.Invoke(Mathf.Sign(_moveDirection.x));
@@ -231,6 +234,15 @@ public class PlayerStateMachine : MonoBehaviour
         
         if (_canClimbRope && _verticalDirection.y >= 0.5f)
             _isClimbingRope = true;
+
+        if (!_isClimbingRope && _verticalDirection.y <= -0.5f)
+        {
+            _cameraManager.ShiftCameraDown();
+        }
+        else
+        {
+            _cameraManager.ReturnCameraToOriginalPosition();
+        }
     }
     
     public void OnJump(InputAction.CallbackContext context)
