@@ -59,11 +59,11 @@ Transform:
   m_GameObject: {fileID: 906115594604720695}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3863422753505901973}
+  m_Father: {fileID: 903901529417490439}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &8229660304346934922
 Camera:
@@ -755,6 +755,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3863422753505901973}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6876446921733508876
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 903901529417490439}
+  m_Layer: 12
+  m_Name: CameraPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &903901529417490439
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6876446921733508876}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6226846877429130842}
+  m_Father: {fileID: 3863422753505901973}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7214288714270025178
 GameObject:
   m_ObjectHideFlags: 0
@@ -1056,7 +1088,7 @@ Transform:
   - {fileID: 1168145333667767938}
   - {fileID: 806214431907546344}
   - {fileID: 2795594205372897297}
-  - {fileID: 6226846877429130842}
+  - {fileID: 903901529417490439}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1389070659067755822
@@ -1078,6 +1110,7 @@ MonoBehaviour:
   animator: {fileID: 2522212241446724644}
   health: {fileID: 3518793060113164566}
   passiveSpellAffects: {fileID: 11400000, guid: 4dd963e0c99e82748a95667a2c7a6379, type: 2}
+  baseStats: {fileID: 11400000, guid: 2128e3719ca695c45b205b547a6ae145, type: 2}
   maxWalkSpeed: 8
   maxJumpHeight: 8
   maxDoubleJumpHeight: 10

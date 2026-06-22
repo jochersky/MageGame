@@ -14,6 +14,7 @@ enum PlayerStates
     // - Sub States -
     Idle,
     Walk,
+    Crouch,
 }
 
 public class PlayerStateDictionary
@@ -37,6 +38,7 @@ public class PlayerStateDictionary
         // - Sub States -
         _states[PlayerStates.Idle] = new PlayerIdleState(_context, this);
         _states[PlayerStates.Walk] = new PlayerWalkState(_context, this);
+        _states[PlayerStates.Crouch] = new PlayerCrouchState(_context, this);
     }
 
     // - Root States -
@@ -81,5 +83,10 @@ public class PlayerStateDictionary
     public PlayerBaseState Walk()
     {
         return _states[PlayerStates.Walk];
+    }
+
+    public PlayerBaseState Crouch()
+    {
+        return _states[PlayerStates.Crouch];
     }
 }

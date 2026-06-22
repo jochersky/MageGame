@@ -21,6 +21,7 @@ public class PlayerStateMachine : MonoBehaviour
     private Rigidbody2D _rb;
     private InputActionMap _playerInputMap;
     private Stats _stats;
+    private CameraManager _cameraManager;
     
     [Header("Walk")]
     [SerializeField] private float maxWalkSpeed = 1f;
@@ -90,8 +91,9 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _canClimbRope;
     private bool _isClimbingRope;
     private bool _wasClimbingRope;
-    public float _yRopeMin;
-    public float _yRopeMax;
+    private float _yRopeMin;
+    private float _yRopeMax;
+    private bool _isCrouching;
 
     [Header("State Debug")]
     public String stateName = "";
@@ -136,6 +138,7 @@ public class PlayerStateMachine : MonoBehaviour
     public bool CanClimbRope { get { return _canClimbRope; } set { _canClimbRope = value; } }
     public bool IsClimbingRope { get { return _isClimbingRope; } set { _isClimbingRope = value; } }
     public bool WasClimbingRope { get {return _wasClimbingRope; }  set { _wasClimbingRope = value; } }
+    public bool IsCrouching { get { return _isCrouching; } set { _isCrouching = value; } }
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
     
     void Start()
@@ -143,6 +146,7 @@ public class PlayerStateMachine : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _playerInputMap = playerInput.actions.actionMaps[0];
         _stats = new Stats(new StatsMediator(), baseStats);
+        _cameraManager = GetComponentInChildren<CameraManager>();
         
         // Passive spell affects initialization
         _numDoubleJumps = passiveSpellAffects.doubleJumps;
@@ -216,6 +220,7 @@ public class PlayerStateMachine : MonoBehaviour
 
         // Performed and canceled callbacks incorrectly flip the transform. Ignore them.
         if (context.performed || context.canceled) return; 
+        
         if (Mathf.Sign(_moveDirection.x) != Mathf.Sign(_previousDirection.x))
         {
             onDirectionChanged?.Invoke(Mathf.Sign(_moveDirection.x));
@@ -231,6 +236,17 @@ public class PlayerStateMachine : MonoBehaviour
         
         if (_canClimbRope && _verticalDirection.y >= 0.5f)
             _isClimbingRope = true;
+
+        if (!_isClimbingRope && _verticalDirection.y <= -0.5f)
+        {
+            _cameraManager.ShiftCameraDown();
+            _isCrouching = true;
+        }
+        else
+        {
+            _cameraManager.ReturnCameraToOriginalPosition();
+            _isCrouching = false;
+        }
     }
     
     public void OnJump(InputAction.CallbackContext context)
