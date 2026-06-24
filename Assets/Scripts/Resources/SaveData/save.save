@@ -1,9 +1,28 @@
 {
     "playerData": {
         "position": {
-            "x": -2.68821382522583,
-            "y": 1.6019657850265504,
+            "x": -18.231664657592775,
+            "y": 1.4539722204208375,
             "z": 0.0
-        }
+        },
+        "healthAmt": 5,
+        "manaAmt": 0
+    },
+    "inventoryData": {
+        "spells": [
+            {
+                "name": "Cold Snap"
+            }
+        ],
+        "consumables": [
+            {
+                "name": "Bomb",
+                "count": 3
+            },
+            {
+                "name": "Sol Stone",
+                "count": 10
+            }
+        ]
     }
 }

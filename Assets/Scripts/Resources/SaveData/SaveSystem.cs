@@ -14,6 +14,7 @@ public class SaveSystem
     public struct SaveData
     {
         public PlayerSaveData playerData;
+        public InventorySaveData inventoryData;
     }
 
     public static string SaveFileName()
@@ -31,6 +32,7 @@ public class SaveSystem
     private static void HandleSaveData()
     {
         GameManager.Instance.Player.Save(ref _saveData.playerData);
+        InventoryManager.Instance.Save(ref _saveData.inventoryData);
     }
 
     public static void Load()
@@ -44,5 +46,6 @@ public class SaveSystem
     private static void HandleLoadData()
     {
         GameManager.Instance.Player.Load(ref _saveData.playerData);
+        InventoryManager.Instance.Load(ref _saveData.inventoryData);
     }
 }

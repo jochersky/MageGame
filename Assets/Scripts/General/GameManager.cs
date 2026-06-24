@@ -3,7 +3,9 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-    public Player Player {  get; set; }
+    public Player Player { get; set; }
+    public Health PlayerHealth { get; set; }
+    public SpellManager SpellManager { get; set; }
     
     public static GameManager Instance { get; private set; }
     

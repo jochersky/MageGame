@@ -764,6 +764,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 903901529417490439}
+  - component: {fileID: 1334880394399299089}
   m_Layer: 12
   m_Name: CameraPivot
   m_TagString: Untagged
@@ -787,6 +788,43 @@ Transform:
   - {fileID: 6226846877429130842}
   m_Father: {fileID: 3863422753505901973}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1334880394399299089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6876446921733508876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad9eb63360ff1ef4ca69b448403260b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  yShiftSpeed: 6
+  yShiftCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: -2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7214288714270025178
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,6 +1091,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3863422753505901973}
+  - component: {fileID: 6546536738721415743}
   - component: {fileID: 1389070659067755822}
   - component: {fileID: 1016283095906686779}
   - component: {fileID: 8257964444960817894}
@@ -1091,6 +1130,18 @@ Transform:
   - {fileID: 903901529417490439}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6546536738721415743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8863640782204810548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35bccb6f8539c14ab5bd98f8ff033c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!114 &1389070659067755822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1130,8 +1181,6 @@ MonoBehaviour:
   climbDelayTime: 0.2
   climbDebug: 1
   ropeClimbSpeed: 5
-  _yRopeMin: 0
-  _yRopeMax: 0
   stateName: 
   onDirectionChanged:
     m_PersistentCalls:

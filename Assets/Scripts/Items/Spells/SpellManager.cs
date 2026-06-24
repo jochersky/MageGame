@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class SpellManager : MonoBehaviour
 {
-    [SerializeField] int mana = 100;
+    [SerializeField] private int mana = 100;
     [SerializeField] private Transform spellCastTransform;
     [SerializeField] private Transform spellParentTransform;
     [SerializeField] private PassiveSpellAffects passiveSpellAffects;
@@ -23,6 +23,8 @@ public class SpellManager : MonoBehaviour
     public SpellConfig spellConfig2;
     private bool castingSpell2;
     private bool _spell2Part1Casted;
+    
+    public int Mana { get; set; }
     
     void Start()
     {
