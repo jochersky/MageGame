@@ -35,11 +35,11 @@ public class Sellable : MonoBehaviour
 
     void Purchase()
     {
-        if (purchased || !_inRange || mc.GetMoney() < price)
+        if (purchased || !_inRange || InventoryManager.Instance.GetMoneyCount() < price)
         {
             return;
         }
-        mc.AddMoney(-price);
+        InventoryManager.Instance.UpdateMoney(-price);
         purchased = true;
         Instantiate(item, transform.position, transform.rotation);
         display.enabled = false;

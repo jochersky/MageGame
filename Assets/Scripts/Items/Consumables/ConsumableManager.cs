@@ -19,7 +19,7 @@ public class ConsumableManager : MonoBehaviour
     private ConsumableConfig _equippedConsumable;
 
     // TODO: move dictionary to config file to have counts persist between levels
-    private Dictionary<string, int> consumableCounts = new();
+    public Dictionary<string, int> consumableCounts = new();
 
     private void Start()
     {

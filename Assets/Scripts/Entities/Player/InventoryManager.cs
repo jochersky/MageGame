@@ -8,17 +8,20 @@ public class InventoryManager : MonoBehaviour
 {
     // Consumables
     private ConsumableManager _consumableManager;
-    // public int[] consumables = new int[2];
-    // private ConsumableTypes _equippedConsumable = ConsumableTypes.Bomb;
     public List<ConsumableConfig> consumableConfigs = new List<ConsumableConfig>();
     public Dictionary<GameObject, ConsumableConfig> consumableListItemInstances = new Dictionary<GameObject, ConsumableConfig>();
     [HideInInspector] public int consumableToEquip = 0;
+    private ConsumableDictionary _consumableDictionary;
     
     // Spells
     private SpellManager _spellManager;
     public List<SpellConfig> spells = new List<SpellConfig>();
     public Dictionary<GameObject, SpellConfig> spellListItemInstances = new Dictionary<GameObject, SpellConfig>();
     [HideInInspector] public int spellToEquip = 0;
+    private SpellDictionary _spellDictionary;
+    
+    // Money
+    private int _money = 0;
     
     // Singleton instance
     public static InventoryManager Instance { get; private set; }
@@ -49,7 +52,10 @@ public class InventoryManager : MonoBehaviour
     public event Spell1Unequipped OnSpell1Unequipped;
     public delegate void Spell2Unequipped(Sprite spellSprite, bool visible);
     public event Spell2Unequipped OnSpell2Unequipped;
-
+    // - Money
+    public delegate void MoneyUpdated(int money);
+    public event MoneyUpdated OnMoneyUpdated;
+    
     private void Awake()
     {
         // Ensure only one instance of the inventory exists globally
@@ -65,7 +71,9 @@ public class InventoryManager : MonoBehaviour
     private void Start()
     {
         _spellManager = GetComponent<SpellManager>();
+        _spellDictionary = new SpellDictionary();
         _consumableManager = GetComponent<ConsumableManager>();
+        _consumableDictionary = new ConsumableDictionary();
         
         _consumableManager.InitializeCounts();
     }
@@ -258,4 +266,76 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
+
+    public void UpdateMoney(int amt)
+    {
+        _money += amt;
+        OnMoneyUpdated?.Invoke(_money);
+    }
+
+    public int GetMoneyCount()
+    {
+        return _money;
+    }
+
+    public void Save(ref InventorySaveData data)
+    {
+        List<SpellSaveData> spellsToSave = new List<SpellSaveData>();
+        foreach (var i in spellListItemInstances)
+        {
+            SpellConfig spellConfig = i.Value;
+            SpellSaveData spellData = new SpellSaveData
+            {
+                name = spellConfig.itemName
+            };
+            spellsToSave.Add(spellData);
+        }
+        data.spells = spellsToSave.ToArray();
+        
+        List<ConsumableSaveData> consumablesToSave = new List<ConsumableSaveData>();
+        foreach (var i in consumableListItemInstances)
+        {
+            ConsumableConfig consumableConfig = i.Value;
+            ConsumableSaveData consumableData = new ConsumableSaveData
+            {
+                name = consumableConfig.itemName,
+                count = _consumableManager.consumableCounts[consumableConfig.itemName]
+            };
+            consumablesToSave.Add(consumableData);
+        }
+        data.consumables = consumablesToSave.ToArray();
+    }
+
+    public void Load(ref InventorySaveData data)
+    {
+        foreach (var i in data.spells)
+        {
+            AddItem(_spellDictionary.GetConfig(i.name), 0);
+        }
+        
+        foreach (var i in data.consumables)
+        {
+            AddItem(_consumableDictionary.GetConfig(i.name), i.count);
+        }
+    }
+}
+
+[System.Serializable]
+public struct InventorySaveData
+{
+    public SpellSaveData[] spells;
+    public ConsumableSaveData[] consumables;
+}
+
+[System.Serializable]
+public struct SpellSaveData
+{
+    public string name;
+}
+
+[System.Serializable]
+public struct ConsumableSaveData
+{
+    public string name;
+    public int count;
 }

@@ -4,8 +4,6 @@ public class Coin : Pickup
 {
     public override void PickUpEffect()
     {
-        // Debug.Log("Coin Collected");
-        MoneyCounter mc = FindFirstObjectByType<MoneyCounter>();
-        mc.AddMoney(1);
+        InventoryManager.Instance.UpdateMoney(1);
     }
 } 
