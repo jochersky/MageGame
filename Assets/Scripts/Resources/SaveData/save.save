@@ -1,12 +1,13 @@
 {
     "playerData": {
         "position": {
-            "x": -18.231664657592775,
-            "y": 1.4539722204208375,
+            "x": -19.49160385131836,
+            "y": 1.4539743661880494,
             "z": 0.0
         },
         "healthAmt": 5,
-        "manaAmt": 0
+        "manaAmt": 100,
+        "moneyAmt": 1
     },
     "inventoryData": {
         "spells": [
@@ -18,6 +19,10 @@
             {
                 "name": "Bomb",
                 "count": 3
+            },
+            {
+                "name": "Drill Bomb",
+                "count": 10
             },
             {
                 "name": "Sol Stone",

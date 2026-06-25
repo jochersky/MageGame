@@ -20,6 +20,9 @@ public class InventoryManager : MonoBehaviour
     [HideInInspector] public int spellToEquip = 0;
     private SpellDictionary _spellDictionary;
     
+    // Money
+    private int _money = 0;
+    
     // Singleton instance
     public static InventoryManager Instance { get; private set; }
 
@@ -49,7 +52,10 @@ public class InventoryManager : MonoBehaviour
     public event Spell1Unequipped OnSpell1Unequipped;
     public delegate void Spell2Unequipped(Sprite spellSprite, bool visible);
     public event Spell2Unequipped OnSpell2Unequipped;
-
+    // - Money
+    public delegate void MoneyUpdated(int money);
+    public event MoneyUpdated OnMoneyUpdated;
+    
     private void Awake()
     {
         // Ensure only one instance of the inventory exists globally
@@ -259,6 +265,17 @@ public class InventoryManager : MonoBehaviour
                 case 2: OnConsumable2Equipped?.Invoke(consumableEquipped, consumableConfig, _consumableManager.GetConsumableCount(consumableConfig), true); break;
             }
         }
+    }
+
+    public void UpdateMoney(int amt)
+    {
+        _money += amt;
+        OnMoneyUpdated?.Invoke(_money);
+    }
+
+    public int GetMoneyCount()
+    {
+        return _money;
     }
 
     public void Save(ref InventorySaveData data)

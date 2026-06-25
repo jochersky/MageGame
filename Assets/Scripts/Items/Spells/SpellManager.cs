@@ -24,7 +24,7 @@ public class SpellManager : MonoBehaviour
     private bool castingSpell2;
     private bool _spell2Part1Casted;
     
-    public int Mana { get; set; }
+    public int Mana { get => mana; set => mana = value; }
     
     void Start()
     {

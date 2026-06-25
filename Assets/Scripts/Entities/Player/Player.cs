@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
         data.position = transform.position;
         data.healthAmt = _health.CurrentHealth;
         data.manaAmt = _spellManager.Mana;
+        data.moneyAmt = InventoryManager.Instance.GetMoneyCount();
     }
 
     public void Load(ref PlayerSaveData data)
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
         transform.position = data.position;
         _health.CurrentHealth = data.healthAmt;
         _spellManager.Mana = data.manaAmt;
+        InventoryManager.Instance.UpdateMoney(data.moneyAmt);
     }
 }
 
@@ -41,4 +43,5 @@ public struct PlayerSaveData
     public Vector3 position;
     public int healthAmt;
     public int manaAmt;
+    public int moneyAmt;
 }

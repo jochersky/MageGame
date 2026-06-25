@@ -4,16 +4,14 @@ using UnityEngine;
 public class MoneyCounter : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI text;
-    private int money = 0;
-    public void AddMoney(int amt)
+
+    private void Start()
     {
-        money += amt;
-        text.text = money.ToString();
+        InventoryManager.Instance.OnMoneyUpdated += UpdateMoneyCount;
     }
-
-
-    public int GetMoney()
+    
+    public void UpdateMoneyCount(int amt)
     {
-        return money;
+        text.text = amt.ToString();
     }
 }
