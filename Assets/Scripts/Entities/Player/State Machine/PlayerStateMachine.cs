@@ -94,6 +94,7 @@ public class PlayerStateMachine : MonoBehaviour
     private float _yRopeMin;
     private float _yRopeMax;
     private bool _isCrouching;
+    private bool _isLookingUp;
 
     [Header("State Debug")]
     public String stateName = "";
@@ -242,10 +243,16 @@ public class PlayerStateMachine : MonoBehaviour
             _cameraManager.ShiftCameraDown();
             _isCrouching = true;
         }
+        else if (!_isClimbingRope && _verticalDirection.y >= 0.5f)
+        {
+            _cameraManager.ShiftCameraUp();
+            _isLookingUp = true;
+        }
         else
         {
             _cameraManager.ReturnCameraToOriginalPosition();
             _isCrouching = false;
+            _isLookingUp = false;
         }
     }
     
