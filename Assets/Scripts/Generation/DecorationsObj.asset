@@ -20,14 +20,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 370df276551d93443b2c2d69d3a64af8, type: 2}
   - {fileID: 11400000, guid: 9e76c976aa97a7d46b94aed71b1380df, type: 2}
   level2DecorFloor:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: ceafd5eb455dd0448ace5a760d472bb7, type: 2}
+  - {fileID: 11400000, guid: b1be629bbd174084597376394a5a68a9, type: 2}
+  - {fileID: 11400000, guid: 51c2e565d5a0e2a419f635f4a717a94b, type: 2}
+  - {fileID: 11400000, guid: 2c1d9c76d59c9b64383e7c484447be82, type: 2}
+  - {fileID: 11400000, guid: ab60e0e384ba3ae4a8bcf60735d3ce14, type: 2}
+  - {fileID: 11400000, guid: c0efceded4bc2f141b501972ed2dc395, type: 2}
   level2DecorCeiling:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 6a9d5d6ebf8f57b418c4d54878fee6e2, type: 2}
+  - {fileID: 11400000, guid: 584e01b834c582e46ba3963fc9a53d8a, type: 2}
+  - {fileID: 11400000, guid: 08bc3cd9266e1644a8e585e02edd4ca2, type: 2}
+  - {fileID: 11400000, guid: e6aec65edfa193046bb43886882c49bd, type: 2}
   level3DecorFloor: []
   level3DecorCeiling: []
   level4DecorFloor: []

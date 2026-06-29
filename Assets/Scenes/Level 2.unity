@@ -395,7 +395,7 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
---- !u!43 &793150657
+--- !u!43 &730403147
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -573,7 +573,7 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
---- !u!43 &812824001
+--- !u!43 &756744827
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -928,6 +928,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8871767491910850251, guid: 7a854991a1bb57544896e3f99c05779c, type: 3}
     - target: {fileID: 7082060121392518268, guid: 6c9be0d67760ea847969616d3ceaf2cd, type: 3}
+      propertyPath: level
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7082060121392518268, guid: 6c9be0d67760ea847969616d3ceaf2cd, type: 3}
       propertyPath: barrel
       value: 
       objectReference: {fileID: 11400000, guid: ceafd5eb455dd0448ace5a760d472bb7, type: 2}
@@ -1235,7 +1239,7 @@ MonoBehaviour:
     rid: 8645435831935565892
   m_ShadowCastingSource: 2
   m_ShadowMesh:
-    m_Mesh: {fileID: 812824001}
+    m_Mesh: {fileID: 756744827}
     m_LocalBounds:
       m_Center: {x: 0, y: 0, z: 0}
       m_Extent: {x: 0, y: 0, z: 0}

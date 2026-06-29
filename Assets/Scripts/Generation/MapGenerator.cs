@@ -645,14 +645,14 @@ public class MapGenerator : MonoBehaviour
                 (int xCoord, int yCoord) = emptyFloorSpaces[randIdx];
                 // ensures no repeats
                 emptyFloorSpaces.RemoveAt(randIdx);
-                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(1, false));
+                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(level, false));
             } else
             {
                 int randIdx = randy.Next(0, emptyCeilingSpaces.Count);
                 (int xCoord, int yCoord) = emptyCeilingSpaces[randIdx];
                 // ensures no repeats
                 emptyCeilingSpaces.RemoveAt(randIdx);
-                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(1, true));
+                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(level, true));
             }
             
         }
