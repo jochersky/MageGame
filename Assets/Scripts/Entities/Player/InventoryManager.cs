@@ -4,54 +4,58 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public enum ConsumableTypes
-{
-    Bomb,
-    BranchTorch
-}
-
 public class InventoryManager : MonoBehaviour
 {
     // Consumables
-    public int[] consumables = new int[2];
-    private ConsumableTypes _equippedConsumable = ConsumableTypes.Bomb;
+    private ConsumableManager _consumableManager;
+    public List<ConsumableConfig> consumableConfigs = new List<ConsumableConfig>();
+    public Dictionary<GameObject, ConsumableConfig> consumableListItemInstances = new Dictionary<GameObject, ConsumableConfig>();
+    [HideInInspector] public int consumableToEquip = 0;
+    private ConsumableDictionary _consumableDictionary;
     
     // Spells
-    // - Active
-    public List<ActiveSpell> activeSpells = new List<ActiveSpell>();
-    public Dictionary<GameObject, ActiveSpell> ActiveSpellListItemInstances = new Dictionary<GameObject, ActiveSpell>();
+    private SpellManager _spellManager;
+    public List<SpellConfig> spells = new List<SpellConfig>();
+    public Dictionary<GameObject, SpellConfig> spellListItemInstances = new Dictionary<GameObject, SpellConfig>();
     [HideInInspector] public int spellToEquip = 0;
-    // - Passive
-    public List<PassiveSpell> passiveSpells = new List<PassiveSpell>();
-    public Dictionary<GameObject, PassiveSpell> PassiveSpellListItemInstances = new Dictionary<GameObject, PassiveSpell>();
-    [HideInInspector] public int passiveSpellToEquip = 0;
+    private SpellDictionary _spellDictionary;
     
-    // Getters & Setters
-    public ConsumableTypes EquippedConsumable => _equippedConsumable;
-
+    // Money
+    private int _money = 0;
+    
     // Singleton instance
     public static InventoryManager Instance { get; private set; }
 
     // Events
     // - Consumables
-    public delegate void ConsumableSwitched(ConsumableTypes consumable);
+    public delegate void ConsumableSwitched(ConsumableConfig consumableConfig, int count);
     public event ConsumableSwitched OnConsumableSwitched;
-    public delegate void ConsumableCountUpdated(int count, ConsumableTypes type);
+    public delegate void ConsumableCountUpdated(ConsumableConfig consumableConfig, int count);
     public event ConsumableCountUpdated OnConsumableCountUpdated;
+    
+    public delegate void ConsumableAdded(ConsumableConfig consumable);
+    public event ConsumableAdded OnConsumableAdded;
+    public delegate void Consumable1Equipped(int equipSlot, ConsumableConfig consumableConfig, int count, bool visible);
+    public event Consumable1Equipped OnConsumable1Equipped;
+    public delegate void Consumable2Equipped(int equipSlot, ConsumableConfig consumableConfig, int count, bool visible);
+    public event Consumable2Equipped OnConsumable2Equipped;
+    public delegate void ConsumableUnequipped(int consumableID);
+    public event ConsumableUnequipped OnConsumableUnequipped;
     // - Spells
-    public delegate void SpellAdded(ActiveSpell spell);
+    public delegate void SpellAdded(SpellConfig spellConfig);
     public event SpellAdded OnSpellAdded;
-    public delegate void PassiveSpellAdded(PassiveSpell spell);
-    public event PassiveSpellAdded OnPassiveSpellAdded;
-    public delegate void Spell1Equipped(SpellTypes spell);
+    public delegate void Spell1Equipped(Sprite spellSprite, bool visible);
     public event Spell1Equipped OnSpell1Equipped;
-    public delegate void Spell2Equipped(SpellTypes spell);
+    public delegate void Spell2Equipped(Sprite spellSprite, bool visible);
     public event Spell2Equipped OnSpell2Equipped;
-    public delegate void PassiveSpell1Equipped(SpellTypes spell);
-    public event PassiveSpell1Equipped OnPassiveSpell1Equipped;
-    public delegate void PassiveSpell2Equipped(SpellTypes spell);
-    public event PassiveSpell2Equipped OnPassiveSpell2Equipped;
-
+    public delegate void Spell1Unequipped(Sprite spellSprite, bool visible);
+    public event Spell1Unequipped OnSpell1Unequipped;
+    public delegate void Spell2Unequipped(Sprite spellSprite, bool visible);
+    public event Spell2Unequipped OnSpell2Unequipped;
+    // - Money
+    public delegate void MoneyUpdated(int money);
+    public event MoneyUpdated OnMoneyUpdated;
+    
     private void Awake()
     {
         // Ensure only one instance of the inventory exists globally
@@ -63,156 +67,275 @@ public class InventoryManager : MonoBehaviour
 
         Instance = this;
     }
-    
-    // Consumables
-    
-    public void OnSwitchConsumable(InputAction.CallbackContext context)
-    {
-        if (context.performed || context.canceled) return;
 
-        _equippedConsumable = _equippedConsumable == ConsumableTypes.Bomb ? ConsumableTypes.BranchTorch : ConsumableTypes.Bomb;
-        OnConsumableSwitched?.Invoke(_equippedConsumable);
-    }
-
-    private int GetConsumableIndex(ConsumableTypes type)
+    private void Start()
     {
-        int index = (int)type;
-        if (index == 0) return 0;
-        if (index == 1) return 1;
-        if (index > 1)
-        {
-            index = (int)Mathf.Log(index, 2);
-        }
-            
-        return index;
-    }
-    
-    public int GetConsumableCount(ConsumableTypes type)
-    {
-        int index = GetConsumableIndex(type);
-        return consumables[index]; 
-    }
-    
-    public void UpdateConsumable(ConsumableTypes type, int amt)
-    {
-        int index = GetConsumableIndex(type);
-        consumables[index] += amt;
-        OnConsumableCountUpdated?.Invoke(consumables[index], type);
-    }
-
-    // Spells
-    
-    public void AddSpell(ActiveSpell spell)
-    {
-        activeSpells.Add(spell);
-        OnSpellAdded?.Invoke(spell);
+        _spellManager = GetComponent<SpellManager>();
+        _spellDictionary = new SpellDictionary();
+        _consumableManager = GetComponent<ConsumableManager>();
+        _consumableDictionary = new ConsumableDictionary();
         
-        if (!SpellManager.Instance.equippedSpell1)
-        {
-            OnSpell1Equipped?.Invoke(spell.spellType);
-            SpellManager.Instance.EquipSpell1(spell);
-        }
-        else if (!SpellManager.Instance.equippedSpell2)
-        {
-            OnSpell2Equipped?.Invoke(spell.spellType);
-            SpellManager.Instance.EquipSpell2(spell);
-        }
+        _consumableManager.InitializeCounts();
+    }
+    
+    public int GetConsumableCount(ConsumableConfig config)
+    {
+        return _consumableManager.GetConsumableCount(config);
+    }
+    
+    public void UpdateConsumableCount(ConsumableConfig config, int amount)
+    {
+        OnConsumableCountUpdated?.Invoke(config, amount);
     }
 
-    public void AddPassiveSpell(PassiveSpell spell)
+    public void UpdateConsumableEquipped(ConsumableConfig config, int amount)
     {
-        passiveSpells.Add(spell);
-        OnPassiveSpellAdded?.Invoke(spell);
+        OnConsumableSwitched?.Invoke(config, amount);
+    }
+
+    public void OnNewConsumableAdded(ConsumableConfig consumableConfig)
+    {
+        OnConsumableAdded?.Invoke(consumableConfig);
+    }
+
+    public void AddConsumableListItem(GameObject consumableListItemGO, ConsumableConfig consumableConfig)
+    {
+        consumableListItemInstances.Add(consumableListItemGO, consumableConfig);
+    }
+
+    public void AddSpellListItem(GameObject spellListItemGO, SpellConfig config)
+    {
+        spellListItemInstances.Add(spellListItemGO, config);
+    }
+
+    public bool EquipSpell(GameObject spellListItemGO)
+    {
+        SpellConfig config = spellListItemInstances[spellListItemGO];
         
-        if (!SpellManager.Instance.equippedPassiveSpell1)
-        {
-            OnPassiveSpell1Equipped?.Invoke(spell.spellType);
-            SpellManager.Instance.EquipPassiveSpell1(spell);
-        }
-        else if (!SpellManager.Instance.equippedPassiveSpell2)
-        {
-            OnPassiveSpell2Equipped?.Invoke(spell.spellType);
-            SpellManager.Instance.EquipPassiveSpell2(spell);
-        }
-    }
-
-    public void AddSpellListItem(GameObject spellListItemGO, ActiveSpell spell)
-    {
-        ActiveSpellListItemInstances.Add(spellListItemGO, spell);
-    }
-
-    public void AddPassiveSpellListItem(GameObject spellListItemGO, PassiveSpell spell)
-    {
-        PassiveSpellListItemInstances.Add(spellListItemGO, spell);
-    }
-
-    public bool EquipActiveSpell(GameObject spellListItemGO)
-    {
-        ActiveSpell spell = ActiveSpellListItemInstances[spellListItemGO];
-        
+        SpellConfig spellConfig1 = _spellManager.spellConfig1;
+        SpellConfig spellConfig2 = _spellManager.spellConfig2;
         switch (spellToEquip)
         {
             case 1:
                 // Already equipped spells swap slots
-                if (SpellManager.Instance.equippedSpell2 == spell)
+                if (spellConfig2 == config)
                 {
-                    ActiveSpell spell1 = SpellManager.Instance.equippedSpell1;
-                    OnSpell2Equipped?.Invoke(spell1.spellType);
-                    SpellManager.Instance.EquipSpell2(spell1);
+                    _spellManager.EquipSpell1(spellConfig2);
+                    OnSpell1Equipped?.Invoke(spellConfig2.icon, true);
+                    _spellManager.EquipSpell2(spellConfig1);
+                    OnSpell2Equipped?.Invoke(spellConfig1.icon, true);
                 }
-                    
-                OnSpell1Equipped?.Invoke(spell.spellType); 
-                SpellManager.Instance.EquipSpell1(spell);
+                // normal case
+                else
+                {
+                    _spellManager.EquipSpell1(config);
+                    OnSpell1Equipped?.Invoke(config.icon, true); 
+                }
                 return true;
             case 2: 
                 // Already equipped spells swap slots
-                if (SpellManager.Instance.equippedSpell1 == spell)
+                if (spellConfig1 == config)
                 {
-                    ActiveSpell spell2 = SpellManager.Instance.equippedSpell2;
-                    OnSpell1Equipped?.Invoke(spell2.spellType);
-                    SpellManager.Instance.EquipSpell1(spell2);
+                    _spellManager.EquipSpell2(spellConfig1);
+                    OnSpell2Equipped?.Invoke(spellConfig1.icon, true);
+                    _spellManager.EquipSpell1(spellConfig2);
+                    OnSpell1Equipped?.Invoke(spellConfig2.icon, true);
                 }
-                
-                OnSpell2Equipped?.Invoke(spell.spellType); 
-                SpellManager.Instance.EquipSpell2(spell);
+                // normal case
+                else
+                {
+                    _spellManager.EquipSpell2(config);
+                    OnSpell2Equipped?.Invoke(config.icon, true); 
+                }
                 return true;
         }
         
         return false;
+    }
+
+    public void EquipConsumableToSlot1(ConsumableConfig consumableConfig)
+    { 
+        OnConsumable1Equipped?.Invoke(1, consumableConfig, _consumableManager.GetConsumableCount(consumableConfig), true);
     }
     
-    public bool EquipPassiveSpell(GameObject spellListItemGO)
+    public void EquipConsumableToSlot2(ConsumableConfig consumableConfig)
     {
-        PassiveSpell spell = PassiveSpellListItemInstances[spellListItemGO];
+        OnConsumable1Equipped?.Invoke(2, consumableConfig, _consumableManager.GetConsumableCount(consumableConfig), true);
+    }
+
+    public bool EquipConsumable(GameObject consumableListItemGO)
+    {
+        ConsumableConfig config = consumableListItemInstances[consumableListItemGO];
         
-        switch (passiveSpellToEquip)
+        ConsumableConfig consumableConfig1 = _consumableManager.consumableConfig1;
+        ConsumableConfig consumableConfig2 = _consumableManager.consumableConfig2;
+        int count1 = _consumableManager.GetConsumableCount(consumableConfig1);
+        int count2 = _consumableManager.GetConsumableCount(consumableConfig2);
+        bool visible1 = consumableConfig1;
+        bool visible2 = consumableConfig2;
+        switch (consumableToEquip)
         {
             case 1:
-                // Already equipped spells swap slots
-                if (SpellManager.Instance.equippedPassiveSpell2 == spell)
+                // Already equipped consumables swap slots
+                if (consumableConfig2 == config)
                 {
-                    PassiveSpell spell1 = SpellManager.Instance.equippedPassiveSpell1;
-                    OnPassiveSpell2Equipped?.Invoke(spell1.spellType);
-                    SpellManager.Instance.EquipPassiveSpell2(spell1);
+                    _consumableManager.EquipConsumable1(consumableConfig2);
+                    OnConsumable1Equipped?.Invoke(1, consumableConfig2, count2, visible2);
+                    _consumableManager.EquipConsumable2(consumableConfig1);
+                    OnConsumable2Equipped?.Invoke(2, consumableConfig1, count1, visible1);
                 }
-                    
-                OnPassiveSpell1Equipped?.Invoke(spell.spellType);
-                SpellManager.Instance.EquipPassiveSpell1(spell);
+                // normal case
+                else
+                {
+                    _consumableManager.EquipConsumable1(config);
+                    OnConsumable1Equipped?.Invoke(consumableToEquip, consumableConfig1, count1, visible1);
+                }
                 return true;
             case 2: 
-                // Already equipped spells swap slots
-                if (SpellManager.Instance.equippedPassiveSpell1 == spell)
+                // Already equipped consumables swap slots
+                if (consumableConfig1 == config)
                 {
-                    PassiveSpell spell2 = SpellManager.Instance.equippedPassiveSpell2;
-                    OnPassiveSpell1Equipped?.Invoke(spell2.spellType);
-                    SpellManager.Instance.EquipPassiveSpell1(spell2);
+                    _consumableManager.EquipConsumable2(consumableConfig1);
+                    OnConsumable2Equipped?.Invoke(2, consumableConfig1, count1, visible1);
+                    _consumableManager.EquipConsumable1(consumableConfig2);
+                    OnConsumable1Equipped?.Invoke(1, consumableConfig2, count2, visible2);
                 }
-                
-                OnPassiveSpell2Equipped?.Invoke(spell.spellType);
-                SpellManager.Instance.EquipPassiveSpell2(spell);
+                // normal case
+                else
+                {
+                    _consumableManager.EquipConsumable2(config);
+                    OnConsumable2Equipped?.Invoke(2, consumableConfig2, count2, visible2);
+                }
                 return true;
         }
         
         return false;
     }
+
+    public void UnequipSpell(int spellID)
+    {
+        Debug.Log(spellID);
+        switch (spellID)
+        {
+            case 1: 
+                _spellManager.UnequipSpell1(); 
+                OnSpell1Unequipped?.Invoke(null, false);
+                break;
+            case 2: 
+                _spellManager.UnequipSpell2();
+                OnSpell2Unequipped?.Invoke(null, false);
+                break;
+        }
+    }
+    
+    public void UnequipConsumable(int consumableID)
+    {
+        switch (consumableID)
+        {
+            case 0:
+                _consumableManager.UnequipConsumable(consumableID);
+                break;
+        }
+    }
+
+    public void AddItem(ItemConfig itemConfig, int count)
+    {
+        if (itemConfig.itemType == ItemType.Spell)
+        {
+            SpellConfig spellConfig = itemConfig as SpellConfig;
+            if (!spellConfig) return;
+            int spellEquipped = _spellManager.AddSpell(spellConfig);
+            switch (spellEquipped)
+            {
+                case 1: OnSpell1Equipped?.Invoke(spellConfig.icon, true); break;
+                case 2: OnSpell2Equipped?.Invoke(spellConfig.icon, true); break;
+            }
+            
+            OnSpellAdded?.Invoke(spellConfig);
+        }
+        else if (itemConfig.itemType == ItemType.Consumable)
+        {
+            ConsumableConfig consumableConfig = itemConfig as ConsumableConfig;
+            if (!consumableConfig) return;
+            // new selection available in consumable menu only when new consumable found
+            int consumableEquipped = _consumableManager.AddConsumable(consumableConfig, count);
+            switch (consumableEquipped)
+            {
+                case 1: OnConsumable1Equipped?.Invoke(consumableEquipped, consumableConfig, _consumableManager.GetConsumableCount(consumableConfig), true); break;
+                case 2: OnConsumable2Equipped?.Invoke(consumableEquipped, consumableConfig, _consumableManager.GetConsumableCount(consumableConfig), true); break;
+            }
+        }
+    }
+
+    public void UpdateMoney(int amt)
+    {
+        _money += amt;
+        OnMoneyUpdated?.Invoke(_money);
+    }
+
+    public int GetMoneyCount()
+    {
+        return _money;
+    }
+
+    public void Save(ref InventorySaveData data)
+    {
+        List<SpellSaveData> spellsToSave = new List<SpellSaveData>();
+        foreach (var i in spellListItemInstances)
+        {
+            SpellConfig spellConfig = i.Value;
+            SpellSaveData spellData = new SpellSaveData
+            {
+                name = spellConfig.itemName
+            };
+            spellsToSave.Add(spellData);
+        }
+        data.spells = spellsToSave.ToArray();
+        
+        List<ConsumableSaveData> consumablesToSave = new List<ConsumableSaveData>();
+        foreach (var i in consumableListItemInstances)
+        {
+            ConsumableConfig consumableConfig = i.Value;
+            ConsumableSaveData consumableData = new ConsumableSaveData
+            {
+                name = consumableConfig.itemName,
+                count = _consumableManager.consumableCounts[consumableConfig.itemName]
+            };
+            consumablesToSave.Add(consumableData);
+        }
+        data.consumables = consumablesToSave.ToArray();
+    }
+
+    public void Load(ref InventorySaveData data)
+    {
+        foreach (var i in data.spells)
+        {
+            AddItem(_spellDictionary.GetConfig(i.name), 0);
+        }
+        
+        foreach (var i in data.consumables)
+        {
+            AddItem(_consumableDictionary.GetConfig(i.name), i.count);
+        }
+    }
+}
+
+[System.Serializable]
+public struct InventorySaveData
+{
+    public SpellSaveData[] spells;
+    public ConsumableSaveData[] consumables;
+}
+
+[System.Serializable]
+public struct SpellSaveData
+{
+    public string name;
+}
+
+[System.Serializable]
+public struct ConsumableSaveData
+{
+    public string name;
+    public int count;
 }

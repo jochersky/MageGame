@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c26b1a974c80e144943e6b401683b6a, type: 3}
+  m_Name: BombConfig
+  m_EditorClassIdentifier: Assembly-CSharp::ConsumableConfig
+  itemType: 1
+  itemName: Bomb
+  icon: {fileID: -2613247888821195678, guid: 3d02a1c594a81f94ebc6c94f75a0ce0b, type: 3}
+  changePositionOnObstruction: 1
+  maxCount: 99
+  type: 2
+  strategy: {fileID: 11400000, guid: 53e01bb9f4b30704288f816805d200bc, type: 2}

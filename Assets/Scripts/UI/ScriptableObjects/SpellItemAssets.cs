@@ -6,6 +6,9 @@ public class SpellItemAssets : ScriptableObject
     // - Active
     public Sprite fireballSprite;
     public Sprite lightSprite;
+    public Sprite reverseFootstepsSprite;
+    public Sprite ObscuredPresenceSprite;
+    public Sprite WorldAflameSprite;
     
     // - Passive
     public Sprite bounceSprite;

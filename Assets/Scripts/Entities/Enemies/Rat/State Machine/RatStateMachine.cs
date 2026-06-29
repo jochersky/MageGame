@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class RatStateMachine : MonoBehaviour
+public class RatStateMachine : Entity
 {
     [Header("References")]
     [SerializeField] private Animator animator;
@@ -125,7 +125,19 @@ public class RatStateMachine : MonoBehaviour
         CheckHitWall();
         CheckForLedge();
         
+        // freeze spell behavior, can be used with other effects in the future
+        if (frozen) return;
+        
         _rb.linearVelocity = new Vector2(_horizontalMovement, _rb.linearVelocityY);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.TryGetComponent<ColdSnapArea>(out ColdSnapArea coldSnap))
+        {
+            Freeze(coldSnap.freezeDuration);
+            _rb.linearVelocity = Vector2.zero;
+        }
     }
 
     private void CheckGrounded()

@@ -4,7 +4,7 @@ using UnityEngine;
 public class NavigationSurfaceManager : MonoBehaviour
 {
     [SerializeField] private NavMeshSurface spiderNavMeshSurface;
-
+    
     private void Start()
     {
         SyncNavMesh();
@@ -14,6 +14,9 @@ public class NavigationSurfaceManager : MonoBehaviour
     
     private void SyncNavMesh()
     {
+        // check added to get rid of missing reference error when changing scenes
+        if (!spiderNavMeshSurface) return;
+            
         spiderNavMeshSurface.UpdateNavMesh(spiderNavMeshSurface.navMeshData);
     }
 }

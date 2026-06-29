@@ -5,7 +5,7 @@ public class Spell : Item
     [Header("Spell")]
     [SerializeField] protected GameObject projectilePrefab;
     
-    public SpellTypes spellType;
+    // public SpellTypes spellType;
     public Transform spawnTransform;
     public Transform parentTransform;
     [SerializeField] protected float spellCooldown;

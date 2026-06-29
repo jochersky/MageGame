@@ -59,11 +59,11 @@ Transform:
   m_GameObject: {fileID: 906115594604720695}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3863422753505901973}
+  m_Father: {fileID: 903901529417490439}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &8229660304346934922
 Camera:
@@ -184,7 +184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2795594205372897297
 Transform:
   m_ObjectHideFlags: 0
@@ -386,7 +386,7 @@ GameObject:
   m_Component:
   - component: {fileID: 806214431907546344}
   - component: {fileID: 2320967101425146970}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LitBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -548,7 +548,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 960e6857b16ca59438d83efc3d8fbf98, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -755,6 +755,76 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3863422753505901973}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6876446921733508876
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 903901529417490439}
+  - component: {fileID: 1334880394399299089}
+  m_Layer: 12
+  m_Name: CameraPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &903901529417490439
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6876446921733508876}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6226846877429130842}
+  m_Father: {fileID: 3863422753505901973}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1334880394399299089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6876446921733508876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad9eb63360ff1ef4ca69b448403260b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  yShiftSpeed: 6
+  yShiftCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: -2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7214288714270025178
 GameObject:
   m_ObjectHideFlags: 0
@@ -1021,14 +1091,16 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3863422753505901973}
+  - component: {fileID: 6546536738721415743}
   - component: {fileID: 1389070659067755822}
   - component: {fileID: 1016283095906686779}
-  - component: {fileID: 2568073104914582011}
   - component: {fileID: 8257964444960817894}
   - component: {fileID: 8788688971398276464}
   - component: {fileID: 3546341051548346016}
   - component: {fileID: 7011849334598943597}
   - component: {fileID: 3518793060113164566}
+  - component: {fileID: 5302559506376252669}
+  - component: {fileID: 2560371365361338957}
   m_Layer: 12
   m_Name: Player
   m_TagString: Player
@@ -1055,9 +1127,21 @@ Transform:
   - {fileID: 1168145333667767938}
   - {fileID: 806214431907546344}
   - {fileID: 2795594205372897297}
-  - {fileID: 6226846877429130842}
+  - {fileID: 903901529417490439}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6546536738721415743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8863640782204810548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35bccb6f8539c14ab5bd98f8ff033c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!114 &1389070659067755822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1076,10 +1160,8 @@ MonoBehaviour:
     m_Bits: 64
   animator: {fileID: 2522212241446724644}
   health: {fileID: 3518793060113164566}
-  consumableSpawnTransform: {fileID: 5577571645946893149}
-  consumableParentTransform: {fileID: 0}
-  bombPrefab: {fileID: 6415621097088706008, guid: 4fca7f1e70ac3564caeeb5f7bf24a375, type: 3}
   passiveSpellAffects: {fileID: 11400000, guid: 4dd963e0c99e82748a95667a2c7a6379, type: 2}
+  baseStats: {fileID: 11400000, guid: 2128e3719ca695c45b205b547a6ae145, type: 2}
   maxWalkSpeed: 8
   maxJumpHeight: 8
   maxDoubleJumpHeight: 10
@@ -1096,7 +1178,9 @@ MonoBehaviour:
   climbCheckDistance: 0.75
   climbCheckHeight: 0.55
   climbAboveBelowCheckLength: 1
+  climbDelayTime: 0.2
   climbDebug: 1
+  ropeClimbSpeed: 5
   stateName: 
   onDirectionChanged:
     m_PersistentCalls:
@@ -1126,27 +1210,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackManager
   staff: {fileID: 2615795943972236996}
---- !u!114 &2568073104914582011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8863640782204810548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f8356ed57f636846b9721155043a4a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  debug: 1
-  passiveSpellAffects: {fileID: 11400000, guid: 4dd963e0c99e82748a95667a2c7a6379, type: 2}
-  spellCastTransform: {fileID: 3772056237199473288}
-  spellParentTransform: {fileID: 0}
-  equippedSpell1: {fileID: 0}
-  equippedSpell2: {fileID: 0}
-  equippedPassiveSpell1: {fileID: 0}
-  equippedPassiveSpell2: {fileID: 0}
-  mana: 100
 --- !u!114 &8257964444960817894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1159,11 +1222,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c24bf22cbbc14c468561402f675957c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  consumables: 0a00000005000000
-  activeSpells: []
+  consumableConfigs: []
+  consumableToEquip: 0
+  spells: []
   spellToEquip: 0
-  passiveSpells: []
-  passiveSpellToEquip: 0
 --- !u!114 &8788688971398276464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1203,6 +1265,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1389070659067755822}
+        m_TargetAssemblyTypeName: PlayerStateMachine, Assembly-CSharp
+        m_MethodName: OnMoveVertical
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 857c2fd4-9694-4464-8670-49ae7e8a660f
     m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
   - m_PersistentCalls:
@@ -1211,8 +1285,8 @@ MonoBehaviour:
     m_ActionName: 'Player/Look[/Mouse/delta,/Pen/delta]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2568073104914582011}
-        m_TargetAssemblyTypeName: SpellManager1, Assembly-CSharp
+      - m_Target: {fileID: 5302559506376252669}
+        m_TargetAssemblyTypeName: NewSpellManager, Assembly-CSharp
         m_MethodName: OnSpell1Pressed
         m_Mode: 0
         m_Arguments:
@@ -1283,8 +1357,20 @@ MonoBehaviour:
     m_ActionName: 'Player/Jump[/Keyboard/space]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2568073104914582011}
-        m_TargetAssemblyTypeName: SpellManager1, Assembly-CSharp
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: SpellManager, Assembly-CSharp
+        m_MethodName: OnSpell2Pressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5302559506376252669}
+        m_TargetAssemblyTypeName: NewSpellManager, Assembly-CSharp
         m_MethodName: OnSpell2Pressed
         m_Mode: 0
         m_Arguments:
@@ -1307,9 +1393,9 @@ MonoBehaviour:
     m_ActionName: 'Player/Spell 2[/Mouse/rightButton]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8257964444960817894}
-        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
-        m_MethodName: OnSwitchConsumable
+      - m_Target: {fileID: 2560371365361338957}
+        m_TargetAssemblyTypeName: ConsumableManager, Assembly-CSharp
+        m_MethodName: OnSwitchEquippedConsumable
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1323,9 +1409,9 @@ MonoBehaviour:
     m_ActionName: 'Player/SwitchConsumable[/Keyboard/z]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1389070659067755822}
-        m_TargetAssemblyTypeName: PlayerStateMachine, Assembly-CSharp
-        m_MethodName: OnUseConsumable
+      - m_Target: {fileID: 2560371365361338957}
+        m_TargetAssemblyTypeName: ConsumableManager, Assembly-CSharp
+        m_MethodName: OnUseConsumablePressed
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1465,8 +1551,47 @@ MonoBehaviour:
   maxHealth: 5
   invulnerabilityTime: 1.5
   capHealth: 0
-  _currentHealth: 0
   spawnInvulnerable: 0
+  ignore: 0
+--- !u!114 &5302559506376252669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8863640782204810548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ff601f384ecf084996e14df38b86d5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NewSpellManager
+  mana: 100
+  spellCastTransform: {fileID: 3772056237199473288}
+  spellParentTransform: {fileID: 0}
+  passiveSpellAffects: {fileID: 11400000, guid: 4dd963e0c99e82748a95667a2c7a6379, type: 2}
+  debug: 1
+  spell1: {fileID: 0}
+  spell2: {fileID: 0}
+  spellConfig1: {fileID: 0}
+  spellConfig2: {fileID: 0}
+--- !u!114 &2560371365361338957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8863640782204810548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6c3d1e6b944e1a4cabc29aea99fcdc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConsumableManager
+  consumableSpawnTransform: {fileID: 3772056237199473288}
+  consumableParentTransform: {fileID: 0}
+  bombConfig: {fileID: 11400000, guid: fe7ee66878d01ad43a2755e6c9ec22eb, type: 2}
+  bombStartCount: 3
+  consumableConfig1: {fileID: 0}
+  consumableConfig2: {fileID: 0}
 --- !u!1 &8941550617777362682
 GameObject:
   m_ObjectHideFlags: 0
@@ -1550,7 +1675,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7509860518518112746, guid: d60923e778d93204aaa0ae73be398c8b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1657,7 +1782,7 @@ GameObject:
   - component: {fileID: 2273229650790971593}
   m_Layer: 8
   m_Name: StompHitbox
-  m_TagString: Untagged
+  m_TagString: Stomp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1781,7 +1906,7 @@ GameObject:
   - component: {fileID: 1843362600904055376}
   - component: {fileID: 7473516083193761540}
   - component: {fileID: 1996993977986494432}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: FlipTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1889,7 +2014,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8633881525917383573, guid: 0324c04d910dcbe45b03f7ea8b541549, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1961,7 +2086,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.ShadowCaster2D
   m_ShadowGroup: 0
-  m_Priority: 0
+  m_Priority: 2
   m_ComponentVersion: 5
   m_HasRenderer: 1
   m_UseRendererSilhouette: 1

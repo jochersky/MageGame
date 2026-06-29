@@ -15,7 +15,9 @@ public class PlayerIdleState : PlayerBaseState
     {
         if (Context.IsDead) SwitchState(Dictionary.Dead());
         
-        if (Context.MoveDirection != Vector2.zero) SwitchState(Dictionary.Walk());
+        if (Context.MoveDirection.x != 0) SwitchState(Dictionary.Walk());
+        else if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
+        else if (Context.IsCrouching) SwitchState(Dictionary.Crouch());
     }
 
     public override void ExitState()

@@ -9,7 +9,6 @@ public class EventBus : MonoBehaviour
     public delegate void TileMapChanged();
     public event TileMapChanged OnTileMapChanged;
     
-    
     private void Awake()
     {
         // Ensure only one instance of the inventory exists globally

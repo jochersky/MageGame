@@ -19,6 +19,7 @@ public class PlayerClimbState : PlayerBaseState
         Context.WasClimbing = true;
 
         Context.transform.position = Context.ClimbPosition;
+        Context.StartClimbDelay();
     }
 
     public override void UpdateState()

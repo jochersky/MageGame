@@ -18,15 +18,17 @@ public class PlayerJumpState : PlayerBaseState
     {
         if (Context.IsDead) SwitchState(Dictionary.Dead());
         
-        Context.HorizontalMovement = Context.MoveDirection.x * Context.MaxAirborneMoveSpeed;
+        Context.HorizontalMovement = Context.MoveDirection.x * Context.Stats.Speed;
         
-        if (Context.LinearVelocityY < -1 || !Context.IsPressingJump) SwitchState(Dictionary.Fall());
+        if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
+        else if (Context.LinearVelocityY < -1 || !Context.IsPressingJump) SwitchState(Dictionary.Fall());
         else if (Context.IsGrounded) SwitchState(Dictionary.Grounded());
     }
 
     public override void ExitState()
     {
         Context.NewJumpPress = false;
+        Context.WasClimbingRope = false;
     }
 
     public override void InitializeSubState()
@@ -36,7 +38,7 @@ public class PlayerJumpState : PlayerBaseState
     private void PerformJump()
     {
         // first jump uses CanJump or WasClimbing
-        if ((Context.CanJump || Context.WasClimbing) && Context.IsPressingJump)
+        if ((Context.CanJump || Context.WasClimbing || Context.WasClimbingRope) && Context.IsPressingJump)
         {
             Context.LinearVelocityY = Context.MaxJumpHeight;
             // Toggle for when climbing and trying to jump since CanJump is false when climbing.

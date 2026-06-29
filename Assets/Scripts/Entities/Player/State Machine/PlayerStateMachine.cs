@@ -1,8 +1,11 @@
 using System;
+using System.Collections;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -13,12 +16,12 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private LayerMask environmentLayer;
     [SerializeField] private Animator animator;
     [SerializeField] private Health health;
-    [SerializeField] private Transform consumableSpawnTransform;
-    [SerializeField] private Transform consumableParentTransform;
-    [SerializeField] private GameObject bombPrefab;
     [SerializeField] private PassiveSpellAffects passiveSpellAffects;
+    [SerializeField] private BaseStats baseStats;
     private Rigidbody2D _rb;
     private InputActionMap _playerInputMap;
+    private Stats _stats;
+    private CameraManager _cameraManager;
     
     [Header("Walk")]
     [SerializeField] private float maxWalkSpeed = 1f;
@@ -45,7 +48,14 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private float climbCheckDistance = 0.2f;
     [SerializeField] private float climbCheckHeight = 0.7f;
     [SerializeField] private float climbAboveBelowCheckLength = 0.5f;
+    [SerializeField] private float climbDelayTime = 0.1f;
     [SerializeField] private bool climbDebug;
+    
+    [Header("Ladder")]
+    [SerializeField] private float ropeClimbSpeed = 0.25f;
+
+    [Header("Camera Movement")] [SerializeField]
+    private float dirHoldDuration = 1.5f;
     
     // State Variables
     private PlayerBaseState _currentState;
@@ -62,6 +72,7 @@ public class PlayerStateMachine : MonoBehaviour
     
     // Context Variables
     private Vector2 _moveDirection;
+    private Vector2 _verticalDirection;
     private Vector2 _previousDirection;
     private float _horizontalMovement;
     private float _verticalMovement;
@@ -75,9 +86,20 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _canClimb;
     private bool _wasClimbing;
     private Vector2 _climbPosition;
+    private float _climbDelayTimer;
+    private bool _climbCooldown;
     // private Tilemap _climbingTilemap;
     private bool _isDead;
     private bool _inputDisabled;
+    private bool _canClimbRope;
+    private bool _isClimbingRope;
+    private bool _wasClimbingRope;
+    private float _yRopeMin;
+    private float _yRopeMax;
+    private bool _isCrouching;
+    private bool _isLookingUp;
+
+    private CountdownTimer _lookHoldTimer;
 
     [Header("State Debug")]
     public String stateName = "";
@@ -95,13 +117,16 @@ public class PlayerStateMachine : MonoBehaviour
     
     // Instance Variables + References Setters & Getters
     public Rigidbody2D Rigidbody { get { return _rb; } set { _rb = value; } }
+    public Stats Stats { get { return _stats; } set { _stats = value; } }
     public Animator Animator { get { return animator; } set { animator = value; } }
     public Vector2 MoveDirection { get { return _moveDirection; } set { _moveDirection = value; } }
+    public Vector2 VerticalDirection { get { return _verticalDirection; } set { _verticalDirection = value; } }
     public Vector2 PreviousDirection { get { return _previousDirection; } set { _previousDirection = value; } }
     public Vector2 LinearVelocity { get { return _rb.linearVelocity; } set { _rb.linearVelocity = value; } }
     public float LinearVelocityX { get { return _rb.linearVelocityX; } set { _rb.linearVelocityX = value; } }
     public float LinearVelocityY { get { return _rb.linearVelocityY; } set { _rb.linearVelocityY = value; } }
     public float HorizontalMovement { get { return _horizontalMovement; } set { _horizontalMovement = value; } }
+    public float VerticalMovement { get { return _verticalMovement; } set { _verticalMovement = value; } }
     public float GravityScale { get { return _rb.gravityScale; } set { _rb.gravityScale = value; } }
     public float MaxWalkSpeed { get { return maxWalkSpeed; } set { maxWalkSpeed = value; } }
     public float MaxAirborneMoveSpeed { get { return maxAirborneMoveSpeed; } set { maxAirborneMoveSpeed = value; } }
@@ -116,17 +141,25 @@ public class PlayerStateMachine : MonoBehaviour
     public bool CanClimb { get { return _canClimb; } set { _canClimb = value; } }
     public bool WasClimbing { get { return _wasClimbing; } set { _wasClimbing = value; } }
     public Vector2 ClimbPosition { get { return _climbPosition; } set { _climbPosition = value; } }
+    public bool CanClimbRope { get { return _canClimbRope; } set { _canClimbRope = value; } }
+    public bool IsClimbingRope { get { return _isClimbingRope; } set { _isClimbingRope = value; } }
+    public bool WasClimbingRope { get {return _wasClimbingRope; }  set { _wasClimbingRope = value; } }
+    public bool IsCrouching { get { return _isCrouching; } set { _isCrouching = value; } }
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
     
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _playerInputMap = playerInput.actions.actionMaps[0];
+        _stats = new Stats(new StatsMediator(), baseStats);
+        _cameraManager = GetComponentInChildren<CameraManager>();
+        _lookHoldTimer = new CountdownTimer(dirHoldDuration);
         
         // Passive spell affects initialization
         _numDoubleJumps = passiveSpellAffects.doubleJumps;
 
         health.OnDeath += () => { _isDead = true; };
+        _lookHoldTimer.OnTimerStop += () => { HandleCamera(); };
         
         // State machine initial state setup
         _states = new PlayerStateDictionary(this);
@@ -137,7 +170,10 @@ public class PlayerStateMachine : MonoBehaviour
     private void Update()
     {
         _currentState.UpdateStates();
+        _stats.Mediator.Update(Time.deltaTime);
         stateName = _currentState.ToString();
+        
+        _lookHoldTimer.Tick(Time.deltaTime);
     }
     
     void FixedUpdate()
@@ -145,7 +181,45 @@ public class PlayerStateMachine : MonoBehaviour
         CheckGrounded();
         CheckClimbing();
         UpdateGravity();
-        _rb.linearVelocity = new Vector2(_horizontalMovement, _rb.linearVelocityY);
+
+        float x = _horizontalMovement;
+        float y = _rb.linearVelocityY;
+        // lock player onto ladder horizontally until they jump off
+        if (_isClimbingRope)
+        {
+            x = 0;
+            
+            // player should not be able to "leave" rope by descending or ascending it
+            float posY = Mathf.Clamp(_rb.position.y, _yRopeMin, _yRopeMax);
+            bool inBounds = posY > _yRopeMin && posY < _yRopeMax;
+            // let the player leave edges when their input aligns
+            float sampledPosY = _rb.position.y + _verticalDirection.y;
+            bool sampleInBounds = sampledPosY < _yRopeMax && sampledPosY > _yRopeMin;
+            
+            y = inBounds || sampleInBounds ? _verticalMovement * ropeClimbSpeed : 0;
+        }
+        
+        _rb.linearVelocity = new Vector2(x, y);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Rope"))
+        {
+            _canClimbRope = true;
+            
+            Rope rope = collision.gameObject.GetComponent<Rope>();
+            _yRopeMin = rope.yMin;
+            _yRopeMax = rope.yMax;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Rope"))
+        {
+            _canClimbRope = false;
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -156,11 +230,36 @@ public class PlayerStateMachine : MonoBehaviour
 
         // Performed and canceled callbacks incorrectly flip the transform. Ignore them.
         if (context.performed || context.canceled) return; 
+        
         if (Mathf.Sign(_moveDirection.x) != Mathf.Sign(_previousDirection.x))
         {
             onDirectionChanged?.Invoke(Mathf.Sign(_moveDirection.x));
         }
         _previousDirection = _moveDirection;
+    }
+    
+    public void OnMoveVertical(InputAction.CallbackContext context)
+    {
+        if (_isDead) return;
+        
+        _verticalDirection = context.ReadValue<Vector2>();
+
+        // rope
+        if (_canClimbRope && _verticalDirection.y >= 0.5f)
+            _isClimbingRope = true;
+
+        // camera
+        if (_verticalDirection.x != 0 || context.canceled)
+        {
+            _lookHoldTimer.Reset();
+            _cameraManager.ReturnCameraToOriginalPosition();
+            _isCrouching = false;
+            _isLookingUp = false;
+        }
+        else if (context.started)
+        {
+            _lookHoldTimer.Start();
+        }
     }
     
     public void OnJump(InputAction.CallbackContext context)
@@ -184,28 +283,6 @@ public class PlayerStateMachine : MonoBehaviour
             {
                 if (_inputDisabled) action.Disable();
                 else action.Enable();
-            }
-        }
-    }
-
-    public void OnUseConsumable(InputAction.CallbackContext context)
-    {
-        if (context.performed || context.canceled || _isDead) return;
-        // TODO: implement other consumable to use equipped consumable, not just bomb
-        if (InventoryManager.Instance.EquippedConsumable != ConsumableTypes.Bomb) return;
-        
-        if (InventoryManager.Instance.GetConsumableCount(ConsumableTypes.Bomb) > 0)
-        {
-            InventoryManager.Instance.UpdateConsumable(ConsumableTypes.Bomb, -1);
-            GameObject inst = Instantiate(bombPrefab, consumableParentTransform);
-            inst.transform.position = consumableSpawnTransform.position;
-            
-            // Player won't throw bomb if they are too close to a wall
-            if (!Physics2D.Raycast(consumableSpawnTransform.transform.position, _previousDirection, 1, environmentLayer))
-            {
-                Rigidbody2D rb = inst.GetComponentInChildren<Rigidbody2D>();
-                rb.linearVelocityX = _previousDirection.x * 15f;
-                rb.linearVelocityY = _rb.linearVelocityY * 2f;
             }
         }
     }
@@ -237,7 +314,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void UpdateGravity()
     {
-        if (_currentState == _states.Climb()) return;
+        if (_currentState == _states.Climb() || _currentState == _states.Rope()) return;
         
         // Player falls down faster with negative y-velocity.
         if (_rb.linearVelocityY < 0)
@@ -272,6 +349,7 @@ public class PlayerStateMachine : MonoBehaviour
 
         RaycastHit2D wallToClimb = Physics2D.Raycast(start, direction, climbCheckDistance, environmentLayer);
         _canClimb = !_isGrounded
+                    && !_climbCooldown
                     && wallToClimb
                     && !Physics2D.Raycast(start + (Vector2.up * climbCheckHeight), direction, climbCheckDistance, environmentLayer)
                     && !Physics2D.Raycast(transform.position, Vector2.down, climbAboveBelowCheckLength, environmentLayer)
@@ -292,8 +370,39 @@ public class PlayerStateMachine : MonoBehaviour
         }
     }
 
+    private void HandleCamera()
+    {
+        if (!_isClimbingRope && _verticalDirection.y <= -0.5f)
+        {
+            _cameraManager.ShiftCameraDown();
+            _isCrouching = true;
+        }
+        else if (!_isClimbingRope && _verticalDirection.y > 0.5f)
+        {
+            _cameraManager.ShiftCameraUp();
+            _isLookingUp = true;
+        }
+    }
+
     public void InvokeDoubleJumpComplete()
     {
         OnDoubleJumpComplete?.Invoke();
+    }
+
+    public void StartClimbDelay()
+    {
+        StartCoroutine(ClimbDelay());
+    }
+    
+    private IEnumerator ClimbDelay()
+    {
+        _climbCooldown = true;
+        _climbDelayTimer = 0f;
+        while (_climbDelayTimer < climbDelayTime)
+        {
+            _climbDelayTimer += Time.deltaTime;
+            yield return null;
+        }
+        _climbCooldown = false;
     }
 }
