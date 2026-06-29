@@ -53,6 +53,9 @@ public class PlayerStateMachine : MonoBehaviour
     
     [Header("Ladder")]
     [SerializeField] private float ropeClimbSpeed = 0.25f;
+
+    [Header("Camera Movement")] [SerializeField]
+    private float dirHoldDuration = 1.5f;
     
     // State Variables
     private PlayerBaseState _currentState;
@@ -94,6 +97,9 @@ public class PlayerStateMachine : MonoBehaviour
     private float _yRopeMin;
     private float _yRopeMax;
     private bool _isCrouching;
+    private bool _isLookingUp;
+
+    private CountdownTimer _lookHoldTimer;
 
     [Header("State Debug")]
     public String stateName = "";
@@ -147,11 +153,13 @@ public class PlayerStateMachine : MonoBehaviour
         _playerInputMap = playerInput.actions.actionMaps[0];
         _stats = new Stats(new StatsMediator(), baseStats);
         _cameraManager = GetComponentInChildren<CameraManager>();
+        _lookHoldTimer = new CountdownTimer(dirHoldDuration);
         
         // Passive spell affects initialization
         _numDoubleJumps = passiveSpellAffects.doubleJumps;
 
         health.OnDeath += () => { _isDead = true; };
+        _lookHoldTimer.OnTimerStop += () => { HandleCamera(); };
         
         // State machine initial state setup
         _states = new PlayerStateDictionary(this);
@@ -164,6 +172,8 @@ public class PlayerStateMachine : MonoBehaviour
         _currentState.UpdateStates();
         _stats.Mediator.Update(Time.deltaTime);
         stateName = _currentState.ToString();
+        
+        _lookHoldTimer.Tick(Time.deltaTime);
     }
     
     void FixedUpdate()
@@ -233,19 +243,22 @@ public class PlayerStateMachine : MonoBehaviour
         if (_isDead) return;
         
         _verticalDirection = context.ReadValue<Vector2>();
-        
+
+        // rope
         if (_canClimbRope && _verticalDirection.y >= 0.5f)
             _isClimbingRope = true;
 
-        if (!_isClimbingRope && _verticalDirection.y <= -0.5f)
+        // camera
+        if (_verticalDirection.x != 0 || context.canceled)
         {
-            _cameraManager.ShiftCameraDown();
-            _isCrouching = true;
-        }
-        else
-        {
+            _lookHoldTimer.Reset();
             _cameraManager.ReturnCameraToOriginalPosition();
             _isCrouching = false;
+            _isLookingUp = false;
+        }
+        else if (context.started)
+        {
+            _lookHoldTimer.Start();
         }
     }
     
@@ -354,6 +367,20 @@ public class PlayerStateMachine : MonoBehaviour
         else
         {
             _canClimb = false;
+        }
+    }
+
+    private void HandleCamera()
+    {
+        if (!_isClimbingRope && _verticalDirection.y <= -0.5f)
+        {
+            _cameraManager.ShiftCameraDown();
+            _isCrouching = true;
+        }
+        else if (!_isClimbingRope && _verticalDirection.y > 0.5f)
+        {
+            _cameraManager.ShiftCameraUp();
+            _isLookingUp = true;
         }
     }
 
