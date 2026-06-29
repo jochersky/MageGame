@@ -567,7 +567,8 @@ MonoBehaviour:
   priceText: {fileID: 1965869692307630934}
   outline: {fileID: 8775846893224370523}
   display: {fileID: 3711909149309675646}
-  item: {fileID: 6415621097088706008, guid: 4fca7f1e70ac3564caeeb5f7bf24a375, type: 3}
+  item: {fileID: 11400000, guid: fe7ee66878d01ad43a2755e6c9ec22eb, type: 2}
+  count: 3
 --- !u!58 &252324822991949042
 CircleCollider2D:
   m_ObjectHideFlags: 0

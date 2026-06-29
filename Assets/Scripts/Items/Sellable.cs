@@ -14,7 +14,8 @@ public class Sellable : MonoBehaviour
     bool purchased = false;
     bool _inRange = false;
     [SerializeField] SpriteRenderer display;
-    [SerializeField] GameObject item;
+    [SerializeField] ItemConfig item;
+    [SerializeField] int count;
     private PlayerInput _input;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -41,32 +42,32 @@ public class Sellable : MonoBehaviour
         }
         InventoryManager.Instance.UpdateMoney(-price);
         purchased = true;
-        Instantiate(item, transform.position, transform.rotation);
+        if (item) InventoryManager.Instance.AddItem(item, count);
         display.enabled = false;
         priceObject.SetActive(false);
+        outline.enabled = false;
 
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        _inRange = true;
-        outline.enabled = true;
+        
         if (!purchased)
         {
+            _inRange = true;
+            outline.enabled = true;
             priceObject.SetActive(true);
         }
-        print("ENTER");
     }
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        _inRange = false;
         outline.enabled = false;
+        _inRange = false;
         if (!purchased)
         {
             priceObject.SetActive(false);
         }
-        print("LEAVE");
     }
 
     // Update is called once per frame

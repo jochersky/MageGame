@@ -23,7 +23,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ceafd5eb455dd0448ace5a760d472bb7, type: 2}
   - {fileID: 11400000, guid: b1be629bbd174084597376394a5a68a9, type: 2}
   - {fileID: 11400000, guid: 51c2e565d5a0e2a419f635f4a717a94b, type: 2}
-  - {fileID: 11400000, guid: 2c1d9c76d59c9b64383e7c484447be82, type: 2}
   - {fileID: 11400000, guid: ab60e0e384ba3ae4a8bcf60735d3ce14, type: 2}
   - {fileID: 11400000, guid: c0efceded4bc2f141b501972ed2dc395, type: 2}
   level2DecorCeiling:
