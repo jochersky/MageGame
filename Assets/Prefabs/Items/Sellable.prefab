@@ -562,13 +562,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8062075821ab3f428b702fcfafb8400, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Sellable
-  price: 3
+  maxPrice: 5
   priceObject: {fileID: 1787093111692436298}
   priceText: {fileID: 1965869692307630934}
   outline: {fileID: 8775846893224370523}
   display: {fileID: 3711909149309675646}
   item: {fileID: 11400000, guid: fe7ee66878d01ad43a2755e6c9ec22eb, type: 2}
   count: 3
+  configPath: Configs/
 --- !u!58 &252324822991949042
 CircleCollider2D:
   m_ObjectHideFlags: 0

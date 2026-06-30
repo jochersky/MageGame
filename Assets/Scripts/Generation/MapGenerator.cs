@@ -517,7 +517,6 @@ public class MapGenerator : MonoBehaviour
                 //special items (nonCollider Tiles)
                 else if (roomProbability == -35)
                 {
-                    print(NPCInstances[specialIdx].name + "'s special tile spawned at (" + Convert.ToString(xCoord + startingPositionOffset) + ", " + Convert.ToString(yCoord + startingPositionOffset));
                     nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), NPCInstances[specialIdx].specialObject);
                     //Instantiate(NPCInstances[specialIdx].specialObject, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
                 }
