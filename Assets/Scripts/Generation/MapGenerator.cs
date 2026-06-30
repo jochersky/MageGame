@@ -49,6 +49,7 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] Decorations decorations;
     [SerializeField] int numDecorations = 100;
+    [SerializeField] LevelData levelData;
     Trap[] trapPrefabs;
     readonly string trapPath = "Traps/";
     
@@ -561,6 +562,18 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    void GatherEnemyTileInfo(EnemyInfo enemy)
+    {
+        foreach (Vector3Int tileCoords in colliderTilemap.cellBounds.allPositionsWithin)
+        {
+            TileBase currTile = colliderTilemap.GetTile(tileCoords);
+            if (enemy.CheckSpawnPosition(currTile, tileCoords, colliderTilemap, nonColliderTilemap))
+            {
+                enemy.spawnPositions.Add(new (tileCoords.x, tileCoords.y));
+            }
+        }
+    }
+
     void GatherDecorationTileInfo()
     {
         foreach (Vector3Int tileCoords in colliderTilemap.cellBounds.allPositionsWithin)
@@ -617,7 +630,7 @@ public class MapGenerator : MonoBehaviour
                 
             }
         }
-        // after traps have been place, scan again
+        // after traps have been placed, scan again
         GatherDecorationTileInfo();
         //Loop through NPCS. and place them at their spawn point. If none, spawn at a random floor tile.
         for (int npcIdx = 0; npcIdx < NPCInstances.Count; npcIdx++)
@@ -632,6 +645,26 @@ public class MapGenerator : MonoBehaviour
             } else
             {
                 npc.transform.position = npc.spawnPoint;
+            }
+        }
+        // place enemies
+        for (int enemyIdx = 0; enemyIdx < levelData.enemies.Count; enemyIdx++)
+        {
+            EnemyInfo enemy = levelData.enemies[enemyIdx];
+            GatherEnemyTileInfo(enemy);
+            for (int numberSpawned = 0; numberSpawned < levelData.enemySpawnCounts[enemyIdx]; numberSpawned++)
+            {
+                // if there are valid positions to spawn at
+                if (enemy.spawnPositions.Count > 0)
+                {
+                    int randIdx = randy.Next(0, enemy.spawnPositions.Count);
+                    Instantiate(enemy.enemyPrefab, new Vector2(enemy.spawnPositions[randIdx].x, enemy.spawnPositions[randIdx].y), quaternion.identity);
+                    enemy.spawnPositions.RemoveAt(randIdx);
+                } else
+                {
+                    // pretend all have been spawned
+                    numberSpawned = levelData.enemySpawnCounts[enemyIdx];
+                }
             }
         }
         // place decorations

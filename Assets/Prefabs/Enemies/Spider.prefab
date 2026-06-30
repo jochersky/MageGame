@@ -86,7 +86,8 @@ MonoBehaviour:
   maxHealth: 5
   invulnerabilityTime: 0.3
   capHealth: 1
-  _currentHealth: 0
+  spawnInvulnerable: 0
+  ignore: 0
 --- !u!114 &5242509585819108510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -666,6 +667,7 @@ GameObject:
   - component: {fileID: 334628587691748158}
   - component: {fileID: 6700357822881466794}
   - component: {fileID: 4498453235391708362}
+  - component: {fileID: -8031587303290209441}
   m_Layer: 7
   m_Name: Spider
   m_TagString: Enemy
@@ -830,3 +832,20 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.28439015
+--- !u!114 &-8031587303290209441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8859184921287276884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97487f82a10abde41a4781529ba2e02e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpiderInfo
+  enemyPrefab: {fileID: 8859184921287276884}
+  levelSpawnRates:
+  - 0
+  - 0
+  - 0
