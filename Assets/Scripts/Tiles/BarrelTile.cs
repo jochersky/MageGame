@@ -26,7 +26,7 @@ public class BarrelTile : TileBase
    public class BarrelTileEditor : Editor
    {
        // The following is a helper that adds a menu item to create a BarrelTile Asset in the project.
-       [MenuItem("Assets/Create/Barrel Tile")]
+       [MenuItem("Assets/Create/ScriptedTiles/Barrel Tile")]
        public static void CreateBarrelTile()
        {
            string path = EditorUtility.SaveFilePanelInProject("Save Barrel Tile", "New Barrel Tile", "asset", "Save Barrel Tile", "Assets");

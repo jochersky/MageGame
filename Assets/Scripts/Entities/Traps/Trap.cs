@@ -10,5 +10,6 @@ public abstract class Trap : MonoBehaviour
     public List<(int x, int y)> spawnPositions = new();
     public bool isCollider = false;
 
-    public abstract bool checkIfValidPosition(TileBase currTile, Vector3Int tileCoords, Tilemap colliderMap);
+    // Please ensure to check both the colliderMap and nonColliderMap. For example, chests are not colliders, but you don't want to overwrite them
+    public abstract bool CheckIfValidPosition(TileBase currTile, Vector3Int tileCoords, Tilemap colliderMap, Tilemap nonColliderMap);
 }

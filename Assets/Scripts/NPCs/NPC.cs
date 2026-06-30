@@ -21,7 +21,7 @@ public class NPC : MonoBehaviour
     public Sprite room;
     public GameObject specialEnemy;
     public TileBase specialTile;
-    public GameObject specialObject;
+    public TileBase specialObject;
     public List<GameObject> specialEnemies = new();
     public Vector2 spawnPoint;
     // current line of dialogue in the list of lines

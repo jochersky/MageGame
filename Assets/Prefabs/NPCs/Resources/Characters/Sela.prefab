@@ -245,7 +245,7 @@ MonoBehaviour:
   room: {fileID: 21300000, guid: 080253f5409301846b423507f7bd83f2, type: 3}
   specialEnemy: {fileID: 0}
   specialTile: {fileID: 0}
-  specialObject: {fileID: 7525436396031744547, guid: 6703d3585f7731644aef15d505aeb7b4, type: 3}
+  specialObject: {fileID: 11400000, guid: 4213603ec9a115f439bde8dd8f0b043a, type: 2}
   specialEnemies: []
   spawnPoint: {x: 0, y: 0}
 --- !u!1001 &3826468038402518173

@@ -514,9 +514,12 @@ public class MapGenerator : MonoBehaviour
                     GameObject instance = Instantiate(NPCInstances[specialIdx].specialEnemy, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
                     NPCInstances[specialIdx].specialEnemies.Add(instance);
                 }
+                //special items (nonCollider Tiles)
                 else if (roomProbability == -35)
                 {
-                    Instantiate(NPCInstances[specialIdx].specialObject, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
+                    print(NPCInstances[specialIdx].name + "'s special tile spawned at (" + Convert.ToString(xCoord + startingPositionOffset) + ", " + Convert.ToString(yCoord + startingPositionOffset));
+                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), NPCInstances[specialIdx].specialObject);
+                    //Instantiate(NPCInstances[specialIdx].specialObject, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
                 }
                 // NPC Spawn value
                 else if (roomProbability == -36)
@@ -552,7 +555,7 @@ public class MapGenerator : MonoBehaviour
         foreach (Vector3Int tileCoords in colliderTilemap.cellBounds.allPositionsWithin)
         {
             TileBase currTile = colliderTilemap.GetTile(tileCoords);
-            if (trap.checkIfValidPosition(currTile, tileCoords, colliderTilemap))
+            if (trap.CheckIfValidPosition(currTile, tileCoords, colliderTilemap, nonColliderTilemap))
             {
                 trap.spawnPositions.Add(new (tileCoords.x, tileCoords.y));
             }
@@ -563,14 +566,12 @@ public class MapGenerator : MonoBehaviour
     {
         foreach (Vector3Int tileCoords in colliderTilemap.cellBounds.allPositionsWithin)
         {
-            TileBase currTile = colliderTilemap.GetTile(tileCoords);
             // We ignore the top row of tiles for obtaining floor tiles
             if (tileCoords.y != 0)
             {
                 Vector3Int below = new(tileCoords.x, tileCoords.y - 1, 0); 
-                TileBase tileBelow = colliderTilemap.GetTile(below);
                 // if the space is blank and there is a solid tile beneath it, record it as a floor tile
-                if (currTile == null && tileBelow != null)
+                if (!colliderTilemap.HasTile(tileCoords) && !nonColliderTilemap.HasTile(tileCoords) && colliderTilemap.HasTile(below))
                 {
                     emptyFloorSpaces.Add(new (tileCoords.x, tileCoords.y));
                 }
@@ -579,9 +580,8 @@ public class MapGenerator : MonoBehaviour
             if (tileCoords.y != colliderTilemap.cellBounds.yMax)
             {
                 Vector3Int above = new(tileCoords.x, tileCoords.y + 1, 0); 
-                TileBase tileAbove = colliderTilemap.GetTile(above);
                 // if the space is blank and there is a solid tile above it, record it as a ceiling tile
-                if (currTile == null && tileAbove != null)
+                if (!colliderTilemap.HasTile(tileCoords) && !nonColliderTilemap.HasTile(tileCoords) && colliderTilemap.HasTile(above))
                 {
                     emptyCeilingSpaces.Add(new (tileCoords.x, tileCoords.y));
                 }

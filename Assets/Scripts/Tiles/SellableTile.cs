@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
     using UnityEditor;
 #endif
 
-public class ExitTile : TileBase
+public class SellableTile : TileBase
 {
     [SerializeField] GameObject TileAssociatedPrefab;
 
@@ -22,19 +22,19 @@ public class ExitTile : TileBase
     }
 
     #if UNITY_EDITOR
-   // This is shown in the Inspector window when a ExitTile asset is selected.
-   [CustomEditor(typeof(ExitTile))]
-   public class ExitTileEditor : Editor
+   // This is shown in the Inspector window when a SellableTile asset is selected.
+   [CustomEditor(typeof(SellableTile))]
+   public class SellableTileEditor : Editor
    {
 
-       // The following is a helper that adds a menu item to create a ExitTile Asset in the project.
-       [MenuItem("Assets/Create/ScriptedTiles/Exit Tile")]
-       public static void CreateExitTile()
+       // The following is a helper that adds a menu item to create a SellableTile Asset in the project.
+       [MenuItem("Assets/Create/ScriptedTiles/Sellable Tile")]
+       public static void CreateSellableTile()
        {
-           string path = EditorUtility.SaveFilePanelInProject("Save Exit Tile", "New Exit Tile", "asset", "Save Exit Tile", "Assets");
+           string path = EditorUtility.SaveFilePanelInProject("Save Sellable Tile", "New Sellable Tile", "asset", "Save Sellable Tile", "Assets");
            if (path == "")
                return;                           
-           AssetDatabase.CreateAsset(CreateInstance<ExitTile>(), path);
+           AssetDatabase.CreateAsset(CreateInstance<SellableTile>(), path);
         }
    }
 #endif

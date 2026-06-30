@@ -28,7 +28,7 @@ public class PoisonPlantTile : TileBase
    {
 
        // The following is a helper that adds a menu item to create a PoisonPlantTile Asset in the project.
-       [MenuItem("Assets/Create/PoisonPlant Tile")]
+       [MenuItem("Assets/Create/ScriptedTiles/PoisonPlant Tile")]
        public static void CreatePoisonPlantTile()
        {
            string path = EditorUtility.SaveFilePanelInProject("Save PoisonPlant Tile", "New PoisonPlant Tile", "asset", "Save PoisonPlant Tile", "Assets");
