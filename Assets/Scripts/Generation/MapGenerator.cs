@@ -124,6 +124,9 @@ public class MapGenerator : MonoBehaviour
         SpawnEntities();
         GenRoomPaths();
         PlaceMap();
+        colliderTilemap.CompressBounds();
+        nonColliderTilemap.CompressBounds();
+        EventBus.Instance.HandleTileMapChanged();
         PlaceEntities();
         // teleport player to starting position
         player.transform.position = startingPosition;
@@ -658,6 +661,7 @@ public class MapGenerator : MonoBehaviour
                 if (enemy.spawnPositions.Count > 0)
                 {
                     int randIdx = randy.Next(0, enemy.spawnPositions.Count);
+                    //StartCoroutine(SpawnEnemy(enemy, randIdx));
                     Instantiate(enemy.enemyPrefab, new Vector2(enemy.spawnPositions[randIdx].x, enemy.spawnPositions[randIdx].y), quaternion.identity);
                     enemy.spawnPositions.RemoveAt(randIdx);
                 } else
@@ -689,5 +693,12 @@ public class MapGenerator : MonoBehaviour
             
         }
         
+    }
+
+    IEnumerator SpawnEnemy(EnemyInfo enemy, int randIdx)
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        Instantiate(enemy.enemyPrefab, new Vector2(enemy.spawnPositions[randIdx].x, enemy.spawnPositions[randIdx].y), quaternion.identity);
     }
 }

@@ -801,7 +801,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   yShiftSpeed: 6
-  yShiftCurve:
+  yDownShiftCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -815,7 +815,31 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: -2
+      value: -4
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  yUpShiftCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 4
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1181,6 +1205,7 @@ MonoBehaviour:
   climbDelayTime: 0.2
   climbDebug: 1
   ropeClimbSpeed: 5
+  dirHoldDuration: 1.5
   stateName: 
   onDirectionChanged:
     m_PersistentCalls:
@@ -1723,6 +1748,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Torch
   light: {fileID: 8899097152374815958}
   isLit: 1
+  litSound: {fileID: 0}
 --- !u!61 &8656288525767866780
 BoxCollider2D:
   m_ObjectHideFlags: 0

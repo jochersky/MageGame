@@ -79,22 +79,30 @@ public class NPC : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        _inRange = true;
-        outline.enabled = true;
+        if (other.CompareTag("Player"))
+        {
+            _inRange = true;
+            outline.enabled = true;
+        }
+        
     }
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        _inRange = false;
-        outline.enabled = false;
-        text.text = string.Empty;
-        CloseDialogue();
-        if (talking != null)
+        if (collision.CompareTag("Player"))
         {
-            StopCoroutine(talking);
-            _isTalking = false;
-            
+            _inRange = false;
+            outline.enabled = false;
+            text.text = string.Empty;
+            CloseDialogue();
+            if (talking != null)
+            {
+                StopCoroutine(talking);
+                _isTalking = false;
+                
+            }
         }
+        
     }
 
     public virtual void CloseDialogue()

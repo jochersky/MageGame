@@ -7,6 +7,7 @@ public class NavigationSurfaceManager : MonoBehaviour
     
     private void Start()
     {
+        spiderNavMeshSurface.BuildNavMesh();
         SyncNavMesh();
         
         EventBus.Instance.OnTileMapChanged += SyncNavMesh;
@@ -16,7 +17,7 @@ public class NavigationSurfaceManager : MonoBehaviour
     {
         // check added to get rid of missing reference error when changing scenes
         if (!spiderNavMeshSurface) return;
-            
+        
         spiderNavMeshSurface.UpdateNavMesh(spiderNavMeshSurface.navMeshData);
     }
 }

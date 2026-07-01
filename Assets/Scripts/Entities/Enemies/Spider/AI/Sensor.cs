@@ -22,11 +22,16 @@ public class Sensor : MonoBehaviour
     private HashSet<GameObject> _nextTargets;
     // private RaycastHit2D[] hits = new RaycastHit2D[5];
 
+
+    void Awake()
+    {
+         _nextTargets = new HashSet<GameObject>();
+    }
     private void Start()
     {
         if (!LineOfSightTransform) LineOfSightTransform = transform;
         
-        _nextTargets = new HashSet<GameObject>();
+       
         
         // _mask = LayerMask.GetMask("Player", "Environment");
         // _environmentLayer = LayerMask.GetMask("Environment");
