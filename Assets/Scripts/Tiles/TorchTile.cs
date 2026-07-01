@@ -30,7 +30,7 @@ public class TorchTile : TileBase
        //private TorchTile tile { get { return (target as TorchTile); } }
 
        // The following is a helper that adds a menu item to create a TorchTile Asset in the project.
-       [MenuItem("Assets/Create/Torch Tile")]
+       [MenuItem("Assets/Create/ScriptedTiles/Torch Tile")]
        public static void CreateTorchTile()
        {
            string path = EditorUtility.SaveFilePanelInProject("Save Torch Tile", "New Torch Tile", "asset", "Save Torch Tile", "Assets");

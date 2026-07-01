@@ -13,6 +13,7 @@ public class MapGenerator : MonoBehaviour
 {
     [SerializeField] int mapDimensions = 5;
     [SerializeField] int roomDimensions = 8; 
+    [SerializeField] int level = 1;
     [SerializeField] GameObject tilemapPrefab;
     [SerializeField] Color32 guaranteeSquareColor;
     [SerializeField] Color32 highProbabilityColor;
@@ -48,6 +49,9 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] Decorations decorations;
     [SerializeField] int numDecorations = 100;
+    [SerializeField] LevelData levelData;
+    Trap[] trapPrefabs;
+    readonly string trapPath = "Traps/";
     
     Sprite[] filledRoom;
     Sprite[] chestRoom;
@@ -110,6 +114,7 @@ public class MapGenerator : MonoBehaviour
         room3s = Resources.LoadAll<Sprite>("Rooms/Room Style 3");
         room4s = Resources.LoadAll<Sprite>("Rooms/Room Style 4");
         NPCPrefabs = Resources.LoadAll<NPC>(NPCpath);
+        trapPrefabs = Resources.LoadAll<Trap>(trapPath);
         randy = new System.Random();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -119,7 +124,9 @@ public class MapGenerator : MonoBehaviour
         SpawnEntities();
         GenRoomPaths();
         PlaceMap();
-        GatherTileInfo();
+        colliderTilemap.CompressBounds();
+        nonColliderTilemap.CompressBounds();
+        EventBus.Instance.HandleTileMapChanged();
         PlaceEntities();
         // teleport player to starting position
         player.transform.position = startingPosition;
@@ -246,7 +253,7 @@ public class MapGenerator : MonoBehaviour
     {
         // if we are moving left or right, then we are either 1 or 3.
         // if the room above us is offscreen, or is of type 0, 1, or 3, then we are type 1.
-        // otherwise the room above us is type 2 or 3 which means we need a top exit and are type 3.
+        // otherwise the room above us is type 2 or 4 which means we need a top exit and are type 3.
         if (direction == MOVING_TO.LEFT || direction == MOVING_TO.RIGHT)
         {
             if (row - 1 < 0 || map[row - 1, col] == 0 || map[row - 1, col] == 1 || map[row - 1, col] == 3)
@@ -259,7 +266,7 @@ public class MapGenerator : MonoBehaviour
         }
         // otherwise, we are moving down
         // if the room above us is offscreen, or is of type 0, 1, or 3, then we are type 2.
-        // otherwise the room above us is type 2 or 3 which means we need a top exit and are type 4.
+        // otherwise the room above us is type 2 or 4 which means we need a top exit and are type 4.
         else
         {
             if (row - 1 < 0 || map[row - 1, col] == 0 || map[row - 1, col] == 1 || map[row - 1, col] == 3)
@@ -327,6 +334,7 @@ public class MapGenerator : MonoBehaviour
         for (int npc_idx = 0; npc_idx < NPCInstances.Count; npc_idx++)
         {
             int randIdx = randy.Next(0, specialRoomCoords.Count);
+            // BUG: randIdx is out of bounds sometimes
             (int x, int y) = specialRoomCoords[randIdx];
             specialRoomCoords.RemoveAt(randIdx);
             Sprite[] temp_arr = new Sprite[1];
@@ -510,9 +518,11 @@ public class MapGenerator : MonoBehaviour
                     GameObject instance = Instantiate(NPCInstances[specialIdx].specialEnemy, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
                     NPCInstances[specialIdx].specialEnemies.Add(instance);
                 }
+                //special items (nonCollider Tiles)
                 else if (roomProbability == -35)
                 {
-                    Instantiate(NPCInstances[specialIdx].specialObject, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
+                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), NPCInstances[specialIdx].specialObject);
+                    //Instantiate(NPCInstances[specialIdx].specialObject, new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset), Quaternion.identity);
                 }
                 // NPC Spawn value
                 else if (roomProbability == -36)
@@ -543,29 +553,50 @@ public class MapGenerator : MonoBehaviour
 
     }
 
-    void GatherTileInfo()
+    void GatherTrapTileInfo(Trap trap)
     {
         foreach (Vector3Int tileCoords in colliderTilemap.cellBounds.allPositionsWithin)
         {
             TileBase currTile = colliderTilemap.GetTile(tileCoords);
+            if (trap.CheckIfValidPosition(currTile, tileCoords, colliderTilemap, nonColliderTilemap))
+            {
+                trap.spawnPositions.Add(new (tileCoords.x, tileCoords.y));
+            }
+        }
+    }
+
+    void GatherEnemyTileInfo(EnemyInfo enemy)
+    {
+        foreach (Vector3Int tileCoords in colliderTilemap.cellBounds.allPositionsWithin)
+        {
+            TileBase currTile = colliderTilemap.GetTile(tileCoords);
+            if (enemy.CheckSpawnPosition(currTile, tileCoords, colliderTilemap, nonColliderTilemap))
+            {
+                enemy.spawnPositions.Add(new (tileCoords.x, tileCoords.y));
+            }
+        }
+    }
+
+    void GatherDecorationTileInfo()
+    {
+        foreach (Vector3Int tileCoords in colliderTilemap.cellBounds.allPositionsWithin)
+        {
             // We ignore the top row of tiles for obtaining floor tiles
             if (tileCoords.y != 0)
             {
                 Vector3Int below = new(tileCoords.x, tileCoords.y - 1, 0); 
-                TileBase tileBelow = colliderTilemap.GetTile(below);
                 // if the space is blank and there is a solid tile beneath it, record it as a floor tile
-                if (currTile == null && tileBelow != null)
+                if (!colliderTilemap.HasTile(tileCoords) && !nonColliderTilemap.HasTile(tileCoords) && colliderTilemap.HasTile(below))
                 {
                     emptyFloorSpaces.Add(new (tileCoords.x, tileCoords.y));
                 }
             }
-            // We ignore the bottomr row of tiles for obtaining ceiling tiles
+            // We ignore the bottom row of tiles for obtaining ceiling tiles
             if (tileCoords.y != colliderTilemap.cellBounds.yMax)
             {
                 Vector3Int above = new(tileCoords.x, tileCoords.y + 1, 0); 
-                TileBase tileAbove = colliderTilemap.GetTile(above);
                 // if the space is blank and there is a solid tile above it, record it as a ceiling tile
-                if (currTile == null && tileAbove != null)
+                if (!colliderTilemap.HasTile(tileCoords) && !nonColliderTilemap.HasTile(tileCoords) && colliderTilemap.HasTile(above))
                 {
                     emptyCeilingSpaces.Add(new (tileCoords.x, tileCoords.y));
                 }
@@ -576,11 +607,34 @@ public class MapGenerator : MonoBehaviour
     void PlaceEntities()
     {
         // sanity check
-        if (emptyFloorSpaces.Capacity == 0 || emptyCeilingSpaces.Capacity == 0)
+        // if (emptyFloorSpaces.Capacity == 0 || emptyCeilingSpaces.Capacity == 0)
+        // {
+        //     print("ERROR:No floor spaces found");
+        //     return;
+        // }
+        foreach (Trap trap in trapPrefabs)
         {
-            print("ERROR:No floor spaces found");
-            return;
+            GatherTrapTileInfo(trap);
+            // -1 since arrays are 0-based and our levels are 1-based
+            int numTraps = Mathf.FloorToInt(trap.spawnPositions.Count * trap.levelSpawnRates[level - 1]);
+            for (int trapNum = 0; trapNum < numTraps; trapNum++)
+            {
+                int randIdx = randy.Next(0, trap.spawnPositions.Count);
+                (int xCoord, int yCoord) = trap.spawnPositions[randIdx];
+                // ensures no repeats
+                trap.spawnPositions.RemoveAt(randIdx);
+                if (trap.isCollider)
+                {
+                    colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), trap.trapTile);
+                } else
+                {
+                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), trap.trapTile);
+                }
+                
+            }
         }
+        // after traps have been placed, scan again
+        GatherDecorationTileInfo();
         //Loop through NPCS. and place them at their spawn point. If none, spawn at a random floor tile.
         for (int npcIdx = 0; npcIdx < NPCInstances.Count; npcIdx++)
         {
@@ -596,6 +650,27 @@ public class MapGenerator : MonoBehaviour
                 npc.transform.position = npc.spawnPoint;
             }
         }
+        // place enemies
+        for (int enemyIdx = 0; enemyIdx < levelData.enemies.Count; enemyIdx++)
+        {
+            EnemyInfo enemy = levelData.enemies[enemyIdx];
+            GatherEnemyTileInfo(enemy);
+            for (int numberSpawned = 0; numberSpawned < levelData.enemySpawnCounts[enemyIdx]; numberSpawned++)
+            {
+                // if there are valid positions to spawn at
+                if (enemy.spawnPositions.Count > 0)
+                {
+                    int randIdx = randy.Next(0, enemy.spawnPositions.Count);
+                    //StartCoroutine(SpawnEnemy(enemy, randIdx));
+                    Instantiate(enemy.enemyPrefab, new Vector2(enemy.spawnPositions[randIdx].x, enemy.spawnPositions[randIdx].y), quaternion.identity);
+                    enemy.spawnPositions.RemoveAt(randIdx);
+                } else
+                {
+                    // pretend all have been spawned
+                    numberSpawned = levelData.enemySpawnCounts[enemyIdx];
+                }
+            }
+        }
         // place decorations
         for (int decNum = 0; decNum < numDecorations; decNum++)
         {
@@ -606,16 +681,24 @@ public class MapGenerator : MonoBehaviour
                 (int xCoord, int yCoord) = emptyFloorSpaces[randIdx];
                 // ensures no repeats
                 emptyFloorSpaces.RemoveAt(randIdx);
-                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(1, false));
+                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(level, false));
             } else
             {
                 int randIdx = randy.Next(0, emptyCeilingSpaces.Count);
                 (int xCoord, int yCoord) = emptyCeilingSpaces[randIdx];
                 // ensures no repeats
                 emptyCeilingSpaces.RemoveAt(randIdx);
-                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(1, true));
+                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(level, true));
             }
             
         }
+        
+    }
+
+    IEnumerator SpawnEnemy(EnemyInfo enemy, int randIdx)
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        Instantiate(enemy.enemyPrefab, new Vector2(enemy.spawnPositions[randIdx].x, enemy.spawnPositions[randIdx].y), quaternion.identity);
     }
 }

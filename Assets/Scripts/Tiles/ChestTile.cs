@@ -30,7 +30,7 @@ public class ChestTile : TileBase
        //private ChestTile tile { get { return (target as ChestTile); } }
 
        // The following is a helper that adds a menu item to create a ChestTile Asset in the project.
-       [MenuItem("Assets/Create/Chest Tile")]
+       [MenuItem("Assets/Create/ScriptedTiles/Chest Tile")]
        public static void CreateChestTile()
        {
            string path = EditorUtility.SaveFilePanelInProject("Save Chest Tile", "New Chest Tile", "asset", "Save Chest Tile", "Assets");

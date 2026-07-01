@@ -30,7 +30,7 @@ public class SpikeTile : TileBase
        //private SpikeTile tile { get { return (target as SpikeTile); } }
 
        // The following is a helper that adds a menu item to create a SpikeTile Asset in the project.
-       [MenuItem("Assets/Create/Spike Tile")]
+       [MenuItem("Assets/Create/ScriptedTiles/Spike Tile")]
        public static void CreateSpikeTile()
        {
            string path = EditorUtility.SaveFilePanelInProject("Save Spike Tile", "New Spike Tile", "asset", "Save Spike Tile", "Assets");

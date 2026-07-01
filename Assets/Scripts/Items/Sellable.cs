@@ -1,12 +1,16 @@
+using System;
+using System.Linq;
 using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Collider2D))]
 public class Sellable : MonoBehaviour
 {
-    [SerializeField] int price;
+    [SerializeField] int maxPrice;
+    int price = 99;
     [SerializeField] GameObject priceObject;
     [SerializeField] TextMeshProUGUI priceText;
     [SerializeField] SpriteRenderer outline;
@@ -14,15 +18,30 @@ public class Sellable : MonoBehaviour
     bool purchased = false;
     bool _inRange = false;
     [SerializeField] SpriteRenderer display;
-    [SerializeField] GameObject item;
+    [SerializeField] ItemConfig item;
+    [SerializeField] int count;
+    [SerializeField] string configPath;
     private PlayerInput _input;
+    private System.Random randy;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _input = FindAnyObjectByType<PlayerInput>();
         _input.actions["Interact"].performed += OnInteract;
         mc = FindFirstObjectByType<MoneyCounter>();
+        randy = new System.Random();
+        GenerateSellable();
+        display.sprite = item.icon;
+        price = randy.Next(0, maxPrice);
         priceText.text = price.ToString();
+    }
+
+    // probably inefficent for each sellable to do this
+    void GenerateSellable()
+    {
+        ItemConfig[] sellables = Resources.LoadAll<ItemConfig>(configPath);
+        //sellables.Concat(Resources.LoadAll<ItemConfig>(spellConfigPath)).ToArray();
+        item = sellables[randy.Next(0, sellables.Length)];
     }
 
     void OnInteract(InputAction.CallbackContext context)
@@ -41,32 +60,35 @@ public class Sellable : MonoBehaviour
         }
         InventoryManager.Instance.UpdateMoney(-price);
         purchased = true;
-        Instantiate(item, transform.position, transform.rotation);
+        if (item != null)
+        {
+            InventoryManager.Instance.AddItem(item as ItemConfig, count);
+        }
         display.enabled = false;
         priceObject.SetActive(false);
+        outline.enabled = false;
 
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        _inRange = true;
-        outline.enabled = true;
+        
         if (!purchased)
         {
+            _inRange = true;
+            outline.enabled = true;
             priceObject.SetActive(true);
         }
-        print("ENTER");
     }
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        _inRange = false;
         outline.enabled = false;
+        _inRange = false;
         if (!purchased)
         {
             priceObject.SetActive(false);
         }
-        print("LEAVE");
     }
 
     // Update is called once per frame

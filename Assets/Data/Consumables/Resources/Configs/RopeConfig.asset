@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c26b1a974c80e144943e6b401683b6a, type: 3}
+  m_Name: RopeConfig
+  m_EditorClassIdentifier: Assembly-CSharp::ConsumableConfig
+  itemType: 1
+  itemName: Rope
+  icon: {fileID: -16944626, guid: 036380db571df32489dba6df13ee9654, type: 3}
+  changePositionOnObstruction: 1
+  maxCount: 99
+  type: 1
+  strategy: {fileID: 11400000, guid: 2e276a3147a5ff04f9b6be064f7b62ac, type: 2}

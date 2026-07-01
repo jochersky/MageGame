@@ -28,7 +28,7 @@ public class ExitTile : TileBase
    {
 
        // The following is a helper that adds a menu item to create a ExitTile Asset in the project.
-       [MenuItem("Assets/Create/Exit Tile")]
+       [MenuItem("Assets/Create/ScriptedTiles/Exit Tile")]
        public static void CreateExitTile()
        {
            string path = EditorUtility.SaveFilePanelInProject("Save Exit Tile", "New Exit Tile", "asset", "Save Exit Tile", "Assets");

@@ -29,7 +29,7 @@ public class FalseFloorTile : TileBase
    {
 
        // The following is a helper that adds a menu item to create a FalseFloorTile Asset in the project.
-       [MenuItem("Assets/Create/FalseFloor Tile")]
+       [MenuItem("Assets/Create/ScriptedTiles/FalseFloor Tile")]
        public static void CreateFalseFloorTile()
        {
            string path = EditorUtility.SaveFilePanelInProject("Save FalseFloor Tile", "New FalseFloor Tile", "asset", "Save FalseFloor Tile", "Assets");

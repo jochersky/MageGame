@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class Torch : Lightable
 {
+    public AudioSource litSound;
     private Animator _animator;
 
     // Animation Hashes
@@ -24,6 +25,7 @@ public class Torch : Lightable
         OnLightActivated += () =>
         {
             _animator.CrossFade(_lit, 0 , 0);
+            litSound.Play();
         };
         OnLightDeactivated += () =>
         {

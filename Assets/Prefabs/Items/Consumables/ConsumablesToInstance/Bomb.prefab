@@ -358,6 +358,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 2
+  colliders: []
 --- !u!70 &7227354829322290746
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -478,3 +479,4 @@ MonoBehaviour:
   damageFlash: {fileID: 2504636434573036654}
   explodeTime: 3
   flashSpeed: 1
+  explosionEffect: {fileID: 972232029763160173, guid: ce1ce37bcb7fc304ea6bfd9e5427563f, type: 3}

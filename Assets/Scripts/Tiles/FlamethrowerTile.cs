@@ -28,7 +28,7 @@ public class FlamethrowerTile : TileBase
    {
 
        // The following is a helper that adds a menu item to create a FlamethrowerTile Asset in the project.
-       [MenuItem("Assets/Create/Flamethrower Tile")]
+       [MenuItem("Assets/Create/ScriptedTiles/Flamethrower Tile")]
        public static void CreateFlamethrowerTile()
        {
            string path = EditorUtility.SaveFilePanelInProject("Save Flamethrower Tile", "New Flamethrower Tile", "asset", "Save Flamethrower Tile", "Assets");
