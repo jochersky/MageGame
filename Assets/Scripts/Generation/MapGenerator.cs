@@ -36,19 +36,13 @@ public class MapGenerator : MonoBehaviour
 
     // Tilemap version
     [SerializeField] Grid grid;
-    [SerializeField] RuleTile tile;
+
     [SerializeField] TileBase entryDoor;
-    [SerializeField] TileBase exitDoor;
-    [SerializeField] TileBase spikes;
-    [SerializeField] TileBase falseFloor;
     [SerializeField] TileBase flamethrower;
     [SerializeField] TileBase torch;
     [SerializeField] TileBase chest;
     [SerializeField] Tilemap colliderTilemap;
     [SerializeField] Tilemap nonColliderTilemap;
-
-    [SerializeField] Decorations decorations;
-    [SerializeField] int numDecorations = 100;
     [SerializeField] LevelData levelData;
     Trap[] trapPrefabs;
     readonly string trapPath = "Traps/";
@@ -474,7 +468,7 @@ public class MapGenerator : MonoBehaviour
                         startingPositionAssigned = true;
                     } else
                     {
-                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), exitDoor);
+                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.exitDoor);
                         exitPosition = new Vector2(xCoord, yCoord);
                     }
                 }
@@ -482,10 +476,10 @@ public class MapGenerator : MonoBehaviour
                 else if (roomProbability == -75 || roomProbability == -25){
                     if (randy.Next(0,100) < 25)
                     {
-                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), spikes);
+                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.spikes);
                     } else if (roomProbability == -75)
                     {
-                        colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
+                        colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.ruleTile);
                     }
                 }
                 // check for special value indicating a decoration
@@ -532,7 +526,7 @@ public class MapGenerator : MonoBehaviour
                 // check for special value indicating false floor
                 else if (roomProbability == -88)
                 {
-                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), falseFloor);
+                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.falseFloor);
                 }
                 // check for special value indicating flamethrower
                 else if (roomProbability == -55){
@@ -541,12 +535,12 @@ public class MapGenerator : MonoBehaviour
                         colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), flamethrower);
                     } else
                     {
-                        colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
+                        colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.ruleTile);
                     }
                 }
                 else if (randy.Next(0,100) < roomProbability)
                 {
-                    colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), tile);
+                    colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.ruleTile);
                 }
             }
         }
@@ -672,7 +666,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
         // place decorations
-        for (int decNum = 0; decNum < numDecorations; decNum++)
+        for (int decNum = 0; decNum < levelData.numDecorations; decNum++)
         {
             // 75% of decorations will be floor decorations, the rest will be ceiling decor
             if (randy.Next(0,100) < 75)
@@ -681,14 +675,14 @@ public class MapGenerator : MonoBehaviour
                 (int xCoord, int yCoord) = emptyFloorSpaces[randIdx];
                 // ensures no repeats
                 emptyFloorSpaces.RemoveAt(randIdx);
-                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(level, false));
+                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.GetRandomDecoration(false));
             } else
             {
                 int randIdx = randy.Next(0, emptyCeilingSpaces.Count);
                 (int xCoord, int yCoord) = emptyCeilingSpaces[randIdx];
                 // ensures no repeats
                 emptyCeilingSpaces.RemoveAt(randIdx);
-                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), decorations.GetRandomDecoration(level, true));
+                nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.GetRandomDecoration(true));
             }
             
         }

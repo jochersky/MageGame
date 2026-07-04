@@ -10,7 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0414b88c2bb14a64288d1d5600b3de98, type: 3}
-  m_Name: False Floor Tile
+  m_Name: False Floor Tile 1
   m_EditorClassIdentifier: Assembly-CSharp::FalseFloorTile
-  TileSprite: {fileID: 21300000, guid: 0c890538404fb244e9e45ab71a58b1eb, type: 3}
-  TileAssociatedPrefab: {fileID: 7744476860813278961, guid: 09db645e5d0d04d489b4b60efd05ed9e, type: 3}
+  TileAssociatedPrefab: {fileID: 7744476860813278961, guid: 5fe6f10558111c64b8732328baa3b91b, type: 3}
