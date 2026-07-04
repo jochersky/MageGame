@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 931b8963a301b9a4481cd145e806c66a, type: 3}
+  m_Name: PyromancerInfo
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterInfo
+  characterName: Pyromancer
+  giftDescription: 'Eternal Flame: Greater visibility in the darkness.'
+  characterStats: {fileID: 11400000, guid: 41ea83ec0fc3ea443ad63bdf4d09d218, type: 2}
+  startingSpell1: {fileID: 11400000, guid: fd041956b7b56464783802dd5e9ebf89, type: 2}
+  startingSpell2: {fileID: 0}
+  startingConsumable1: {fileID: 11400000, guid: 2ceda6a4b1162ff43837faea8d3d0b2c, type: 2}
+  startingConsumable2: {fileID: 11400000, guid: 61929a01407792948a0b0272f8bea603, type: 2}
