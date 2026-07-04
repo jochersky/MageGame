@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -44,6 +45,16 @@ public class Health : MonoBehaviour
         {
             hurtbox.OnDamageTaken += TakeDamage;
             hurtbox.OnHeal += Heal;
+        }
+    }
+
+    public void UpdateMaxHealth(int amount)
+    {
+        maxHealth = amount;
+        if (_currentHealth > maxHealth)
+        {
+            _currentHealth = maxHealth;
+            OnHealthChanged?.Invoke(_currentHealth);
         }
     }
 

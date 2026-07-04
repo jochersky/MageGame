@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: PyromancerInfo
   m_EditorClassIdentifier: Assembly-CSharp::CharacterInfo
   characterName: Pyromancer
+  characterType: 1
   giftDescription: 'Eternal Flame: Greater visibility in the darkness.'
   characterStats: {fileID: 11400000, guid: 41ea83ec0fc3ea443ad63bdf4d09d218, type: 2}
   startingSpell1: {fileID: 11400000, guid: fd041956b7b56464783802dd5e9ebf89, type: 2}

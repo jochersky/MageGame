@@ -13,6 +13,7 @@ public class SaveSystem
     [System.Serializable]
     public struct SaveData
     {
+        public GameSaveData gameSaveData;
         public PlayerSaveData playerData;
         public InventorySaveData inventoryData;
     }
@@ -31,8 +32,9 @@ public class SaveSystem
 
     private static void HandleSaveData()
     {
-        GameManager.Instance.Player.Save(ref _saveData.playerData);
-        InventoryManager.Instance.Save(ref _saveData.inventoryData);
+        GameManager.Instance.Save(ref _saveData.gameSaveData);
+        if (GameManager.Instance.Player) GameManager.Instance.Player.Save(ref _saveData.playerData);
+        if (InventoryManager.Instance) InventoryManager.Instance.Save(ref _saveData.inventoryData);
     }
 
     public static void Load()
@@ -45,7 +47,8 @@ public class SaveSystem
 
     private static void HandleLoadData()
     {
-        GameManager.Instance.Player.Load(ref _saveData.playerData);
-        InventoryManager.Instance.Load(ref _saveData.inventoryData);
+        GameManager.Instance.Load(ref _saveData.gameSaveData);
+        if (GameManager.Instance.Player) GameManager.Instance.Player.Load(ref _saveData.playerData);
+        if (InventoryManager.Instance) InventoryManager.Instance.Load(ref _saveData.inventoryData);
     }
 }

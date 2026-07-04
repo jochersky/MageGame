@@ -4,6 +4,7 @@ using UnityEngine;
 public class CharacterInfo : ScriptableObject
 {
     public string characterName;
+    public CharacterType characterType;
     public string giftDescription;
     public BaseStats characterStats;
     public SpellConfig startingSpell1;

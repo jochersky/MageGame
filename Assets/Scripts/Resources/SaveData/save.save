@@ -1,33 +1,19 @@
 {
+    "gameSaveData": {
+        "characterType": 1
+    },
     "playerData": {
         "position": {
-            "x": -19.49160385131836,
-            "y": 1.4539743661880494,
+            "x": 0.0,
+            "y": 0.0,
             "z": 0.0
         },
-        "healthAmt": 5,
-        "manaAmt": 100,
-        "moneyAmt": 1
+        "healthAmt": 0,
+        "manaAmt": 0,
+        "moneyAmt": 0
     },
     "inventoryData": {
-        "spells": [
-            {
-                "name": "Cold Snap"
-            }
-        ],
-        "consumables": [
-            {
-                "name": "Bomb",
-                "count": 3
-            },
-            {
-                "name": "Drill Bomb",
-                "count": 10
-            },
-            {
-                "name": "Sol Stone",
-                "count": 10
-            }
-        ]
+        "spells": [],
+        "consumables": []
     }
 }
