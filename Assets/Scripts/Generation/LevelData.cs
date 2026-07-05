@@ -8,6 +8,7 @@ public class LevelData : ScriptableObject
     public RuleTile ruleTile;
     public List<EnemyInfo> enemies;
     public List<int> enemySpawnCounts;
+    public List<Trap> traps = new();
     public int numDecorations = 100;
     public List<TileBase> decorFloor = new();
     public List<TileBase> decorCeiling = new();

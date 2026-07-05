@@ -44,8 +44,6 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Tilemap colliderTilemap;
     [SerializeField] Tilemap nonColliderTilemap;
     [SerializeField] LevelData levelData;
-    Trap[] trapPrefabs;
-    readonly string trapPath = "Traps/";
     
     Sprite[] filledRoom;
     Sprite[] chestRoom;
@@ -108,7 +106,6 @@ public class MapGenerator : MonoBehaviour
         room3s = Resources.LoadAll<Sprite>("Rooms/Room Style 3");
         room4s = Resources.LoadAll<Sprite>("Rooms/Room Style 4");
         NPCPrefabs = Resources.LoadAll<NPC>(NPCpath);
-        trapPrefabs = Resources.LoadAll<Trap>(trapPath);
         randy = new System.Random();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -606,7 +603,7 @@ public class MapGenerator : MonoBehaviour
         //     print("ERROR:No floor spaces found");
         //     return;
         // }
-        foreach (Trap trap in trapPrefabs)
+        foreach (Trap trap in levelData.traps)
         {
             GatherTrapTileInfo(trap);
             // -1 since arrays are 0-based and our levels are 1-based
