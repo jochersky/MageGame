@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -5,6 +6,28 @@ public class DartTrap : Trap
 {
     [SerializeField] Dart dartPrefab;
     public bool facingRight = true;
+    [SerializeField] float windUp = 0.1f;
+    [SerializeField] float coolDown = 1f;
+    [SerializeField] GameObject pivot;
+    [SerializeField] GameObject laser;
+    [SerializeField] LayerMask laserLayermask;
+    bool onCooldown = false;
+
+    void Start()
+    {
+       StartCoroutine(delayedStart());
+    }
+
+    IEnumerator delayedStart()
+    {
+        yield return new WaitForEndOfFrame();
+         // Stretch laser to fill empty space
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, 100, laserLayermask); //, 100, 6
+        Vector2 newPosition = hit.point;
+        float difference = newPosition.x - laser.transform.position.x;
+        laser.transform.localScale = new Vector3(difference, 1, 1);
+        pivot.transform.localScale = new Vector3(difference, 1, 1);
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -17,8 +40,24 @@ public class DartTrap : Trap
             {
                 dartPrefab.direction = -transform.right;
             }
-            Instantiate(dartPrefab, transform.position, Quaternion.identity);
+            if (!onCooldown)
+            {
+                StartCoroutine(OnFired());
+            }
         } 
+    }
+
+    private IEnumerator OnFired()
+    {
+        onCooldown = true;
+        pivot.SetActive(false);
+        laser.SetActive(false);
+        yield return new WaitForSeconds(windUp);
+        Instantiate(dartPrefab, transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(coolDown);
+        onCooldown = false;
+        pivot.SetActive(true);
+        laser.SetActive(true);
     }
 
     public override bool CheckIfValidPosition(TileBase currTile, Vector3Int tileCoords, Tilemap colliderMap, Tilemap nonColliderMap)
