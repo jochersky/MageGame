@@ -189,7 +189,7 @@ MonoBehaviour:
   levelSpawnRates:
   - 0
   - 0
-  - 0.15
+  - 0.075
   isCollider: 0
   dartPrefab: {fileID: -3886893532885373323, guid: f4d32dfee0e51e1418009441216c5753, type: 3}
   facingRight: 1

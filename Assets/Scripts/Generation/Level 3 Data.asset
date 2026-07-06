@@ -17,6 +17,7 @@ MonoBehaviour:
   enemySpawnCounts: 
   traps:
   - {fileID: 1750997383092088863, guid: 96dba2f608bef224e9b67a91707f8298, type: 3}
+  - {fileID: -9146215481781452506, guid: 31cbf39a564f92f449fb268d1c4620d2, type: 3}
   numDecorations: 100
   decorFloor:
   - {fileID: 11400000, guid: 4f93a18be42e59f40bacfe1403b21f3a, type: 2}
