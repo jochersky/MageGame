@@ -21,6 +21,7 @@ public class PlayerFallState : PlayerBaseState
 
         if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
         else if (Context.NewJumpPress && Context.NumDoubleJumps > 0) SwitchState(Dictionary.Jump());
+        else if (Context.IsPressingDodge && Context.NumDodges > 0 && Context.CanDodge) SwitchState(Dictionary.Dodge());
         else if (Context.IsGrounded) SwitchState(Dictionary.Grounded());
         else if (Context.CanClimb && Context.MoveDirection.x != 0) SwitchState(Dictionary.Climb());
     }

@@ -75,9 +75,13 @@ public class SpellManager : MonoBehaviour
         UnequipSpell1();
         
         spellConfig1 = spellConfig;
-        spellConfig1.strategy.Equip();
-        spellConfig1.strategy.Equip(_psm);
-        spellConfig1.strategy.Equip(this, _psm);
+        SpellStrategy strategy = spellConfig1.strategy;
+        if (strategy)
+        {
+            spellConfig1.strategy.Equip();
+            spellConfig1.strategy.Equip(_psm);
+            spellConfig1.strategy.Equip(this, _psm);
+        }
         
         PassiveEffectsStrategy effectsStrategy = spellConfig1.effectsStrategy;
         if (effectsStrategy)
@@ -94,9 +98,13 @@ public class SpellManager : MonoBehaviour
         UnequipSpell2();
         
         spellConfig2 = spellConfig;
-        spellConfig2.strategy.Equip();
-        spellConfig2.strategy.Equip(_psm);
-        spellConfig2.strategy.Equip(this, _psm);
+        SpellStrategy strategy = spellConfig2.strategy;
+        if (strategy)
+        {
+            spellConfig2.strategy.Equip();
+            spellConfig2.strategy.Equip(_psm);
+            spellConfig2.strategy.Equip(this, _psm);
+        }
         
         PassiveEffectsStrategy effectsStrategy = spellConfig2.effectsStrategy;
         if (effectsStrategy)

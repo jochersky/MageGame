@@ -65,7 +65,8 @@ public class GameManager : MonoBehaviour
 public enum CharacterType
 {
     Base,
-    Pyromancer
+    Pyromancer,
+    Hound,
 }
 
 [System.Serializable]
