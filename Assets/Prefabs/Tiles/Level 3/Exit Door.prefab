@@ -151,5 +151,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79861ed5a288722429679b67b21a2da8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExitDoor
-  nextLevel: Main Menu
+  nextLevel: GameWin
   playerTag: Player
