@@ -12,6 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c8a21b234722ce4da140704b62f7c31, type: 3}
   m_Name: Level 2 Data
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  ruleTile: {fileID: 11400000, guid: 2637be4fb90dc17488e0ab4acd1984aa, type: 2}
   enemies:
   - {fileID: -8031587303290209441, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
   enemySpawnCounts: 02000000
+  traps:
+  - {fileID: -4953609966504343084, guid: 51da806946d8d864c85b0331b50b6607, type: 3}
+  - {fileID: 7538096920546485033, guid: daa1390b2605ec442962fff08b238205, type: 3}
+  numDecorations: 200
+  decorFloor:
+  - {fileID: 11400000, guid: 2b5b8414d0073254980b2e5647c929eb, type: 2}
+  - {fileID: 11400000, guid: 51c2e565d5a0e2a419f635f4a717a94b, type: 2}
+  - {fileID: 11400000, guid: ab60e0e384ba3ae4a8bcf60735d3ce14, type: 2}
+  - {fileID: 11400000, guid: b1be629bbd174084597376394a5a68a9, type: 2}
+  decorCeiling:
+  - {fileID: 11400000, guid: 6a9d5d6ebf8f57b418c4d54878fee6e2, type: 2}
+  - {fileID: 11400000, guid: 584e01b834c582e46ba3963fc9a53d8a, type: 2}
+  - {fileID: 11400000, guid: 08bc3cd9266e1644a8e585e02edd4ca2, type: 2}
+  - {fileID: 11400000, guid: e6aec65edfa193046bb43886882c49bd, type: 2}
+  falseFloor: {fileID: 11400000, guid: f31db1ec81cc4e146b3b325d9f4a0ec1, type: 2}
+  spikes: {fileID: 11400000, guid: 2efddb173f63f6344bccc33f558106be, type: 2}
+  exitDoor: {fileID: 11400000, guid: f83aa7dec08873b40afdf072693fa134, type: 2}

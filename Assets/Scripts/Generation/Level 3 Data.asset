@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c8a21b234722ce4da140704b62f7c31, type: 3}
+  m_Name: Level 3 Data
+  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  ruleTile: {fileID: 11400000, guid: 044b3176b113a6b43989d35bfc8cef81, type: 2}
+  enemies: []
+  enemySpawnCounts: 
+  traps:
+  - {fileID: 1750997383092088863, guid: 96dba2f608bef224e9b67a91707f8298, type: 3}
+  - {fileID: -9146215481781452506, guid: 31cbf39a564f92f449fb268d1c4620d2, type: 3}
+  numDecorations: 100
+  decorFloor:
+  - {fileID: 11400000, guid: 4f93a18be42e59f40bacfe1403b21f3a, type: 2}
+  - {fileID: 11400000, guid: c564a31cf2938d34d814f022cfc87412, type: 2}
+  - {fileID: 11400000, guid: 0d8befba27c874044803122471645417, type: 2}
+  - {fileID: 11400000, guid: c559b547d0241fc4faac40f17fab4921, type: 2}
+  - {fileID: 11400000, guid: d76afd15d81609f40b950bd5ec9cc4aa, type: 2}
+  decorCeiling:
+  - {fileID: 11400000, guid: 11ab8fa079b20da44b57a1bf42111972, type: 2}
+  - {fileID: 11400000, guid: 8306f5310892fc94aa2d2ab5d9d1a860, type: 2}
+  - {fileID: 11400000, guid: cc08407ec77271748a40b7d0f7d2a1c7, type: 2}
+  - {fileID: 11400000, guid: e0ad68bc56edbae468097eaa86c474fc, type: 2}
+  - {fileID: 11400000, guid: 9f779b71c6c091a4fbdf97e5179d0863, type: 2}
+  falseFloor: {fileID: 11400000, guid: 5b875dd2028f2984392d6e73126dcbd3, type: 2}
+  spikes: {fileID: 11400000, guid: 938bdf38f9a20a04e967d01efcf3c32f, type: 2}
+  exitDoor: {fileID: 11400000, guid: 28d0bd80f9928cc47bb4ecafc5c3d1a7, type: 2}
