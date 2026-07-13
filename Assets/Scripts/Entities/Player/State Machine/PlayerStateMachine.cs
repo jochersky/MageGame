@@ -33,6 +33,12 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private Vector2 jumpCheckSize = new Vector2(1f, 0.25f);
     [SerializeField] private float coyoteJumpTimer = 0.1f;
     
+    [Header("Dodge")]
+    [SerializeField] private float maxDodgeSpeed = 20f;
+    [SerializeField] private float dodgeDuration = 0.2f;
+    [SerializeField] private float dodgeCooldown = 0.4f;
+    [SerializeField] private float dodgeInvulnerabilityTime = 0.2f;
+    
     [Header("Airborne")]
     [SerializeField] private float maxAirborneMoveSpeed = 1f;
     
@@ -83,6 +89,11 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _isPressingJump;
     private bool _newJumpPress;
     private int _numDoubleJumps;
+    private bool _isPressingDodge;
+    private bool _canDodge;
+    private bool _dodgeInCooldown;
+    private bool _dodging;
+    private int _numDodges;
     private bool _canClimb;
     private bool _wasClimbing;
     private Vector2 _climbPosition;
@@ -138,6 +149,11 @@ public class PlayerStateMachine : MonoBehaviour
     public bool JustPressedJump { get { return _justPressedJump; } set { _justPressedJump = value; } }
     public bool IsPressingJump { get { return _isPressingJump; } set { _isPressingJump = value; } }
     public bool NewJumpPress { get { return _newJumpPress; } set { _newJumpPress = value; } }
+    public float MaxDodgeSpeed { get { return maxDodgeSpeed; } set { maxDodgeSpeed = value; } }
+    public bool IsPressingDodge { get { return _isPressingDodge; } set { _isPressingDodge = value; } }
+    public bool CanDodge { get { return _canDodge; } set { _canDodge = value; } }
+    public bool IsDodging { get { return _dodging; } set { _dodging = value; } }
+    public int NumDodges { get { return _numDodges; } set { _numDodges = value; } }
     public bool CanClimb { get { return _canClimb; } set { _canClimb = value; } }
     public bool WasClimbing { get { return _wasClimbing; } set { _wasClimbing = value; } }
     public Vector2 ClimbPosition { get { return _climbPosition; } set { _climbPosition = value; } }
@@ -156,7 +172,8 @@ public class PlayerStateMachine : MonoBehaviour
         _lookHoldTimer = new CountdownTimer(dirHoldDuration);
         
         // Passive spell affects initialization
-        _numDoubleJumps = passiveSpellAffects.doubleJumps;
+        _numDoubleJumps = passiveSpellAffects.doubleJumps + baseStats.jumps;
+        _numDodges = passiveSpellAffects.dodges + baseStats.dodges;
 
         health.OnDeath += () => { _isDead = true; };
         _lookHoldTimer.OnTimerStop += () => { HandleCamera(); };
@@ -165,6 +182,9 @@ public class PlayerStateMachine : MonoBehaviour
         _states = new PlayerStateDictionary(this);
         _currentState = _isGrounded ? _states.Grounded() : _states.Jump();
         _currentState.EnterState();
+    
+        // provide initial direction for dodging (facing right)
+        _previousDirection.x = 1;
     }
 
     private void Update()
@@ -268,6 +288,12 @@ public class PlayerStateMachine : MonoBehaviour
         _justPressedJump = context.started;
         if (context.started && _numDoubleJumps > 0) _newJumpPress = true;
     }
+
+    public void OnDodge(InputAction.CallbackContext context)
+    {
+        Debug.Log(NumDodges);
+        _isPressingDodge = context.ReadValueAsButton();
+    }
     
     public void OnInventoryPressed(InputAction.CallbackContext context)
     {
@@ -301,7 +327,13 @@ public class PlayerStateMachine : MonoBehaviour
         {
             _airTime = 0;
             _canJump = true;
-            _numDoubleJumps = passiveSpellAffects.doubleJumps;
+            _numDoubleJumps = passiveSpellAffects.doubleJumps + baseStats.jumps;
+        }
+
+        if (_isGrounded && !_dodgeInCooldown)
+        {
+            _canDodge = true;
+            _numDodges = passiveSpellAffects.dodges + baseStats.dodges;
         }
     }
     
@@ -314,7 +346,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void UpdateGravity()
     {
-        if (_currentState == _states.Climb() || _currentState == _states.Rope()) return;
+        if (_currentState == _states.Dodge() || _currentState == _states.Climb() || _currentState == _states.Rope()) return;
         
         // Player falls down faster with negative y-velocity.
         if (_rb.linearVelocityY < 0)
@@ -387,6 +419,31 @@ public class PlayerStateMachine : MonoBehaviour
     public void InvokeDoubleJumpComplete()
     {
         OnDoubleJumpComplete?.Invoke();
+    }
+
+    public void StartDodgeAndCooldown()
+    {
+        StartCoroutine(DodgeAndCooldown());
+    }
+
+    private IEnumerator DodgeAndCooldown()
+    {
+        _canDodge = false;
+        _dodgeInCooldown = true;
+        _dodging = true;
+        
+        // apply dodge movement
+        _horizontalMovement = _previousDirection.x * maxDodgeSpeed;
+        
+        yield return new WaitForSeconds(dodgeDuration);
+
+        // revert dodge movement
+        _horizontalMovement = 0f;
+        _dodging = false;
+        
+        yield return new WaitForSeconds(dodgeCooldown);
+        
+        _dodgeInCooldown = false;
     }
 
     public void StartClimbDelay()

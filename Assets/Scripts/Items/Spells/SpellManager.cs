@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class SpellManager : MonoBehaviour
 {
-    [SerializeField] private int mana = 100;
+    [SerializeField] private int maxMana = 100;
+    [SerializeField] private float manaRegenTime;
+    [SerializeField] private int manaRegenRate;
     [SerializeField] private Transform spellCastTransform;
     [SerializeField] private Transform spellParentTransform;
     [SerializeField] private PassiveSpellAffects passiveSpellAffects;
@@ -23,8 +26,12 @@ public class SpellManager : MonoBehaviour
     public SpellConfig spellConfig2;
     private bool castingSpell2;
     private bool _spell2Part1Casted;
+
+    public int _mana;
+    private float _manaRegenTimer;
     
-    public int Mana { get => mana; set => mana = value; }
+    public int MaxMana { get => maxMana; set => maxMana = value; }
+    public int Mana { get => _mana; set => _mana = value; }
     
     void Start()
     {
@@ -43,6 +50,23 @@ public class SpellManager : MonoBehaviour
         if (spellConfig2 && spellConfig2.strategy) spellConfig2.strategy.Tick(Time.deltaTime);
     }
 
+    private void FixedUpdate()
+    {
+        HandleManaRegen();
+    }
+
+    private void HandleManaRegen()
+    {
+        if (manaRegenTime <= 0) return;
+        
+        _manaRegenTimer += Time.fixedDeltaTime;
+        if (_manaRegenTimer >= manaRegenTime)
+        {
+            _manaRegenTimer = 0;
+            _mana = Math.Min(maxMana, _mana + manaRegenRate);
+        }
+    }
+
     public int AddSpell(SpellConfig spellConfig)
     {
         int spellEquipped = 0;
@@ -58,13 +82,6 @@ public class SpellManager : MonoBehaviour
             spellEquipped = 2;
         }
         
-        // PassiveEffectsStrategy effectsStrategy = spellConfig.effectsStrategy;
-        // if (effectsStrategy)
-        // {
-        //     effectsStrategy.AddSpellAffects(passiveSpellAffects);
-        //     // effectsStrategy.SubscribeConditions(_psm);
-        // }
-        
         return spellEquipped;
     }
 
@@ -75,9 +92,13 @@ public class SpellManager : MonoBehaviour
         UnequipSpell1();
         
         spellConfig1 = spellConfig;
-        spellConfig1.strategy.Equip();
-        spellConfig1.strategy.Equip(_psm);
-        spellConfig1.strategy.Equip(this, _psm);
+        SpellStrategy strategy = spellConfig1.strategy;
+        if (strategy)
+        {
+            spellConfig1.strategy.Equip();
+            spellConfig1.strategy.Equip(_psm);
+            spellConfig1.strategy.Equip(this, _psm);
+        }
         
         PassiveEffectsStrategy effectsStrategy = spellConfig1.effectsStrategy;
         if (effectsStrategy)
@@ -94,9 +115,13 @@ public class SpellManager : MonoBehaviour
         UnequipSpell2();
         
         spellConfig2 = spellConfig;
-        spellConfig2.strategy.Equip();
-        spellConfig2.strategy.Equip(_psm);
-        spellConfig2.strategy.Equip(this, _psm);
+        SpellStrategy strategy = spellConfig2.strategy;
+        if (strategy)
+        {
+            spellConfig2.strategy.Equip();
+            spellConfig2.strategy.Equip(_psm);
+            spellConfig2.strategy.Equip(this, _psm);
+        }
         
         PassiveEffectsStrategy effectsStrategy = spellConfig2.effectsStrategy;
         if (effectsStrategy)
@@ -138,7 +163,7 @@ public class SpellManager : MonoBehaviour
     {
         if (context.performed || context.canceled || _psm.IsDead || castingSpell1 || !spellConfig1 || !spellConfig1.strategy) return;
         
-        if (spellConfig1.manaCost > mana) return;
+        if (spellConfig1.manaCost > _mana) return;
 
         // two-part-cast spells should only use one cast worth of mana
         if (spellConfig1.twoPartCast)
@@ -146,7 +171,7 @@ public class SpellManager : MonoBehaviour
             if (!_spell1Part1Casted)
             {
                 _spell1Part1Casted = true;
-                mana -= spellConfig1.manaCost;
+                _mana -= spellConfig1.manaCost;
             }
             else
             {
@@ -155,7 +180,7 @@ public class SpellManager : MonoBehaviour
         }
         else
         {
-            mana -= spellConfig1.manaCost;
+            _mana -= spellConfig1.manaCost;
         }
         
         // Player will get hit by their own spell if they cast it towards a wall
@@ -173,7 +198,7 @@ public class SpellManager : MonoBehaviour
     {
         if (context.performed || context.canceled || _psm.IsDead || castingSpell2 || !spellConfig2 || !spellConfig2.strategy) return;
         
-        if (spellConfig2.manaCost > mana) return;
+        if (spellConfig2.manaCost > _mana) return;
         
         // two-part-cast spells should only use one cast worth of mana
         if (spellConfig2.twoPartCast)
@@ -181,7 +206,7 @@ public class SpellManager : MonoBehaviour
             if (!_spell2Part1Casted)
             {
                 _spell2Part1Casted = true;
-                mana -= spellConfig2.manaCost;
+                _mana -= spellConfig2.manaCost;
             }
             else
             {
@@ -190,7 +215,7 @@ public class SpellManager : MonoBehaviour
         }
         else
         {
-            mana -= spellConfig2.manaCost;
+            _mana -= spellConfig2.manaCost;
         }
         
         // Player will get hit by their own spell if they cast it towards a wall

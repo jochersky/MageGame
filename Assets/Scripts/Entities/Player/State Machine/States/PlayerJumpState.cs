@@ -21,6 +21,7 @@ public class PlayerJumpState : PlayerBaseState
         Context.HorizontalMovement = Context.MoveDirection.x * Context.Stats.Speed;
         
         if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
+        else if (Context.IsPressingDodge && Context.NumDodges > 0 && Context.CanDodge) SwitchState(Dictionary.Dodge());
         else if (Context.LinearVelocityY < -1 || !Context.IsPressingJump) SwitchState(Dictionary.Fall());
         else if (Context.IsGrounded) SwitchState(Dictionary.Grounded());
     }

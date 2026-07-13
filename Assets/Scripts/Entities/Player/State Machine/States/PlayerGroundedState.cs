@@ -17,6 +17,7 @@ public class PlayerGroundedState : PlayerBaseState
     public override void UpdateState()
     {
         if (!Context.IsGrounded) SwitchState(Dictionary.Fall());
+        else if (Context.IsPressingDodge && Context.NumDodges > 0 && Context.CanDodge) SwitchState(Dictionary.Dodge());
         else if (Context.CanJump && Context.IsPressingJump) SwitchState(Dictionary.Jump());
         else if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
     }

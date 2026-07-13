@@ -16,6 +16,7 @@ public class PlayerIdleState : PlayerBaseState
         if (Context.IsDead) SwitchState(Dictionary.Dead());
         
         if (Context.MoveDirection.x != 0) SwitchState(Dictionary.Walk());
+        else if (Context.IsPressingDodge && Context.NumDodges > 0 && Context.CanDodge) SwitchState(Dictionary.Dodge());
         else if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
         else if (Context.IsCrouching) SwitchState(Dictionary.Crouch());
     }

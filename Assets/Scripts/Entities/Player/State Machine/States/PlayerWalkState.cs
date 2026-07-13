@@ -14,9 +14,11 @@ public class PlayerWalkState : PlayerBaseState
     {
         if (Context.IsDead) SwitchState(Dictionary.Dead());
         
-        Context.HorizontalMovement = Context.MoveDirection.x * Context.Stats.Speed;
+        // this is so stupid. HorizontalMovement is set to this value while walking and dodge is peformed.
+        if (!Context.IsDodging) Context.HorizontalMovement = Context.MoveDirection.x * Context.Stats.Speed;
         
         if (Context.MoveDirection == Vector2.zero) SwitchState(Dictionary.Idle());
+        else if (Context.IsPressingDodge && Context.NumDodges > 0 && Context.CanDodge) SwitchState(Dictionary.Dodge());
         else if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
         else if (Context.IsCrouching) SwitchState(Dictionary.Crouch());
     }

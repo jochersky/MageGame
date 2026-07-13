@@ -9,6 +9,7 @@ enum PlayerStates
     Fall,
     Climb,
     Jump,
+    Dodge,
     Rope,
     Dead,
     // - Sub States -
@@ -32,6 +33,7 @@ public class PlayerStateDictionary
         _states[PlayerStates.Fall] = new PlayerFallState(_context, this);
         _states[PlayerStates.Climb] = new PlayerClimbState(_context, this);
         _states[PlayerStates.Jump] = new PlayerJumpState(_context, this);
+        _states[PlayerStates.Dodge] = new PlayerDodgeState(_context, this);
         _states[PlayerStates.Rope] = new PlayerRopeState(_context, this);
         _states[PlayerStates.Dead] = new PlayerDeadState(_context, this);
         
@@ -61,6 +63,11 @@ public class PlayerStateDictionary
     public PlayerBaseState Jump()
     {
         return _states[PlayerStates.Jump];
+    }
+
+    public PlayerBaseState Dodge()
+    {
+        return _states[PlayerStates.Dodge];
     }
 
     public PlayerBaseState Rope()
