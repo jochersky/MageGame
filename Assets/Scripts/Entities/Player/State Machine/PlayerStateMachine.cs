@@ -172,8 +172,8 @@ public class PlayerStateMachine : MonoBehaviour
         _lookHoldTimer = new CountdownTimer(dirHoldDuration);
         
         // Passive spell affects initialization
-        _numDoubleJumps = passiveSpellAffects.doubleJumps;
-        _numDodges = passiveSpellAffects.dodges;
+        _numDoubleJumps = passiveSpellAffects.doubleJumps + baseStats.jumps;
+        _numDodges = passiveSpellAffects.dodges + baseStats.dodges;
 
         health.OnDeath += () => { _isDead = true; };
         _lookHoldTimer.OnTimerStop += () => { HandleCamera(); };
@@ -291,6 +291,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void OnDodge(InputAction.CallbackContext context)
     {
+        Debug.Log(NumDodges);
         _isPressingDodge = context.ReadValueAsButton();
     }
     
@@ -326,13 +327,13 @@ public class PlayerStateMachine : MonoBehaviour
         {
             _airTime = 0;
             _canJump = true;
-            _numDoubleJumps = passiveSpellAffects.doubleJumps;
+            _numDoubleJumps = passiveSpellAffects.doubleJumps + baseStats.jumps;
         }
 
         if (_isGrounded && !_dodgeInCooldown)
         {
             _canDodge = true;
-            _numDodges = passiveSpellAffects.dodges;
+            _numDodges = passiveSpellAffects.dodges + baseStats.dodges;
         }
     }
     

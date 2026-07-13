@@ -3,6 +3,7 @@ using UnityEngine;
 public enum StatType
 {
     Health,
+    Mana,
     Jumps,
     Speed
 }
@@ -19,6 +20,16 @@ public class Stats
         get
         {
             var q = new Query(StatType.Health, _baseStats.health);
+            _mediator.PerformQuery(this, q);
+            return q.Value;
+        }
+    }
+
+    public float Mana
+    {
+        get
+        {
+            var q = new Query(StatType.Mana, _baseStats.mana);
             _mediator.PerformQuery(this, q);
             return q.Value;
         }

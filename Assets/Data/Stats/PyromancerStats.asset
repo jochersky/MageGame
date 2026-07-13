@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce20df48fb42cb249b22b05e8d02937d, type: 3}
   m_Name: PyromancerStats
   m_EditorClassIdentifier: Assembly-CSharp::BaseStats
-  health: 3
-  jumps: 1
+  health: 5
+  mana: 150
+  jumps: 0
+  dodges: 0
   speed: 8

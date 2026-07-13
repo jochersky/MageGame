@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: PlayerBaseStats
   m_EditorClassIdentifier: Assembly-CSharp::BaseStats
   health: 5
-  jumps: 1
+  mana: 1
+  jumps: 0
+  dodges: 0
   speed: 8

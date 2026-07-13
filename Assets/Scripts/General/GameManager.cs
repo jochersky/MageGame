@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private GameObject baseCharacterPrefab;
     [SerializeField] private GameObject pyromancerPrefab;
+    [SerializeField] private GameObject houndPrefab;
+    [SerializeField] private GameObject wardenPrefab;
     
     [Header("Debugging")]
     [SerializeField] private bool debug;
@@ -41,6 +43,8 @@ public class GameManager : MonoBehaviour
             {
                 case CharacterType.Base: Instantiate(baseCharacterPrefab, spawnPoint); break;
                 case CharacterType.Pyromancer: Instantiate(pyromancerPrefab, spawnPoint); break;
+                case CharacterType.Hound: Instantiate(houndPrefab, spawnPoint); break;
+                case CharacterType.Warden: Instantiate(wardenPrefab, spawnPoint); break;
             }
         }
     }
@@ -67,6 +71,7 @@ public enum CharacterType
     Base,
     Pyromancer,
     Hound,
+    Warden
 }
 
 [System.Serializable]

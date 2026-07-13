@@ -21,7 +21,8 @@ public class Player : MonoBehaviour
         GameManager.Instance.SpellManager = _spellManager;
 
         _health.UpdateMaxHealth(stats.health);
-        _spellManager.Mana = stats.mana;
+        _spellManager.MaxMana = stats.mana;
+        _spellManager.Mana = _spellManager.MaxMana;
     }
 
     public void Save(ref PlayerSaveData data)
