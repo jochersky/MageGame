@@ -291,7 +291,6 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void OnDodge(InputAction.CallbackContext context)
     {
-        Debug.Log(NumDodges);
         _isPressingDodge = context.ReadValueAsButton();
     }
     
