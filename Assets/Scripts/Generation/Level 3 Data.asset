@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Level 3 Data
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
   ruleTile: {fileID: 11400000, guid: 044b3176b113a6b43989d35bfc8cef81, type: 2}
-  enemies: []
-  enemySpawnCounts: 
+  enemies:
+  - {fileID: 8807503061213548029, guid: 0377eff9239e5104d94fb6c5eca49c12, type: 3}
+  enemySpawnCounts: 0a000000
   traps:
   - {fileID: 1750997383092088863, guid: 96dba2f608bef224e9b67a91707f8298, type: 3}
   - {fileID: -9146215481781452506, guid: 31cbf39a564f92f449fb268d1c4620d2, type: 3}
