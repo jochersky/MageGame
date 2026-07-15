@@ -1155,7 +1155,9 @@ MonoBehaviour:
   pyromancerPrefab: {fileID: 0}
   houndPrefab: {fileID: 0}
   wardenPrefab: {fileID: 0}
-  debug: 1
+  healthBar: {fileID: 0}
+  manaBar: {fileID: 0}
+  debug: 0
   debugPlayerObject: {fileID: 0}
 --- !u!4 &1439240578
 Transform:

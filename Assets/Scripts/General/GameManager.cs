@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject pyromancerPrefab;
     [SerializeField] private GameObject houndPrefab;
     [SerializeField] private GameObject wardenPrefab;
+    [Header("UI References")]
+    [SerializeField] private HUDBar healthBar;
+    [SerializeField] private HUDBar manaBar;
     
     [Header("Debugging")]
     [SerializeField] private bool debug;
@@ -33,19 +36,33 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
 
-        if (debug) return;
+        // for character already placed in scene
+        if (debug)
+        {
+            Player playerComponent = debugPlayerObject.GetComponent<Player>();
+            playerComponent.HealthBar = healthBar;
+            playerComponent.ManaBar = manaBar;
+            return;
+        }
         
+        // for character chosen through character select
         if (debugPlayerObject) Destroy(debugPlayerObject);
         SaveSystem.Load();
         if (spawnPoint)
         {
+            GameObject playerInst = null;
+            
             switch (CharacterType)
             {
-                case CharacterType.Base: Instantiate(baseCharacterPrefab, spawnPoint); break;
-                case CharacterType.Pyromancer: Instantiate(pyromancerPrefab, spawnPoint); break;
-                case CharacterType.Hound: Instantiate(houndPrefab, spawnPoint); break;
-                case CharacterType.Warden: Instantiate(wardenPrefab, spawnPoint); break;
+                case CharacterType.Base: playerInst = Instantiate(baseCharacterPrefab, spawnPoint); break;
+                case CharacterType.Pyromancer: playerInst = Instantiate(pyromancerPrefab, spawnPoint); break;
+                case CharacterType.Hound: playerInst = Instantiate(houndPrefab, spawnPoint); break;
+                case CharacterType.Warden: playerInst = Instantiate(wardenPrefab, spawnPoint); break;
             }
+            
+            Player playerComponent = playerInst.GetComponent<Player>();
+            playerComponent.HealthBar = healthBar;
+            playerComponent.ManaBar = manaBar;
         }
     }
 

@@ -12,6 +12,6 @@ public class MoneyCounter : MonoBehaviour
     
     public void UpdateMoneyCount(int amt)
     {
-        text.text = amt.ToString();
+        text.text = "$" + amt.ToString();
     }
 }
