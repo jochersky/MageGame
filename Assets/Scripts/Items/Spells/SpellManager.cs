@@ -33,6 +33,9 @@ public class SpellManager : MonoBehaviour
     public int MaxMana { get => maxMana; set => maxMana = value; }
     public int Mana { get => _mana; set => _mana = value; }
     
+    public delegate void ManaChange(int newMana);
+    public event ManaChange OnManaChanged;
+    
     void Start()
     {
         _psm = GetComponent<PlayerStateMachine>();
@@ -172,6 +175,7 @@ public class SpellManager : MonoBehaviour
             {
                 _spell1Part1Casted = true;
                 _mana -= spellConfig1.manaCost;
+                OnManaChanged?.Invoke(_mana);
             }
             else
             {
@@ -181,6 +185,7 @@ public class SpellManager : MonoBehaviour
         else
         {
             _mana -= spellConfig1.manaCost;
+            OnManaChanged?.Invoke(_mana);
         }
         
         // Player will get hit by their own spell if they cast it towards a wall
@@ -207,6 +212,7 @@ public class SpellManager : MonoBehaviour
             {
                 _spell2Part1Casted = true;
                 _mana -= spellConfig2.manaCost;
+                OnManaChanged?.Invoke(_mana);
             }
             else
             {
@@ -216,6 +222,7 @@ public class SpellManager : MonoBehaviour
         else
         {
             _mana -= spellConfig2.manaCost;
+            OnManaChanged?.Invoke(_mana);
         }
         
         // Player will get hit by their own spell if they cast it towards a wall

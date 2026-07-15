@@ -4,8 +4,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private BaseStats stats;
+    // [SerializeField] private HUDBar healthBar;
+    // [SerializeField] private HUDBar manaBar;
     private Health _health;
     private SpellManager _spellManager;
+
+    public HUDBar HealthBar { get; set; }
+    public HUDBar ManaBar { get; set; }
     
     private void Awake()
     {
@@ -20,9 +25,15 @@ public class Player : MonoBehaviour
         GameManager.Instance.PlayerHealth = _health;
         GameManager.Instance.SpellManager = _spellManager;
 
+        _health.CurrentHealth = stats.health;
         _health.UpdateMaxHealth(stats.health);
         _spellManager.MaxMana = stats.mana;
         _spellManager.Mana = _spellManager.MaxMana;
+
+        HealthBar.InitializeBar(_health.CurrentHealth, _health.MaxHealth);
+        _health.OnHealthChanged += HealthBar.UpdateValue;
+        ManaBar.InitializeBar(_spellManager.Mana, _spellManager.MaxMana);
+        _spellManager.OnManaChanged += ManaBar.UpdateValue;
     }
 
     public void Save(ref PlayerSaveData data)

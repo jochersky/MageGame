@@ -638,6 +638,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5134274705619913246}
   - component: {fileID: 7687317441274017755}
+  - component: {fileID: 7284429670179160766}
   m_Layer: 0
   m_Name: Bar
   m_TagString: Untagged
@@ -718,6 +719,24 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7284429670179160766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6411644683397064578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9fcafffee33df44d954f148f7c504ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  fillBarRectTransform: {fileID: 3943083288977932477}
+  counterText: {fileID: 2356950152827880743}
+  slider: {fileID: 7687317441274017755}
+  growBySegment: 1
+  startingRightVal: 128
+  rightGrowAmt: -43.25
 --- !u!1 &8031855687677378616
 GameObject:
   m_ObjectHideFlags: 0
