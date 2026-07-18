@@ -12,10 +12,12 @@ public class SnakeStateMachine : MonoBehaviour
     [SerializeField] private Health health;
     [SerializeField] private Hitbox hitbox;
     [SerializeField] private Hurtbox hurtbox;
+    [SerializeField] private Chain chain;
     private Rigidbody2D _rb;
 
     [Header("Properties")]
-    [SerializeField, Range(0, 0.2f)] private float splineFollowSpeed;
+    [SerializeField] private float splineFollowSpeed = 5;
+    [SerializeField, Range(0, 0.2f)] private float splineProgressSpeed;
     
     // State Variables
     private SnakeBaseState _currentState;
@@ -32,10 +34,12 @@ public class SnakeStateMachine : MonoBehaviour
     public SnakeStateDictionary States { get { return _states; } set { _states = value; } }
     public SplineContainer Spline { get { return spline; } set { spline = value; } }
     public GameObject SnakeGO { get { return snakeGO; } set { snakeGO = value; } }
+    public Chain Chain { get { return chain; } set { chain = value; } }
     public bool PlayerInRange { get { return _playerInRange; } set { _playerInRange = value; } }
     public Vector3 PlayerPosition => aggroSensor.TargetPosition();
     public bool Dead => _dead;
     public float SplineFollowSpeed { get { return splineFollowSpeed; } set { splineFollowSpeed = value; } }
+    public float SplineProgressSpeed { get { return splineProgressSpeed; } set { splineProgressSpeed = value; } }
     
     private void Start()
     {
