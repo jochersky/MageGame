@@ -26,7 +26,7 @@ public class SpikeFruit : Trap
         if (falling && collision.CompareTag("Environment"))
         {
             Burst();
-        } else if (!falling && (!collision.isTrigger || collision.CompareTag("Hitbox")))
+        } else if (!falling && collision.CompareTag("Hitbox")) //!collision.isTrigger || 
         {
             print("triggered by " + collision.name);
             Fall();   
