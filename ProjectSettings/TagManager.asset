@@ -9,6 +9,8 @@ TagManager:
   - Gib
   - Stomp
   - Rope
+  - Hitbox
+  - Snake
   layers:
   - Default
   - TransparentFX

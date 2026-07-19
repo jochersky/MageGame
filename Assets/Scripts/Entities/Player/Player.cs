@@ -4,8 +4,6 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private BaseStats stats;
-    // [SerializeField] private HUDBar healthBar;
-    // [SerializeField] private HUDBar manaBar;
     private Health _health;
     private SpellManager _spellManager;
 

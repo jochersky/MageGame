@@ -31,8 +31,6 @@ public class Sensor : MonoBehaviour
     {
         if (!LineOfSightTransform) LineOfSightTransform = transform;
         
-       
-        
         // _mask = LayerMask.GetMask("Player", "Environment");
         // _environmentLayer = LayerMask.GetMask("Environment");
     }
