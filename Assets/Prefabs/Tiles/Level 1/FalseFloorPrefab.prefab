@@ -5118,3 +5118,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ab740a018c392c4199fc9786504d04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FalseFloor
+  breakingSound: {fileID: 8300000, guid: 7ca758b51bedd7546aa65877a68e95de, type: 3}
+  audioDelayForVolumeControl: 0.1
