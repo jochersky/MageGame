@@ -2,8 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public class RatStateMachine : Entity
+public class SkeletonStateMachine : Entity
 {
     [Header("References")]
     [SerializeField] private Animator animator;
@@ -12,16 +11,12 @@ public class RatStateMachine : Entity
     [SerializeField] private Health health;
     [SerializeField] private Hitbox hitbox;
     [SerializeField] private Hurtbox hurtbox;
-    [SerializeField] private Spawner gibSpawner;
     private Rigidbody2D _rb;
     private Collider2D _ownCollider;
 
     [Header("Move Properties")] 
     [SerializeField] private float defaultMoveSpeed = 3f;
     [SerializeField] private float aggroMoveSpeed = 6f;
-    [SerializeField] private float lungeTime = 2f;
-    [SerializeField] private float lungeVelocityX = 1;
-    [SerializeField] private float lungeVelocityY = 1;
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheckTransform;
@@ -40,9 +35,9 @@ public class RatStateMachine : Entity
     public string stateName = "";
     
     // State Variables
-    private RatBaseState _currentState;
-    private RatBaseState _currentSubState;
-    private RatStateDictionary _states;
+    private SkeletonBaseState _currentState;
+    private SkeletonBaseState _currentSubState;
+    private SkeletonStateDictionary _states;
 
     // Animation Hashes
     public readonly int Grounded = Animator.StringToHash("Grounded");
@@ -64,18 +59,15 @@ public class RatStateMachine : Entity
     public UnityEvent<float> onDirectionChanged;
 
     // State Setters & Getters
-    public RatBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
-    public RatBaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
-    public RatStateDictionary States { get { return _states; } set { _states = value; } }
+    public SkeletonBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
+    public SkeletonBaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
+    public SkeletonStateDictionary States { get { return _states; } set { _states = value; } }
     public Animator Animator { get { return animator; } }
-    public float LungeVelocityX { get { return lungeVelocityX; } }
-    public float LungeVelocityY { get { return lungeVelocityY; } }
     public float LinearVelocityX { get { return _rb.linearVelocityX; } set { _rb.linearVelocityX = value; } }
     public float LinearVelocityY { get { return _rb.linearVelocityY; } set { _rb.linearVelocityY = value; } }
     public float HorizontalMovement { get { return _horizontalMovement; } set { _horizontalMovement = value; } }
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; } }
     public bool IsAggroed { get { return _isAggroed; } set { _isAggroed = value; } }
-    public float LungeTime { get { return lungeTime; } set { lungeTime = value; } }
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
 
     private void Awake()
@@ -84,7 +76,7 @@ public class RatStateMachine : Entity
         _horizontalMovement = _moveDir.x * _currentMoveSpeed;
         
         // State machine initial state setup
-        _states = new RatStateDictionary(this);
+        _states = new SkeletonStateDictionary(this);
         _currentState = _isGrounded ? States.Grounded(): States.Fall();
         _currentState.EnterState();
     }
@@ -99,7 +91,6 @@ public class RatStateMachine : Entity
             _isDead = true;
             hitbox.gameObject.SetActive(false);
             hurtbox.gameObject.SetActive(false);
-            gibSpawner.SpawnObject(transform);
         };
 
         playerEnteredSensor.OnPlayerSighted += () =>
