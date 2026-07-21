@@ -9,6 +9,8 @@ public class SkeletonAggroState : SkeletonBaseState
 
     public override void EnterState()
     {
+        Context.Animator.CrossFade(Context.Aggro, 0);
+        
         Context.CurrentMoveSpeed = Context.AggroMoveSpeed;
         Context.HorizontalMovement = Context.MoveDir.x * Context.CurrentMoveSpeed;;
     }

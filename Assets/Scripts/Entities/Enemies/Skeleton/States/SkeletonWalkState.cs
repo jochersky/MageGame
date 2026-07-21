@@ -14,6 +14,8 @@ public class SkeletonWalkState : SkeletonBaseState
     {
         if (_walkTimer.Time == 0) _walkTimer.Time = Context.WalkTime;
         _walkTimer.Start();
+        
+        Context.Animator.CrossFade(Context.Walk, 0);
 
         Context.CurrentMoveSpeed = Context.DefaultMoveSpeed;
         Context.HorizontalMovement = Context.MoveDir.x * Context.CurrentMoveSpeed;

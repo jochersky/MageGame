@@ -44,10 +44,11 @@ public class SkeletonStateMachine : Entity
     private SkeletonStateDictionary _states;
 
     // Animation Hashes
-    // public readonly int Grounded = Animator.StringToHash("Grounded");
-    // public readonly int Fall = Animator.StringToHash("Fall");
-    // public readonly int Lunge = Animator.StringToHash("Lunge");
-    // public readonly int Dead = Animator.StringToHash("Dead");
+    public readonly int Idle = Animator.StringToHash("Idle");
+    public readonly int Walk = Animator.StringToHash("Walk");
+    public readonly int Aggro = Animator.StringToHash("Aggro");
+    public readonly int Fall = Animator.StringToHash("Fall");
+    public readonly int Dead = Animator.StringToHash("Dead");
     
     private LayerMask _hitLayers;
     private float _currentMoveSpeed;

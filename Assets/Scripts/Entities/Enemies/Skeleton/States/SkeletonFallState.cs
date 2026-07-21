@@ -10,7 +10,7 @@ public class SkeletonFallState : SkeletonBaseState
 
     public override void EnterState()
     {
-        // animator
+        Context.Animator.CrossFade(Context.Fall, 0);
     }
 
     public override void UpdateState()

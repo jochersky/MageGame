@@ -15,7 +15,8 @@ public class SkeletonIdleState : SkeletonBaseState
         if (_idleTimer.Time == 0) _idleTimer.Time = Context.IdleTime;
         _idleTimer.Start();
         
-        // call animator
+        Context.Animator.CrossFade(Context.Idle, 0);
+        
         Context.CurrentMoveSpeed = 0;
         Context.HorizontalMovement = Context.MoveDir.x * Context.CurrentMoveSpeed;
     }
