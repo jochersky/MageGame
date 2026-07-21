@@ -1,16 +1,27 @@
 using UnityEngine;
 
-public class SkeletonAggroState : MonoBehaviour
+public class SkeletonAggroState : SkeletonBaseState
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public SkeletonAggroState(SkeletonStateMachine currentContext, SkeletonStateDictionary skeletonStateDictionary)
+        : base(currentContext, skeletonStateDictionary)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void EnterState()
     {
-        
+        Context.CurrentMoveSpeed = Context.AggroMoveSpeed;
+        Context.HorizontalMovement = Context.MoveDir.x * Context.CurrentMoveSpeed;;
+    }
+
+    public override void UpdateState()
+    {
+    }
+
+    public override void ExitState()
+    {
+    }
+
+    public override void InitializeSubState()
+    {
     }
 }

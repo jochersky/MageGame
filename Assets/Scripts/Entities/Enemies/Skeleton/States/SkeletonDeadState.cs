@@ -1,16 +1,27 @@
 using UnityEngine;
 
-public class SkeletonDeadState : MonoBehaviour
+public class SkeletonDeadState : SkeletonBaseState
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public SkeletonDeadState(SkeletonStateMachine currentContext, SkeletonStateDictionary skeletonStateDictionary) 
+        : base(currentContext, skeletonStateDictionary)
     {
-        
+        IsRootState = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void EnterState()
     {
-        
+        Context.HorizontalMovement = 0;
+    }
+
+    public override void UpdateState()
+    {
+    }
+
+    public override void ExitState()
+    {
+    }
+
+    public override void InitializeSubState()
+    {
     }
 }

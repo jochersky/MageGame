@@ -9,6 +9,7 @@ public abstract class SkeletonBaseState
     private SkeletonBaseState _currentSuperState;
     
     protected bool IsRootState { set => _isRootState = value; }
+    public SkeletonBaseState SubState { get { return _currentSubState; } private set { _currentSubState = value; } }
     protected SkeletonStateMachine Context { get { return _context; } set { _context = value; } }
     protected SkeletonStateDictionary Dictionary { get { return _dictionary; } set { _dictionary = value; } }
     
