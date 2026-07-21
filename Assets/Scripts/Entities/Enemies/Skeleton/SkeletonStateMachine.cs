@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public class RatStateMachine : Entity
+public class SkeletonStateMachine : Entity
 {
     [Header("References")]
     [SerializeField] private Animator animator;
@@ -12,16 +12,14 @@ public class RatStateMachine : Entity
     [SerializeField] private Health health;
     [SerializeField] private Hitbox hitbox;
     [SerializeField] private Hurtbox hurtbox;
-    [SerializeField] private Spawner gibSpawner;
     private Rigidbody2D _rb;
     private Collider2D _ownCollider;
-
+    
     [Header("Move Properties")] 
+    [SerializeField] private float idleTime;
+    [SerializeField] private float walkTime;
     [SerializeField] private float defaultMoveSpeed = 3f;
     [SerializeField] private float aggroMoveSpeed = 6f;
-    [SerializeField] private float lungeTime = 2f;
-    [SerializeField] private float lungeVelocityX = 1;
-    [SerializeField] private float lungeVelocityY = 1;
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheckTransform;
@@ -33,6 +31,7 @@ public class RatStateMachine : Entity
     [SerializeField] private bool wallCheckDebug;
 
     [Header("Ledge Check")]
+    [SerializeField] private int fallChance = 5;
     [SerializeField] private float ledgeCheckDistance = 0.75f;
     [SerializeField] private bool ledgeCheckDebug;
     
@@ -40,14 +39,15 @@ public class RatStateMachine : Entity
     public string stateName = "";
     
     // State Variables
-    private RatBaseState _currentState;
-    private RatBaseState _currentSubState;
-    private RatStateDictionary _states;
+    private SkeletonBaseState _currentState;
+    private SkeletonBaseState _currentSubState;
+    private SkeletonStateDictionary _states;
 
     // Animation Hashes
-    public readonly int Grounded = Animator.StringToHash("Grounded");
+    public readonly int Idle = Animator.StringToHash("Idle");
+    public readonly int Walk = Animator.StringToHash("Walk");
+    public readonly int Aggro = Animator.StringToHash("Aggro");
     public readonly int Fall = Animator.StringToHash("Fall");
-    public readonly int Lunge = Animator.StringToHash("Lunge");
     public readonly int Dead = Animator.StringToHash("Dead");
     
     private LayerMask _hitLayers;
@@ -55,37 +55,40 @@ public class RatStateMachine : Entity
     private Vector2 _moveDir = Vector2.right;
     private float _horizontalMovement;
     private bool _isGrounded;
+    private bool _wasGrounded;
     private bool _isAggroed;
     private float _lungeTimer;
     private bool _isDead;
     private RaycastHit2D[] _hits = new RaycastHit2D[3];
+    private bool _fallIntentionally = false;
     
     // Event for flipping the transform.
     public UnityEvent<float> onDirectionChanged;
 
     // State Setters & Getters
-    public RatBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
-    public RatBaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
-    public RatStateDictionary States { get { return _states; } set { _states = value; } }
+    public SkeletonBaseState CurrentState { get { return _currentState; } set { _currentState = value; } }
+    public SkeletonBaseState CurrentSubState { get { return _currentSubState; } set { _currentSubState = value; } }
+    public SkeletonStateDictionary States { get { return _states; } set { _states = value; } }
     public Animator Animator { get { return animator; } }
-    public float LungeVelocityX { get { return lungeVelocityX; } }
-    public float LungeVelocityY { get { return lungeVelocityY; } }
+    public Vector2 MoveDir => _moveDir;
     public float LinearVelocityX { get { return _rb.linearVelocityX; } set { _rb.linearVelocityX = value; } }
     public float LinearVelocityY { get { return _rb.linearVelocityY; } set { _rb.linearVelocityY = value; } }
     public float HorizontalMovement { get { return _horizontalMovement; } set { _horizontalMovement = value; } }
+    public float CurrentMoveSpeed { get { return _currentMoveSpeed; }  set { _currentMoveSpeed = value; } }
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; } }
     public bool IsAggroed { get { return _isAggroed; } set { _isAggroed = value; } }
-    public float LungeTime { get { return lungeTime; } set { lungeTime = value; } }
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
+    public float IdleTime => idleTime;
+    public float WalkTime => walkTime;
+    public float DefaultMoveSpeed => defaultMoveSpeed;
+    public float AggroMoveSpeed => aggroMoveSpeed;
 
     private void Awake()
     {
-        _currentMoveSpeed = defaultMoveSpeed;
-        _horizontalMovement = _moveDir.x * _currentMoveSpeed;
-        
         // State machine initial state setup
-        _states = new RatStateDictionary(this);
+        _states = new SkeletonStateDictionary(this);
         _currentState = _isGrounded ? States.Grounded(): States.Fall();
+        
         _currentState.EnterState();
     }
 
@@ -99,7 +102,6 @@ public class RatStateMachine : Entity
             _isDead = true;
             hitbox.gameObject.SetActive(false);
             hurtbox.gameObject.SetActive(false);
-            gibSpawner.SpawnObject(transform);
         };
 
         playerEnteredSensor.OnPlayerSighted += () =>
@@ -116,7 +118,7 @@ public class RatStateMachine : Entity
     private void Update()
     {
         _currentState.UpdateStates();
-        stateName = _currentState.ToString();
+        stateName = _currentState.SubState != null ? _currentState.SubState.ToString() : _currentState.ToString();
     }
 
     private void FixedUpdate()
@@ -143,6 +145,10 @@ public class RatStateMachine : Entity
     private void CheckGrounded()
     {
         _isGrounded = Physics2D.OverlapBox(groundCheckTransform.position, groundCheckSize, 0, environmentLayer);
+
+        if (!_wasGrounded && _isGrounded) _fallIntentionally = false;
+        
+        _wasGrounded = _isGrounded;
     }
     
     private void OnDrawGizmosSelected()
@@ -182,7 +188,7 @@ public class RatStateMachine : Entity
 
     private void CheckForLedge()
     {
-        if (!_isGrounded || _isDead) return;
+        if (!_isGrounded || _isDead || _fallIntentionally) return;
         
         Vector2 start = (Vector2)transform.position + _moveDir * ledgeCheckDistance;
         if (ledgeCheckDebug)
@@ -191,6 +197,8 @@ public class RatStateMachine : Entity
         }
         if (!Physics2D.Raycast(start, Vector2.down, 1f, environmentLayer))
         {
+            if (Random.Range(0, fallChance) == 0) _fallIntentionally = true;
+                
             _moveDir = -_moveDir;
             onDirectionChanged?.Invoke(Mathf.Sign(_moveDir.x));
             _horizontalMovement = _moveDir.x * _currentMoveSpeed;
