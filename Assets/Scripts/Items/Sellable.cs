@@ -73,7 +73,7 @@ public class Sellable : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         
-        if (!purchased)
+        if (other.CompareTag("Player") && !purchased)
         {
             _inRange = true;
             outline.enabled = true;
@@ -83,11 +83,14 @@ public class Sellable : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        outline.enabled = false;
-        _inRange = false;
-        if (!purchased)
+        if (collision.CompareTag("Player"))
         {
-            priceObject.SetActive(false);
+            outline.enabled = false;
+            _inRange = false;
+            if (!purchased)
+            {
+                priceObject.SetActive(false);
+            }
         }
     }
 
