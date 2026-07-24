@@ -1,6 +1,6 @@
 {
     "gameSaveData": {
-        "characterType": 2
+        "characterType": 1
     },
     "playerData": {
         "position": {
@@ -8,12 +8,25 @@
             "y": 0.0,
             "z": 0.0
         },
-        "healthAmt": 0,
-        "manaAmt": 0,
+        "healthAmt": 5,
+        "manaAmt": 150,
         "moneyAmt": 0
     },
     "inventoryData": {
-        "spells": [],
-        "consumables": []
+        "spells": [
+            {
+                "name": "Dragon's Fury"
+            }
+        ],
+        "consumables": [
+            {
+                "name": "Bomb",
+                "count": 5
+            },
+            {
+                "name": "Rope",
+                "count": 5
+            }
+        ]
     }
 }

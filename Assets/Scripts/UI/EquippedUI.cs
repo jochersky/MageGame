@@ -13,12 +13,6 @@ public class EquippedUI : MonoBehaviour
     private ConsumableConfig _consumableConfig1;
     private ConsumableConfig _consumableConfig2;
     private ConsumableConfig _equippedConsumable;
-    
-    void Start()
-    {
-        spell1Image.enabled = false;
-        spell2Image.enabled = false;
-    }
 
     private void OnEnable()
     {
@@ -48,13 +42,13 @@ public class EquippedUI : MonoBehaviour
     
     private void UpdateEquippedSpell1UI(Sprite spellSprite, bool visible)
     {
-        spell1Image.enabled = visible;
+        spell1Image.color = visible ? Color.white : Color.clear;
         spell1Image.sprite = spellSprite;
     }
 
     private void UpdateEquippedSpell2UI(Sprite spellSprite, bool visible)
     {
-        spell2Image.enabled = visible;
+        spell2Image.color = visible ? Color.white : Color.clear;
         spell2Image.sprite = spellSprite;
     } 
 }

@@ -27,14 +27,6 @@ public class ConsumableManager : MonoBehaviour
         _layerMask = LayerMask.GetMask("Environment");
     }
 
-    public void InitializeCounts()
-    {
-        // Always want to start run with some bombs.
-        // Only want to add bombs if there aren't any bombs already.
-        AddConsumable(bombConfig, bombStartCount);
-        InventoryManager.Instance.EquipConsumableToSlot1(bombConfig);
-    }
-
     public int AddConsumable(ConsumableConfig consumableConfig, int count)
     {
         // consumable already exists in inventory, just update count

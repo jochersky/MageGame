@@ -23,6 +23,11 @@ public class SaveSystem
         return _release ? _releaseFilePath + "/save.save" : _debugFilePath + "/save.save";
     }
 
+    public static bool SaveDataExists()
+    {
+        return File.Exists(SaveFileName());
+    }
+
     public static void Save()
     {
         HandleSaveData();
