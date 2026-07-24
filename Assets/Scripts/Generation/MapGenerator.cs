@@ -66,7 +66,7 @@ public class MapGenerator : MonoBehaviour
     int exitCol;
 
     // Reference to player
-    [SerializeField] GameObject player;
+    public GameObject player;
     [SerializeField] float startingPositionOffset;
     Vector2 startingPosition;
     bool startingPositionAssigned = false;

@@ -16,15 +16,21 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         GameManager.Instance.Player = this;
-    }
-
-    private void Start()
-    {
+        
         _health = GetComponent<Health>();
         _spellManager = GetComponent<SpellManager>();
         
         GameManager.Instance.PlayerHealth = _health;
         GameManager.Instance.SpellManager = _spellManager;
+    }
+
+    private void Start()
+    {
+        // _health = GetComponent<Health>();
+        // _spellManager = GetComponent<SpellManager>();
+        
+        // GameManager.Instance.PlayerHealth = _health;
+        // GameManager.Instance.SpellManager = _spellManager;
 
         _health.CurrentHealth = stats.health;
         _health.UpdateMaxHealth(stats.health);

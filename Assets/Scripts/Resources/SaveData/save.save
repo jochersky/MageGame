@@ -1,6 +1,6 @@
 {
     "gameSaveData": {
-        "characterType": 1
+        "characterType": 3
     },
     "playerData": {
         "position": {
@@ -8,19 +8,19 @@
             "y": 0.0,
             "z": 0.0
         },
-        "healthAmt": 5,
-        "manaAmt": 150,
+        "healthAmt": 7,
+        "manaAmt": 75,
         "moneyAmt": 0
     },
     "inventoryData": {
         "spells": [
             {
-                "name": "Dragon's Fury"
+                "name": "Snap Speed"
             }
         ],
         "consumables": [
             {
-                "name": "Bomb",
+                "name": "Sol Stone",
                 "count": 5
             },
             {

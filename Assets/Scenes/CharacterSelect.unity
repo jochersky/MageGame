@@ -1150,6 +1150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53a7d55dcdcec084ca98137a9556c606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  mapGenerator: {fileID: 0}
   spawnPoint: {fileID: 0}
   baseCharacterPrefab: {fileID: 8863640782204810548, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
   pyromancerPrefab: {fileID: 7577167415162979246, guid: bde52861c16b1ab4590cf376ece82b19, type: 3}
@@ -1746,7 +1747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70503225410eafd43b791192551cded9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  levelName: MovementTestScene
+  levelName: Level 1
   listItemPrefab: {fileID: 2108252100021298958, guid: 82308ff4824331d4faccf4250463d519, type: 3}
 --- !u!114 &7715980872072073972
 MonoBehaviour:

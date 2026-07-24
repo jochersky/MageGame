@@ -3,6 +3,9 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Level References")]
+    [SerializeField] MapGenerator mapGenerator;
+    
     [Header("Player References")]
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private GameObject baseCharacterPrefab;
@@ -72,6 +75,7 @@ public class GameManager : MonoBehaviour
         if (spawnPoint)
         {
             GameObject playerInst = SpawnPlayer();
+            if (mapGenerator) mapGenerator.player = playerInst;
             
             Player playerComponent = playerInst.GetComponent<Player>();
             playerComponent.HealthBar = healthBar;

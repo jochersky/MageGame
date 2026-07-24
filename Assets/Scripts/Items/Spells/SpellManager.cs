@@ -70,6 +70,12 @@ public class SpellManager : MonoBehaviour
         }
     }
 
+    public void UpdateMana(int amount)
+    {
+        _mana = Mathf.Clamp(amount, 0, maxMana);
+        OnManaChanged?.Invoke(_mana);
+    }
+
     public int AddSpell(SpellConfig spellConfig)
     {
         int spellEquipped = 0;
@@ -174,8 +180,7 @@ public class SpellManager : MonoBehaviour
             if (!_spell1Part1Casted)
             {
                 _spell1Part1Casted = true;
-                _mana -= spellConfig1.manaCost;
-                OnManaChanged?.Invoke(_mana);
+                UpdateMana(-spellConfig1.manaCost);
             }
             else
             {
@@ -184,8 +189,7 @@ public class SpellManager : MonoBehaviour
         }
         else
         {
-            _mana -= spellConfig1.manaCost;
-            OnManaChanged?.Invoke(_mana);
+            UpdateMana(-spellConfig1.manaCost);
         }
         
         // Player will get hit by their own spell if they cast it towards a wall
@@ -211,8 +215,7 @@ public class SpellManager : MonoBehaviour
             if (!_spell2Part1Casted)
             {
                 _spell2Part1Casted = true;
-                _mana -= spellConfig2.manaCost;
-                OnManaChanged?.Invoke(_mana);
+                UpdateMana(-spellConfig2.manaCost);
             }
             else
             {
@@ -221,8 +224,7 @@ public class SpellManager : MonoBehaviour
         }
         else
         {
-            _mana -= spellConfig2.manaCost;
-            OnManaChanged?.Invoke(_mana);
+            UpdateMana(-spellConfig2.manaCost);
         }
         
         // Player will get hit by their own spell if they cast it towards a wall

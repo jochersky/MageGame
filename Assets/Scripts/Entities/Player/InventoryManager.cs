@@ -78,6 +78,8 @@ public class InventoryManager : MonoBehaviour
         _consumableManager = GetComponent<ConsumableManager>();
         _consumableDictionary = new ConsumableDictionary();
         
+        _consumableManager.InitializeCounts();
+        
         OnStartDone?.Invoke();
     }
     

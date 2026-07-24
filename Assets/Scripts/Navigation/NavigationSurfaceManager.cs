@@ -17,7 +17,7 @@ public class NavigationSurfaceManager : MonoBehaviour
     {
         // check added to get rid of missing reference error when changing scenes
         if (!spiderNavMeshSurface) return;
-        
+
         spiderNavMeshSurface.UpdateNavMesh(spiderNavMeshSurface.navMeshData);
     }
 }

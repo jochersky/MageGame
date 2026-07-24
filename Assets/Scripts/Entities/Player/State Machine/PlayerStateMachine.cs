@@ -105,6 +105,7 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _canClimbRope;
     private bool _isClimbingRope;
     private bool _wasClimbingRope;
+    private float _ropeMidpointX;
     private float _yRopeMin;
     private float _yRopeMax;
     private bool _isCrouching;
@@ -217,6 +218,8 @@ public class PlayerStateMachine : MonoBehaviour
             bool sampleInBounds = sampledPosY < _yRopeMax && sampledPosY > _yRopeMin;
             
             y = inBounds || sampleInBounds ? _verticalMovement * ropeClimbSpeed : 0;
+            
+            transform.position = new Vector3(_ropeMidpointX, transform.position.y, transform.position.z);
         }
         
         _rb.linearVelocity = new Vector2(x, y);
@@ -231,6 +234,7 @@ public class PlayerStateMachine : MonoBehaviour
             Rope rope = collision.gameObject.GetComponent<Rope>();
             _yRopeMin = rope.yMin;
             _yRopeMax = rope.yMax;
+            _ropeMidpointX = collision.transform.position.x;
         }
     }
 
@@ -269,14 +273,14 @@ public class PlayerStateMachine : MonoBehaviour
             _isClimbingRope = true;
 
         // camera
-        if (_verticalDirection.x != 0 || context.canceled)
+        if (_verticalDirection.x != 0 || context.canceled || !_isGrounded)
         {
             _lookHoldTimer.Reset();
             _cameraManager.ReturnCameraToOriginalPosition();
             _isCrouching = false;
             _isLookingUp = false;
         }
-        else if (context.started)
+        else if (context.started && _isGrounded)
         {
             _lookHoldTimer.Start();
         }
