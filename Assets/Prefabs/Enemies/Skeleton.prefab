@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1216486529675360256}
   - component: {fileID: 7430869561300692896}
-  - component: {fileID: 4884375500872790306}
+  - component: {fileID: 2027118156078717416}
   m_Layer: 0
   m_Name: Hurtbox
   m_TagString: Untagged
@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hurtbox
   ignoreTag: 
---- !u!61 &4884375500872790306
-BoxCollider2D:
+--- !u!70 &2027118156078717416
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -80,18 +80,9 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.031164646}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.62602425, y: 0.9376707}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0.004760742, y: -0.033147573}
+  m_Size: {x: 0.63330555, y: 0.93370485}
+  m_Direction: 0
 --- !u!1 &819786959015550978
 GameObject:
   m_ObjectHideFlags: 0
