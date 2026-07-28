@@ -11,6 +11,7 @@ public class PlayerFallState : PlayerBaseState
     public override void EnterState()
     {
         Context.Animator.CrossFade(Context.Fall, 0, 0);
+        Context.IsClimbingRope = false;
     }
 
     public override void UpdateState()

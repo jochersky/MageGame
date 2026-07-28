@@ -10,8 +10,7 @@ public class PlayerRopeState : PlayerBaseState
 
     public override void EnterState()
     {
-        // Context.Animator.CrossFade(Context.ClimbingLadder, 0, 0);
-        
+        Context.Animator.CrossFade(Context.Jump, 0, 0);
         Context.Rigidbody.gravityScale = 0;
     }
 

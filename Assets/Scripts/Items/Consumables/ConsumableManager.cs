@@ -9,8 +9,8 @@ public class ConsumableManager : MonoBehaviour
     [SerializeField] private Transform consumableParentTransform;
     [Header("Starting Consumable Settings")]
     [SerializeField] private bool debug;
-    [SerializeField] private ConsumableConfig bombConfig;
-    [SerializeField] private int bombStartCount;
+    [SerializeField] private ConsumableConfig testConsumableConfig;
+    [SerializeField] private int testStartCount;
     
     private PlayerStateMachine _psm;
     private LayerMask _layerMask;
@@ -35,8 +35,8 @@ public class ConsumableManager : MonoBehaviour
         
         // Always want to start run with some bombs.
         // Only want to add bombs if there aren't any bombs already.
-        AddConsumable(bombConfig, bombStartCount);
-        InventoryManager.Instance.EquipConsumableToSlot1(bombConfig);
+        AddConsumable(testConsumableConfig, testStartCount);
+        InventoryManager.Instance.EquipConsumableToSlot1(testConsumableConfig);
     }
 
     public int AddConsumable(ConsumableConfig consumableConfig, int count)
@@ -115,7 +115,7 @@ public class ConsumableManager : MonoBehaviour
         }
         else if (_equippedConsumable.type == ConsumableType.Placeable)
         {
-            if (placeAtCenter) strategy.UsePlaceableConsumable(_psm.transform, _psm.transform.position);
+            if (placeAtCenter || _equippedConsumable.snapToGrid) strategy.UsePlaceableConsumable(_psm.transform, _psm.transform.position);
             else strategy.UsePlaceableConsumable(consumableParentTransform, consumableSpawnTransform.position);
         }
         else if (_equippedConsumable.type == ConsumableType.Throwable)
