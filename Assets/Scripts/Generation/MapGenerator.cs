@@ -564,6 +564,8 @@ public class MapGenerator : MonoBehaviour
             TileBase currTile = colliderTilemap.GetTile(tileCoords);
             if (enemy.CheckSpawnPosition(currTile, tileCoords, colliderTilemap, nonColliderTilemap))
             {
+                //Vector3 pos = colliderTilemap.CellToWorld(tileCoords);
+                //print("World Pos: " + pos.x + " " + pos.y + " Cell Pos: " + tileCoords.x + " " + tileCoords.y);
                 enemy.spawnPositions.Add(new (tileCoords.x, tileCoords.y));
             }
         }

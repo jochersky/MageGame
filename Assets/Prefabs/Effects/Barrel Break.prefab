@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_Resource
       value: 
       objectReference: {fileID: 8300000, guid: 7ca758b51bedd7546aa65877a68e95de, type: 3}
+    - target: {fileID: 28273889841215533, guid: c40bfb5cffedc1f4f82ac1b82bc03e69, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 474945759254308587, guid: c40bfb5cffedc1f4f82ac1b82bc03e69, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
