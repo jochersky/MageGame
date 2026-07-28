@@ -10,28 +10,45 @@ public class Player : MonoBehaviour
     public HUDBar HealthBar { get; set; }
     public HUDBar ManaBar { get; set; }
     
+    public delegate void StartDone();
+    public event StartDone OnStartDone;
+    
     private void Awake()
     {
         GameManager.Instance.Player = this;
-    }
-
-    private void Start()
-    {
+        
         _health = GetComponent<Health>();
         _spellManager = GetComponent<SpellManager>();
         
         GameManager.Instance.PlayerHealth = _health;
         GameManager.Instance.SpellManager = _spellManager;
+    }
+
+    private void Start()
+    {
+        // _health = GetComponent<Health>();
+        // _spellManager = GetComponent<SpellManager>();
+        
+        // GameManager.Instance.PlayerHealth = _health;
+        // GameManager.Instance.SpellManager = _spellManager;
 
         _health.CurrentHealth = stats.health;
         _health.UpdateMaxHealth(stats.health);
         _spellManager.MaxMana = stats.mana;
         _spellManager.Mana = _spellManager.MaxMana;
 
-        HealthBar.InitializeBar(_health.CurrentHealth, _health.MaxHealth);
-        _health.OnHealthChanged += HealthBar.UpdateValue;
-        ManaBar.InitializeBar(_spellManager.Mana, _spellManager.MaxMana);
-        _spellManager.OnManaChanged += ManaBar.UpdateValue;
+        if (HealthBar)
+        {
+            HealthBar.InitializeBar(_health.CurrentHealth, _health.MaxHealth);
+            _health.OnHealthChanged += HealthBar.UpdateValue;
+        }
+        if (ManaBar)
+        {
+            ManaBar.InitializeBar(_spellManager.Mana, _spellManager.MaxMana);
+            _spellManager.OnManaChanged += ManaBar.UpdateValue;
+        }
+        
+        OnStartDone?.Invoke();
     }
 
     public void Save(ref PlayerSaveData data)

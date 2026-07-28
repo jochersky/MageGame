@@ -56,8 +56,9 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private float climbAboveBelowCheckLength = 0.5f;
     [SerializeField] private float climbDelayTime = 0.1f;
     [SerializeField] private bool climbDebug;
-    
-    [Header("Ladder")]
+
+    [Header("Rope")] 
+    [SerializeField] private RopeHandler _ropeHandler;
     [SerializeField] private float ropeClimbSpeed = 0.25f;
 
     [Header("Camera Movement")] [SerializeField]
@@ -105,6 +106,7 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _canClimbRope;
     private bool _isClimbingRope;
     private bool _wasClimbingRope;
+    private float _ropeMidpointX;
     private float _yRopeMin;
     private float _yRopeMax;
     private bool _isCrouching;
@@ -159,7 +161,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Vector2 ClimbPosition { get { return _climbPosition; } set { _climbPosition = value; } }
     public bool CanClimbRope { get { return _canClimbRope; } set { _canClimbRope = value; } }
     public bool IsClimbingRope { get { return _isClimbingRope; } set { _isClimbingRope = value; } }
-    public bool WasClimbingRope { get {return _wasClimbingRope; }  set { _wasClimbingRope = value; } }
+    public bool WasClimbingRope { get { return _wasClimbingRope; }  set { _wasClimbingRope = value; } }
     public bool IsCrouching { get { return _isCrouching; } set { _isCrouching = value; } }
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
     
@@ -204,42 +206,30 @@ public class PlayerStateMachine : MonoBehaviour
 
         float x = _horizontalMovement;
         float y = _rb.linearVelocityY;
+        
         // lock player onto ladder horizontally until they jump off
-        if (_isClimbingRope)
+        if (_isClimbingRope && _currentState == States.Rope())
         {
             x = 0;
+            // keep player in center of the rope
+            transform.position = new Vector3(_ropeMidpointX, transform.position.y, transform.position.z);
             
             // player should not be able to "leave" rope by descending or ascending it
-            float posY = Mathf.Clamp(_rb.position.y, _yRopeMin, _yRopeMax);
-            bool inBounds = posY > _yRopeMin && posY < _yRopeMax;
-            // let the player leave edges when their input aligns
-            float sampledPosY = _rb.position.y + _verticalDirection.y;
-            bool sampleInBounds = sampledPosY < _yRopeMax && sampledPosY > _yRopeMin;
+            bool inBounds = _rb.position.y > _yRopeMin && _rb.position.y < _yRopeMax;
+            if (!inBounds)
+            {
+                // snap player into place when they are outside the bounds
+                float posY = Mathf.Clamp(_rb.position.y, _yRopeMin, _yRopeMax);
+                transform.position = new Vector3(_ropeMidpointX, posY + (posY > _yRopeMin ? -0.2f : 0.2f), transform.position.z);
+            }
             
-            y = inBounds || sampleInBounds ? _verticalMovement * ropeClimbSpeed : 0;
+            float sampledPosY = _rb.position.y + _verticalDirection.y * 0.2f;
+            bool sampleInBounds = sampledPosY < _yRopeMax && sampledPosY > _yRopeMin;
+        
+            y = sampleInBounds ? _verticalMovement * ropeClimbSpeed : 0;
         }
         
         _rb.linearVelocity = new Vector2(x, y);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Rope"))
-        {
-            _canClimbRope = true;
-            
-            Rope rope = collision.gameObject.GetComponent<Rope>();
-            _yRopeMin = rope.yMin;
-            _yRopeMax = rope.yMax;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Rope"))
-        {
-            _canClimbRope = false;
-        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -266,17 +256,19 @@ public class PlayerStateMachine : MonoBehaviour
 
         // rope
         if (_canClimbRope && _verticalDirection.y >= 0.5f)
+        {
             _isClimbingRope = true;
+        }
 
         // camera
-        if (_verticalDirection.x != 0 || context.canceled)
+        if (_verticalDirection.x != 0 || context.canceled || !_isGrounded)
         {
             _lookHoldTimer.Reset();
             _cameraManager.ReturnCameraToOriginalPosition();
             _isCrouching = false;
             _isLookingUp = false;
         }
-        else if (context.started)
+        else if (context.started && _isGrounded)
         {
             _lookHoldTimer.Start();
         }
@@ -345,10 +337,14 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void UpdateGravity()
     {
-        if (_currentState == _states.Dodge() || _currentState == _states.Climb() || _currentState == _states.Rope()) return;
+        if (_currentState == _states.Dodge() ) return;
         
+        if (_currentState == _states.Rope() || _currentState == _states.Climb())
+        {
+            _rb.gravityScale = 0;
+        }
         // Player falls down faster with negative y-velocity.
-        if (_rb.linearVelocityY < 0)
+        else if (_rb.linearVelocityY < 0)
         {
             _rb.gravityScale = baseGravity * fallSpeedMultiplier;
             _rb.linearVelocityY = Mathf.Max(_rb.linearVelocityY, -maxFallSpeed);
@@ -366,6 +362,21 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void CheckClimbing()
     {
+        // rope
+        Rope ropeToClimb = _ropeHandler.GetRope();
+        if (ropeToClimb)
+        {
+            _canClimbRope = true;
+            _yRopeMax = ropeToClimb.yMax;
+            _yRopeMin = ropeToClimb.yMin;
+            _ropeMidpointX = ropeToClimb.transform.position.x;
+        }
+        else
+        {
+            _canClimbRope = false;
+        }
+        
+        // ledge
         float dirSign = Mathf.Sign(_previousDirection.x);
         Vector2 start = (Vector2)transform.position + climbCheckOffset;
         Vector2 direction = climbCheckDir * dirSign;
@@ -400,7 +411,7 @@ public class PlayerStateMachine : MonoBehaviour
             _canClimb = false;
         }
     }
-
+    
     private void HandleCamera()
     {
         if (!_isClimbingRope && _verticalDirection.y <= -0.5f)

@@ -272,7 +272,7 @@ public class GOAPAgent : MonoBehaviour
 
     void Update()
     {
-        if (_dead) return;
+        if (_dead || !navMeshAgent.isOnNavMesh) return;
         
         // Update the plan and current action if there is one
         if (CurrentGoapAction == null)

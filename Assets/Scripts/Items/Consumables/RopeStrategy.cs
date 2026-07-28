@@ -96,7 +96,11 @@ public class RopeStrategy : PlaceableConsumableStrategy
     {
         // using spawn transform lets consumable be flipped
         GameObject inst = Instantiate(prefab, spawnTransform);
-        inst.transform.position = spawnPosition;
+        
+        float snappedX = Mathf.RoundToInt(spawnPosition.x) + 0.5f;
+        // float snappedY = Mathf.RoundToInt(spawnPosition.y) + 0.5f;
+        Vector3 snappedToGrid = new Vector3(snappedX, spawnPosition.y, spawnPosition.z);
+        inst.transform.position = snappedToGrid;
         // null so that it won't follow the player's movement 
         inst.transform.parent = null;
         

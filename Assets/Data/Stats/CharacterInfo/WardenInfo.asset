@@ -16,7 +16,7 @@ MonoBehaviour:
   characterType: 3
   giftDescription: Gain innate double jump charge.
   characterStats: {fileID: 11400000, guid: 38e0a1b4bfd490e4da421a8de492f534, type: 2}
-  startingSpell1: {fileID: 0}
+  startingSpell1: {fileID: 11400000, guid: 4a66a693a56098d40a13cdbe56e44fab, type: 2}
   startingSpell2: {fileID: 0}
-  startingConsumable1: {fileID: 0}
-  startingConsumable2: {fileID: 0}
+  startingConsumable1: {fileID: 11400000, guid: 904c802438018c043bed29f763af9c7c, type: 2}
+  startingConsumable2: {fileID: 11400000, guid: dddd47c1650d67e4aa41bd74fdc5acc8, type: 2}

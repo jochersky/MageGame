@@ -16,7 +16,7 @@ MonoBehaviour:
   characterType: 2
   giftDescription: 'Beastial Origin: Innate dodge ability '
   characterStats: {fileID: 11400000, guid: fb9bb3cdc1d81ec428a0122d1f5809a7, type: 2}
-  startingSpell1: {fileID: 0}
+  startingSpell1: {fileID: 11400000, guid: 1f819aacfd9ec824b8f9295ffdbe8083, type: 2}
   startingSpell2: {fileID: 0}
-  startingConsumable1: {fileID: 0}
-  startingConsumable2: {fileID: 0}
+  startingConsumable1: {fileID: 11400000, guid: 7ff2e37574649d34c9653d0c8bce0101, type: 2}
+  startingConsumable2: {fileID: 11400000, guid: dddd47c1650d67e4aa41bd74fdc5acc8, type: 2}

@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class Heart : Pickup
 {
+    [SerializeField] private int healthRestored = 1;
+    
     public override void PickUpEffect()
     {
-        Debug.Log("Heart collected");
+        GameManager.Instance.PlayerHealth.Heal(healthRestored);
     }
 }

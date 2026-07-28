@@ -12,6 +12,7 @@ public class PlayerClimbState : PlayerBaseState
     {
         Context.Animator.CrossFade(Context.Climbing, 0, 0);
         
+        Context.IsClimbingRope = false;
         Context.Rigidbody.gravityScale = 0;
         Context.LinearVelocityY = 0;
         Context.HorizontalMovement = 0;
