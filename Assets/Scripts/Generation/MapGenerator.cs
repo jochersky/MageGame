@@ -656,7 +656,9 @@ public class MapGenerator : MonoBehaviour
                 {
                     int randIdx = randy.Next(0, enemy.spawnPositions.Count);
                     //StartCoroutine(SpawnEnemy(enemy, randIdx));
-                    Instantiate(enemy.enemyPrefab, new Vector2(enemy.spawnPositions[randIdx].x, enemy.spawnPositions[randIdx].y), quaternion.identity);
+                    Instantiate(enemy.enemyPrefab, new Vector2(enemy.spawnPositions[randIdx].x  + startingPositionOffset, enemy.spawnPositions[randIdx].y  + startingPositionOffset),
+                                quaternion.identity);
+                    print(enemy.spawnPositions[randIdx]);
                     enemy.spawnPositions.RemoveAt(randIdx);
                 } else
                 {
