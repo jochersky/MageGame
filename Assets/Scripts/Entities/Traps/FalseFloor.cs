@@ -2,7 +2,15 @@ using UnityEngine;
 
 public class FalseFloor : MonoBehaviour
 {
+    [SerializeField] AudioClip breakingSound;
+    [SerializeField] float audioDelayForVolumeControl = 0.1f;
+    private AudioManager audioManager;
     bool triggered = false;
+
+    void Start()
+    {
+        audioManager = FindAnyObjectByType<AudioManager>();
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player" && !triggered)
@@ -10,7 +18,7 @@ public class FalseFloor : MonoBehaviour
             triggered = true;
             GetComponent<SpriteRenderer>().enabled = false;
             GetComponentInChildren<ParticleSystem>().Play();
-            GetComponentInChildren<AudioSource>().Play();
+            audioManager.PlayAudio(breakingSound, audioDelayForVolumeControl);
         }
     }
 

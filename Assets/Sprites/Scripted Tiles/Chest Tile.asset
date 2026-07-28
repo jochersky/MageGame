@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Chest Tile
   m_EditorClassIdentifier: Assembly-CSharp::ChestTile
   TileSprite: {fileID: 0}
-  TileAssociatedPrefab: {fileID: 5369546599424313923, guid: 2243d88e43bf809439bda32aca71ce8c, type: 3}
+  TileAssociatedPrefab: {fileID: 2467777248196494029, guid: d3cbab79a247d7841b314df9a10d6e78, type: 3}

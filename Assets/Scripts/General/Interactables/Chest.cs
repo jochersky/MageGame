@@ -8,6 +8,7 @@ public class Chest : MonoBehaviour, IInteractable
     [Header("UI")]
     [SerializeField] private GameObject itemFramePrefab;
     [SerializeField] private Transform itemFrameTransform;
+    [SerializeField] bool randomSpell = false;
     
     private Animator _animator;
     private BoxCollider2D _boxCollider2D;
@@ -19,6 +20,11 @@ public class Chest : MonoBehaviour, IInteractable
 
     private void Start()
     {
+        if (randomSpell)
+        {
+            ChestManager cm = FindAnyObjectByType<ChestManager>();
+            itemConfig = cm.GetSpellConfig();
+        }
         _animator = GetComponent<Animator>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _itemFramePrefabInstance = Instantiate(itemFramePrefab, itemFrameTransform);

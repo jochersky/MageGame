@@ -41,6 +41,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] TileBase flamethrower;
     [SerializeField] TileBase torch;
     [SerializeField] TileBase chest;
+    [SerializeField] ConsumableConfig rope;
     [SerializeField] Tilemap colliderTilemap;
     [SerializeField] Tilemap nonColliderTilemap;
     [SerializeField] LevelData levelData;
@@ -479,10 +480,10 @@ public class MapGenerator : MonoBehaviour
                         colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.ruleTile);
                     }
                 }
-                // check for special value indicating a decoration
+                // check for special value indicating a rope
                 else if (roomProbability == -44)
                 {
-                    // TODO: Clean Up
+                    rope.strategy.UsePlaceableConsumable(nonColliderTilemap.transform, new Vector3(xCoord + startingPositionOffset, yCoord + startingPositionOffset, 0));
                 }
                  // check for special value indicating a chest
                 else if (roomProbability == -66)

@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 2870768550739899495}
   - component: {fileID: 4604030746266342286}
   - component: {fileID: 1279074859566068829}
+  - component: {fileID: 9217679508664161522}
   m_Layer: 7
   m_Name: Skeleton
   m_TagString: Untagged
@@ -294,6 +295,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.6320777, y: 0.94079447}
   m_EdgeRadius: 0
+--- !u!114 &9217679508664161522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819786959015550978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4de11e73b0440254591a0d7b16101b80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkeletonInfo
+  enemyPrefab: {fileID: 819786959015550978}
 --- !u!1 &1993294790696264540
 GameObject:
   m_ObjectHideFlags: 0

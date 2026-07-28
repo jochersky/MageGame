@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e48504770e865e947ad1cab7d68b1621, type: 3}
+  m_Name: LongRopeStrategy
+  m_EditorClassIdentifier: Assembly-CSharp::RopeStrategy
+  prefab: {fileID: 1273978203993603500, guid: c19444dc5cf344c46b261a6908193c18, type: 3}
+  environmentLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  maxHeight: 10
+  yMaxMargin: 0.5
+  yMinMargin: 0.75
+  topSprite: {fileID: 8662384261516989540, guid: 036380db571df32489dba6df13ee9654, type: 3}
+  topEndSprite: {fileID: -101285690, guid: 036380db571df32489dba6df13ee9654, type: 3}
+  midSprite: {fileID: 973116412, guid: 036380db571df32489dba6df13ee9654, type: 3}
+  botSprite: {fileID: 1847636002, guid: 036380db571df32489dba6df13ee9654, type: 3}
+  debug: 1
