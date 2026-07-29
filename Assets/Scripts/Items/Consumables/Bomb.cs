@@ -50,11 +50,6 @@ public class Bomb : Consumable
         explosionParticles.transform.position = rb.position;
     }
 
-    // private void Explode()
-    // {
-    //     Destroy(gameObject);
-    // }
-
     private IEnumerator InitiateExplode()
     {
         timer = 0f;

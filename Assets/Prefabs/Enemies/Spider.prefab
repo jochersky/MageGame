@@ -322,6 +322,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 2
+  cameraShakeAmt: 0.35
+  cameraShakeDuration: 0.3
   colliders:
   - {fileID: 2171032796570951923}
 --- !u!58 &2171032796570951923
@@ -845,7 +847,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpiderInfo
   enemyPrefab: {fileID: 8859184921287276884}
-  levelSpawnRates:
-  - 0
-  - 0
-  - 0

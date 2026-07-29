@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class Hurtbox : MonoBehaviour
 {
-    [SerializeField] private string ignoreTag;
+    [SerializeField] protected string ignoreTag;
     
-    public delegate void damageTaken(int damageAmt);
+    public delegate void damageTaken(DamageProperties damageProperties);
     public event damageTaken OnDamageTaken;
     public delegate void healed(int healAmt);
     public event healed OnHeal;
@@ -16,7 +16,7 @@ public class Hurtbox : MonoBehaviour
         
         if (other.TryGetComponent<Hitbox>(out Hitbox hitbox))
         {
-            OnDamageTaken?.Invoke(hitbox.damageAmt);
+            OnDamageTaken?.Invoke(hitbox.DamageProperties);
         }
 
         if (other.TryGetComponent<Healbox>(out Healbox healbox))
@@ -31,7 +31,7 @@ public class Hurtbox : MonoBehaviour
         
         if (other.TryGetComponent<Hitbox>(out Hitbox hitbox))
         {
-            OnDamageTaken?.Invoke(hitbox.damageAmt);
+            OnDamageTaken?.Invoke(hitbox.DamageProperties);
         }
 
         if (other.TryGetComponent<Healbox>(out Healbox healbox))
@@ -40,8 +40,8 @@ public class Hurtbox : MonoBehaviour
         }
     }
 
-    public void Stomped(int damageAmt)
+    public void Stomped(DamageProperties damageProperties)
     {
-        OnDamageTaken?.Invoke(damageAmt);
+        OnDamageTaken?.Invoke(damageProperties);
     }
 }

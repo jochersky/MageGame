@@ -52,6 +52,8 @@ MonoBehaviour:
   - {x: -2, y: 1}
   - {x: 2, y: -1}
   - {x: 2, y: 1}
+  shakeAmount: 1
+  shakeDuration: 0.5
 --- !u!50 &9094088721800162779
 Rigidbody2D:
   serializedVersion: 5
@@ -5252,6 +5254,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 2
+  cameraShakeAmt: 1
+  cameraShakeDuration: 0.5
   colliders: []
 --- !u!70 &7227354829322290746
 CapsuleCollider2D:

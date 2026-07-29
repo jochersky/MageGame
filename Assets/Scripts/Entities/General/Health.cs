@@ -25,6 +25,8 @@ public class Health : MonoBehaviour
     
     public delegate void HealthChange(int newHealth);
     public event HealthChange OnHealthChanged;
+    public delegate void startCameraShake(CameraShakeProperties shakeProperties);
+    public startCameraShake OnStartCameraShake;
     public delegate void Death();
     public event Death OnDeath;
     public delegate void Destroyed();
@@ -58,14 +60,15 @@ public class Health : MonoBehaviour
         }
     }
 
-    private void TakeDamage(int damageAmt)
+    private void TakeDamage(DamageProperties damageProperties)
     {
         if (_isInvulnerable || _currentHealth <= 0) return;
         
-        _currentHealth -= damageAmt;
+        _currentHealth -= damageProperties.amount;
         StartCoroutine(Invulnerable());
         
         OnHealthChanged?.Invoke(_currentHealth);
+        OnStartCameraShake?.Invoke(damageProperties.cameraShakeProperties);
         if (damageFlash) damageFlash.StartFlash();
         if (_currentHealth < 0f) OnDestroyed?.Invoke();
         if (_currentHealth <= 0f) OnDeath?.Invoke();
