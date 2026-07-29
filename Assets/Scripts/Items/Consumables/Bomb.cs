@@ -7,6 +7,7 @@ public class Bomb : Consumable
 {
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private SpriteRenderer sprite;
+    [SerializeField] private GameObject light;
     [SerializeField] private Collider2D explosionCollider;
     [SerializeField] private Collider2D hitboxCollider;
     [SerializeField] private DamageFlash damageFlash;
@@ -48,6 +49,7 @@ public class Bomb : Consumable
         hitboxCollider.transform.position = rb.position;
         explosionRadius.transform.position = rb.position;
         explosionParticles.transform.position = rb.position;
+        light.transform.position = rb.position;
     }
 
     private IEnumerator InitiateExplode()
@@ -62,6 +64,7 @@ public class Bomb : Consumable
         explosionCollider.enabled = true;
         
         sprite.enabled = false;
+        light.SetActive(true);
         _followRb = false;
         
         // start particle effects
@@ -75,6 +78,7 @@ public class Bomb : Consumable
         
         hitboxCollider.enabled = false;
         explosionCollider.enabled = false;
+        light.SetActive(false);
         
         // Explode();
     }

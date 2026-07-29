@@ -69,7 +69,6 @@ public class CameraManager : MonoBehaviour
     {
         if (collision.TryGetComponent<Explosion>(out Explosion e))
         {
-            Debug.Log("camera shook");
             ShakeCamera(e.CameraShakeProperties);
         }
     }
