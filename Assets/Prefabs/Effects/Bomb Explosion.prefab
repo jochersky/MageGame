@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 28273889841215533, guid: c40bfb5cffedc1f4f82ac1b82bc03e69, type: 3}
       propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
-      value: 0.7
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 474945759254308587, guid: c40bfb5cffedc1f4f82ac1b82bc03e69, type: 3}
       propertyPath: m_LocalPosition.x
