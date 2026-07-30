@@ -9,6 +9,14 @@ public class PlayerStompHitbox : MonoBehaviour
     [SerializeField] private bool debug;
     
     public UnityEvent onEnemyStomped;
+
+    private DamageProperties _damageProperties;
+    public DamageProperties DamageProperties => _damageProperties;
+    
+    private void Start()
+    {
+        _damageProperties.amount = damageAmt;
+    }
     
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -28,7 +36,7 @@ public class PlayerStompHitbox : MonoBehaviour
                 // Player gets jump boost
                 onEnemyStomped?.Invoke();
                 // Call any stomp logic for the corresponding hitbox
-                hurtbox.Stomped(damageAmt);
+                hurtbox.Stomped(_damageProperties);
             }
         }
     }

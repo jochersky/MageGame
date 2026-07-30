@@ -1,7 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
+    [Header("Shake Properties")]
+    [SerializeField] private Health health;
+    [Header("Shift Properties")]
     [SerializeField] private float yShiftSpeed = 2f;
     [SerializeField] private AnimationCurve yDownShiftCurve;
     [SerializeField] private AnimationCurve yUpShiftCurve;
@@ -16,6 +20,9 @@ public class CameraManager : MonoBehaviour
     private bool _justShiftedDown;
     private bool _justShiftedUp;
 
+    private float _shakeTimer;
+    private Coroutine _shakeRoutine;
+
     private void Start()
     {
         Keyframe k = yDownShiftCurve[0];
@@ -25,6 +32,8 @@ public class CameraManager : MonoBehaviour
         _downEndPointTime = yDownShiftCurve[yDownShiftCurve.length - 1].time;
         
         _upEndPointTime = yUpShiftCurve[yUpShiftCurve.length - 1].time;
+
+        health.OnDamageTaken += ShakeCameraFromDamage;
     }
 
     private void Update()
@@ -56,6 +65,14 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent<Explosion>(out Explosion e))
+        {
+            ShakeCamera(e.CameraShakeProperties);
+        }
+    }
+
     public void ShiftCameraDown()
     {
         transform.localPosition = _initialPosition;
@@ -75,4 +92,38 @@ public class CameraManager : MonoBehaviour
         _moveToDownPosition = false;
         _moveToUpPosition = false;
     }
+
+    private void ShakeCamera(CameraShakeProperties shakeProperties)
+    {
+        // transform.localPosition = Random.insideUnitCircle * 0.25f;
+        if (_shakeRoutine != null) StopAllCoroutines();
+        
+        _shakeRoutine = StartCoroutine(Shake(shakeProperties));
+    }
+
+    private void ShakeCameraFromDamage(DamageProperties damageProperties)
+    {
+        ShakeCamera(damageProperties.cameraShakeProperties);
+    }
+    
+    private IEnumerator Shake(CameraShakeProperties shakeProperties)
+    {
+        _shakeTimer = 0;
+        while (_shakeTimer <= shakeProperties.duration)
+        {
+            float shakeAmtAdjusted = shakeProperties.amount * (1 - (_shakeTimer / shakeProperties.duration));
+            transform.localPosition = new Vector2(_initialPosition.x, _initialPosition.y) + (shakeAmtAdjusted * Random.insideUnitCircle);
+            
+            _shakeTimer += Time.deltaTime;
+            yield return null;
+        }
+        
+        transform.localPosition = _initialPosition;
+    }
+}
+
+public struct CameraShakeProperties
+{
+    public float amount;
+    public float duration;
 }

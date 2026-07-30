@@ -5,9 +5,25 @@ using UnityEngine.Tilemaps;
 
 public class Explosion : MonoBehaviour
 {
+    [Header("Explosion Properties")]
     [SerializeField] private Vector2Int explosionSize;
     [SerializeField] private List<Vector2Int> ignoreTiles;
+    [Header("Camera Shake Properties")]
+    [SerializeField] private float shakeAmount;
+    [SerializeField] private float shakeDuration;
+
+    private CameraShakeProperties _cameraShakeProperties;
+    public CameraShakeProperties CameraShakeProperties => _cameraShakeProperties;
     
+    private void Start()
+    {
+        _cameraShakeProperties = new CameraShakeProperties
+        {
+            amount = shakeAmount,
+            duration = shakeDuration
+        };
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent<Tilemap>(out Tilemap tilemap))

@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 4604030746266342286}
   - component: {fileID: 1279074859566068829}
   - component: {fileID: 9217679508664161522}
+  - component: {fileID: 5453341268317302074}
   m_Layer: 7
   m_Name: Skeleton
   m_TagString: Untagged
@@ -174,6 +175,7 @@ MonoBehaviour:
   health: {fileID: 8599475305589617218}
   hitbox: {fileID: 7503731320808890196}
   hurtbox: {fileID: 7430869561300692896}
+  knockBack: {fileID: 5453341268317302074}
   idleTime: 1.5
   walkTime: 5
   defaultMoveSpeed: 2
@@ -186,6 +188,7 @@ MonoBehaviour:
   fallChance: 10
   ledgeCheckDistance: 0.5
   ledgeCheckDebug: 1
+  reduceConst: 0.75
   stateName: 
   onDirectionChanged:
     m_PersistentCalls:
@@ -214,11 +217,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac7a9eba2942d234ca7f7d55869318f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  damageFlash: {fileID: 0}
+  damageFlash: {fileID: 3993665922733953907}
   hurtboxes:
   - {fileID: 7430869561300692896}
   maxHealth: 2
-  invulnerabilityTime: 1.5
+  invulnerabilityTime: 0.3
   capHealth: 1
   spawnInvulnerable: 0
   ignore: 0
@@ -308,6 +311,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkeletonInfo
   enemyPrefab: {fileID: 819786959015550978}
+--- !u!114 &5453341268317302074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819786959015550978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ed24fe2ace4a254facfd5813ff5f76e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KnockBack
+  yReductionConst: 0.1
 --- !u!1 &1993294790696264540
 GameObject:
   m_ObjectHideFlags: 0
@@ -458,6 +474,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  cameraShakeAmt: 0.2
+  cameraShakeDuration: 0.2
+  knockBackForce: 5
   colliders:
   - {fileID: 981015414894697509}
 --- !u!61 &981015414894697509
@@ -695,6 +714,7 @@ GameObject:
   - component: {fileID: 6226367058905038179}
   - component: {fileID: 2080164142631223177}
   - component: {fileID: 697463020175557232}
+  - component: {fileID: 3993665922733953907}
   m_Layer: 0
   m_Name: Graphics
   m_TagString: Untagged
@@ -743,7 +763,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 98e78d23cdc2e29469cc6eabaa1fbe9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -798,6 +818,53 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3993665922733953907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3538635318028405095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18d7fc9bfbb117d4ba24429ed8b2ea1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFlash
+  _flashSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.055929556
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.22654364
+    - serializedVersion: 3
+      time: 0.25
+      value: 0
+      inSlope: -5.152768
+      outSlope: -5.152768
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.25
 --- !u!1 &5476582896062493645
 GameObject:
   m_ObjectHideFlags: 0

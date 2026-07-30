@@ -18,9 +18,14 @@ public class GOAPAgent : MonoBehaviour
     [SerializeField] private Hitbox hitbox;
     [SerializeField] private Hurtbox hurtbox;
     
+    [Header("Knock Back")]
+    [SerializeField, Range(0, 1)] private float reduceConst = 0.3f;
+    
     private GOAPPlanner planner;
     private NavMeshAgent navMeshAgent;
     private AnimationManager animationManager;
+    private Rigidbody2D rb;
+    private KnockBack knockBack;
 
     private Goal lastGoal;
     public Goal currentGoal;
@@ -63,6 +68,7 @@ public class GOAPAgent : MonoBehaviour
     private Vector3 _origin;
     public Health _currentTargetHealth;
     private Health _gibHealth;
+    private Vector2 _knockBackForce;
     
     void Awake()
     {
@@ -79,6 +85,8 @@ public class GOAPAgent : MonoBehaviour
     {
         _origin = transform.position;
         _previousHealth = health.CurrentHealth;
+        rb = GetComponent<Rigidbody2D>();
+        knockBack = GetComponent<KnockBack>();
         
         chaseSensor.OnTargetChanged += HandleTargetChanged;
         gibSensor.OnTargetChanged += HandleGibFound;
@@ -90,6 +98,7 @@ public class GOAPAgent : MonoBehaviour
             navMeshAgent.ResetPath();
             hurtbox.gameObject.SetActive(false);
         };
+        knockBack.OnKnockBackApplied += force => { _knockBackForce = force * 0.25f; }; 
             
         SetupBeliefs();
         SetupActions();
@@ -270,7 +279,12 @@ public class GOAPAgent : MonoBehaviour
         return runPosition;
     }
 
-    void Update()
+    private void UpdateKnockBackForce()
+    {
+        _knockBackForce *= reduceConst;
+    }
+
+    void FixedUpdate()
     {
         if (_dead || !navMeshAgent.isOnNavMesh) return;
         
@@ -316,6 +330,9 @@ public class GOAPAgent : MonoBehaviour
                     transform.rotation = lookRotation;
                 }
             }
+            
+            navMeshAgent.velocity += new Vector3(_knockBackForce.x, _knockBackForce.y, 0);
+            UpdateKnockBackForce();
 
             if (CurrentGoapAction.Finished)
             {
@@ -339,6 +356,8 @@ public class GOAPAgent : MonoBehaviour
                 }
             }
         }
+
+        
     }
 
     private void CalculatePlan()
