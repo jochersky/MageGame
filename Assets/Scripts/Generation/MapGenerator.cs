@@ -96,6 +96,11 @@ public class MapGenerator : MonoBehaviour
         ENDING,
         REGULAR
     }
+
+    public Tilemap getColliderMap()
+    {
+        return colliderTilemap;
+    }
     void Awake()
     {
         // Seems to be an issue with loading outside of specified folder; need to look into it
@@ -524,7 +529,7 @@ public class MapGenerator : MonoBehaviour
                 // check for special value indicating false floor
                 else if (roomProbability == -88)
                 {
-                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.falseFloor);
+                    colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.falseFloor);
                 }
                 // check for special value indicating flamethrower
                 else if (roomProbability == -55){

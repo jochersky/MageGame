@@ -12,7 +12,7 @@ public class FalseFloorTile : TileBase
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
     {
         tileData.sprite = TileAssociatedPrefab.GetComponent<Sprite>();
-
+        tileData.colliderType = Tile.ColliderType.Grid;
         if (TileAssociatedPrefab && tileData.gameObject == null)
         {
             tileData.gameObject = TileAssociatedPrefab;
