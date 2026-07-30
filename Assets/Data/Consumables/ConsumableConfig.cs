@@ -6,6 +6,7 @@ public class ConsumableConfig : ItemConfig
     [Header("Consumable Info")] 
     public int maxCount;
     public ConsumableType type;
+    public bool snapToGrid;
     public ConsumableStrategy strategy;
 }
 

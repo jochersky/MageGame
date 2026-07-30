@@ -32,7 +32,7 @@ public class Barrel : MonoBehaviour
         potentialDrops.Add(bomb);
     }
 
-    void OnDestroyed(int _amt)
+    void OnDestroyed(DamageProperties damageProperties)
     {
         Instantiate(effect, transform.position, quaternion.identity);
         // Spawn random drop at 85% chance

@@ -55,6 +55,9 @@ public class InventoryManager : MonoBehaviour
     // - Money
     public delegate void MoneyUpdated(int money);
     public event MoneyUpdated OnMoneyUpdated;
+
+    public delegate void StartDone();
+    public event StartDone OnStartDone;
     
     private void Awake()
     {
@@ -76,6 +79,8 @@ public class InventoryManager : MonoBehaviour
         _consumableDictionary = new ConsumableDictionary();
         
         _consumableManager.InitializeCounts();
+        
+        OnStartDone?.Invoke();
     }
     
     public int GetConsumableCount(ConsumableConfig config)

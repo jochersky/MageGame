@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   damageAmt: 1
+  cameraShakeAmt: 0.1
+  cameraShakeDuration: 0.2
+  knockBackForce: 3
   colliders: []
 --- !u!61 &7784417621114260720
 BoxCollider2D:
@@ -349,7 +352,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2015638958787253349}
   - component: {fileID: 7924654570294326910}
-  - component: {fileID: 6083625883421748770}
+  - component: {fileID: 6206748451224352947}
   m_Layer: 9
   m_Name: RatHurtbox
   m_TagString: Untagged
@@ -385,8 +388,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ignoreTag: Enemy
---- !u!61 &6083625883421748770
-BoxCollider2D:
+--- !u!70 &6206748451224352947
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -419,18 +422,9 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.19500166, y: -0.028737128}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.80705106, y: 0.5976809}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0.13982908, y: -0.062424146}
+  m_Size: {x: 0.9300905, y: 0.5405697}
+  m_Direction: 1
 --- !u!1 &8871767491910850251
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,6 +442,7 @@ GameObject:
   - component: {fileID: 4863647061312629515}
   - component: {fileID: 2338991868819308851}
   - component: {fileID: 6414141270941766223}
+  - component: {fileID: 3455514454161224423}
   m_Layer: 7
   m_Name: Rat
   m_TagString: Enemy
@@ -486,6 +481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22605c2aa767c774493cf626bc31d14f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RatStateMachine
+  freezable: 1
   animator: {fileID: 480664531493528183}
   playerEnteredSensor: {fileID: 4863647061312629515}
   environmentLayer:
@@ -495,6 +491,7 @@ MonoBehaviour:
   hitbox: {fileID: 2583082123830694234}
   hurtbox: {fileID: 7924654570294326910}
   gibSpawner: {fileID: 6414141270941766223}
+  knockBack: {fileID: 3455514454161224423}
   defaultMoveSpeed: 3
   aggroMoveSpeed: 6
   lungeTime: 2
@@ -507,6 +504,7 @@ MonoBehaviour:
   wallCheckDebug: 1
   ledgeCheckDistance: 0.75
   ledgeCheckDebug: 1
+  reduceConst: 0.8
   stateName: 
   onDirectionChanged:
     m_PersistentCalls:
@@ -650,11 +648,11 @@ MonoBehaviour:
   damageFlash: {fileID: 7609593824775675632}
   hurtboxes:
   - {fileID: 7924654570294326910}
-  maxHealth: 1
+  maxHealth: 100
   invulnerabilityTime: 0.5
   capHealth: 1
-  _currentHealth: 0
   spawnInvulnerable: 1
+  ignore: 0
 --- !u!114 &6414141270941766223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -669,3 +667,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   prefab: {fileID: 948560983991040983, guid: 3bdec0d7a02cbfc49b32eb3888e14d25, type: 3}
   parentTransform: {fileID: 0}
+--- !u!114 &3455514454161224423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8871767491910850251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ed24fe2ace4a254facfd5813ff5f76e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KnockBack
+  yReductionConst: 0.5

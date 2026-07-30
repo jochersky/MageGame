@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8831594413381054256}
   - component: {fileID: 5000762970732660950}
   - component: {fileID: 5159899989286214943}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Rope
   m_TagString: Rope
   m_Icon: {fileID: 0}
@@ -151,3 +151,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 562642ac873a9f347acebcea6fc05525, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  yMin: 0
+  yMax: 0

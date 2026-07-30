@@ -20,25 +20,12 @@ public class HUDBar : MonoBehaviour
         Vector2 temp = fillBarRectTransform.offsetMax;
         fillBarRectTransform.offsetMax = new Vector2(-startingRightVal - rightGrowAmt * maxValue, temp.y);
         
-        
-        // // grow by tick segment increments
-        // if (growBySegment)
-        // {
-        // }
-        // // grow purely by value
-        // else
-        // {
-        //     fillBarRectTransform.offsetMax = new Vector2(-startingRightVal - rightGrowAmt * maxValue, temp.y);
-        // }
-        
-        
-        
         UpdateValue(initialValue);
     }
     
     public void UpdateValue(int newValue)
     {
-        slider.value = newValue;
+        slider.value = Mathf.Clamp(newValue, slider.minValue, slider.maxValue);
         counterText.text = newValue + " | " + slider.maxValue;
     }
 }
