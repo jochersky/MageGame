@@ -18,6 +18,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private Health health;
     [SerializeField] private PassiveSpellAffects passiveSpellAffects;
     [SerializeField] private BaseStats baseStats;
+    [SerializeField] private KnockBack knockBack;
     private Rigidbody2D _rb;
     private InputActionMap _playerInputMap;
     private Stats _stats;
@@ -63,6 +64,9 @@ public class PlayerStateMachine : MonoBehaviour
 
     [Header("Camera Movement")] [SerializeField]
     private float dirHoldDuration = 1.5f;
+    
+    [Header("Knock Back")]
+    [SerializeField, Range(0, 1)] private float reduceConst = 0.3f;
     
     // State Variables
     private PlayerBaseState _currentState;
@@ -111,6 +115,7 @@ public class PlayerStateMachine : MonoBehaviour
     private float _yRopeMax;
     private bool _isCrouching;
     private bool _isLookingUp;
+    private Vector2 _knockBackForce;
 
     private CountdownTimer _lookHoldTimer;
 
@@ -178,6 +183,7 @@ public class PlayerStateMachine : MonoBehaviour
         _numDodges = passiveSpellAffects.dodges + baseStats.dodges;
 
         health.OnDeath += () => { _isDead = true; };
+        knockBack.OnKnockBackApplied += force => { _knockBackForce = force; }; 
         _lookHoldTimer.OnTimerStop += () => { HandleCamera(); };
         
         // State machine initial state setup
@@ -230,6 +236,9 @@ public class PlayerStateMachine : MonoBehaviour
         }
         
         _rb.linearVelocity = new Vector2(x, y);
+        _rb.linearVelocity += _knockBackForce;
+
+        UpdateKnockBackForce();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -353,6 +362,11 @@ public class PlayerStateMachine : MonoBehaviour
         {
             _rb.gravityScale = baseGravity;
         }
+    }
+
+    private void UpdateKnockBackForce()
+    {
+        _knockBackForce *= reduceConst;
     }
 
     public void EnemyStomped()

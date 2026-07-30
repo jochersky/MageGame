@@ -13,6 +13,7 @@ public class RatStateMachine : Entity
     [SerializeField] private Hitbox hitbox;
     [SerializeField] private Hurtbox hurtbox;
     [SerializeField] private Spawner gibSpawner;
+    [SerializeField] private KnockBack knockBack;
     private Rigidbody2D _rb;
     private Collider2D _ownCollider;
 
@@ -35,6 +36,9 @@ public class RatStateMachine : Entity
     [Header("Ledge Check")]
     [SerializeField] private float ledgeCheckDistance = 0.75f;
     [SerializeField] private bool ledgeCheckDebug;
+    
+    [Header("Knock Back")]
+    [SerializeField, Range(0, 1)] private float reduceConst = 0.3f;
     
     [Header("State Debug")]
     public string stateName = "";
@@ -59,6 +63,7 @@ public class RatStateMachine : Entity
     private float _lungeTimer;
     private bool _isDead;
     private RaycastHit2D[] _hits = new RaycastHit2D[3];
+    private Vector2 _knockBackForce;
     
     // Event for flipping the transform.
     public UnityEvent<float> onDirectionChanged;
@@ -110,6 +115,8 @@ public class RatStateMachine : Entity
             _isAggroed = true;
         };
         
+        knockBack.OnKnockBackApplied += force => { _knockBackForce = force; }; 
+        
         _hitLayers = LayerMask.GetMask("Character", "Environment");
     }
 
@@ -129,6 +136,14 @@ public class RatStateMachine : Entity
         if (frozen) return;
         
         _rb.linearVelocity = new Vector2(_horizontalMovement, _rb.linearVelocityY);
+        _rb.linearVelocity += _knockBackForce;
+
+        UpdateKnockBackForce();
+    }
+    
+    private void UpdateKnockBackForce()
+    {
+        _knockBackForce *= reduceConst;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

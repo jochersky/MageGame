@@ -16,7 +16,16 @@ public class Hurtbox : MonoBehaviour
         
         if (other.TryGetComponent<Hitbox>(out Hitbox hitbox))
         {
-            OnDamageTaken?.Invoke(hitbox.DamageProperties);
+            DamageProperties dmgProps = hitbox.DamageProperties;
+            // Add incoming damage direction
+            DamageProperties damageProperties = new DamageProperties
+            {
+                amount = dmgProps.amount,
+                cameraShakeProperties = dmgProps.cameraShakeProperties,
+                direction = (transform.position - other.transform.position).normalized,
+                knockBackForce = dmgProps.knockBackForce,
+            };
+            OnDamageTaken?.Invoke(damageProperties);
         }
 
         if (other.TryGetComponent<Healbox>(out Healbox healbox))

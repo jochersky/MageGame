@@ -742,6 +742,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  cameraShakeAmt: 0
+  cameraShakeDuration: 0
+  knockBackForce: 15
   colliders: []
 --- !u!1 &5726370897731751771
 GameObject:
@@ -888,7 +891,8 @@ GameObject:
   m_Component:
   - component: {fileID: 903901529417490439}
   - component: {fileID: 1334880394399299089}
-  m_Layer: 12
+  - component: {fileID: 9215939943677458430}
+  m_Layer: 0
   m_Name: CameraPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -923,6 +927,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad9eb63360ff1ef4ca69b448403260b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  health: {fileID: 3518793060113164566}
   yShiftSpeed: 6
   yDownShiftCurve:
     serializedVersion: 2
@@ -972,6 +977,52 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!61 &9215939943677458430
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6876446921733508876}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 24, y: 16}
+  m_EdgeRadius: 0
 --- !u!1 &7214288714270025178
 GameObject:
   m_ObjectHideFlags: 0
@@ -1248,6 +1299,7 @@ GameObject:
   - component: {fileID: 3518793060113164566}
   - component: {fileID: 5302559506376252669}
   - component: {fileID: 2560371365361338957}
+  - component: {fileID: 4620436022231371514}
   m_Layer: 12
   m_Name: Player
   m_TagString: Player
@@ -1310,6 +1362,7 @@ MonoBehaviour:
   health: {fileID: 3518793060113164566}
   passiveSpellAffects: {fileID: 11400000, guid: 4dd963e0c99e82748a95667a2c7a6379, type: 2}
   baseStats: {fileID: 11400000, guid: 2128e3719ca695c45b205b547a6ae145, type: 2}
+  knockBack: {fileID: 4620436022231371514}
   maxWalkSpeed: 8
   maxJumpHeight: 8
   maxDoubleJumpHeight: 10
@@ -1335,6 +1388,7 @@ MonoBehaviour:
   _ropeHandler: {fileID: 7954448484511661488}
   ropeClimbSpeed: 5
   dirHoldDuration: 0.3
+  reduceConst: 0.75
   stateName: 
   onDirectionChanged:
     m_PersistentCalls:
@@ -1766,6 +1820,19 @@ MonoBehaviour:
   testStartCount: 0
   consumableConfig1: {fileID: 0}
   consumableConfig2: {fileID: 0}
+--- !u!114 &4620436022231371514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8863640782204810548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ed24fe2ace4a254facfd5813ff5f76e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  yReductionConst: 0.2
 --- !u!1 &8941550617777362682
 GameObject:
   m_ObjectHideFlags: 0

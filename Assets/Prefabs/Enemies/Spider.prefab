@@ -43,7 +43,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1580842749259948143}
-  - component: {fileID: 5769571428800528847}
   - component: {fileID: 5242509585819108510}
   - component: {fileID: 7461776269081444540}
   m_Layer: 9
@@ -68,26 +67,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5745096484956966034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5769571428800528847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 180195423824222521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac7a9eba2942d234ca7f7d55869318f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Health
-  damageFlash: {fileID: 4842069647740101460}
-  hurtboxes:
-  - {fileID: 5242509585819108510}
-  maxHealth: 5
-  invulnerabilityTime: 0.3
-  capHealth: 1
-  spawnInvulnerable: 0
-  ignore: 0
 --- !u!114 &5242509585819108510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,6 +303,7 @@ MonoBehaviour:
   damageAmt: 2
   cameraShakeAmt: 0.35
   cameraShakeDuration: 0.3
+  knockBackForce: 10
   colliders:
   - {fileID: 2171032796570951923}
 --- !u!58 &2171032796570951923
@@ -670,6 +650,8 @@ GameObject:
   - component: {fileID: 6700357822881466794}
   - component: {fileID: 4498453235391708362}
   - component: {fileID: -8031587303290209441}
+  - component: {fileID: 9072403771612796875}
+  - component: {fileID: 4007819835466689247}
   m_Layer: 7
   m_Name: Spider
   m_TagString: Enemy
@@ -711,9 +693,10 @@ MonoBehaviour:
   chaseSensor: {fileID: 5377144973116313975}
   attackSensor: {fileID: 2771136033151298011}
   gibSensor: {fileID: 871016160838496201}
-  health: {fileID: 5769571428800528847}
+  health: {fileID: 9072403771612796875}
   hitbox: {fileID: 8593941136883427254}
   hurtbox: {fileID: 5242509585819108510}
+  reduceConst: 0.1
   _currentTargetHealth: {fileID: 0}
 --- !u!114 &7074872142493957745
 MonoBehaviour:
@@ -847,3 +830,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpiderInfo
   enemyPrefab: {fileID: 8859184921287276884}
+--- !u!114 &9072403771612796875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8859184921287276884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac7a9eba2942d234ca7f7d55869318f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  damageFlash: {fileID: 4842069647740101460}
+  hurtboxes:
+  - {fileID: 5242509585819108510}
+  maxHealth: 100
+  invulnerabilityTime: 0.3
+  capHealth: 1
+  spawnInvulnerable: 0
+  ignore: 0
+--- !u!114 &4007819835466689247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8859184921287276884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ed24fe2ace4a254facfd5813ff5f76e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KnockBack
+  yReductionConst: 0.1

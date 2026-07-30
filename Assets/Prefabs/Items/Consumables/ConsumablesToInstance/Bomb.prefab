@@ -5256,6 +5256,7 @@ MonoBehaviour:
   damageAmt: 2
   cameraShakeAmt: 1
   cameraShakeDuration: 0.5
+  knockBackForce: 25
   colliders: []
 --- !u!70 &7227354829322290746
 CapsuleCollider2D:

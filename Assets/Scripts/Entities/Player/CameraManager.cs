@@ -33,7 +33,7 @@ public class CameraManager : MonoBehaviour
         
         _upEndPointTime = yUpShiftCurve[yUpShiftCurve.length - 1].time;
 
-        health.OnStartCameraShake += ShakeCamera;
+        health.OnDamageTaken += ShakeCameraFromDamage;
     }
 
     private void Update()
@@ -93,12 +93,17 @@ public class CameraManager : MonoBehaviour
         _moveToUpPosition = false;
     }
 
-    public void ShakeCamera(CameraShakeProperties shakeProperties)
+    private void ShakeCamera(CameraShakeProperties shakeProperties)
     {
         // transform.localPosition = Random.insideUnitCircle * 0.25f;
         if (_shakeRoutine != null) StopAllCoroutines();
         
         _shakeRoutine = StartCoroutine(Shake(shakeProperties));
+    }
+
+    private void ShakeCameraFromDamage(DamageProperties damageProperties)
+    {
+        ShakeCamera(damageProperties.cameraShakeProperties);
     }
     
     private IEnumerator Shake(CameraShakeProperties shakeProperties)

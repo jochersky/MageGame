@@ -6,6 +6,7 @@ public class Hitbox : MonoBehaviour
     public int damageAmt;
     [SerializeField] private float cameraShakeAmt;
     [SerializeField] private float cameraShakeDuration;
+    [SerializeField] private float knockBackForce;
 
     [Header("Hitbox Colliders")] 
     [SerializeField] private Collider2D[] colliders;
@@ -21,6 +22,7 @@ public class Hitbox : MonoBehaviour
             amount = cameraShakeAmt,
             duration = cameraShakeDuration
         };
+        _damageProperties.knockBackForce = knockBackForce;
     }
     
     public void Disable()
@@ -36,4 +38,7 @@ public struct DamageProperties
 {
     public int amount;
     public CameraShakeProperties cameraShakeProperties;
+    // damage source -> hurt box
+    public Vector2 direction;
+    public float knockBackForce;
 } 
