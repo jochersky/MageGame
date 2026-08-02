@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
+    [SerializeField] InventoryUI inventoryUI;
+    
     // Consumables
     private ConsumableManager _consumableManager;
     public List<ConsumableConfig> consumableConfigs = new List<ConsumableConfig>();
@@ -33,7 +35,7 @@ public class InventoryManager : MonoBehaviour
     public delegate void ConsumableCountUpdated(ConsumableConfig consumableConfig, int count);
     public event ConsumableCountUpdated OnConsumableCountUpdated;
     
-    public delegate void ConsumableAdded(ConsumableConfig consumable);
+    public delegate void ConsumableAdded(ConsumableConfig consumable, int count);
     public event ConsumableAdded OnConsumableAdded;
     public delegate void Consumable1Equipped(int equipSlot, ConsumableConfig consumableConfig, int count, bool visible);
     public event Consumable1Equipped OnConsumable1Equipped;
@@ -98,9 +100,9 @@ public class InventoryManager : MonoBehaviour
         OnConsumableSwitched?.Invoke(config, amount);
     }
 
-    public void OnNewConsumableAdded(ConsumableConfig consumableConfig)
+    public void OnNewConsumableAdded(ConsumableConfig consumableConfig, int count)
     {
-        OnConsumableAdded?.Invoke(consumableConfig);
+        OnConsumableAdded?.Invoke(consumableConfig, count);
     }
 
     public void AddConsumableListItem(GameObject consumableListItemGO, ConsumableConfig consumableConfig)
@@ -126,9 +128,9 @@ public class InventoryManager : MonoBehaviour
                 if (spellConfig2 == config)
                 {
                     _spellManager.EquipSpell1(spellConfig2);
-                    OnSpell1Equipped?.Invoke(spellConfig2.icon, true);
+                    OnSpell1Equipped?.Invoke(spellConfig2?.icon, spellConfig2);
                     _spellManager.EquipSpell2(spellConfig1);
-                    OnSpell2Equipped?.Invoke(spellConfig1.icon, true);
+                    OnSpell2Equipped?.Invoke(spellConfig1?.icon, spellConfig1);
                 }
                 // normal case
                 else
@@ -142,9 +144,9 @@ public class InventoryManager : MonoBehaviour
                 if (spellConfig1 == config)
                 {
                     _spellManager.EquipSpell2(spellConfig1);
-                    OnSpell2Equipped?.Invoke(spellConfig1.icon, true);
+                    OnSpell2Equipped?.Invoke(spellConfig1?.icon, spellConfig1);
                     _spellManager.EquipSpell1(spellConfig2);
-                    OnSpell1Equipped?.Invoke(spellConfig2.icon, true);
+                    OnSpell1Equipped?.Invoke(spellConfig2?.icon, spellConfig2);
                 }
                 // normal case
                 else
@@ -172,20 +174,22 @@ public class InventoryManager : MonoBehaviour
     {
         ConsumableConfig config = consumableListItemInstances[consumableListItemGO];
         
-        ConsumableConfig consumableConfig1 = _consumableManager.consumableConfig1;
-        ConsumableConfig consumableConfig2 = _consumableManager.consumableConfig2;
-        int count1 = _consumableManager.GetConsumableCount(consumableConfig1);
-        int count2 = _consumableManager.GetConsumableCount(consumableConfig2);
-        bool visible1 = consumableConfig1;
-        bool visible2 = consumableConfig2;
         switch (consumableToEquip)
         {
             case 1:
                 // Already equipped consumables swap slots
-                if (consumableConfig2 == config)
+                if (_consumableManager.consumableConfig2 == config)
                 {
+                    ConsumableConfig consumableConfig1 = _consumableManager.consumableConfig1;
+                    ConsumableConfig consumableConfig2 = _consumableManager.consumableConfig2;
+                    int count1 = _consumableManager.GetConsumableCount(consumableConfig1);
+                    int count2 = _consumableManager.GetConsumableCount(consumableConfig2);
+                    bool visible1 = consumableConfig1;
+                    bool visible2 = consumableConfig2;
+                    
                     _consumableManager.EquipConsumable1(consumableConfig2);
                     OnConsumable1Equipped?.Invoke(1, consumableConfig2, count2, visible2);
+                    
                     _consumableManager.EquipConsumable2(consumableConfig1);
                     OnConsumable2Equipped?.Invoke(2, consumableConfig1, count1, visible1);
                 }
@@ -193,15 +197,26 @@ public class InventoryManager : MonoBehaviour
                 else
                 {
                     _consumableManager.EquipConsumable1(config);
+                    ConsumableConfig consumableConfig1 = _consumableManager.consumableConfig1;
+                    int count1 = _consumableManager.GetConsumableCount(consumableConfig1);
+                    bool visible1 = consumableConfig1;
                     OnConsumable1Equipped?.Invoke(consumableToEquip, consumableConfig1, count1, visible1);
                 }
                 return true;
             case 2: 
                 // Already equipped consumables swap slots
-                if (consumableConfig1 == config)
+                if (_consumableManager.consumableConfig1 == config)
                 {
+                    ConsumableConfig consumableConfig1 = _consumableManager.consumableConfig1;
+                    ConsumableConfig consumableConfig2 = _consumableManager.consumableConfig2;
+                    int count1 = _consumableManager.GetConsumableCount(consumableConfig1);
+                    int count2 = _consumableManager.GetConsumableCount(consumableConfig2);
+                    bool visible1 = consumableConfig1;
+                    bool visible2 = consumableConfig2;
+                    
                     _consumableManager.EquipConsumable2(consumableConfig1);
                     OnConsumable2Equipped?.Invoke(2, consumableConfig1, count1, visible1);
+                    
                     _consumableManager.EquipConsumable1(consumableConfig2);
                     OnConsumable1Equipped?.Invoke(1, consumableConfig2, count2, visible2);
                 }
@@ -209,6 +224,9 @@ public class InventoryManager : MonoBehaviour
                 else
                 {
                     _consumableManager.EquipConsumable2(config);
+                    ConsumableConfig consumableConfig2 = _consumableManager.consumableConfig2;
+                    int count2 = _consumableManager.GetConsumableCount(consumableConfig2);
+                    bool visible2 = consumableConfig2;
                     OnConsumable2Equipped?.Invoke(2, consumableConfig2, count2, visible2);
                 }
                 return true;
@@ -219,7 +237,6 @@ public class InventoryManager : MonoBehaviour
 
     public void UnequipSpell(int spellID)
     {
-        Debug.Log(spellID);
         switch (spellID)
         {
             case 1: 
@@ -235,12 +252,8 @@ public class InventoryManager : MonoBehaviour
     
     public void UnequipConsumable(int consumableID)
     {
-        switch (consumableID)
-        {
-            case 0:
-                _consumableManager.UnequipConsumable(consumableID);
-                break;
-        }
+        _consumableManager.UnequipConsumable(consumableID);
+        OnConsumableUnequipped?.Invoke(consumableID);
     }
 
     public void AddItem(ItemConfig itemConfig, int count)

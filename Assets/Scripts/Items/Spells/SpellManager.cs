@@ -96,11 +96,11 @@ public class SpellManager : MonoBehaviour
 
     public void EquipSpell1(SpellConfig spellConfig)
     {
+        UnequipSpell1();
+        spellConfig1 = spellConfig;
+        
         if (!spellConfig) return;
         
-        UnequipSpell1();
-        
-        spellConfig1 = spellConfig;
         SpellStrategy strategy = spellConfig1.strategy;
         if (strategy)
         {
@@ -119,11 +119,11 @@ public class SpellManager : MonoBehaviour
 
     public void EquipSpell2(SpellConfig spellConfig)
     {
+        UnequipSpell2();
+        spellConfig2 = spellConfig;
+        
         if (!spellConfig) return;
         
-        UnequipSpell2();
-        
-        spellConfig2 = spellConfig;
         SpellStrategy strategy = spellConfig2.strategy;
         if (strategy)
         {

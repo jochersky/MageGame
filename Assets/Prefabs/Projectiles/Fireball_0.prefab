@@ -82,6 +82,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 2
+  cameraShakeAmt: 0
+  cameraShakeDuration: 0
+  knockBackForce: 0
+  colliders: []
 --- !u!1 &4265959885888012626
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,7 +192,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.0625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -292,6 +296,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Torch
   light: {fileID: 3214512161563768557}
   isLit: 1
+  litSound: {fileID: 0}
 --- !u!1 &7636977218041803877
 GameObject:
   m_ObjectHideFlags: 0
