@@ -12,9 +12,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject pyromancerPrefab;
     [SerializeField] private GameObject houndPrefab;
     [SerializeField] private GameObject wardenPrefab;
+    [SerializeField] private CharacterInfo baseCharacterInfo;
+    [SerializeField] private CharacterInfo pyromancerInfo;
+    [SerializeField] private CharacterInfo houndInfo;
+    [SerializeField] private CharacterInfo wardenInfo;
     [Header("UI References")]
     [SerializeField] private HUDBar healthBar;
     [SerializeField] private HUDBar manaBar;
+    [SerializeField] private InventoryUI inventoryUI;
     
     [Header("Debugging")]
     [SerializeField] private bool debug;
@@ -87,20 +92,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        // if (Keyboard.current.numpad1Key.wasPressedThisFrame) SaveSystem.Save();
-        // if (Keyboard.current.numpad2Key.wasPressedThisFrame) SaveSystem.Load();
-    }
-
     public GameObject SpawnPlayer()
     {
         switch (CharacterType)
         {
-            case CharacterType.Base: return Instantiate(baseCharacterPrefab, spawnPoint); break;
-            case CharacterType.Pyromancer: return Instantiate(pyromancerPrefab, spawnPoint); break;
-            case CharacterType.Hound: return Instantiate(houndPrefab, spawnPoint); break;
-            case CharacterType.Warden: return Instantiate(wardenPrefab, spawnPoint); break;
+            case CharacterType.Base: 
+                inventoryUI?.UpdateStatsScreen(baseCharacterInfo.characterStats.health, baseCharacterInfo.characterStats.mana, CharacterType.Base, baseCharacterInfo.giftDescription);
+                return Instantiate(baseCharacterPrefab, spawnPoint);
+            case CharacterType.Pyromancer: 
+                inventoryUI?.UpdateStatsScreen(pyromancerInfo.characterStats.health, pyromancerInfo.characterStats.mana, CharacterType.Pyromancer, pyromancerInfo.giftDescription);
+                return Instantiate(pyromancerPrefab, spawnPoint);
+            case CharacterType.Hound: 
+                inventoryUI?.UpdateStatsScreen(houndInfo.characterStats.health, houndInfo.characterStats.mana, CharacterType.Hound, houndInfo.giftDescription);
+                return Instantiate(houndPrefab, spawnPoint);
+            case CharacterType.Warden:
+                inventoryUI?.UpdateStatsScreen(wardenInfo.characterStats.health, wardenInfo.characterStats.mana, CharacterType.Warden, wardenInfo.giftDescription);
+                return Instantiate(wardenPrefab, spawnPoint);
         }
 
         return null;
@@ -118,9 +125,9 @@ public class GameManager : MonoBehaviour
         data.characterType = CharacterType;
     }
 
-    public void Load(ref GameSaveData data)
+    public void Load(ref SaveSystem.SaveData data)
     {
-        CharacterType = data.characterType;
+        CharacterType = data.gameSaveData.characterType;
     }
 }
 

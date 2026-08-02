@@ -44,12 +44,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53a7d55dcdcec084ca98137a9556c606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  mapGenerator: {fileID: 0}
   spawnPoint: {fileID: 0}
   baseCharacterPrefab: {fileID: 8863640782204810548, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
   pyromancerPrefab: {fileID: 7577167415162979246, guid: bde52861c16b1ab4590cf376ece82b19, type: 3}
   houndPrefab: {fileID: 4560285708562699673, guid: 3114c1b5cf32b964199b8c00fdf6a64f, type: 3}
   wardenPrefab: {fileID: 3978708459674945058, guid: 6c2fc15653717eb4683b70e2dd83c4d1, type: 3}
+  baseCharacterInfo: {fileID: 11400000, guid: b487d2ee147fc504e8ccdadcb45faaa0, type: 2}
+  pyromancerInfo: {fileID: 11400000, guid: b487d2ee147fc504e8ccdadcb45faaa0, type: 2}
+  houndInfo: {fileID: 11400000, guid: 2d90cd685f8154d4c9bbf8ad734b95d5, type: 2}
+  wardenInfo: {fileID: 11400000, guid: 24f7de4e0427291408cf559e3860079f, type: 2}
   healthBar: {fileID: 0}
   manaBar: {fileID: 0}
+  inventoryUI: {fileID: 0}
   debug: 0
   debugPlayerObject: {fileID: 0}
