@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class EquippedSpellIcon : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private int spellIconID = 0;
+    [SerializeField] private GameObject highlight;
     
     public delegate void EquippedSpellIconPressed(int spellID);
     public event EquippedSpellIconPressed OnEquippedSpellPressed;
@@ -13,7 +14,20 @@ public class EquippedSpellIcon : MonoBehaviour, IPointerClickHandler
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left) OnEquippedSpellPressed?.Invoke(spellIconID);
-        else if (eventData.button == PointerEventData.InputButton.Right) OnUnequippedSpellPressed?.Invoke(spellIconID);
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            highlight.SetActive(true);
+            OnEquippedSpellPressed?.Invoke(spellIconID);
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            highlight.SetActive(false);
+            OnUnequippedSpellPressed?.Invoke(spellIconID);
+        }
+    }
+
+    public void DisableHighlight()
+    {
+        highlight.SetActive(false);
     }
 }

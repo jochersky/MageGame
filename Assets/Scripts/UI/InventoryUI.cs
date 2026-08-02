@@ -8,6 +8,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private GameObject UIElements;
     [SerializeField] private GameObject HUD;
 
+    [Header("Consumables")]
     private ConsumableConfig _consumableConfig1;
     private ConsumableConfig _consumableConfig2;
     [SerializeField] private Image consumable1Image;
@@ -17,14 +18,26 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private EquippedConsumableIcon equippedConsumable1;
     [SerializeField] private EquippedConsumableIcon equippedConsumable2;
     [SerializeField] private GameObject consumableSelectionMenu;
-    [SerializeField] private GameObject consumableListItemPrefab;
-    
+    [SerializeField] private Transform consumableItemElementSpawnTransform;
+    [SerializeField] private GameObject consumableListElementPrefab;
+    [Header("Spells")]
     [SerializeField] private Image spell1Image;
     [SerializeField] private Image spell2Image;
     [SerializeField] private EquippedSpellIcon equippedSpell1;
     [SerializeField] private EquippedSpellIcon equippedSpell2;
     [SerializeField] private GameObject spellSelectionMenu;
-    [SerializeField] private GameObject spellListItemPrefab;
+    [SerializeField] private Transform spellItemElementSpawnTransform;
+    [SerializeField] private GameObject spellListElementPrefab;
+    [Header("Stats")]
+    [SerializeField] private TextMeshProUGUI maxHealthText;
+    [SerializeField] private TextMeshProUGUI maxManaText;
+    [SerializeField] private TextMeshProUGUI moneyText;
+    [SerializeField] private Image characterPortrait;
+    [SerializeField] private Sprite pyroPortrait;
+    [SerializeField] private Sprite houndPortrait;
+    [SerializeField] private Sprite wardenPortrait;
+    [SerializeField] private TextMeshProUGUI characterName;
+    [SerializeField] private TextMeshProUGUI giftDescription;
     
     void Start()
     {
@@ -52,6 +65,8 @@ public class InventoryUI : MonoBehaviour
         equippedSpell1.OnUnequippedSpellPressed += UnequipSpellInSlot;
         equippedSpell2.OnUnequippedSpellPressed += UnequipSpellInSlot;
         InventoryManager.Instance.OnSpellAdded += AddSpellToSpellSelection;
+        
+        InventoryManager.Instance.OnMoneyUpdated += (money => moneyText.text = money.ToString());
     }
     
     private void UpdateConsumableCountUI(ConsumableConfig consumableConfig, int count)
@@ -67,12 +82,22 @@ public class InventoryUI : MonoBehaviour
             case 1:
                 _consumableConfig1 = consumableConfig;
                 consumable1Image.color = visible ? Color.white : Color.clear;
+                if (!_consumableConfig1)
+                {
+                    consumable1Text.text = "0";
+                    break;
+                }
                 consumable1Image.sprite = _consumableConfig1.icon;
                 consumable1Text.text = count.ToString();
                 break;
             case 2:
                 _consumableConfig2 = consumableConfig;
                 consumable2Image.color = visible ? Color.white : Color.clear;
+                if (!_consumableConfig2)
+                {
+                    consumable2Text.text = "0";
+                    break;
+                }
                 consumable2Image.sprite = _consumableConfig2.icon;
                 consumable2Text.text = count.ToString();
                 break;
@@ -91,20 +116,20 @@ public class InventoryUI : MonoBehaviour
         spell2Image.sprite = spellSprite;
     }
 
-    private void AddConsumableToConsumableSelection(ConsumableConfig consumableConfig)
+    private void AddConsumableToConsumableSelection(ConsumableConfig consumableConfig, int count)
     {
-        GameObject inst = Instantiate(consumableListItemPrefab, consumableSelectionMenu.transform);
-        if (inst.TryGetComponent<ConsumableListItem>(out ConsumableListItem listItem))
+        GameObject inst = Instantiate(consumableListElementPrefab, consumableItemElementSpawnTransform);
+        if (inst.TryGetComponent<ConsumableListElement>(out ConsumableListElement listItem))
         {
-            listItem.Initialize(consumableConfig);
+            listItem.Initialize(consumableConfig, count);
         }
         InventoryManager.Instance.AddConsumableListItem(inst, consumableConfig);
     }
     
     private void AddSpellToSpellSelection(SpellConfig spellConfig)
     {
-        GameObject inst = Instantiate(spellListItemPrefab, spellSelectionMenu.transform);
-        if (inst.TryGetComponent<SpellListItem>(out SpellListItem listItem))
+        GameObject inst = Instantiate(spellListElementPrefab, spellItemElementSpawnTransform);
+        if (inst.TryGetComponent<SpellListElement>(out SpellListElement listItem))
         {
             listItem.Initialize(spellConfig);
         }
@@ -113,7 +138,13 @@ public class InventoryUI : MonoBehaviour
 
     private void ShowConsumableSelectionMenu(int consumableID)
     {
+        switch (consumableID)
+        {
+            case 1: equippedConsumable2.DisableHighlight(); break;
+            case 2: equippedConsumable1.DisableHighlight(); break;
+        }
         consumableSelectionMenu.SetActive(true);
+        spellSelectionMenu.SetActive(false);
         InventoryManager.Instance.consumableToEquip = consumableID;
     }
 
@@ -124,7 +155,13 @@ public class InventoryUI : MonoBehaviour
     
     private void ShowSpellSelectionMenu(int spellID)
     {
+        switch (spellID)
+        {
+            case 1: equippedSpell2.DisableHighlight(); break;
+            case 2: equippedSpell1.DisableHighlight(); break;
+        }
         spellSelectionMenu.SetActive(true);
+        consumableSelectionMenu.SetActive(false);
         InventoryManager.Instance.spellToEquip = spellID;
     }
 
@@ -135,8 +172,9 @@ public class InventoryUI : MonoBehaviour
 
     private void UnequipConsumableInSlot(int consumableID)
     {
-        // InventoryManager.Instance.Une
+        InventoryManager.Instance.UnequipConsumable(consumableID);
         UpdateEquippedConsumableUI(consumableID, null, 0, false);
+        HideConsumableSelectionMenu();
     }
     
     private void UnequipSpellInSlot(int spellID)
@@ -144,6 +182,22 @@ public class InventoryUI : MonoBehaviour
         InventoryManager.Instance.UnequipSpell(spellID);
         if (spellID == 1) UpdateEquippedSpell1UI(null, false);
         else UpdateEquippedSpell2UI(null, false);
+        HideSpellSelectionMenu();
+    }
+
+    public void UpdateStatsScreen(int maxHealth, int maxMana, CharacterType characterType, string gift)
+    {
+        maxHealthText.text = maxHealth.ToString();
+        maxManaText.text = maxMana.ToString();
+        moneyText.text = "-1";
+        switch (characterType)
+        {
+            case CharacterType.Base: characterPortrait.sprite = pyroPortrait; characterName.text = "[ character name ]"; break;
+            case CharacterType.Pyromancer: characterPortrait.sprite = pyroPortrait; characterName.text = "Pyromancer"; break;
+            case CharacterType.Hound: characterPortrait.sprite = houndPortrait; characterName.text = "Hound"; break;
+            case CharacterType.Warden: characterPortrait.sprite = wardenPortrait; characterName.text = "Warden"; break;
+        }
+        giftDescription.text = gift;
     }
 
     private void ShowHUD()

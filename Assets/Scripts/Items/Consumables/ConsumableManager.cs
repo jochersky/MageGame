@@ -45,7 +45,7 @@ public class ConsumableManager : MonoBehaviour
         if (!consumableCounts.TryAdd(consumableConfig.itemName, count))
             consumableCounts[consumableConfig.itemName] += count;
         else
-            InventoryManager.Instance.OnNewConsumableAdded(consumableConfig);
+            InventoryManager.Instance.OnNewConsumableAdded(consumableConfig, count);
 
         int consumableEquipped = 0;
         if (!consumableConfig1 && consumableConfig2 != consumableConfig)
@@ -69,6 +69,7 @@ public class ConsumableManager : MonoBehaviour
 
     public void EquipConsumable1(ConsumableConfig consumableConfig)
     {
+        UnequipConsumable(1);
         consumableConfig1 = consumableConfig;
         if (!_equippedConsumable) 
             _equippedConsumable = consumableConfig1;
@@ -76,6 +77,7 @@ public class ConsumableManager : MonoBehaviour
     
     public void EquipConsumable2(ConsumableConfig consumableConfig)
     {
+        UnequipConsumable(2);
         consumableConfig2 = consumableConfig;
         if (!_equippedConsumable)
             _equippedConsumable = consumableConfig2;
