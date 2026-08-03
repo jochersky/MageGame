@@ -81,10 +81,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deb1f8faa37c4b14c8da9e574a901bb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
-  damageAmt: 2
-  cameraShakeAmt: 0
-  cameraShakeDuration: 0
-  knockBackForce: 0
+  damageAmt: 1
+  cameraShakeAmt: 0.5
+  cameraShakeDuration: 0.2
+  knockBackForce: 15
   colliders: []
 --- !u!1 &4265959885888012626
 GameObject:
@@ -187,7 +187,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -6607481912129624618, guid: 18591eb2529793e4f8e267a1763aeb82, type: 3}
+  m_Sprite: {fileID: -8801507843869010267, guid: 4fed6432b781adc439153bb60b99724b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

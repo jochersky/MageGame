@@ -8,6 +8,9 @@ using UnityEngine.Rendering;
 
 public class GOAPAgent : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private AnimationManager animationManager;
+    
     [Header("Sensors")] 
     [SerializeField] private Sensor chaseSensor;
     [SerializeField] private Sensor attackSensor;
@@ -23,7 +26,6 @@ public class GOAPAgent : MonoBehaviour
     
     private GOAPPlanner planner;
     private NavMeshAgent navMeshAgent;
-    private AnimationManager animationManager;
     private Rigidbody2D rb;
     private KnockBack knockBack;
 
@@ -76,8 +78,6 @@ public class GOAPAgent : MonoBehaviour
         navMeshAgent.updateRotation = false;
         navMeshAgent.updateUpAxis = false;
         
-        animationManager = GetComponent<AnimationManager>();
-
         goalPlanner = new GOAPPlanner();
     }
 
@@ -94,11 +94,15 @@ public class GOAPAgent : MonoBehaviour
         health.OnDeath += () =>
         {
             _dead = true;
+            animationManager.Dead();
             hitbox.Disable();
-            navMeshAgent.ResetPath();
+            // navMeshAgent.ResetPath();
             hurtbox.gameObject.SetActive(false);
+            navMeshAgent.isStopped = true;
+            rb.bodyType = RigidbodyType2D.Dynamic;
         };
-        knockBack.OnKnockBackApplied += force => { _knockBackForce = force * 0.25f; }; 
+        knockBack.OnKnockBackApplied += force => { _knockBackForce = force * 0.25f; };
+        animationManager.OnStartDone += () => { animationManager.Regular(); };
             
         SetupBeliefs();
         SetupActions();

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 977054fd6d1e40a4a9d9af991e6bc42d
+guid: 4fed6432b781adc439153bb60b99724b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3873087697204469031
-    second: spider_0
+      213: -8801507843869010267
+    second: Fireball_projectile_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,35 +100,35 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: spider_0
+      name: Fireball_projectile_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 32
-        height: 32
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 66b2d004e7c83364087e23c695bfa91a
-      internalID: 3873087697204469031
+      spriteID: 5a69f569f33cad580800000000000000
+      internalID: -8801507843869010267
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spider_1
+      name: Fireball_projectile_1
       rect:
         serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
+        x: 16
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,8 +137,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 663f2a08e35456a489150f382e3387fd
-      internalID: 439404362
+      spriteID: d901634db1ada6e4dbe615221a00372a
+      internalID: 551155898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fireball_projectile_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 838e55c7eb3fbc4418baa8f13ba0bcdb
+      internalID: 1417748944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fireball_projectile_3
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db267ac52e10b8844b4891cb67f1544e
+      internalID: 322274809
       vertices: []
       indices: 
       edges: []
@@ -147,7 +191,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 33eef749ed9f839459a0b49f5bc63011
     internalID: 0
     vertices: []
     indices: 
@@ -157,10 +201,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":32.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      spider_0: 3873087697204469031
-      spider_1: 439404362
+      Fireball_projectile_0: -8801507843869010267
+      Fireball_projectile_1: 551155898
+      Fireball_projectile_2: 1417748944
+      Fireball_projectile_3: 322274809
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

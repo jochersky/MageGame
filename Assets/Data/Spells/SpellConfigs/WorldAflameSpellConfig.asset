@@ -15,7 +15,9 @@ MonoBehaviour:
   itemType: 0
   itemName: World Aflame
   icon: {fileID: 21300000, guid: 6bef3b7aad1ba604caa05595b39c2130, type: 3}
-  cooldown: 5
   changePositionOnObstruction: 0
+  manaCost: 25
+  cooldown: 5
+  twoPartCast: 0
   strategy: {fileID: 11400000, guid: 2b0b9367075737844a2b061ee6c09714, type: 2}
   effectsStrategy: {fileID: 0}

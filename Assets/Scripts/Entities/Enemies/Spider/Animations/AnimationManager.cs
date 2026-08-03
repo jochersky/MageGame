@@ -6,28 +6,27 @@ public class AnimationManager : MonoBehaviour
     private Animator animator;
 
     // Animation Hashes
-    [HideInInspector] public readonly int IdleHash = Animator.StringToHash("Idle");
-    [HideInInspector] public readonly int MoveHash = Animator.StringToHash("Move");
-    [HideInInspector] public readonly int AttackHash = Animator.StringToHash("Attack");
+    [HideInInspector] public readonly int RegularHash = Animator.StringToHash("Regular");
+    [HideInInspector] public readonly int DeadHash = Animator.StringToHash("Dead");
+    
+    public delegate void StartDone();
+    public event StartDone OnStartDone;
     
     private void Start()
     {
-        // animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
+        OnStartDone?.Invoke();
     }
 
-    public void Idle()
+    public void Regular()
     {
-        animator.CrossFade(IdleHash, 0, 0);
+        Debug.Log(animator);
+        animator.CrossFade(RegularHash, 0, 0);
     }
     
-    public void Move()
+    public void Dead()
     {
-        animator.CrossFade(MoveHash, 0, 0);
-    }
-    
-    public void Attack()
-    {
-        animator.CrossFade(AttackHash, 0, 0);
+        animator.CrossFade(DeadHash, 0, 0);
     }
 
     public float GetAnimationDuration(int animHash)

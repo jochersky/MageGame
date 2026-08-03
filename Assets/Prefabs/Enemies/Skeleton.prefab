@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 999abbb11e3a71f408ed7bed986aa3be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hurtbox
-  ignoreTag: 
+  ignoreTag: Enemy
 --- !u!70 &2027118156078717416
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

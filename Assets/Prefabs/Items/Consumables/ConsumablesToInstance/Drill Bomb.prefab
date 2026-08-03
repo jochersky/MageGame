@@ -5472,7 +5472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   rb: {fileID: 1325339047734837384}
   sprite: {fileID: 8092838508830680063}
-  light: {fileID: 4622155651543194809}
+  lightGO: {fileID: 4622155651543194809}
   explosionCollider: {fileID: 2104518748765512425}
   hitboxCollider: {fileID: 3645007109539147950}
   damageFlash: {fileID: 3778544764889886810}
