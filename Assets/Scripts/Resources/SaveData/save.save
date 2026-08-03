@@ -1,7 +1,6 @@
 {
     "gameSaveData": {
-        "characterType": 3,
-        "giftDescription": "Stored Power: Innate double jump charge."
+        "characterType": 2
     },
     "playerData": {
         "position": {
@@ -9,19 +8,19 @@
             "y": 0.0,
             "z": 0.0
         },
-        "healthAmt": 7,
+        "healthAmt": 3,
         "manaAmt": 75,
         "moneyAmt": 0
     },
     "inventoryData": {
         "spells": [
             {
-                "name": "Snap Speed"
+                "name": "Reverse Footsteps"
             }
         ],
         "consumables": [
             {
-                "name": "Sol Stone",
+                "name": "Drill Bomb",
                 "count": 5
             },
             {

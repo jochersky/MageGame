@@ -14,8 +14,15 @@ public class FalseFloor : MonoBehaviour
 
     void Start()
     {
-        colliderTilemap = FindAnyObjectByType<MapGenerator>().getColliderMap();
         audioManager = FindAnyObjectByType<AudioManager>();
+        MapGenerator mapGenerator = FindAnyObjectByType<MapGenerator>();
+        if (mapGenerator != null)
+        {
+            colliderTilemap = FindAnyObjectByType<MapGenerator>().getColliderMap();
+        } else
+        {
+            colliderTilemap = FindAnyObjectByType<TilemapRenderer>().GetComponent<Tilemap>();
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

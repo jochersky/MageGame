@@ -663,7 +663,6 @@ public class MapGenerator : MonoBehaviour
                     //StartCoroutine(SpawnEnemy(enemy, randIdx));
                     Instantiate(enemy.enemyPrefab, new Vector2(enemy.spawnPositions[randIdx].x  + startingPositionOffset, enemy.spawnPositions[randIdx].y  + startingPositionOffset),
                                 quaternion.identity);
-                    print(enemy.spawnPositions[randIdx]);
                     enemy.spawnPositions.RemoveAt(randIdx);
                 } else
                 {
