@@ -10,8 +10,13 @@ public class Landmine : Trap
     [SerializeField] Collider2D explosionHitbox;
     [SerializeField] Collider2D damageHitbox;
     [SerializeField] SpriteRenderer sprite;
+    [SerializeField] private GameObject lightGO;
+    [SerializeField] private ParticleSystem explosionRadius;
+    [SerializeField] private ParticleSystem explosionParticles;
     [SerializeField] float delay = 0.1f;
     bool triggered = false;
+    private CountdownTimer _particleLifetimeTimer;
+    
     public override bool CheckIfValidPosition(TileBase currTile, Vector3Int tileCoords, Tilemap colliderMap, Tilemap nonColliderMap)
     {
         bool self = colliderMap.HasTile(tileCoords) || nonColliderMap.HasTile(tileCoords);
@@ -22,6 +27,9 @@ public class Landmine : Trap
 
     void Start()
     {
+        _particleLifetimeTimer = new CountdownTimer(explosionRadius.main.startLifetime.constantMax);
+        _particleLifetimeTimer.OnTimerStop += () => { Destroy(gameObject); };
+        
         damageHitbox.enabled = false;
         explosionHitbox.enabled = false;
     }
@@ -42,13 +50,20 @@ public class Landmine : Trap
     IEnumerator Explode()
     {
         yield return new WaitForSeconds(delay);
-        Instantiate(boomEffect, transform.position, Quaternion.identity);
+        
         damageHitbox.enabled = true;
         explosionHitbox.enabled = true;
         sprite.enabled = false;
-        //yield return new WaitForEndOfFrame();
+        lightGO.SetActive(true);
+        explosionRadius.Play();
+        explosionParticles.Play();
+        _particleLifetimeTimer.Start();
+        Instantiate(boomEffect, transform.position, Quaternion.identity);
 
         yield return new WaitForSeconds(0.1f);
-        Destroy(gameObject);
+        
+        damageHitbox.enabled = false;
+        explosionHitbox.enabled = false;
+        lightGO.SetActive(false);
     }
 }

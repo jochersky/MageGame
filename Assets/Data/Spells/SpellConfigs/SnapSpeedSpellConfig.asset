@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Snap Speed
   icon: {fileID: 21300000, guid: 66172cb25a8812b409ab8efd2d57bbaa, type: 3}
   changePositionOnObstruction: 0
-  manaCost: 1
+  manaCost: 10
   cooldown: 0
   twoPartCast: 0
   strategy: {fileID: 11400000, guid: 9acfe343268d9a548834df0b8e7102d8, type: 2}

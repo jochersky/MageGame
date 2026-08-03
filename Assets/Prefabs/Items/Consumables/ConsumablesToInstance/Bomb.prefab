@@ -5374,7 +5374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   rb: {fileID: 8313348864650778576}
   sprite: {fileID: 7769748791784570209}
-  light: {fileID: 7998572574467773109}
+  lightGO: {fileID: 7998572574467773109}
   explosionCollider: {fileID: 3651512714393299390}
   hitboxCollider: {fileID: 7227354829322290746}
   damageFlash: {fileID: 2504636434573036654}
