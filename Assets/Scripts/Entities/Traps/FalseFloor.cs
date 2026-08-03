@@ -21,7 +21,7 @@ public class FalseFloor : MonoBehaviour
             colliderTilemap = FindAnyObjectByType<MapGenerator>().getColliderMap();
         } else
         {
-            colliderTilemap = FindAnyObjectByType<TilemapRenderer>().GetComponent<Tilemap>();
+            colliderTilemap = FindAnyObjectByType<TilemapCollider2D>().GetComponent<Tilemap>();
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
