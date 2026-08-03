@@ -184,10 +184,10 @@ MonoBehaviour:
   groundCheckSize: {x: 0.6, y: 0.06}
   wallCheckOffset: {x: 0, y: 0}
   wallCheckDistance: 0.4
-  wallCheckDebug: 1
+  wallCheckDebug: 0
   fallChance: 10
   ledgeCheckDistance: 0.5
-  ledgeCheckDebug: 1
+  ledgeCheckDebug: 0
   reduceConst: 0.75
   stateName: 
   onDirectionChanged:
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEnteredSensor
   rayVector: {x: 4, y: 0}
   disableOnEnter: 1
-  debug: 1
+  debug: 0
 --- !u!114 &4604030746266342286
 MonoBehaviour:
   m_ObjectHideFlags: 0

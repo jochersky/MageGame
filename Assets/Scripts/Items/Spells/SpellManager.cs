@@ -72,7 +72,7 @@ public class SpellManager : MonoBehaviour
 
     public void UpdateMana(int amount)
     {
-        _mana = Mathf.Clamp(amount, 0, maxMana);
+        _mana = Mathf.Clamp(_mana + amount, 0, maxMana);
         OnManaChanged?.Invoke(_mana);
     }
 

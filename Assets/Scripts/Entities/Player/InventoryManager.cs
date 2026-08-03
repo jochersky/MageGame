@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] InventoryUI inventoryUI;
-    
     // Consumables
     private ConsumableManager _consumableManager;
     public List<ConsumableConfig> consumableConfigs = new List<ConsumableConfig>();

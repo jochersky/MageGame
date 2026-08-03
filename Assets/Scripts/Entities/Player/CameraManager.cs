@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CameraManager : MonoBehaviour
 {
@@ -112,7 +114,9 @@ public class CameraManager : MonoBehaviour
         while (_shakeTimer <= shakeProperties.duration)
         {
             float shakeAmtAdjusted = shakeProperties.amount * (1 - (_shakeTimer / shakeProperties.duration));
-            transform.localPosition = new Vector2(_initialPosition.x, _initialPosition.y) + (shakeAmtAdjusted * Random.insideUnitCircle);
+            Vector2 randPos = shakeAmtAdjusted * Random.insideUnitCircle;
+            Vector3 shakePos = new Vector3(_initialPosition.x + randPos.x, _initialPosition.y + randPos.y, 0);
+            if (!float.IsNaN(shakePos.x)) transform.localPosition = shakePos;
             
             _shakeTimer += Time.deltaTime;
             yield return null;

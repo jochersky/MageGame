@@ -845,7 +845,7 @@ MonoBehaviour:
   damageFlash: {fileID: 4842069647740101460}
   hurtboxes:
   - {fileID: 5242509585819108510}
-  maxHealth: 100
+  maxHealth: 5
   invulnerabilityTime: 0.3
   capHealth: 1
   spawnInvulnerable: 0

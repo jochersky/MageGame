@@ -266,7 +266,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4804057573241477981}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
   m_Name: 
@@ -501,9 +501,9 @@ MonoBehaviour:
   groundCheckSize: {x: 0.68, y: 0.08}
   wallCheckOffset: {x: 0, y: 0}
   wallCheckDistance: 0.75
-  wallCheckDebug: 1
+  wallCheckDebug: 0
   ledgeCheckDistance: 0.75
-  ledgeCheckDebug: 1
+  ledgeCheckDebug: 0
   reduceConst: 0.8
   stateName: 
   onDirectionChanged:
@@ -632,7 +632,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEnteredSensor
   rayVector: {x: 6, y: 0}
   disableOnEnter: 1
-  debug: 1
+  debug: 0
 --- !u!114 &2338991868819308851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -648,7 +648,7 @@ MonoBehaviour:
   damageFlash: {fileID: 7609593824775675632}
   hurtboxes:
   - {fileID: 7924654570294326910}
-  maxHealth: 100
+  maxHealth: 1
   invulnerabilityTime: 0.5
   capHealth: 1
   spawnInvulnerable: 1

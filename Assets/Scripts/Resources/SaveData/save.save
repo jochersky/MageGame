@@ -1,7 +1,6 @@
 {
     "gameSaveData": {
-        "characterType": 3,
-        "giftDescription": "Stored Power: Innate double jump charge."
+        "characterType": 3
     },
     "playerData": {
         "position": {

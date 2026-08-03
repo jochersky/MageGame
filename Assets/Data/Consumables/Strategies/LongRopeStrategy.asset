@@ -23,4 +23,4 @@ MonoBehaviour:
   topEndSprite: {fileID: -101285690, guid: 036380db571df32489dba6df13ee9654, type: 3}
   midSprite: {fileID: 973116412, guid: 036380db571df32489dba6df13ee9654, type: 3}
   botSprite: {fileID: 1847636002, guid: 036380db571df32489dba6df13ee9654, type: 3}
-  debug: 1
+  debug: 0
