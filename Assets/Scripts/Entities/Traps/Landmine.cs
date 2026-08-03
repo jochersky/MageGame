@@ -28,7 +28,7 @@ public class Landmine : Trap
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") || collision.CompareTag("Hitbox"))
+        if (collision.CompareTag("Player") || collision.GetComponent<Hitbox>() || !collision.isTrigger)
         {
             Instantiate(clickEffect, transform.position, Quaternion.identity);
             if (!triggered)

@@ -96,6 +96,11 @@ public class MapGenerator : MonoBehaviour
         ENDING,
         REGULAR
     }
+
+    public Tilemap getColliderMap()
+    {
+        return colliderTilemap;
+    }
     void Awake()
     {
         // Seems to be an issue with loading outside of specified folder; need to look into it
@@ -524,7 +529,7 @@ public class MapGenerator : MonoBehaviour
                 // check for special value indicating false floor
                 else if (roomProbability == -88)
                 {
-                    nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.falseFloor);
+                    colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.falseFloor);
                 }
                 // check for special value indicating flamethrower
                 else if (roomProbability == -55){
@@ -564,6 +569,8 @@ public class MapGenerator : MonoBehaviour
             TileBase currTile = colliderTilemap.GetTile(tileCoords);
             if (enemy.CheckSpawnPosition(currTile, tileCoords, colliderTilemap, nonColliderTilemap))
             {
+                //Vector3 pos = colliderTilemap.CellToWorld(tileCoords);
+                //print("World Pos: " + pos.x + " " + pos.y + " Cell Pos: " + tileCoords.x + " " + tileCoords.y);
                 enemy.spawnPositions.Add(new (tileCoords.x, tileCoords.y));
             }
         }
@@ -654,7 +661,8 @@ public class MapGenerator : MonoBehaviour
                 {
                     int randIdx = randy.Next(0, enemy.spawnPositions.Count);
                     //StartCoroutine(SpawnEnemy(enemy, randIdx));
-                    Instantiate(enemy.enemyPrefab, new Vector2(enemy.spawnPositions[randIdx].x, enemy.spawnPositions[randIdx].y), quaternion.identity);
+                    Instantiate(enemy.enemyPrefab, new Vector2(enemy.spawnPositions[randIdx].x  + startingPositionOffset, enemy.spawnPositions[randIdx].y  + startingPositionOffset),
+                                quaternion.identity);
                     enemy.spawnPositions.RemoveAt(randIdx);
                 } else
                 {

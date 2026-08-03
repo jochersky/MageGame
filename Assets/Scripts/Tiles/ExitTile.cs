@@ -10,7 +10,7 @@ public class ExitTile : TileBase
 
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
     {
-        tileData.sprite = TileAssociatedPrefab.GetComponent<Sprite>();
+        tileData.sprite = TileAssociatedPrefab.GetComponent<SpriteRenderer>().sprite;
 
         if (TileAssociatedPrefab && tileData.gameObject == null)
         {

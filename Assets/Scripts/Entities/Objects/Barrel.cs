@@ -21,9 +21,13 @@ public class Barrel : MonoBehaviour
     {
         hurtbox.OnDamageTaken += OnDestroyed;
         randy = new System.Random();
+        // this is a bad way of doing this
         potentialDrops.Add(enemy);
         potentialDrops.Add(manaCapsule);
+        potentialDrops.Add(manaCapsule);
         potentialDrops.Add(coin);
+        potentialDrops.Add(coin);
+        potentialDrops.Add(heart);
         potentialDrops.Add(heart);
         potentialDrops.Add(bomb);
     }
@@ -31,8 +35,8 @@ public class Barrel : MonoBehaviour
     void OnDestroyed(DamageProperties damageProperties)
     {
         Instantiate(effect, transform.position, quaternion.identity);
-        // Spawn random drop at 75% chance
-        if (randy.Next(0, 100) < 75)
+        // Spawn random drop at 85% chance
+        if (randy.Next(0, 100) < 85)
         {
             int temp = randy.Next(0, potentialDrops.Count);
             if (potentialDrops[temp].TryGetComponent<Health>(out Health health))
