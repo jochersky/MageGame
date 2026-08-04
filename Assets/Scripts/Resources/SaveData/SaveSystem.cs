@@ -4,7 +4,7 @@ using UnityEngine.XR;
 
 public class SaveSystem
 {
-    private static bool _release = false;
+    private static bool _release = true;
     private static string _debugFilePath = Application.dataPath + "/Scripts/Resources/SaveData";
     private static string _releaseFilePath = Application.persistentDataPath;
     

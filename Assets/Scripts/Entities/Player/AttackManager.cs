@@ -4,6 +4,7 @@ using UnityEngine;
 public class AttackManager : MonoBehaviour
 {
     [SerializeField] GameObject staff;
+    [SerializeField] private int frames = 30;
     int animationFrames = 30;
     float animationDuration = 0.15f;
     bool isAttacking = false;
@@ -27,9 +28,9 @@ public class AttackManager : MonoBehaviour
     {
         Collider2D hitbox = staff.GetComponentInChildren<Collider2D>();
         hitbox.enabled = true;
-        float rotationAmt = totalRotation / animationFrames;
-        float frameDuration = animationDuration / animationFrames;
-        for (int frames = 0; frames < animationFrames; frames++)
+        float rotationAmt = totalRotation / frames;
+        float frameDuration = animationDuration / frames;
+        for (int frame = 0; frame < frames; frame++)
         {
             staff.transform.Rotate(new Vector3(0, 0, rotationAmt));
             yield return new WaitForSeconds(frameDuration);

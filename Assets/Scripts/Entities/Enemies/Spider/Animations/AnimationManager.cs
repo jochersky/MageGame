@@ -20,7 +20,6 @@ public class AnimationManager : MonoBehaviour
 
     public void Regular()
     {
-        Debug.Log(animator);
         animator.CrossFade(RegularHash, 0, 0);
     }
     

@@ -1,8 +1,4 @@
-using System;
-using System.Linq;
-using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,7 +10,6 @@ public class Sellable : MonoBehaviour
     [SerializeField] GameObject priceObject;
     [SerializeField] TextMeshProUGUI priceText;
     [SerializeField] SpriteRenderer outline;
-    MoneyCounter mc;
     bool purchased = false;
     bool _inRange = false;
     [SerializeField] SpriteRenderer display;
@@ -28,7 +23,6 @@ public class Sellable : MonoBehaviour
     {
         _input = FindAnyObjectByType<PlayerInput>();
         _input.actions["Interact"].performed += OnInteract;
-        mc = FindFirstObjectByType<MoneyCounter>();
         randy = new System.Random();
         GenerateSellable();
         display.sprite = item.icon;

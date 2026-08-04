@@ -8,13 +8,13 @@ public class SpellDictionary
     
     public SpellDictionary()
     {
-        _configs["Wind Lord's Blessing"] = AssetDatabase.LoadAssetAtPath<SpellConfig>("Assets/Data/Spells/SpellConfigs/BounceSpellConfig.asset");
-        _configs["Cold Snap"] = AssetDatabase.LoadAssetAtPath<SpellConfig>("Assets/Data/Spells/SpellConfigs/ColdSnapSpellConfig.asset");
-        _configs["Dragon's Fury"] = AssetDatabase.LoadAssetAtPath<SpellConfig>("Assets/Data/Spells/SpellConfigs/FireballSpellConfig.asset");
-        _configs["Light Spell"] = AssetDatabase.LoadAssetAtPath<SpellConfig>("Assets/Data/Spells/SpellConfigs/LightSpellConfig.asset");
-        _configs["Reverse Footsteps"] = AssetDatabase.LoadAssetAtPath<SpellConfig>("Assets/Data/Spells/SpellConfigs/ReverseFootstepsSpellConfig.asset");
-        _configs["Snap Speed"] = AssetDatabase.LoadAssetAtPath<SpellConfig>("Assets/Data/Spells/SpellConfigs/SnapSpeedSpellConfig.asset");
-        _configs["World Aflame"] = AssetDatabase.LoadAssetAtPath<SpellConfig>("Assets/Data/Spells/SpellConfigs/WorldAflameSpellConfig.asset");
+        _configs["Wind Lord's Blessing"] = Resources.Load<SpellConfig>("Data/Spells/SpellConfigs/BounceSpellConfig");
+        _configs["Cold Snap"] = Resources.Load<SpellConfig>("Data/Spells/SpellConfigs/ColdSnapSpellConfig");
+        _configs["Dragon's Fury"] = Resources.Load<SpellConfig>("Data/Spells/SpellConfigs/FireballSpellConfig");
+        _configs["Light Spell"] = Resources.Load<SpellConfig>("Data/Spells/SpellConfigs/LightSpellConfig");
+        _configs["Reverse Footsteps"] = Resources.Load<SpellConfig>("Data/Spells/SpellConfigs/ReverseFootstepsSpellConfig");
+        _configs["Snap Speed"] = Resources.Load<SpellConfig>("Data/Spells/SpellConfigs/SnapSpeedSpellConfig");
+        _configs["World Aflame"] = Resources.Load<SpellConfig>("Data/Spells/SpellConfigs/WorldAflameSpellConfig");
     }
 
     public SpellConfig GetConfig(string configName)

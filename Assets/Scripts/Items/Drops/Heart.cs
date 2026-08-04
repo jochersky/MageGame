@@ -6,6 +6,7 @@ public class Heart : Pickup
     
     public override void PickUpEffect()
     {
-        GameManager.Instance.PlayerHealth.Heal(healthRestored);
+        Health health = FindFirstObjectByType<Player>().Health;
+        health.Heal(healthRestored);
     }
 }

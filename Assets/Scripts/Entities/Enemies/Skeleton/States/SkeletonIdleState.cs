@@ -23,7 +23,7 @@ public class SkeletonIdleState : SkeletonBaseState
 
     public override void UpdateState()
     {
-        if (Context.IsAggroed) SwitchState(Dictionary.Aggro());
+        if (Context.IsAggroed || Context.TookDamage) SwitchState(Dictionary.Aggro());
         
         _idleTimer.Tick(Time.deltaTime);
         if (_idleTimer.IsFinished) SwitchState(Dictionary.Walk());

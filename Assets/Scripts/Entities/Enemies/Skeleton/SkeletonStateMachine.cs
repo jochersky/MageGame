@@ -82,6 +82,7 @@ public class SkeletonStateMachine : Entity
     public float CurrentMoveSpeed { get { return _currentMoveSpeed; }  set { _currentMoveSpeed = value; } }
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; } }
     public bool IsAggroed { get { return _isAggroed; } set { _isAggroed = value; } }
+    public bool TookDamage => health.CurrentHealth < health.MaxHealth;
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
     public float IdleTime => idleTime;
     public float WalkTime => walkTime;

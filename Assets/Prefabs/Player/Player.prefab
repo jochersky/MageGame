@@ -1418,6 +1418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackManager
   staff: {fileID: 2615795943972236996}
+  frames: 15
 --- !u!114 &8257964444960817894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1774,7 +1775,7 @@ MonoBehaviour:
   - {fileID: 3980726605382953362}
   maxHealth: 5
   invulnerabilityTime: 1.5
-  capHealth: 0
+  capHealth: 1
   spawnInvulnerable: 0
   ignore: 0
 --- !u!114 &5302559506376252669

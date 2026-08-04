@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 
     public HUDBar HealthBar { get; set; }
     public HUDBar ManaBar { get; set; }
+    public Health Health => _health;
     
     public delegate void StartDone();
     public event StartDone OnStartDone;

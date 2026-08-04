@@ -76,9 +76,13 @@ public class Health : MonoBehaviour
 
     public void Heal(int healAmt)
     {
-        if (capHealth && _currentHealth + healAmt >= maxHealth) return;
+        if (!capHealth)
+        {
+            _currentHealth += healAmt;
+            return;
+        }
         
-        _currentHealth += healAmt;
+        _currentHealth = Mathf.Clamp(_currentHealth + healAmt, 0, maxHealth);
         
         OnHealthChanged?.Invoke(_currentHealth);
     }

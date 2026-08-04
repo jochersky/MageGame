@@ -6,7 +6,6 @@ public class ManaRestorative : Pickup
     [SerializeField] int manaRestored;
     public override void PickUpEffect()
     {
-        SpellManager player = FindFirstObjectByType<SpellManager>();
-        player.UpdateMana(manaRestored);
+        GameManager.Instance.SpellManager.UpdateMana(manaRestored);
     }
 }

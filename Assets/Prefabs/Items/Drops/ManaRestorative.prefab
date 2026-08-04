@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e0eb83baa337ad43890e5a71c9af8a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ManaRestorative
-  manaRestored: 10
+  manaRestored: 50
 --- !u!50 &5593660355184996191
 Rigidbody2D:
   serializedVersion: 5

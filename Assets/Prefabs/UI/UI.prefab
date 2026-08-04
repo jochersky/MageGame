@@ -6135,9 +6135,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6632395424933051973, guid: 84c1ff6afa9f84c49a043dda87cc4284, type: 3}
       propertyPath: m_text
-      value: 'X
-
-'
+      value: i
       objectReference: {fileID: 0}
     - target: {fileID: 6632395424933051973, guid: 84c1ff6afa9f84c49a043dda87cc4284, type: 3}
       propertyPath: m_fontSize
@@ -6276,6 +6274,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6632395424933051973, guid: 84c1ff6afa9f84c49a043dda87cc4284, type: 3}
+      propertyPath: m_text
+      value: j
+      objectReference: {fileID: 0}
+    - target: {fileID: 6632395424933051973, guid: 84c1ff6afa9f84c49a043dda87cc4284, type: 3}
+      propertyPath: m_fontSize
+      value: 38.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6632395424933051973, guid: 84c1ff6afa9f84c49a043dda87cc4284, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
@@ -6410,11 +6416,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6632395424933051973, guid: 84c1ff6afa9f84c49a043dda87cc4284, type: 3}
       propertyPath: m_text
-      value: RMB
+      value: l
       objectReference: {fileID: 0}
     - target: {fileID: 6632395424933051973, guid: 84c1ff6afa9f84c49a043dda87cc4284, type: 3}
       propertyPath: m_fontSize
-      value: 26
+      value: 38.4
       objectReference: {fileID: 0}
     - target: {fileID: 6632395424933051973, guid: 84c1ff6afa9f84c49a043dda87cc4284, type: 3}
       propertyPath: m_fontColor32.rgba

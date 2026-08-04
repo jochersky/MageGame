@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 913ce80874e5000408d605df8d4cd9b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Heart
+  healthRestored: 1
 --- !u!50 &5593660355184996191
 Rigidbody2D:
   serializedVersion: 5
@@ -265,7 +266,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2236070659235606591}
   - component: {fileID: 951936452570120829}
-  - component: {fileID: 2440804080587685555}
   m_Layer: 0
   m_Name: Collection Region
   m_TagString: Untagged
@@ -325,16 +325,3 @@ CapsuleCollider2D:
   m_Offset: {x: -0.03609347, y: 0.02622873}
   m_Size: {x: 0.5964357, y: 0.5964357}
   m_Direction: 0
---- !u!114 &2440804080587685555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6805360209109167861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c458b42632bb20f47a4e469a63340ea8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Healbox
-  healAmt: 1

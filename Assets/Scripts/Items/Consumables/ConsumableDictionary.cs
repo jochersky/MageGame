@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class ConsumableDictionary
@@ -8,10 +7,10 @@ public class ConsumableDictionary
     
     public ConsumableDictionary()
     {
-        _configs["Bomb"] = AssetDatabase.LoadAssetAtPath<ConsumableConfig>("Assets/Data/Consumables/Configs/BombConfig.asset");
-        _configs["Drill Bomb"] = AssetDatabase.LoadAssetAtPath<ConsumableConfig>("Assets/Data/Consumables/Configs/DrillBombConfig.asset");
-        _configs["Rope"] = AssetDatabase.LoadAssetAtPath<ConsumableConfig>("Assets/Data/Consumables/Configs/RopeConfig.asset");
-        _configs["Sol Stone"] = AssetDatabase.LoadAssetAtPath<ConsumableConfig>("Assets/Data/Consumables/Configs/SolStoneConfig.asset");
+        _configs["Bomb"] = Resources.Load<ConsumableConfig>("Data/Consumables/Configs/BombConfig");
+        _configs["Drill Bomb"] = Resources.Load<ConsumableConfig>("Data/Consumables/Configs/DrillBombConfig");
+        _configs["Rope"] = Resources.Load<ConsumableConfig>("Data/Consumables/Configs/RopeConfig");
+        _configs["Sol Stone"] = Resources.Load<ConsumableConfig>("Data/Consumables/Configs/SolStoneConfig");
     }
 
     public ConsumableConfig GetConfig(string configName)
