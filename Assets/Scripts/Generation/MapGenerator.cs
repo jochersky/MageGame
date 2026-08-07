@@ -489,7 +489,8 @@ public class MapGenerator : MonoBehaviour
                 // check for special value indicating a rope
                 else if (roomProbability == -44)
                 {
-                    rope.strategy.UsePlaceableConsumable(nonColliderTilemap.transform, new Vector3(xCoord + startingPositionOffset, yCoord + startingPositionOffset, 0));
+                    //rope.strategy.UsePlaceableConsumable(nonColliderTilemap.transform, new Vector3(xCoord + startingPositionOffset, yCoord + startingPositionOffset, 0));
+                    rope.strategy.UsePlaceableConsumable(nonColliderTilemap.transform, new Vector3(xCoord, yCoord, 0));
                 }
                  // check for special value indicating a chest
                 else if (roomProbability == -66)
