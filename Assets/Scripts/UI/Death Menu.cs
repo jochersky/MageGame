@@ -12,12 +12,19 @@ public class DeathMenu : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        StartCoroutine(DelayedStart());
+    }
+
+    IEnumerator DelayedStart()
+    {
+        yield return new WaitForEndOfFrame();
         Health playerHealth = FindAnyObjectByType<PlayerStateMachine>().GetComponent<Health>();
         playerHealth.OnDeath += OnPlayerDeath;
     }
     
     private void OnPlayerDeath()
     {
+        print("START DEATH MENU COROUTINE");
         StartCoroutine(MenuCoroutine());
     }
 

@@ -127,6 +127,7 @@ public class MapGenerator : MonoBehaviour
         PlaceEntities();
         // teleport player to starting position
         player.transform.position = startingPosition;
+        print(player.transform.position);
     }
 
     void SpawnEntities()
