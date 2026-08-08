@@ -16,6 +16,9 @@ MonoBehaviour:
   itemName: Rope
   icon: {fileID: -16944626, guid: 036380db571df32489dba6df13ee9654, type: 3}
   changePositionOnObstruction: 1
+  description: Useful for navigating unreachable vertical spaces.
   maxCount: 99
   type: 1
+  snapToGrid: 0
+  damage: 0
   strategy: {fileID: 11400000, guid: 2e276a3147a5ff04f9b6be064f7b62ac, type: 2}

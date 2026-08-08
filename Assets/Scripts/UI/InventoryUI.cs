@@ -29,6 +29,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private Transform spellItemElementSpawnTransform;
     [SerializeField] private GameObject spellListElementPrefab;
     [Header("Stats")]
+    [SerializeField] private TextMeshProUGUI itemDescription;
     [SerializeField] private TextMeshProUGUI maxHealthText;
     [SerializeField] private TextMeshProUGUI maxManaText;
     [SerializeField] private TextMeshProUGUI moneyText;
@@ -183,6 +184,11 @@ public class InventoryUI : MonoBehaviour
         if (spellID == 1) UpdateEquippedSpell1UI(null, false);
         else UpdateEquippedSpell2UI(null, false);
         HideSpellSelectionMenu();
+    }
+
+    public void UpdateItemDescription(string description)
+    {
+        itemDescription.text = description;
     }
 
     public void UpdateStatsScreen(int maxHealth, int maxMana, CharacterType characterType, string gift)

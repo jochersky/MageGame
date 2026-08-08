@@ -13,4 +13,5 @@ public abstract class ItemConfig : ScriptableObject
     public string itemName;
     public Sprite icon;
     public bool changePositionOnObstruction;
+    public string description;
 }

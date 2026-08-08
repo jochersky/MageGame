@@ -16,6 +16,9 @@ MonoBehaviour:
   itemName: Drill Bomb
   icon: {fileID: 7002010960319474070, guid: 844d640163d96b44ab34ccd31102aa0f, type: 3}
   changePositionOnObstruction: 1
+  description: Explosive capable of blasting through obstacles in a brilliant fashion.
   maxCount: 99
   type: 1
+  snapToGrid: 0
+  damage: 2
   strategy: {fileID: 11400000, guid: bb39c227687ceef4fbf6294ad6daf4b7, type: 2}

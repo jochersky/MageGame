@@ -16,8 +16,10 @@ MonoBehaviour:
   itemName: Dragon's Fury
   icon: {fileID: -6607481912129624618, guid: 18591eb2529793e4f8e267a1763aeb82, type: 3}
   changePositionOnObstruction: 1
+  description: Casts a firey projectile in the direction of movement.
   manaCost: 10
   cooldown: 1
   twoPartCast: 0
+  altersMovement: 0
   strategy: {fileID: 11400000, guid: 874c2299709bc984f8d2c859c49822bf, type: 2}
   effectsStrategy: {fileID: 0}
