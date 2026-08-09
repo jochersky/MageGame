@@ -18,8 +18,7 @@ MonoBehaviour:
   changePositionOnObstruction: 0
   description: Grants bonus speed for a duration, but briefly tires out the user.
   manaCost: 10
-  cooldown: 0
+  cooldown: 8
   twoPartCast: 0
-  altersMovement: 0
   strategy: {fileID: 11400000, guid: 9acfe343268d9a548834df0b8e7102d8, type: 2}
   effectsStrategy: {fileID: 0}

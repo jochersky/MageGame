@@ -35,6 +35,11 @@ public class SpellManager : MonoBehaviour
     
     public delegate void ManaChange(int newMana);
     public event ManaChange OnManaChanged;
+
+    public delegate void Spell1Casted(float cooldown);
+    public event Spell1Casted OnSpell1Casted;
+    public delegate void Spell2Casted(float cooldown);
+    public event Spell2Casted OnSpell2Casted;
     
     void Start()
     {
@@ -240,6 +245,7 @@ public class SpellManager : MonoBehaviour
     private IEnumerator WaitBeforeCastingSpell1Again()
     {
         castingSpell1 = true;
+        OnSpell1Casted?.Invoke(spellConfig1.cooldown);
         yield return new WaitForSeconds(spellConfig1.cooldown);
         castingSpell1 = false;
     }
@@ -247,6 +253,7 @@ public class SpellManager : MonoBehaviour
     private IEnumerator WaitBeforeCastingSpell2Again()
     {
         castingSpell2 = true;
+        OnSpell2Casted?.Invoke(spellConfig2.cooldown);
         yield return new WaitForSeconds(spellConfig2.cooldown);
         castingSpell2 = false;
     }

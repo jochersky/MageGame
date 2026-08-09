@@ -19,8 +19,7 @@ MonoBehaviour:
   description: Freezes surrounding targets in place for a brief period, disabling
     their movement capabilities.
   manaCost: 25
-  cooldown: 0
+  cooldown: 10
   twoPartCast: 0
-  altersMovement: 0
   strategy: {fileID: 11400000, guid: fcabc234449a30e478a0aacf72aa00a6, type: 2}
   effectsStrategy: {fileID: 0}

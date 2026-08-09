@@ -223,6 +223,6 @@ public class InventoryUI : MonoBehaviour
         HideConsumableSelectionMenu();
         HideSpellSelectionMenu();
         UIElements.SetActive(!UIElements.activeSelf);
-        HUD.SetActive(!UIElements.activeSelf);
+        // HUD.SetActive(!UIElements.activeSelf);
     }
 }
