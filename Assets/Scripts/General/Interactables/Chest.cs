@@ -14,6 +14,7 @@ public class Chest : MonoBehaviour, IInteractable
     private BoxCollider2D _boxCollider2D;
     private GameObject _itemPrefabInstance;
     private GameObject _itemFramePrefabInstance;
+    private bool _chestOpened = false;
     
     private readonly int _closed = Animator.StringToHash("ChestClosed");
     private readonly int _open = Animator.StringToHash("ChestOpen");
@@ -35,18 +36,28 @@ public class Chest : MonoBehaviour, IInteractable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (_chestOpened) EventBus.Instance.HandleChestOpened(true);
     }
     
     private void OnTriggerExit2D(Collider2D other)
     {
+        if (_chestOpened) EventBus.Instance.HandleChestOpened(false);
     }
 
     public void Interact()
     {
+        EventBus.Instance.HandleChestOpened(!_chestOpened);
         _animator.CrossFade(_open, 0, 0);
-        _boxCollider2D.enabled = false;
         _itemFramePrefabInstance.SetActive(true);
 
-        if (itemConfig) InventoryManager.Instance.AddItem(itemConfig, count);
+        if (itemConfig && _chestOpened)
+        {
+            InventoryManager.Instance.AddItem(itemConfig, count);
+            _boxCollider2D.enabled = false;
+            _itemFramePrefabInstance.SetActive(false);
+        }
+        
+        // only let item be added with extra button press
+        _chestOpened = true;
     }
 }
