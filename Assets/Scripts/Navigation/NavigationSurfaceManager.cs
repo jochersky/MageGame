@@ -4,10 +4,12 @@ using UnityEngine;
 public class NavigationSurfaceManager : MonoBehaviour
 {
     [SerializeField] private NavMeshSurface spiderNavMeshSurface;
+    [SerializeField] private NavMeshSurface jungleSpiderNavMeshSurface;
     
     private void Start()
     {
-        spiderNavMeshSurface.BuildNavMesh();
+        if (spiderNavMeshSurface) spiderNavMeshSurface.BuildNavMesh();
+        if (jungleSpiderNavMeshSurface) jungleSpiderNavMeshSurface.BuildNavMesh();
         SyncNavMesh();
         
         EventBus.Instance.OnTileMapChanged += SyncNavMesh;
@@ -16,8 +18,8 @@ public class NavigationSurfaceManager : MonoBehaviour
     private void SyncNavMesh()
     {
         // check added to get rid of missing reference error when changing scenes
-        if (!spiderNavMeshSurface) return;
-
-        spiderNavMeshSurface.UpdateNavMesh(spiderNavMeshSurface.navMeshData);
+        if (spiderNavMeshSurface) spiderNavMeshSurface.UpdateNavMesh(spiderNavMeshSurface.navMeshData);
+        if (jungleSpiderNavMeshSurface) jungleSpiderNavMeshSurface.UpdateNavMesh(jungleSpiderNavMeshSurface.navMeshData);
+        
     }
 }
