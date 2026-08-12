@@ -19,6 +19,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private PassiveSpellAffects passiveSpellAffects;
     [SerializeField] private BaseStats baseStats;
     [SerializeField] private KnockBack knockBack;
+    [SerializeField] private StatusEffectManager statusEffectManager;
     private Rigidbody2D _rb;
     private InputActionMap _playerInputMap;
     private Stats _stats;
@@ -193,6 +194,8 @@ public class PlayerStateMachine : MonoBehaviour
     
         // provide initial direction for dodging (facing right)
         _previousDirection.x = 1;
+        
+        statusEffectManager.Initialize(_stats.Mediator);
     }
 
     private void Update()

@@ -7,6 +7,12 @@ public class Hitbox : MonoBehaviour
     [SerializeField] private float cameraShakeAmt;
     [SerializeField] private float cameraShakeDuration;
     [SerializeField] private float knockBackForce;
+    [Header("Status Effect")]
+    [SerializeField] private StatType statType;
+    [SerializeField] private OperatorTypes operatorType;
+    [SerializeField] private float effectAmt;
+    [SerializeField] private float effectDuration;
+    [SerializeField] private float effectDelay;
 
     [Header("Hitbox Colliders")] 
     [SerializeField] private Collider2D[] colliders;
@@ -23,6 +29,17 @@ public class Hitbox : MonoBehaviour
             duration = cameraShakeDuration
         };
         _damageProperties.knockBackForce = knockBackForce;
+        if (effectAmt > 0)
+        {
+            _damageProperties.effect = new StatusEffect()
+            {
+                statType = statType,
+                operatorType = operatorType,
+                amount = effectAmt,
+                duration = effectDuration,
+                delay = effectDelay
+            };
+        }
     }
     
     public void Disable()
@@ -41,4 +58,14 @@ public struct DamageProperties
     // damage source -> hurt box
     public Vector2 direction;
     public float knockBackForce;
-} 
+    public StatusEffect effect;
+}
+
+public struct StatusEffect
+{
+    public StatType statType;
+    public OperatorTypes operatorType;
+    public float amount;
+    public float duration;
+    public float delay;
+}
