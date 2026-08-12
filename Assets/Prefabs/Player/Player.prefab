@@ -745,6 +745,11 @@ MonoBehaviour:
   cameraShakeAmt: 0
   cameraShakeDuration: 0
   knockBackForce: 15
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders: []
 --- !u!1 &5726370897731751771
 GameObject:
@@ -1300,6 +1305,7 @@ GameObject:
   - component: {fileID: 5302559506376252669}
   - component: {fileID: 2560371365361338957}
   - component: {fileID: 4620436022231371514}
+  - component: {fileID: 7987879501707214221}
   m_Layer: 12
   m_Name: Player
   m_TagString: Player
@@ -1363,6 +1369,7 @@ MonoBehaviour:
   passiveSpellAffects: {fileID: 11400000, guid: 4dd963e0c99e82748a95667a2c7a6379, type: 2}
   baseStats: {fileID: 11400000, guid: 2128e3719ca695c45b205b547a6ae145, type: 2}
   knockBack: {fileID: 4620436022231371514}
+  statusEffectManager: {fileID: 7987879501707214221}
   maxWalkSpeed: 8
   maxJumpHeight: 8
   maxDoubleJumpHeight: 10
@@ -1834,6 +1841,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   yReductionConst: 0.2
+--- !u!114 &7987879501707214221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8863640782204810548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afc6803adbd9cdb448006070d4beebf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &8941550617777362682
 GameObject:
   m_ObjectHideFlags: 0

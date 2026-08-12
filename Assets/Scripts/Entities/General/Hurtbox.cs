@@ -24,6 +24,7 @@ public class Hurtbox : MonoBehaviour
                 cameraShakeProperties = dmgProps.cameraShakeProperties,
                 direction = (transform.position - other.transform.position).normalized,
                 knockBackForce = dmgProps.knockBackForce,
+                effect = dmgProps.effect,
             };
             OnDamageTaken?.Invoke(damageProperties);
         }
