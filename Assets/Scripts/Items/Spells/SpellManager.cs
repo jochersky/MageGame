@@ -29,6 +29,7 @@ public class SpellManager : MonoBehaviour
 
     public int _mana;
     private float _manaRegenTimer;
+    private bool _canConsumeGibs;
     
     public int MaxMana { get => maxMana; set => maxMana = value; }
     public int Mana { get => _mana; set => _mana = value; }
