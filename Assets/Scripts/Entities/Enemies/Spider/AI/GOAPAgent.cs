@@ -9,6 +9,7 @@ public class GOAPAgent : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private AnimationManager animationManager;
+    [SerializeField] private Spawner gibSpawner;
     
     [Header("Sensors")] 
     [SerializeField] private Sensor chaseSensor;
@@ -99,6 +100,7 @@ public class GOAPAgent : MonoBehaviour
             hurtbox.gameObject.SetActive(false);
             navMeshAgent.isStopped = true;
             rb.bodyType = RigidbodyType2D.Dynamic;
+            gibSpawner.SpawnObject(transform);
         };
         knockBack.OnKnockBackApplied += force => { _knockBackForce = force * 0.25f; };
         animationManager.OnStartDone += () => { animationManager.Regular(); };
