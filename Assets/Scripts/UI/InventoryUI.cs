@@ -29,6 +29,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private Transform spellItemElementSpawnTransform;
     [SerializeField] private GameObject spellListElementPrefab;
     [Header("Stats")]
+    [SerializeField] private TextMeshProUGUI itemDescription;
     [SerializeField] private TextMeshProUGUI maxHealthText;
     [SerializeField] private TextMeshProUGUI maxManaText;
     [SerializeField] private TextMeshProUGUI moneyText;
@@ -185,6 +186,11 @@ public class InventoryUI : MonoBehaviour
         HideSpellSelectionMenu();
     }
 
+    public void UpdateItemDescription(string description)
+    {
+        itemDescription.text = description;
+    }
+
     public void UpdateStatsScreen(int maxHealth, int maxMana, CharacterType characterType, string gift)
     {
         maxHealthText.text = maxHealth.ToString();
@@ -217,6 +223,6 @@ public class InventoryUI : MonoBehaviour
         HideConsumableSelectionMenu();
         HideSpellSelectionMenu();
         UIElements.SetActive(!UIElements.activeSelf);
-        HUD.SetActive(!UIElements.activeSelf);
+        // HUD.SetActive(!UIElements.activeSelf);
     }
 }

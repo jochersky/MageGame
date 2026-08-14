@@ -1,5 +1,6 @@
+using System;
+using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,11 +9,23 @@ public class EquippedUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI consumableCountText;
     [SerializeField] private Image consumableImage;
     [SerializeField] private Image spell1Image;
+    [SerializeField] private Image spell1Cooldown;
     [SerializeField] private Image spell2Image;
+    [SerializeField] private Image spell2Cooldown;
 
     private ConsumableConfig _consumableConfig1;
     private ConsumableConfig _consumableConfig2;
     private ConsumableConfig _equippedConsumable;
+    private Material _spell1CooldownMat;
+    private Material _spell2CooldownMat;
+
+    private static readonly int Progress = Shader.PropertyToID("_Progress");
+
+    private void Start()
+    {
+        _spell1CooldownMat = spell1Cooldown.material;
+        _spell2CooldownMat = spell2Cooldown.material;
+    }
 
     private void OnEnable()
     {
@@ -23,6 +36,9 @@ public class EquippedUI : MonoBehaviour
         InventoryManager.Instance.OnSpell2Equipped += UpdateEquippedSpell2UI;
         InventoryManager.Instance.OnSpell1Unequipped += UpdateEquippedSpell1UI;
         InventoryManager.Instance.OnSpell2Unequipped += UpdateEquippedSpell2UI;
+        GameManager.Instance.SpellManager.OnSpell1Casted += cooldown => StartCoroutine(CooldownSpell1(cooldown));
+        GameManager.Instance.SpellManager.OnSpell2Casted += cooldown => StartCoroutine(CooldownSpell2(cooldown));
+        
     }
 
     private void UpdateEquippedConsumableUI(ConsumableConfig config, int amount)
@@ -50,5 +66,35 @@ public class EquippedUI : MonoBehaviour
     {
         spell2Image.color = visible ? Color.white : Color.clear;
         spell2Image.sprite = spellSprite;
-    } 
+    }
+
+    IEnumerator CooldownSpell1(float duration)
+    {
+        spell1Cooldown.enabled = true;
+        float t = 0;
+        while (t < duration)
+        {
+            float progress = 100 * (1 - (t / duration));
+            _spell1CooldownMat.SetFloat(Progress, progress);
+            
+            t += Time.deltaTime;
+            yield return null;
+        }
+        spell1Cooldown.enabled = false;
+    }
+    
+    IEnumerator CooldownSpell2(float duration)
+    {
+        spell2Cooldown.enabled = true;
+        float t = 0;
+        while (t < duration)
+        {
+            float progress = 100 * (1 - (t / duration));
+            _spell2CooldownMat.SetFloat(Progress, progress);
+            
+            t += Time.deltaTime;
+            yield return null;
+        }
+        spell2Cooldown.enabled = false;
+    }
 }

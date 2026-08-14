@@ -16,8 +16,10 @@ MonoBehaviour:
   itemName: Light Spell
   icon: {fileID: 21300000, guid: a049ecf093365ee4e80f0628ac0ab1dc, type: 3}
   changePositionOnObstruction: 1
+  description: Summons a temporary light emitting sprite.
   manaCost: 10
   cooldown: 1
   twoPartCast: 0
+  altersMovement: 0
   strategy: {fileID: 11400000, guid: 28204f17ba2772b4cb519fbc3232b73b, type: 2}
   effectsStrategy: {fileID: 0}

@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4718847250067535171
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 436438010031504600, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 2967904463620813140, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_Speed
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2967904463620813140, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_AgentTypeID
+      value: 1479372276
+      objectReference: {fileID: 0}
+    - target: {fileID: 2967904463620813140, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 240
+      objectReference: {fileID: 0}
+    - target: {fileID: 4498453235391708362, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_Radius
+      value: 0.18669432
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745096484956966034, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.4925376
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745096484956966034, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.061553
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745096484956966034, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745096484956966034, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745096484956966034, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745096484956966034, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745096484956966034, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745096484956966034, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745096484956966034, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5745096484956966034, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6442810832538800557, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -8260856904347719897, guid: e1cdb0a40199a1347818f4059728391a, type: 3}
+    - target: {fileID: 7954616270725141213, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 19cc27ecad2414646a6afe791ec2bec6, type: 2}
+    - target: {fileID: 8593941136883427254, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: statType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8593941136883427254, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: effectAmt
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8593941136883427254, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: effectDelay
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8593941136883427254, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: operatorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8593941136883427254, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: effectDuration
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8859184921287276884, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}
+      propertyPath: m_Name
+      value: JungleSpider
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 529ac7eb1f322734b9c704246f3a773c, type: 3}

@@ -7,6 +7,7 @@ public class ConsumableConfig : ItemConfig
     public int maxCount;
     public ConsumableType type;
     public bool snapToGrid;
+    public int damage;
     public ConsumableStrategy strategy;
 }
 
