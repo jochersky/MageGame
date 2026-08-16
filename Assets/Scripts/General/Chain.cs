@@ -1,5 +1,5 @@
 using System;
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -7,7 +7,7 @@ public class Chain : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private SplineContainer spline;
-    [SerializeField] private Transform[] links;
+    [SerializeField] private List<GameObject> links;
     [Header("Properties")]
     [SerializeField] private float distance = 0.25f;
     [SerializeField] private float startingProgress = 0.25f;
@@ -16,6 +16,8 @@ public class Chain : MonoBehaviour
     private float _progress;
     
     public float Progress => _progress;
+    public List<GameObject> Links => links;
+    public float Distance { get => distance; set => distance = value; }
 
     private void Start()
     {
@@ -26,10 +28,10 @@ public class Chain : MonoBehaviour
     {
         _progress = _t % 1;
         
-        for (int i = 0; i < links.Length; i++)
+        for (int i = 0; i < links.Count; i++)
         {
-            Transform link = links[i];
-            float linkProgress = Math.Max(0, _progress - (distance * i)) % 1;;
+            Transform link = links[i].transform;
+            float linkProgress = Math.Max(0, _progress - (distance * i)) % 1;
             
             link.position = Vector3.MoveTowards(link.position, spline.EvaluatePosition(linkProgress), followSpeed * Time.deltaTime);
             
@@ -43,8 +45,9 @@ public class Chain : MonoBehaviour
 
     public void SyncChain()
     {
-        foreach (Transform link in links)
+        foreach (GameObject go in links)
         {
+            Transform link = go.transform;
             link.position = spline.EvaluatePosition(0.25f);
             Vector3 tangent = spline.EvaluateTangent(0.25f);
             float angle = Mathf.Atan2(tangent.y, tangent.x) * Mathf.Rad2Deg;

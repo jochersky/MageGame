@@ -24,7 +24,7 @@ public class SnapSpeedSpellStrategy : SpellStrategy
         if (_debuffTimer is { IsRunning: true }) _debuffTimer.Tick(deltaTime);
     }
     
-    public override void CastSpell(Transform spawnTransform, Vector3 spawnPosition)
+    public override GameObject CastSpell(Transform spawnTransform, Vector3 spawnPosition)
     {
         // buff
         BasicStatModifier speedBuff = operatorType switch
@@ -39,6 +39,8 @@ public class SnapSpeedSpellStrategy : SpellStrategy
         _debuffTimer = new CountdownTimer(duration);
         _debuffTimer.OnTimerStop += ApplySpeedDebuff;
         _debuffTimer.Start();
+
+        return null;
     }
 
     private void ApplySpeedDebuff()

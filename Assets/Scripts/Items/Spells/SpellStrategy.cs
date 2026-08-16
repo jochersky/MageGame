@@ -15,12 +15,13 @@ public class SpellStrategy : ScriptableObject
     public virtual void Tick(float deltaTime) { }
     public virtual void Cancel() { }
 
-    public virtual void CastSpell(Transform spawnTransform, Vector3 spawnPosition)
+    public virtual GameObject CastSpell(Transform spawnTransform, Vector3 spawnPosition)
     {
         // using spawn transform lets spell be flipped
         GameObject inst = Instantiate(prefab, spawnTransform);
         inst.transform.position = spawnPosition;
         // null so that it won't follow the player's movement 
         inst.transform.parent = null;
+        return inst;
     }
 }

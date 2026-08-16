@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 99de463acc2fc024e8d4ba71a20d6567, type: 3}
-  m_Name: FireballSpellConfig
+  m_Name: LightSpearSpellConfig
   m_EditorClassIdentifier: Assembly-CSharp::SpellConfig
   itemType: 0
-  itemName: Dragon's Fury
-  icon: {fileID: -6607481912129624618, guid: 18591eb2529793e4f8e267a1763aeb82, type: 3}
-  changePositionOnObstruction: 1
-  description: Casts a firey projectile in the direction of movement.
-  manaCost: 10
-  cooldown: 1
+  itemName: Light Spear
+  icon: {fileID: 21300000, guid: 43be23b9e5a48c042b0bc12e0a74198f, type: 3}
+  changePositionOnObstruction: 0
+  description: 
+  manaCost: 1
+  cooldown: 0
   twoPartCast: 0
-  strategy: {fileID: 11400000, guid: 874c2299709bc984f8d2c859c49822bf, type: 2}
+  spawnsProjectile: 1
+  strategy: {fileID: 11400000, guid: c0687d025c3c82d43956f61f84532d39, type: 2}
   effectsStrategy: {fileID: 0}

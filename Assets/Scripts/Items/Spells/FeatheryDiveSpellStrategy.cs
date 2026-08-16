@@ -15,7 +15,7 @@ public class FeatheryDiveSpellStrategy : SpellStrategy
         _psm = playerStateMachine;
     }
     
-    public override void CastSpell(Transform spawnTransform, Vector3 spawnPosition)
+    public override GameObject CastSpell(Transform spawnTransform, Vector3 spawnPosition)
     {
         BasicStatModifier gravityMod = operatorType switch
         {
@@ -24,5 +24,6 @@ public class FeatheryDiveSpellStrategy : SpellStrategy
             _ => throw new ArgumentOutOfRangeException()
         };
         _psm.Stats.Mediator.AddModifier(gravityMod);
+        return null;
     }
 }

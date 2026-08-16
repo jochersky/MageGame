@@ -8,6 +8,8 @@ public class SpellConfig : ItemConfig
     public float cooldown;
     
     public bool twoPartCast;
+    public bool spawnsProjectile;
+    
     public SpellStrategy strategy;
     public PassiveEffectsStrategy effectsStrategy;
 }

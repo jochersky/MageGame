@@ -11,7 +11,10 @@ public class SpellManager : MonoBehaviour
     [SerializeField] private Transform spellCastTransform;
     [SerializeField] private Transform spellParentTransform;
     [SerializeField] private PassiveSpellAffects passiveSpellAffects;
-
+    [SerializeField] private LineOfSightSensor lineOfSightSensor;
+    [SerializeField] private ProjectileManager projectileManager;
+    public GameObject enemyInRange;
+    
     [SerializeField] private bool debug = true;
     [SerializeField] private SpellConfig spell1;
     [SerializeField] private SpellConfig spell2;
@@ -62,6 +65,7 @@ public class SpellManager : MonoBehaviour
     private void FixedUpdate()
     {
         HandleManaRegen();
+        enemyInRange = lineOfSightSensor.GetNextTarget();
     }
 
     private void HandleManaRegen()
@@ -203,6 +207,12 @@ public class SpellManager : MonoBehaviour
         Debug.DrawRay(transform.position, dir, Color.red, 5);
         if (spellConfig1.changePositionOnObstruction && Physics2D.Raycast(transform.position, dir, dir.magnitude, _layerMask)) 
             spellConfig1.strategy.CastSpell(spellCastTransform, _psm.gameObject.transform.position);
+        else if (spellConfig1.spawnsProjectile)
+        {
+            GameObject projectile = spellConfig1.strategy.CastSpell(spellCastTransform, spellCastTransform.position);
+            projectileManager.AddProjectile(projectile);
+            if (projectile.TryGetComponent<IProjectile>(out IProjectile projectileComponent)) projectileComponent.Initialize(lineOfSightSensor, projectileManager);
+        }
         else 
             spellConfig1.strategy.CastSpell(spellCastTransform, spellCastTransform.position);
         
@@ -237,6 +247,12 @@ public class SpellManager : MonoBehaviour
         Vector2 dir = spellCastTransform.position - transform.position;
         if (spellConfig2.changePositionOnObstruction && Physics2D.Raycast(transform.position, dir, dir.magnitude, _layerMask)) 
             spellConfig2.strategy.CastSpell(spellCastTransform, _psm.gameObject.transform.position);
+        else if (spellConfig2.spawnsProjectile)
+        {
+            GameObject projectile = spellConfig2.strategy.CastSpell(spellCastTransform, spellCastTransform.position);
+            projectileManager.AddProjectile(projectile);
+            if (projectile.TryGetComponent<IProjectile>(out IProjectile projectileComponent)) projectileComponent.Initialize(lineOfSightSensor, projectileManager);
+        }
         else 
             spellConfig2.strategy.CastSpell(spellCastTransform, spellCastTransform.position);
         
