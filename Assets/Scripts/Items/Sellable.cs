@@ -34,6 +34,10 @@ public class Sellable : MonoBehaviour
     void GenerateSellable()
     {
         ItemConfig[] sellables = Resources.LoadAll<ItemConfig>(configPath);
+        if (sellables.Length <= 0)
+        {
+            throw new System.Exception("No item configs found at config path");
+        }
         //sellables.Concat(Resources.LoadAll<ItemConfig>(spellConfigPath)).ToArray();
         item = sellables[randy.Next(0, sellables.Length)];
     }

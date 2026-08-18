@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7f0c77761a43f84e9e99297d81d716e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChestManager
-  configPath: Configs/
+  configPath: Data/Spells/SpellConfigs/
