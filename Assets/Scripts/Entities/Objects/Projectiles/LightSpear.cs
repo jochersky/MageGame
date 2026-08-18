@@ -1,7 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 public class LightSpear : MonoBehaviour, IProjectile
 {
+    [Header("References")]
+    [SerializeField] private ParticleSystem hitParticles;
+    [SerializeField] private SpriteRenderer spriteRenderer;
     [Header("Properties")]
     [SerializeField] private float timeUntilPursuit = 5;
     [SerializeField] private float speed = 5;
@@ -54,6 +58,16 @@ public class LightSpear : MonoBehaviour, IProjectile
         _timer.Tick(Time.deltaTime);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if ((_targetAcquired && collision.CompareTag("Environment")) || collision.CompareTag("Enemy"))
+        {
+            _projectileManager.RemoveProjectile(gameObject);
+            StartCoroutine(DestroySequence());
+        }
+    }
+    
+
     private void CheckForTarget()
     {
         Transform temp = _targetSensor.GetNextTarget()?.transform;
@@ -69,5 +83,15 @@ public class LightSpear : MonoBehaviour, IProjectile
         }
         // target gets rechecked in the update loop
         _target = temp;
+    }
+
+    private IEnumerator DestroySequence()
+    {
+        spriteRenderer.enabled = false;
+        hitParticles.Play();
+
+        yield return new WaitForSeconds(hitParticles.main.startLifetime.constantMax);
+        
+        Destroy(gameObject);
     }
 }

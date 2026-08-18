@@ -8,9 +8,15 @@ public class Chain : MonoBehaviour
     [Header("References")]
     [SerializeField] private SplineContainer spline;
     [SerializeField] private List<GameObject> links;
+    [SerializeField] private ChainLinkLayerStrategy chainLinkLayer;
     [Header("Properties")]
     [SerializeField] private float distance = 0.25f;
     [SerializeField] private float startingProgress = 0.25f;
+    [SerializeField] private int frontLayer;
+    [SerializeField] private int backLayer;
+    // goToFrontPercentage < goToBackPercentage
+    [SerializeField] private float goToFrontPercentage;
+    [SerializeField] private float goToBackPercentage;
     
     private float _t;
     private float _progress;
@@ -22,6 +28,9 @@ public class Chain : MonoBehaviour
     private void Start()
     {
         _t = startingProgress;
+
+        goToFrontPercentage /= 100;
+        goToBackPercentage /= 100;
     }
     
     public void UpdateChain(float progressSpeed, float followSpeed)
@@ -30,6 +39,8 @@ public class Chain : MonoBehaviour
         
         for (int i = 0; i < links.Count; i++)
         {
+            if (!links[i]) continue; 
+            
             Transform link = links[i].transform;
             float linkProgress = Math.Max(0, _progress - (distance * i)) % 1;
             
@@ -38,6 +49,21 @@ public class Chain : MonoBehaviour
             Vector3 tangent = spline.EvaluateTangent(linkProgress);
             float angle = Mathf.Atan2(tangent.y, tangent.x) * Mathf.Rad2Deg;
             link.rotation = Quaternion.Euler(0, 0, angle);
+
+            if (frontLayer == 0 && backLayer == 0) continue;
+            
+            if (link.TryGetComponent<SpriteRenderer>(out var spriteRenderer))
+            {
+                int currLayer = spriteRenderer.sortingOrder;
+                if (currLayer != frontLayer && (linkProgress >= goToFrontPercentage && linkProgress < goToBackPercentage))
+                {
+                    spriteRenderer.sortingOrder = frontLayer;
+                }
+                else if (currLayer != backLayer && (linkProgress >= goToBackPercentage || linkProgress < goToFrontPercentage))
+                {
+                    spriteRenderer.sortingOrder = backLayer;
+                }
+            }
         }
 
         _t += Time.fixedDeltaTime * progressSpeed;

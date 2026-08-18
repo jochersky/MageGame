@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpellConfig
   itemType: 0
   itemName: Light Spear
-  icon: {fileID: 21300000, guid: 43be23b9e5a48c042b0bc12e0a74198f, type: 3}
+  icon: {fileID: 21300000, guid: b7200f5a36548af4892eeddcfb4ab993, type: 3}
   changePositionOnObstruction: 0
   description: 
   manaCost: 1

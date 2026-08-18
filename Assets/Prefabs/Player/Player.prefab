@@ -154,6 +154,198 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2717812629277950103}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &344346540582135031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5703968724197521167}
+  - component: {fileID: 5884122442991625009}
+  - component: {fileID: 3945980037609010536}
+  - component: {fileID: 1520860615228241362}
+  m_Layer: 12
+  m_Name: ProjectileRing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5703968724197521167
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344346540582135031}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.49575138, y: 0.48842776, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3863422753505901973}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5884122442991625009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344346540582135031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineContainer
+  m_Spline:
+    m_EditModeType: 1
+    m_Knots: []
+    m_MetaData: []
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Splines:
+  - m_EditModeType: 1
+    m_Knots:
+    - Position:
+        x: 0
+        y: -0.5
+        z: 0
+      TangentIn:
+        x: -0
+        y: -0
+        z: -0.091373846
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.16682503
+      Rotation:
+        value:
+          x: 0.6532815
+          y: 0.27059805
+          z: -0.27059814
+          w: -0.6532815
+    - Position:
+        x: -1
+        y: -0.5
+        z: 0
+      TangentIn:
+        x: -0
+        y: -0
+        z: -0.16682503
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.091373846
+      Rotation:
+        value:
+          x: -0.2705981
+          y: -0.6532815
+          z: 0.6532815
+          w: 0.27059805
+    - Position:
+        x: -1
+        y: -0.8
+        z: 0
+      TangentIn:
+        x: -0
+        y: -0
+        z: -0.09137385
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.16682504
+      Rotation:
+        value:
+          x: 0.2705981
+          y: -0.6532815
+          z: 0.6532815
+          w: -0.27059802
+    - Position:
+        x: 0
+        y: -0.8
+        z: 0
+      TangentIn:
+        x: -0
+        y: -0
+        z: -0.16682504
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.09137385
+      Rotation:
+        value:
+          x: -0.6532815
+          y: 0.27059808
+          z: -0.27059805
+          w: 0.6532815
+    m_MetaData:
+    - Mode: 0
+      Tension: 0.5
+    - Mode: 0
+      Tension: 0.5
+    - Mode: 0
+      Tension: 0.5
+    - Mode: 0
+      Tension: 0.5
+    m_Closed: 1
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Knots:
+    m_KnotsLink: []
+--- !u!114 &3945980037609010536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344346540582135031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a43922e0a196b324d98af8acaabb964b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Chain
+  spline: {fileID: 5884122442991625009}
+  links: []
+  chainLinkLayer: {fileID: 0}
+  distance: 0.15
+  startingProgress: 0
+  frontLayer: 3
+  backLayer: 1
+  goToFrontPercentage: 40
+  goToBackPercentage: 90
+--- !u!114 &1520860615228241362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344346540582135031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3e0055b8deaf94e881213a85e4b909, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  projectileChain: {fileID: 3945980037609010536}
+  maxProjectiles: 5
+  progressSpeed: 0.3
+  followSpeed: 3
+  distanceAdjust: 0.03
 --- !u!1 &906115594604720695
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +612,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 999abbb11e3a71f408ed7bed986aa3be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hurtbox
-  ignoreTag: 
+  ignoreTag: Player
 --- !u!61 &3924917097501142207
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -886,6 +1078,94 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3863422753505901973}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5950232835317193459
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2544639139341360973}
+  - component: {fileID: 7236309708455568107}
+  - component: {fileID: 4051850719176242623}
+  m_Layer: 0
+  m_Name: EnemySensor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2544639139341360973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5950232835317193459}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3863422753505901973}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &7236309708455568107
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5950232835317193459}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 5
+--- !u!114 &4051850719176242623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5950232835317193459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4d5b21e9dab914ea10d0f15d1df080, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  tagsToSense:
+  - Enemy
+  layerMaskToRaycast: Character
+  LineOfSightTransform: {fileID: 0}
+  maxLineOfSightDistance: 5
+  maxTargetsToConsider: 5
+  debug: 0
 --- !u!1 &6876446921733508876
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,6 +1428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87e4d7b5c0912b043a8a76cdc446f8ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interact
+  passiveSpellAffects: {fileID: 11400000, guid: 4dd963e0c99e82748a95667a2c7a6379, type: 2}
 --- !u!114 &3092119275389195811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1333,6 +1614,8 @@ Transform:
   - {fileID: 806214431907546344}
   - {fileID: 2795594205372897297}
   - {fileID: 903901529417490439}
+  - {fileID: 2544639139341360973}
+  - {fileID: 5703968724197521167}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6546536738721415743
@@ -1803,6 +2086,9 @@ MonoBehaviour:
   spellCastTransform: {fileID: 3772056237199473288}
   spellParentTransform: {fileID: 0}
   passiveSpellAffects: {fileID: 11400000, guid: 4dd963e0c99e82748a95667a2c7a6379, type: 2}
+  lineOfSightSensor: {fileID: 4051850719176242623}
+  projectileManager: {fileID: 1520860615228241362}
+  enemyInRange: {fileID: 0}
   debug: 1
   spell1: {fileID: 0}
   spell2: {fileID: 0}
