@@ -75,6 +75,7 @@ public class MapGenerator : MonoBehaviour
 
     int numChestRooms = 3;
     List<(int x, int y)> specialRoomCoords = new();
+    List<Vector2> ropeCoords = new();
 
     
     // this is apparently how you do multidimensional arrays
@@ -127,7 +128,13 @@ public class MapGenerator : MonoBehaviour
         PlaceEntities();
         // teleport player to starting position
         player.transform.position = startingPosition;
-        print(player.transform.position);
+        StartCoroutine(DelayedStart());
+    }
+
+    IEnumerator DelayedStart()
+    {
+        yield return new WaitForSeconds(5);
+        // PlaceRopes();
     }
 
     void SpawnEntities()
@@ -490,7 +497,7 @@ public class MapGenerator : MonoBehaviour
                 else if (roomProbability == -44)
                 {
                     //rope.strategy.UsePlaceableConsumable(nonColliderTilemap.transform, new Vector3(xCoord + startingPositionOffset, yCoord + startingPositionOffset, 0));
-                    rope.strategy.UsePlaceableConsumable(nonColliderTilemap.transform, new Vector3(xCoord, yCoord, 0));
+                    ropeCoords.Add(new Vector2(xCoord, yCoord));
                 }
                  // check for special value indicating a chest
                 else if (roomProbability == -66)
@@ -549,7 +556,15 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
+        PlaceRopes();
+    }
 
+    void PlaceRopes()
+    {
+        foreach (Vector2 ropeCoord in ropeCoords)
+        {
+            rope.strategy.UsePlaceableConsumable(nonColliderTilemap.transform, new Vector3(ropeCoord.x, ropeCoord.y, 0));
+        }
     }
 
     void GatherTrapTileInfo(Trap trap)
