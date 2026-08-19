@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private HUDBar healthBar;
     [SerializeField] private HUDBar manaBar;
+    [SerializeField] private FullScreenEffect fullScreenEffect;
     [SerializeField] private InventoryUI inventoryUI;
     
     [Header("Debugging")]
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviour
     public Health PlayerHealth { get; set; }
     public SpellManager SpellManager { get; set; }
     public InventoryUI InventoryUI => inventoryUI;
+    public FullScreenEffect FullScreenEffect => fullScreenEffect;
     
     public static GameManager Instance { get; private set; }
     
@@ -57,7 +59,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        // Ensure only one instance of the inventory exists globally
+        // Ensure only one instance of the game manager exists globally
         if (Instance && Instance != this)
         {
             Destroy(this);

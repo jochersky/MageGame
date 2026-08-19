@@ -20,6 +20,7 @@ public class SpellManager : MonoBehaviour
     [SerializeField] private SpellConfig spell2;
     
     private PlayerStateMachine _psm;
+    private FullScreenEffect _fullScreenEffect;
     private LayerMask _layerMask;
 
     public SpellConfig spellConfig1;
@@ -257,6 +258,12 @@ public class SpellManager : MonoBehaviour
             spellConfig2.strategy.CastSpell(spellCastTransform, spellCastTransform.position);
         
         StartCoroutine(WaitBeforeCastingSpell2Again());
+    }
+
+    public void StartVignetteEffect(Color color, float duration)
+    {
+        if (!_fullScreenEffect) _fullScreenEffect = GameManager.Instance.FullScreenEffect;
+        _fullScreenEffect.StartScreenEffect(color, duration);
     }
     
     private IEnumerator WaitBeforeCastingSpell1Again()
