@@ -133,8 +133,8 @@ public class MapGenerator : MonoBehaviour
 
     IEnumerator DelayedStart()
     {
-        yield return new WaitForSeconds(5);
-        // PlaceRopes();
+        yield return new WaitForEndOfFrame();
+        PlaceRopes();
     }
 
     void SpawnEntities()
@@ -556,7 +556,6 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
-        PlaceRopes();
     }
 
     void PlaceRopes()
