@@ -10,6 +10,8 @@ public class ProjectileManager : MonoBehaviour
     [SerializeField] private float followSpeed;
     [SerializeField] private float distanceAdjust;
     
+    public bool MaxProjectiles => projectileChain.Links.Count >= maxProjectiles;
+    
     private void FixedUpdate()
     {
         projectileChain.UpdateChain(progressSpeed, followSpeed);

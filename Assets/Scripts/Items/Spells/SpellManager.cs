@@ -210,6 +210,12 @@ public class SpellManager : MonoBehaviour
             spellConfig1.strategy.CastSpell(spellCastTransform, _psm.gameObject.transform.position);
         else if (spellConfig1.spawnsProjectile)
         {
+            if (projectileManager.MaxProjectiles)
+            {
+                UpdateMana(spellConfig1.manaCost);
+                return;
+            }
+            
             GameObject projectile = spellConfig1.strategy.CastSpell(spellCastTransform, spellCastTransform.position);
             projectileManager.AddProjectile(projectile);
             if (projectile.TryGetComponent<IProjectile>(out IProjectile projectileComponent)) projectileComponent.Initialize(lineOfSightSensor, projectileManager);
@@ -250,6 +256,12 @@ public class SpellManager : MonoBehaviour
             spellConfig2.strategy.CastSpell(spellCastTransform, _psm.gameObject.transform.position);
         else if (spellConfig2.spawnsProjectile)
         {
+            if (projectileManager.MaxProjectiles)
+            {
+                UpdateMana(spellConfig1.manaCost);
+                return;
+            }
+            
             GameObject projectile = spellConfig2.strategy.CastSpell(spellCastTransform, spellCastTransform.position);
             projectileManager.AddProjectile(projectile);
             if (projectile.TryGetComponent<IProjectile>(out IProjectile projectileComponent)) projectileComponent.Initialize(lineOfSightSensor, projectileManager);

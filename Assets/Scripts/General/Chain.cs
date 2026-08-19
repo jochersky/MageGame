@@ -10,6 +10,7 @@ public class Chain : MonoBehaviour
     [SerializeField] private List<GameObject> links;
     [SerializeField] private ChainLinkLayerStrategy chainLinkLayer;
     [Header("Properties")]
+    [SerializeField] private bool equidistantPositioning;
     [SerializeField] private float distance = 0.25f;
     [SerializeField] private float startingProgress = 0.25f;
     [SerializeField] private int frontLayer;
@@ -42,7 +43,17 @@ public class Chain : MonoBehaviour
             if (!links[i]) continue; 
             
             Transform link = links[i].transform;
-            float linkProgress = Math.Max(0, _progress - (distance * i)) % 1;
+            
+            float linkProgress = 0;
+            if (equidistantPositioning)
+            {
+                float distFactor = i != 0 ? 1f / links.Count : 0f;
+                linkProgress = _progress - distFactor * i;
+            }
+            else 
+                linkProgress = _progress - i * distance;
+            if (linkProgress < 0) 
+                linkProgress += 1;
             
             link.position = Vector3.MoveTowards(link.position, spline.EvaluatePosition(linkProgress), followSpeed * Time.deltaTime);
             

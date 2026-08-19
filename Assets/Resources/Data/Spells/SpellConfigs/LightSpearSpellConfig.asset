@@ -16,9 +16,10 @@ MonoBehaviour:
   itemName: Light Spear
   icon: {fileID: 21300000, guid: b7200f5a36548af4892eeddcfb4ab993, type: 3}
   changePositionOnObstruction: 0
-  description: 
-  manaCost: 1
-  cooldown: 0
+  description: Summons a spear of light that targets and chases enemies in close
+    proximity.
+  manaCost: 10
+  cooldown: 0.5
   twoPartCast: 0
   spawnsProjectile: 1
   strategy: {fileID: 11400000, guid: c0687d025c3c82d43956f61f84532d39, type: 2}

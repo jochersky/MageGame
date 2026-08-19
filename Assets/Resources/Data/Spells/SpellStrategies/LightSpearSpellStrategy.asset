@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89704932049bd844fbce1f7901cd2810, type: 3}
   m_Name: LightSpearSpellStrategy
   m_EditorClassIdentifier: Assembly-CSharp::SpellStrategy
-  damage: 0
+  damage: 1
   prefab: {fileID: 7215397504431213932, guid: b8589dab8110488409659a26c97dbfad, type: 3}
+  vignetteColor: {r: 0, g: 0, b: 0, a: 0}
+  vignetteDuration: 0

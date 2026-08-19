@@ -323,7 +323,8 @@ MonoBehaviour:
   spline: {fileID: 5884122442991625009}
   links: []
   chainLinkLayer: {fileID: 0}
-  distance: 0.15
+  equidistantPositioning: 1
+  distance: 0
   startingProgress: 0
   frontLayer: 3
   backLayer: 1
@@ -344,7 +345,7 @@ MonoBehaviour:
   projectileChain: {fileID: 3945980037609010536}
   maxProjectiles: 5
   progressSpeed: 0.3
-  followSpeed: 3
+  followSpeed: 6.25
   distanceAdjust: 0.03
 --- !u!1 &906115594604720695
 GameObject:

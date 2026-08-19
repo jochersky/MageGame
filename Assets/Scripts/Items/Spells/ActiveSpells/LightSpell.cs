@@ -2,11 +2,12 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class LightSpell : MonoBehaviour
+public class LightSpell : MonoBehaviour, IProjectile
 {
     [Header("References")]
     [SerializeField] private PassiveSpellAffects passiveSpellAffects;
-    SpriteRenderer spriteRenderer;
+    private SpriteRenderer spriteRenderer;
+    private ProjectileManager _projectileManager;
     
     [Header("Properties")]
     [SerializeField] private float radiusGrowSize;
@@ -22,6 +23,11 @@ public class LightSpell : MonoBehaviour
     float green;
     float blue;
     float alpha;
+    
+    public void Initialize(LineOfSightSensor targetSensor, ProjectileManager projectileManager)
+    {
+        _projectileManager = projectileManager;
+    }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -47,6 +53,7 @@ public class LightSpell : MonoBehaviour
         if (alpha <= 0)
         {
             passiveSpellAffects.LightRadiusDiff -= radiusGrowSize;
+            _projectileManager?.RemoveProjectile(gameObject);
             Destroy(gameObject);
         }
     }
