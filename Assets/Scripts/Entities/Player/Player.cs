@@ -3,7 +3,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [Header("Stats/Effects")]
     [SerializeField] private BaseStats stats;
+    [SerializeField] private PassiveSpellAffects passiveSpellAffects;
+    [Header("References")]
+    [SerializeField] private Transform lightTransform;
     private Health _health;
     private SpellManager _spellManager;
 
@@ -37,6 +41,15 @@ public class Player : MonoBehaviour
         _health.UpdateMaxHealth(stats.health);
         _spellManager.MaxMana = stats.mana;
         _spellManager.Mana = _spellManager.MaxMana;
+
+        float size = stats.lightRadiusSize + passiveSpellAffects.LightRadiusDiff;
+        lightTransform.localScale = new Vector3(size, size, size);
+
+        passiveSpellAffects.OnLightRadiusUpdated += (lightRadiusDiff) =>
+        {
+            float newSize = stats.lightRadiusSize + lightRadiusDiff;
+            lightTransform.localScale = new Vector3(newSize, newSize, newSize);
+        };
 
         if (HealthBar)
         {

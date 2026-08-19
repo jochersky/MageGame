@@ -4,12 +4,12 @@ using UnityEngine.Rendering.Universal;
 [RequireComponent(typeof(SpriteRenderer))]
 public class LightSpell : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private PassiveSpellAffects passiveSpellAffects;
     SpriteRenderer spriteRenderer;
-    Light2D lightAura;
-    float red;
-    float green;
-    float blue;
-    float alpha;
+    
+    [Header("Properties")]
+    [SerializeField] private float radiusGrowSize;
     [SerializeField] float startingIntensity = 5f;
     // time between fade steps
     [SerializeField] float fadeRate = 1f;
@@ -17,12 +17,17 @@ public class LightSpell : MonoBehaviour
     [SerializeField] float spriteFadeStep = 0.1f;
     // how much intensity to reduce by per fade step
     [SerializeField] float brightnessFadeStep = 0.3f;
+    
+    float red;
+    float green;
+    float blue;
+    float alpha;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        passiveSpellAffects.LightRadiusDiff += radiusGrowSize;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        lightAura = GetComponentInChildren<Light2D>();
-        lightAura.intensity = startingIntensity;
         red = spriteRenderer.color.r;
         green = spriteRenderer.color.g;
         blue = spriteRenderer.color.b;
@@ -34,7 +39,6 @@ public class LightSpell : MonoBehaviour
     {
         alpha -= spriteFadeStep;
         spriteRenderer.color = new Color(red, green, blue, alpha);
-        lightAura.intensity -= brightnessFadeStep;
     }
 
     // Update is called once per frame
@@ -42,6 +46,7 @@ public class LightSpell : MonoBehaviour
     {
         if (alpha <= 0)
         {
+            passiveSpellAffects.LightRadiusDiff -= radiusGrowSize;
             Destroy(gameObject);
         }
     }

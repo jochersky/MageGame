@@ -17,3 +17,5 @@ MonoBehaviour:
   jumps: 0
   dodges: 0
   speed: 8
+  gravity: 1
+  lightRadiusSize: 1.3
