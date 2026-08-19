@@ -72,7 +72,6 @@ public class Health : MonoBehaviour
         if (damageFlash) damageFlash.StartFlash();
         if (_currentHealth < 0f) OnDestroyed?.Invoke();
         if (_currentHealth <= 0f) {
-            print("DEATH " + name);
             OnDeath?.Invoke();
         }
     }
