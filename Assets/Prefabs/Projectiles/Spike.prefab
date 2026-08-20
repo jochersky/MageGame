@@ -108,6 +108,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  cameraShakeAmt: 0
+  cameraShakeDuration: 0
+  knockBackForce: 0
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders: []
 --- !u!114 &1025555446283719436
 MonoBehaviour:
@@ -124,7 +132,7 @@ MonoBehaviour:
   directionFired: {x: 1, y: 0}
   rb: {fileID: 3214588655195388076}
   hitWallEffect: {fileID: 2981399832347914475, guid: 4e70a93361845e74584a71d7686c4314, type: 3}
-  velocity: 50
+  velocity: 100
 --- !u!58 &2128436095994261852
 CircleCollider2D:
   m_ObjectHideFlags: 0

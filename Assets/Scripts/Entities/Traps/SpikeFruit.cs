@@ -6,6 +6,8 @@ public class SpikeFruit : Trap
     [SerializeField] Spike spike;
     [SerializeField] Rigidbody2D rb;
     [SerializeField] TemporaryEffect burstEffect;
+    [SerializeField] float fallingSpeed;
+    [SerializeField] float spikeSpawnVerticalOffset;
     private bool falling = false;
     public override bool CheckIfValidPosition(TileBase currTile, Vector3Int tileCoords, Tilemap colliderMap, Tilemap nonColliderMap)
     {
@@ -28,33 +30,33 @@ public class SpikeFruit : Trap
             Burst();
         } else if (!falling && collision.CompareTag("Hitbox")) //!collision.isTrigger || 
         {
-            print("triggered by " + collision.name);
             Fall();   
         }
     }
 
     void Burst()
     {
+        Vector3 spikeSpawnPosition = new(transform.position.x, transform.position.y + spikeSpawnVerticalOffset, transform.position.z);
         Instantiate(burstEffect, transform.position, Quaternion.identity);
         // send spikes left, up, and right   
         //spike.transform.SetPositionAndRotation(spike.transform.position, Quaternion.Euler(0, 0, 0));
         spike.directionFired = -transform.right;
-        Spike instance = Instantiate(spike, transform.position, Quaternion.identity);
+        Spike instance = Instantiate(spike, spikeSpawnPosition, Quaternion.identity);
         instance.transform.SetPositionAndRotation(instance.transform.position, Quaternion.Euler(0, 0, 0));
         //spike.transform.SetPositionAndRotation(spike.transform.position, Quaternion.Euler(0, 0, 270));
         spike.directionFired = transform.up;
-        instance = Instantiate(spike, transform.position, Quaternion.identity);
+        instance = Instantiate(spike, spikeSpawnPosition, Quaternion.identity);
         instance.transform.SetPositionAndRotation(instance.transform.position, Quaternion.Euler(0, 0, 270));
         //spike.transform.SetPositionAndRotation(spike.transform.position, Quaternion.Euler(0, 0, 180));
         spike.directionFired = transform.right;
-        instance = Instantiate(spike, transform.position, Quaternion.identity);
+        instance = Instantiate(spike, spikeSpawnPosition, Quaternion.identity);
         instance.transform.SetPositionAndRotation(instance.transform.position, Quaternion.Euler(0, 0, 180));
         Destroy(gameObject);
     }
 
     void Fall()
     {
-        rb.WakeUp();
+        rb.gravityScale = fallingSpeed;
         falling = true;
     }
 }
