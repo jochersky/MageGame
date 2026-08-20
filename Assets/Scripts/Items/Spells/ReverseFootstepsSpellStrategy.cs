@@ -20,7 +20,7 @@ public class ReverseFootstepsSpellStrategy : SpellStrategy
         _psm = playerStateMachine;
     }
     
-    public override void CastSpell(Transform spawnTransform, Vector3 spawnPosition)
+    public override GameObject CastSpell(Transform spawnTransform, Vector3 spawnPosition)
     {
         if (_storedPosition == Vector2.zero)
         {
@@ -38,6 +38,8 @@ public class ReverseFootstepsSpellStrategy : SpellStrategy
             _storedPosition = Vector2.zero;
             Destroy(_marker);
         }
+
+        return null;
     }
 
     public override void Cancel()

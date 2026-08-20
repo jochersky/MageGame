@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpellStrategy
   damage: 0
   prefab: {fileID: 132537804412058734, guid: 6b28ce71b3789ce41b81031c7d898c45, type: 3}
+  vignetteColor: {r: 0.7411765, g: 1, b: 0.9568628, a: 1}
+  vignetteDuration: 0.5

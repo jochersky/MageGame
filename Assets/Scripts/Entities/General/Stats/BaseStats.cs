@@ -8,4 +8,6 @@ public class BaseStats : ScriptableObject
     public int jumps = 1;
     public int dodges = 0;
     public float speed = 1f;
+    public float gravity = 1f;
+    public float lightRadiusSize = 1f;
 }
