@@ -18,8 +18,10 @@ public class Bomb : Consumable
     [SerializeField] TemporaryEffect explosionEffect;
 
     private CountdownTimer _particleLifetimeTimer;
-    
-    private float timer = 0f;
+
+    public float ExplodeTime { get; set; }
+
+private float timer = 0f;
     private bool _followRb = true;
     
     private void Start()
