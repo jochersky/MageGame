@@ -94,6 +94,7 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _justPressedJump;
     private bool _isPressingJump;
     private bool _newJumpPress;
+    private bool _coyoteJumpDisabled;
     private int _numDoubleJumps;
     private bool _isPressingDodge;
     private bool _canDodge;
@@ -157,6 +158,7 @@ public class PlayerStateMachine : MonoBehaviour
     public bool JustPressedJump { get { return _justPressedJump; } set { _justPressedJump = value; } }
     public bool IsPressingJump { get { return _isPressingJump; } set { _isPressingJump = value; } }
     public bool NewJumpPress { get { return _newJumpPress; } set { _newJumpPress = value; } }
+    public bool CoyoteJumpDisabled { get { return _coyoteJumpDisabled; } set { _coyoteJumpDisabled = value; } }
     public float MaxDodgeSpeed { get { return maxDodgeSpeed; } set { maxDodgeSpeed = value; } }
     public bool IsPressingDodge { get { return _isPressingDodge; } set { _isPressingDodge = value; } }
     public bool CanDodge { get { return _canDodge; } set { _canDodge = value; } }
@@ -323,11 +325,18 @@ public class PlayerStateMachine : MonoBehaviour
         // Allow player extra time to jump after not being grounded.
         if (!_isGrounded)
         {
+            if (_coyoteJumpDisabled)
+            {
+                _canJump = false;
+                return;
+            }
+            Debug.Log("can jump ok");
             _airTime += Time.deltaTime;
             _canJump = _airTime < coyoteJumpTimer;
         }
         else
         {
+            _coyoteJumpDisabled = false;
             _airTime = 0;
             _canJump = true;
             _numDoubleJumps = passiveSpellAffects.doubleJumps + baseStats.jumps;

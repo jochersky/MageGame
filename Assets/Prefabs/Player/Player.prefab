@@ -1693,7 +1693,7 @@ MonoBehaviour:
   maxDoubleJumpHeight: 10
   jumpCheckTransform: {fileID: 1587937387225483812}
   jumpCheckSize: {x: 0.54, y: 0.06}
-  coyoteJumpTimer: 0.05
+  coyoteJumpTimer: 0.1
   maxDodgeSpeed: 15
   dodgeDuration: 0.2
   dodgeCooldown: 1.5
@@ -2613,6 +2613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d7fc9bfbb117d4ba24429ed8b2ea1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  spriteRenderer: {fileID: 0}
   _flashSpeedCurve:
     serializedVersion: 2
     m_Curve:
