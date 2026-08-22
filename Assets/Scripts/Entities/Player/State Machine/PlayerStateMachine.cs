@@ -330,7 +330,6 @@ public class PlayerStateMachine : MonoBehaviour
                 _canJump = false;
                 return;
             }
-            Debug.Log("can jump ok");
             _airTime += Time.deltaTime;
             _canJump = _airTime < coyoteJumpTimer;
         }

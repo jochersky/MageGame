@@ -23,7 +23,6 @@ public class PlayerFallState : PlayerBaseState
         if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
         else if (Context.IsPressingJump && (Context.CanJump || Context.NumDoubleJumps > 0))
         {
-            Debug.Log($"{Context.NewJumpPress} && ({Context.CanJump} || {Context.NumDoubleJumps > 0})");
             Context.CoyoteJumpDisabled = true;
             SwitchState(Dictionary.Jump());
         }

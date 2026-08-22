@@ -16,8 +16,7 @@ public class SkeletonFallState : SkeletonBaseState
     public override void UpdateState()
     {
         if (Context.IsDead) SwitchState(Dictionary.Dead());
-        
-        if (Context.IsGrounded) SwitchState(Dictionary.Grounded());
+        else if (Context.IsGrounded) SwitchState(Dictionary.Grounded());
     }
 
     public override void ExitState()
