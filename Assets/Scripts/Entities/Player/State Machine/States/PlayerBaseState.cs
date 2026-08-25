@@ -35,6 +35,7 @@ public abstract class PlayerBaseState
     {
         ExitState();
         newState.EnterState();
+        _currentSubState = null;
 
         if (_isRootState)
         {

@@ -33,6 +33,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private float maxDoubleJumpHeight = 10f;
     [SerializeField] private Transform jumpCheckTransform;
     [SerializeField] private Vector2 jumpCheckSize = new Vector2(1f, 0.25f);
+    [SerializeField] private float justJumpedGracePeriod = 0.05f;
     [SerializeField] private float coyoteJumpTimer = 0.1f;
     
     [Header("Dodge")]
@@ -94,6 +95,8 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _justPressedJump;
     private bool _isPressingJump;
     private bool _newJumpPress;
+    private bool _justJumped;
+    private float _justJumpedTimer;
     private bool _coyoteJumpDisabled;
     private int _numDoubleJumps;
     private bool _isPressingDodge;
@@ -154,6 +157,7 @@ public class PlayerStateMachine : MonoBehaviour
     public float MaxDoubleJumpHeight { get { return maxDoubleJumpHeight; } set { maxDoubleJumpHeight = value; } }
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; } }
     public bool CanJump { get { return _canJump; } set { _canJump = value; } }
+    public bool JustJumped { get { return _justJumped; } set { _justJumped = value; } }
     public int NumDoubleJumps { get { return _numDoubleJumps; } set { _numDoubleJumps = value; } }
     public bool JustPressedJump { get { return _justPressedJump; } set { _justPressedJump = value; } }
     public bool IsPressingJump { get { return _isPressingJump; } set { _isPressingJump = value; } }
@@ -191,7 +195,7 @@ public class PlayerStateMachine : MonoBehaviour
         
         // State machine initial state setup
         _states = new PlayerStateDictionary(this);
-        _currentState = _isGrounded ? _states.Grounded() : _states.Jump();
+        _currentState = _isGrounded ? _states.Grounded() : _states.Fall();
         _currentState.EnterState();
     
         // provide initial direction for dodging (facing right)
@@ -239,7 +243,7 @@ public class PlayerStateMachine : MonoBehaviour
         
             y = sampleInBounds ? _verticalMovement * ropeClimbSpeed : 0;
         }
-        
+
         _rb.linearVelocity = new Vector2(x, y);
         _rb.linearVelocity += _knockBackForce;
 
@@ -292,7 +296,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         _isPressingJump = context.ReadValueAsButton();
         _justPressedJump = context.started;
-        if (context.started && _numDoubleJumps > 0) _newJumpPress = true;
+        if (context.started) _newJumpPress = true;
     }
 
     public void OnDodge(InputAction.CallbackContext context)
@@ -320,32 +324,57 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void CheckGrounded()
     {
-        _isGrounded = Physics2D.OverlapBox(jumpCheckTransform.position, jumpCheckSize, 0, environmentLayer);
+        // _isGrounded = Physics2D.OverlapBox(jumpCheckTransform.position, jumpCheckSize, 0, environmentLayer)
+        //     && LinearVelocityY <= 0f;
         
-        // Allow player extra time to jump after not being grounded.
-        if (!_isGrounded)
+        _isGrounded = Physics2D.OverlapBox(jumpCheckTransform.position, jumpCheckSize, 0, environmentLayer);
+
+        if (_justJumped)
         {
-            if (_coyoteJumpDisabled)
+            _justJumpedTimer += Time.deltaTime;
+            if (_justJumpedTimer >= justJumpedGracePeriod)
             {
-                _canJump = false;
-                return;
+                _justJumped = false;
+                _justJumpedTimer = 0;
             }
-            _airTime += Time.deltaTime;
-            _canJump = _airTime < coyoteJumpTimer;
         }
-        else
+
+        // ignore overlapping ground check for a couple of physics steps right after jumping
+        bool countsAsGrounded = _isGrounded && !_justJumped;
+
+        if (!countsAsGrounded && _canJump)
         {
-            _coyoteJumpDisabled = false;
+            _airTime += Time.deltaTime;
+            _canJump = _airTime < coyoteJumpTimer && !_coyoteJumpDisabled;
+        }
+        else if (countsAsGrounded)
+        {
+            _airTime = 0;
+            _canJump = true;
+            _numDoubleJumps = passiveSpellAffects.doubleJumps + baseStats.jumps;
+        }
+        
+        
+        
+        if (!_isGrounded && _canJump)
+        {
+            _airTime += Time.deltaTime;
+            _canJump = _airTime < coyoteJumpTimer && !_coyoteJumpDisabled;
+        }
+        else if (_isGrounded)
+        {
             _airTime = 0;
             _canJump = true;
             _numDoubleJumps = passiveSpellAffects.doubleJumps + baseStats.jumps;
         }
 
-        if (_isGrounded && !_dodgeInCooldown)
+        if (countsAsGrounded && !_dodgeInCooldown)
         {
             _canDodge = true;
             _numDodges = passiveSpellAffects.dodges + baseStats.dodges;
         }
+
+        _isGrounded = countsAsGrounded;
     }
     
     private void OnDrawGizmosSelected()
@@ -357,14 +386,15 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void UpdateGravity()
     {
-        if (_currentState == _states.Dodge() ) return;
+        if (_currentState == _states.Dodge()) return;
         
-        if (_currentState == _states.Rope() || _currentState == _states.Climb())
+        if (_currentState == _states.Rope() || _currentState == _states.Climb() || _isGrounded)
         {
             _rb.gravityScale = 0;
+            _rb.linearVelocityY = 0f;
         }
         // Player falls down faster with negative y-velocity.
-        else if (_rb.linearVelocityY < 0)
+        else if (_currentState == _states.Fall())
         {
             _rb.gravityScale = baseGravity * fallSpeedMultiplier * _stats.GravityFactor;
             _rb.linearVelocityY = Mathf.Max(_rb.linearVelocityY, -maxFallSpeed);
@@ -378,6 +408,7 @@ public class PlayerStateMachine : MonoBehaviour
     private void UpdateKnockBackForce()
     {
         _knockBackForce *= reduceConst;
+        if (_knockBackForce.magnitude <= 0.1f) _knockBackForce = Vector2.zero;
     }
 
     public void EnemyStomped()
