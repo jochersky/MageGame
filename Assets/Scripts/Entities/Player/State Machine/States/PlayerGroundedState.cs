@@ -13,6 +13,8 @@ public class PlayerGroundedState : PlayerBaseState
         Context.HorizontalMovement = 0;
         Context.VerticalMovement = 0;
         Context.CoyoteJumpDisabled = false;
+        // Debug.Log($"enter grounded {Context.debugCount}");
+        Context.debugCount++;
         InitializeSubState();
     }
 

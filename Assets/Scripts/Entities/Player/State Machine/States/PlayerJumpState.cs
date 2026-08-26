@@ -11,6 +11,8 @@ public class PlayerJumpState : PlayerBaseState
     public override void EnterState()
     {
         Context.Animator.CrossFade(Context.Jump, 0, 0);
+        // Debug.Log($"enter jump {Context.debugCount}");
+        Context.debugCount++;
         PerformJump();
     }
 
@@ -30,7 +32,7 @@ public class PlayerJumpState : PlayerBaseState
             Context.CoyoteJumpDisabled = true;
             SwitchState(Dictionary.Fall());
         }
-        else if (Context.IsGrounded) SwitchState(Dictionary.Grounded());
+        else if (Context.IsGrounded && !Context.JustJumped) SwitchState(Dictionary.Grounded());
         else if (Context.CanClimb && Context.MoveDirection.x != 0) SwitchState(Dictionary.Climb());
     }
 

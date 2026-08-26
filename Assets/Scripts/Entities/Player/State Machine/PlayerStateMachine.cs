@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Threading;
 using Unity.VisualScripting;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -176,6 +177,8 @@ public class PlayerStateMachine : MonoBehaviour
     public bool WasClimbingRope { get { return _wasClimbingRope; }  set { _wasClimbingRope = value; } }
     public bool IsCrouching { get { return _isCrouching; } set { _isCrouching = value; } }
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
+
+    public int debugCount = 0;
     
     void Start()
     {
@@ -324,44 +327,37 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void CheckGrounded()
     {
-        // _isGrounded = Physics2D.OverlapBox(jumpCheckTransform.position, jumpCheckSize, 0, environmentLayer)
-        //     && LinearVelocityY <= 0f;
-        
-        _isGrounded = Physics2D.OverlapBox(jumpCheckTransform.position, jumpCheckSize, 0, environmentLayer);
+        bool rawGrounded = Physics2D.OverlapBox(jumpCheckTransform.position, jumpCheckSize, 0, environmentLayer)
+                           && LinearVelocityY <= 0.1f;
 
         if (_justJumped)
         {
-            _justJumpedTimer += Time.deltaTime;
-            if (_justJumpedTimer >= justJumpedGracePeriod)
+            if (!rawGrounded)
             {
+                // actually left the ground
                 _justJumped = false;
-                _justJumpedTimer = 0;
+                _justJumpedTimer = 0f;
+            }
+            else
+            {
+                // makes sure it isn't stuck as true forever
+                _justJumpedTimer += Time.fixedDeltaTime;
+                if (_justJumpedTimer >= justJumpedGracePeriod)
+                {
+                    _justJumped = false;
+                    _justJumpedTimer = 0f;
+                }
             }
         }
 
-        // ignore overlapping ground check for a couple of physics steps right after jumping
-        bool countsAsGrounded = _isGrounded && !_justJumped;
+        bool countsAsGrounded = rawGrounded;
 
         if (!countsAsGrounded && _canJump)
         {
             _airTime += Time.deltaTime;
             _canJump = _airTime < coyoteJumpTimer && !_coyoteJumpDisabled;
         }
-        else if (countsAsGrounded)
-        {
-            _airTime = 0;
-            _canJump = true;
-            _numDoubleJumps = passiveSpellAffects.doubleJumps + baseStats.jumps;
-        }
-        
-        
-        
-        if (!_isGrounded && _canJump)
-        {
-            _airTime += Time.deltaTime;
-            _canJump = _airTime < coyoteJumpTimer && !_coyoteJumpDisabled;
-        }
-        else if (_isGrounded)
+        else if (countsAsGrounded && !_justJumped)
         {
             _airTime = 0;
             _canJump = true;
