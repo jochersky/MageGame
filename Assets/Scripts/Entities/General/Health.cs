@@ -71,7 +71,9 @@ public class Health : MonoBehaviour
         OnDamageTaken?.Invoke(damageProperties);
         if (damageFlash) damageFlash.StartFlash();
         if (_currentHealth < 0f) OnDestroyed?.Invoke();
-        if (_currentHealth <= 0f) OnDeath?.Invoke();
+        if (_currentHealth <= 0f) {
+            OnDeath?.Invoke();
+        }
     }
 
     public void Heal(int healAmt)

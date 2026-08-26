@@ -29,7 +29,6 @@ public class Landmine : Trap
     {
         _particleLifetimeTimer = new CountdownTimer(explosionRadius.main.startLifetime.constantMax);
         _particleLifetimeTimer.OnTimerStop += () => { Destroy(gameObject); };
-        
         damageHitbox.enabled = false;
         explosionHitbox.enabled = false;
     }
@@ -65,5 +64,10 @@ public class Landmine : Trap
         damageHitbox.enabled = false;
         explosionHitbox.enabled = false;
         lightGO.SetActive(false);
+        }
+
+    void Update()
+    {
+        _particleLifetimeTimer.Tick(Time.deltaTime);
     }
 }

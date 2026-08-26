@@ -1,8 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Resources/Data/Spells/SpellEffectStrategies/DevourSpellEffectsStrategy.asset.meta
 guid: 91595fcabba48e646b85604625051d01
+========
+guid: 3bd8cd55b0be6144a9f7e01c5774b85a
+>>>>>>>> Alpha11Bugfixes:Assets/Shaders/Effects/LightSpearExplosionParticle.mat.meta
 NativeFormatImporter:
   externalObjects: {}
-  mainObjectFileID: 11400000
+  mainObjectFileID: 2100000
   userData: 
   assetBundleName: 
   assetBundleVariant: 

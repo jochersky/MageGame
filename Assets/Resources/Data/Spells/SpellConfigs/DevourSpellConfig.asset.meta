@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Resources/Data/Spells/SpellConfigs/DevourSpellConfig.asset.meta
 guid: d3bfd76ea24bb2f4daf9b714e6914731
+========
+guid: 91595fcabba48e646b85604625051d01
+>>>>>>>> Alpha11Bugfixes:Assets/Resources/Data/Spells/SpellEffectStrategies/DevourSpellEffectsStrategy.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 11400000

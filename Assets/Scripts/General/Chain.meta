@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/General/Chain.meta
 guid: efcf76e2d3ecb654d99f53bd6f91404b
+========
+guid: 574184ebe0d82d341962fdc762598c20
+>>>>>>>> Alpha11Bugfixes:Assets/UI Toolkit.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

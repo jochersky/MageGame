@@ -1,8 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Resources/Data/Spells/SpellConfigs/LightSpearSpellConfig.asset.meta
 guid: e4adf738853ebcd4a830518736723694
+========
+guid: 597724509fa9d1c4a81671fc5b1f8f27
+>>>>>>>> Alpha11Bugfixes:Assets/Shaders/Effects/GibDestroyedEffect.mat.meta
 NativeFormatImporter:
   externalObjects: {}
-  mainObjectFileID: 11400000
+  mainObjectFileID: 2100000
   userData: 
   assetBundleName: 
   assetBundleVariant: 

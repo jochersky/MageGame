@@ -6,7 +6,7 @@ public class Flamethrower : MonoBehaviour
 {
     bool triggered = false;
     [SerializeField] float triggerDelay = 0.5f;
-    [SerializeField] float damageDelay = 0.2f;
+    //[SerializeField] float damageDelay = 0.2f;
     [SerializeField] float duration = 2f;
     [SerializeField] GameObject hitboxPivot;
     [SerializeField] GameObject triggerboxPivot;

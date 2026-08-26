@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/Entities/Enemies/Dancing Plant.meta
+guid: 63acb59f67ed90c4a874a7418491fdb1
+========
+guid: 620a7b371373d9c46adbc86c86b15250
+>>>>>>>> main:Assets/Scripts/Entities/Objects/Projectiles.meta
+folderAsset: yes
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

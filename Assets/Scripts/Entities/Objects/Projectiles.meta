@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/Entities/Objects/Projectiles.meta
 guid: 620a7b371373d9c46adbc86c86b15250
+========
+guid: 37e25ff6b923e5f4e8795453277aed29
+>>>>>>>> Alpha11Bugfixes:Assets/Sprites/Spells/Projectiles.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
