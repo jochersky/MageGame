@@ -358,7 +358,7 @@ public class PlayerStateMachine : MonoBehaviour
         // Player falls down faster with negative y-velocity.
         else if (_rb.linearVelocityY < 0)
         {
-            _rb.gravityScale = baseGravity * fallSpeedMultiplier;
+            _rb.gravityScale = baseGravity * fallSpeedMultiplier * _stats.GravityFactor;
             _rb.linearVelocityY = Mathf.Max(_rb.linearVelocityY, -maxFallSpeed);
         }
         else

@@ -49,6 +49,11 @@ MonoBehaviour:
   cameraShakeAmt: 0.1
   cameraShakeDuration: 0.2
   knockBackForce: 3
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders: []
 --- !u!61 &7784417621114260720
 BoxCollider2D:
@@ -667,6 +672,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   prefab: {fileID: 948560983991040983, guid: 3bdec0d7a02cbfc49b32eb3888e14d25, type: 3}
   parentTransform: {fileID: 0}
+  spawnCount: 1
+  spawnRadius: 0.25
+  randomizeRotation: 1
+  rotationRange: 45
 --- !u!114 &3455514454161224423
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,7 +5,8 @@ public enum StatType
     Health,
     Mana,
     Jumps,
-    Speed
+    Speed,
+    GravityFactor,
 }
 
 public class Stats
@@ -50,6 +51,16 @@ public class Stats
         get
         {
             var q = new Query(StatType.Speed, _baseStats.speed);
+            _mediator.PerformQuery(this, q);
+            return q.Value;
+        }
+    }
+
+    public float GravityFactor
+    {
+        get
+        {
+            var q = new Query(StatType.GravityFactor, _baseStats.gravity);
             _mediator.PerformQuery(this, q);
             return q.Value;
         }

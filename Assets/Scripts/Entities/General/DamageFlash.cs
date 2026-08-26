@@ -1,14 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
 public class DamageFlash : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private AnimationCurve _flashSpeedCurve;
     [SerializeField] private Color flashColor = Color.white;
     [SerializeField] private float flashTime = 0.25f;
     
-    private SpriteRenderer _spriteRenderer;
     private Material _material;
     
     private Coroutine _flashCoroutine;
@@ -22,8 +21,8 @@ public class DamageFlash : MonoBehaviour
     
     private void Start()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _material = _spriteRenderer.material;
+        if (!spriteRenderer) spriteRenderer = GetComponent<SpriteRenderer>();
+        _material = spriteRenderer.material;
     }
 
     public void StartFlash()

@@ -2,14 +2,15 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class LightSpell : MonoBehaviour
+public class LightSpell : MonoBehaviour, IProjectile
 {
-    SpriteRenderer spriteRenderer;
-    Light2D lightAura;
-    float red;
-    float green;
-    float blue;
-    float alpha;
+    [Header("References")]
+    [SerializeField] private PassiveSpellAffects passiveSpellAffects;
+    private SpriteRenderer spriteRenderer;
+    private ProjectileManager _projectileManager;
+    
+    [Header("Properties")]
+    [SerializeField] private float radiusGrowSize;
     [SerializeField] float startingIntensity = 5f;
     // time between fade steps
     [SerializeField] float fadeRate = 1f;
@@ -17,12 +18,22 @@ public class LightSpell : MonoBehaviour
     [SerializeField] float spriteFadeStep = 0.1f;
     // how much intensity to reduce by per fade step
     [SerializeField] float brightnessFadeStep = 0.3f;
+    
+    float red;
+    float green;
+    float blue;
+    float alpha;
+    
+    public void Initialize(LineOfSightSensor targetSensor, ProjectileManager projectileManager)
+    {
+        _projectileManager = projectileManager;
+    }
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        passiveSpellAffects.LightRadiusDiff += radiusGrowSize;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        lightAura = GetComponentInChildren<Light2D>();
-        lightAura.intensity = startingIntensity;
         red = spriteRenderer.color.r;
         green = spriteRenderer.color.g;
         blue = spriteRenderer.color.b;
@@ -34,7 +45,6 @@ public class LightSpell : MonoBehaviour
     {
         alpha -= spriteFadeStep;
         spriteRenderer.color = new Color(red, green, blue, alpha);
-        lightAura.intensity -= brightnessFadeStep;
     }
 
     // Update is called once per frame
@@ -42,6 +52,8 @@ public class LightSpell : MonoBehaviour
     {
         if (alpha <= 0)
         {
+            passiveSpellAffects.LightRadiusDiff -= radiusGrowSize;
+            _projectileManager?.RemoveProjectile(gameObject);
             Destroy(gameObject);
         }
     }

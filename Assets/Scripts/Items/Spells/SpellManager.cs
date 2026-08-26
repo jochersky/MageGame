@@ -11,12 +11,16 @@ public class SpellManager : MonoBehaviour
     [SerializeField] private Transform spellCastTransform;
     [SerializeField] private Transform spellParentTransform;
     [SerializeField] private PassiveSpellAffects passiveSpellAffects;
-
+    [SerializeField] private LineOfSightSensor lineOfSightSensor;
+    [SerializeField] private ProjectileManager projectileManager;
+    public GameObject enemyInRange;
+    
     [SerializeField] private bool debug = true;
     [SerializeField] private SpellConfig spell1;
     [SerializeField] private SpellConfig spell2;
     
     private PlayerStateMachine _psm;
+    private FullScreenEffect _fullScreenEffect;
     private LayerMask _layerMask;
 
     public SpellConfig spellConfig1;
@@ -29,6 +33,7 @@ public class SpellManager : MonoBehaviour
 
     public int _mana;
     private float _manaRegenTimer;
+    private bool _canConsumeGibs;
     
     public int MaxMana { get => maxMana; set => maxMana = value; }
     public int Mana { get => _mana; set => _mana = value; }
@@ -61,6 +66,7 @@ public class SpellManager : MonoBehaviour
     private void FixedUpdate()
     {
         HandleManaRegen();
+        enemyInRange = lineOfSightSensor.GetNextTarget();
     }
 
     private void HandleManaRegen()
@@ -202,6 +208,18 @@ public class SpellManager : MonoBehaviour
         Debug.DrawRay(transform.position, dir, Color.red, 5);
         if (spellConfig1.changePositionOnObstruction && Physics2D.Raycast(transform.position, dir, dir.magnitude, _layerMask)) 
             spellConfig1.strategy.CastSpell(spellCastTransform, _psm.gameObject.transform.position);
+        else if (spellConfig1.spawnsProjectile)
+        {
+            if (projectileManager.MaxProjectiles)
+            {
+                UpdateMana(spellConfig1.manaCost);
+                return;
+            }
+            
+            GameObject projectile = spellConfig1.strategy.CastSpell(spellCastTransform, spellCastTransform.position);
+            projectileManager.AddProjectile(projectile);
+            if (projectile.TryGetComponent<IProjectile>(out IProjectile projectileComponent)) projectileComponent.Initialize(lineOfSightSensor, projectileManager);
+        }
         else 
             spellConfig1.strategy.CastSpell(spellCastTransform, spellCastTransform.position);
         
@@ -236,10 +254,28 @@ public class SpellManager : MonoBehaviour
         Vector2 dir = spellCastTransform.position - transform.position;
         if (spellConfig2.changePositionOnObstruction && Physics2D.Raycast(transform.position, dir, dir.magnitude, _layerMask)) 
             spellConfig2.strategy.CastSpell(spellCastTransform, _psm.gameObject.transform.position);
+        else if (spellConfig2.spawnsProjectile)
+        {
+            if (projectileManager.MaxProjectiles)
+            {
+                UpdateMana(spellConfig1.manaCost);
+                return;
+            }
+            
+            GameObject projectile = spellConfig2.strategy.CastSpell(spellCastTransform, spellCastTransform.position);
+            projectileManager.AddProjectile(projectile);
+            if (projectile.TryGetComponent<IProjectile>(out IProjectile projectileComponent)) projectileComponent.Initialize(lineOfSightSensor, projectileManager);
+        }
         else 
             spellConfig2.strategy.CastSpell(spellCastTransform, spellCastTransform.position);
         
         StartCoroutine(WaitBeforeCastingSpell2Again());
+    }
+
+    public void StartVignetteEffect(Color color, float duration)
+    {
+        if (!_fullScreenEffect) _fullScreenEffect = GameManager.Instance.FullScreenEffect;
+        _fullScreenEffect.StartScreenEffect(color, duration);
     }
     
     private IEnumerator WaitBeforeCastingSpell1Again()
