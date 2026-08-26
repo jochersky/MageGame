@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class PlantEmergeState : PlantBaseState
+public class PlantHideState : PlantBaseState
 {
     private CountdownTimer _emergeTimer;
-    public PlantEmergeState(PlantStateMachine currentContext, PlantStateDictionary plantStateDictionary) : base(currentContext, plantStateDictionary)
+    public PlantHideState(PlantStateMachine currentContext, PlantStateDictionary plantStateDictionary) : base(currentContext, plantStateDictionary)
     {
         _emergeTimer = new CountdownTimer(Context.EmergeTime);
     }
@@ -12,7 +12,7 @@ public class PlantEmergeState : PlantBaseState
     {
         if (_emergeTimer.Time == 0) _emergeTimer.Time = Context.EmergeTime;
         _emergeTimer.Start();
-        Context.Animator.CrossFade(Context.Emerge, 0);
+        Context.Animator.CrossFade(Context.Hide, 0);
         Context.CurrentMoveSpeed = 0;
         Context.HorizontalMovement = Context.MoveDir.x * Context.CurrentMoveSpeed;
     }
@@ -29,8 +29,8 @@ public class PlantEmergeState : PlantBaseState
     public override void UpdateState()
     {
         _emergeTimer.Tick(Time.deltaTime);
-        if (_emergeTimer.IsFinished) SwitchState(Dictionary.Walk());
+        if (_emergeTimer.IsFinished) SwitchState(Dictionary.Idle());
     }
 
-    public override string ToString() => "PlantEmergeState";
+    public override string ToString() => "PlantHideState";
 }

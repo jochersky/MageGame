@@ -19,7 +19,6 @@ public class Spike : MonoBehaviour
     {
         if (collision.CompareTag("Environment"))
         {
-            print("Hit " + collision.name);
             Instantiate(hitWallEffect, transform.position, Quaternion.identity);
             Destroy(gameObject);   
         }

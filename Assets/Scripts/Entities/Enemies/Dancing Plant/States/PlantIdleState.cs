@@ -8,23 +8,25 @@ public class PlantIdleState : PlantBaseState
 
     public override void EnterState()
     {
-        throw new System.NotImplementedException();
+        Context.Animator.CrossFade(Context.Idle, 0);
     }
 
     public override void ExitState()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override void InitializeSubState()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+        if (Context.IsAggroed || Context.TookDamage) SwitchState(Dictionary.Emerge());
     }
+
+    public override string ToString() => "PlantIdleState";
 
     
 }

@@ -8,21 +8,24 @@ public class PlantWalkState : PlantBaseState
 
     public override void EnterState()
     {
-        throw new System.NotImplementedException();
+        Context.Animator.CrossFade(Context.Walk, 0);
+
+        Context.CurrentMoveSpeed = Context.DefaultMoveSpeed;
+        Context.HorizontalMovement = Context.MoveDir.x * Context.CurrentMoveSpeed;
     }
 
     public override void ExitState()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override void InitializeSubState()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+        if (Context.IsAggroed || Context.TookDamage) SwitchState(Dictionary.Aggro());
     }
 }

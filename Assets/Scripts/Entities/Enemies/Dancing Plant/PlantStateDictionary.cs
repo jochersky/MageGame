@@ -1,4 +1,3 @@
-using UnityEngine;
 using System.Collections.Generic;
 
 enum PlantStates
@@ -10,11 +9,13 @@ enum PlantStates
     // - Sub States -
     Idle,
     Emerge,
+
+    Hide,
     Walk,
     Aggro,
 }
 
-public class PlantStateDictionary : MonoBehaviour
+public class PlantStateDictionary
 {
     private PlantStateMachine _context;
     private readonly Dictionary<PlantStates, PlantBaseState> _states = new();
@@ -32,6 +33,7 @@ public class PlantStateDictionary : MonoBehaviour
         // - Sub States -
         _states[PlantStates.Idle] = new PlantIdleState(_context, this);
         _states[PlantStates.Emerge] = new PlantEmergeState(_context, this);
+        _states[PlantStates.Hide] = new PlantHideState(_context, this);
         _states[PlantStates.Walk] = new PlantWalkState(_context, this);
         _states[PlantStates.Aggro] = new PlantAggroState(_context, this);
     }
@@ -62,6 +64,11 @@ public class PlantStateDictionary : MonoBehaviour
     public PlantBaseState Emerge()
     {
         return _states[PlantStates.Emerge];
+    }
+
+    public PlantBaseState Hide()
+    {
+        return _states[PlantStates.Hide];
     }
     
     public PlantBaseState Walk()

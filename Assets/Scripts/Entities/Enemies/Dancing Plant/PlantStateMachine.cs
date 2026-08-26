@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
+[RequireComponent(typeof(Rigidbody2D))]
 
+[RequireComponent(typeof(Collider2D))]
 public class PlantStateMachine : Entity
 {
     [Header("References")]
@@ -17,7 +20,7 @@ public class PlantStateMachine : Entity
     
     [Header("Move Properties")] 
     [SerializeField] private float emergeTime;
-    [SerializeField] private float walkTime;
+    [SerializeField] private float aggroTime = 4f;
     [SerializeField] private float defaultMoveSpeed = 3f;
     [SerializeField] private float aggroMoveSpeed = 6f;
 
@@ -49,6 +52,7 @@ public class PlantStateMachine : Entity
     // Animation Hashes
     public readonly int Idle = Animator.StringToHash("Idle");
     public readonly int Emerge = Animator.StringToHash("Emerge");
+    public readonly int Hide = Animator.StringToHash("Hide");
     public readonly int Walk = Animator.StringToHash("Walk");
     public readonly int Aggro = Animator.StringToHash("Aggro");
     public readonly int Fall = Animator.StringToHash("Fall");
@@ -61,7 +65,6 @@ public class PlantStateMachine : Entity
     private bool _isGrounded;
     private bool _wasGrounded;
     private bool _isAggroed;
-    private float _lungeTimer;
     private bool _isDead;
     private RaycastHit2D[] _hits = new RaycastHit2D[3];
     private bool _fallIntentionally = false;
@@ -80,12 +83,145 @@ public class PlantStateMachine : Entity
     public float LinearVelocityY { get { return _rb.linearVelocityY; } set { _rb.linearVelocityY = value; } }
     public float HorizontalMovement { get { return _horizontalMovement; } set { _horizontalMovement = value; } }
     public float CurrentMoveSpeed { get { return _currentMoveSpeed; }  set { _currentMoveSpeed = value; } }
+    public float CurrentHealth { get { return health.CurrentHealth; } set {health.CurrentHealth = health.MaxHealth; }}
+    public float MaxHealth { get { return health.MaxHealth; } }
     public bool IsGrounded { get { return _isGrounded; } set { _isGrounded = value; } }
     public bool IsAggroed { get { return _isAggroed; } set { _isAggroed = value; } }
     public bool TookDamage => health.CurrentHealth < health.MaxHealth;
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
     public float EmergeTime => emergeTime;
-    public float WalkTime => walkTime;
+    public float AggroTime => aggroTime;
     public float DefaultMoveSpeed => defaultMoveSpeed;
     public float AggroMoveSpeed => aggroMoveSpeed;
+     private void Awake()
+    {
+        // State machine initial state setup
+        _states = new PlantStateDictionary(this);
+        _currentState = _isGrounded ? States.Grounded(): States.Fall();
+        
+        _currentState.EnterState();
+    }
+
+    private void Start()
+    {
+        _rb = GetComponent<Rigidbody2D>();
+        _ownCollider = GetComponent<Collider2D>();
+
+        health.OnDeath += () =>
+        {
+            _isDead = true;
+            hitbox.gameObject.SetActive(false);
+            hurtbox.gameObject.SetActive(false);
+        };
+
+        playerEnteredSensor.OnPlayerSighted += () =>
+        {
+            if (_isDead) return;
+            _currentMoveSpeed = aggroMoveSpeed;
+            _horizontalMovement = _moveDir.x * _currentMoveSpeed;
+            _isAggroed = true;
+        };
+        
+        knockBack.OnKnockBackApplied += force => { _knockBackForce = force; }; 
+        
+        _hitLayers = LayerMask.GetMask("Character", "Environment");
+    }
+
+    private void Update()
+    {
+        _currentState.UpdateStates();
+        stateName = _currentState.SubState != null ? _currentState.SubState.ToString() : _currentState.ToString();
+    }
+
+    private void FixedUpdate()
+    {
+        CheckGrounded();
+        CheckHitWall();
+        CheckForLedge();
+        
+        // freeze spell behavior, can be used with other effects in the future
+        if (frozen) return;
+        
+        _rb.linearVelocity = new Vector2(_horizontalMovement, _rb.linearVelocityY);
+        _rb.linearVelocity += _knockBackForce;
+
+        UpdateKnockBackForce();
+    }
+    
+    private void UpdateKnockBackForce()
+    {
+        _knockBackForce *= reduceConst;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.TryGetComponent<ColdSnapArea>(out ColdSnapArea coldSnap))
+        {
+            Freeze(coldSnap.freezeDuration);
+            _rb.linearVelocity = Vector2.zero;
+        }
+    }
+
+    private void CheckGrounded()
+    {
+        _isGrounded = Physics2D.OverlapBox(groundCheckTransform.position, groundCheckSize, 0, environmentLayer);
+
+        if (!_wasGrounded && _isGrounded) _fallIntentionally = false;
+        
+        _wasGrounded = _isGrounded;
+    }
+    
+    private void OnDrawGizmosSelected()
+    {
+        // Grounded check gizmo
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(groundCheckTransform.position, groundCheckSize);
+    }
+
+    private void CheckHitWall()
+    {
+        if (_isDead) return;
+
+        Vector2 start = (Vector2)transform.position + wallCheckOffset * Math.Sign(_moveDir.x);
+        if (wallCheckDebug)
+        {
+            Debug.DrawRay(start, _moveDir * wallCheckDistance, Color.red);
+        }
+        int numHits = Physics2D.RaycastNonAlloc(start, _moveDir, _hits, wallCheckDistance, _hitLayers);
+        if (numHits > 1)
+        {
+            Array.Sort(_hits, (a, b) => a.distance.CompareTo(b.distance));
+        }
+        for (int i = 0; i < numHits; i++)
+        {
+            RaycastHit2D hit = _hits[i];
+            if (!hit) break;
+            if (hit.collider != _ownCollider)
+            {
+                _moveDir = -_moveDir;
+                onDirectionChanged?.Invoke(Mathf.Sign(_moveDir.x));
+                _horizontalMovement = _moveDir.x * _currentMoveSpeed;
+                break;
+            }
+        }
+    }
+
+    private void CheckForLedge()
+    {
+        if (!_isGrounded || _isDead || _fallIntentionally) return;
+        
+        Vector2 start = (Vector2)transform.position + _moveDir * ledgeCheckDistance;
+        if (ledgeCheckDebug)
+        {
+            Debug.DrawRay(start, Vector2.down, Color.red);
+        }
+        if (!Physics2D.Raycast(start, Vector2.down, 1f, environmentLayer))
+        {
+            if (Random.Range(0, fallChance) == 0) _fallIntentionally = true;
+                
+            _moveDir = -_moveDir;
+            onDirectionChanged?.Invoke(Mathf.Sign(_moveDir.x));
+            _horizontalMovement = _moveDir.x * _currentMoveSpeed;
+        }
+    }
 }

@@ -132,7 +132,7 @@ MonoBehaviour:
   directionFired: {x: 1, y: 0}
   rb: {fileID: 3214588655195388076}
   hitWallEffect: {fileID: 2981399832347914475, guid: 4e70a93361845e74584a71d7686c4314, type: 3}
-  velocity: 100
+  velocity: 150
 --- !u!58 &2128436095994261852
 CircleCollider2D:
   m_ObjectHideFlags: 0
