@@ -12,8 +12,8 @@ public class PlayerFallState : PlayerBaseState
     {
         Context.Animator.CrossFade(Context.Fall, 0, 0);
         Context.IsClimbingRope = false;
-        // Debug.Log($"enter fall {Context.debugCount}");
-        Context.debugCount++;
+
+        if (Context.PreviousState == Dictionary.Climb()) Context.CheckForFlipTransform();
     }
 
     public override void UpdateState()

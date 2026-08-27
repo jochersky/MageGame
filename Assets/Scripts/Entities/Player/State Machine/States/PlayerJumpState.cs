@@ -11,8 +11,8 @@ public class PlayerJumpState : PlayerBaseState
     public override void EnterState()
     {
         Context.Animator.CrossFade(Context.Jump, 0, 0);
-        // Debug.Log($"enter jump {Context.debugCount}");
-        Context.debugCount++;
+        // if (Context.PreviousState == Dictionary.Climb()) Context.CheckForFlipTransform();
+        
         PerformJump();
     }
 
@@ -51,11 +51,14 @@ public class PlayerJumpState : PlayerBaseState
         // first jump uses CanJump or WasClimbing
         if ((Context.CanJump || Context.WasClimbing || Context.WasClimbingRope) && Context.NewJumpPress)
         {
+            
             Context.LinearVelocityY = Context.MaxJumpHeight;
             Context.CoyoteJumpDisabled = true;
             Context.JustJumped = true;
             Context.NewJumpPress = false;
+            
             // Toggle for when climbing and trying to jump since CanJump is false when climbing.
+            if (Context.WasClimbing) Context.CheckForFlipTransform();
             Context.WasClimbing = false;
         }
         else

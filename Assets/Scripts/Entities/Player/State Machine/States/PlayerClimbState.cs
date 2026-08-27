@@ -19,7 +19,8 @@ public class PlayerClimbState : PlayerBaseState
         // Set so that player can jump when climbing.
         Context.WasClimbing = true;
 
-        Context.transform.position = Context.ClimbPosition;
+        Context.ClimbDir = Context.MoveDirection;
+
         Context.StartClimbDelay();
     }
 
@@ -27,16 +28,21 @@ public class PlayerClimbState : PlayerBaseState
     {
         if (Context.IsDead) SwitchState(Dictionary.Dead());
         
-        if (Context.IsPressingJump) SwitchState(Dictionary.Jump());
-        else if (Context.MoveDirection.y < 0)
+        Vector2 pos = Context.transform.position;
+        if ((pos - Context.ClimbPosition).magnitude >= 0.1f)
+            Context.transform.position = Vector3.MoveTowards(pos, Context.ClimbPosition, Context.ClimbSnapSpeed);
+        
+        if (Context.NewJumpPress) SwitchState(Dictionary.Jump());
+        else if (Context.VerticalDirection.y < 0)
         {
-            Context.WasClimbing = false;
+            // Context.WasClimbing = false;
             SwitchState(Dictionary.Fall());
         }
     }
 
     public override void ExitState()
     {
+        Context.CheckForFlipTransform();
     }
 
     public override void InitializeSubState()
