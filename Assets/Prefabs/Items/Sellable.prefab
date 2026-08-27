@@ -569,7 +569,8 @@ MonoBehaviour:
   display: {fileID: 3711909149309675646}
   item: {fileID: 0}
   count: 3
-  configPath: Data/Consumables/Configs/
+  itemConfigPath: Data/Consumables/Configs
+  spellConfigPath: Data/Spells/SpellConfigs
 --- !u!58 &252324822991949042
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -1,4 +1,6 @@
+using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,7 +17,8 @@ public class Sellable : MonoBehaviour
     [SerializeField] SpriteRenderer display;
     [SerializeField] ItemConfig item;
     [SerializeField] int count;
-    [SerializeField] string configPath;
+    [SerializeField] string itemConfigPath;
+    [SerializeField] string spellConfigPath;
     private PlayerInput _input;
     private System.Random randy;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,7 +36,7 @@ public class Sellable : MonoBehaviour
     // probably inefficent for each sellable to do this
     void GenerateSellable()
     {
-        ItemConfig[] sellables = Resources.LoadAll<ItemConfig>(configPath);
+        ItemConfig[] sellables = Resources.LoadAll<ItemConfig>(itemConfigPath).Concat(Resources.LoadAll<ItemConfig>(spellConfigPath)).ToArray();
         if (sellables.Length <= 0)
         {
             throw new System.Exception("No item configs found at config path");
