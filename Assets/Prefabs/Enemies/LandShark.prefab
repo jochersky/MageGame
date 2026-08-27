@@ -49,6 +49,11 @@ MonoBehaviour:
   cameraShakeAmt: 0.2
   cameraShakeDuration: 0.2
   knockBackForce: 10
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders:
   - {fileID: 5685350675267964449}
 --- !u!70 &5685350675267964449
@@ -103,6 +108,7 @@ GameObject:
   - component: {fileID: 4750644690825209418}
   - component: {fileID: 3440209272518742434}
   - component: {fileID: 1534685575812800947}
+  - component: {fileID: 2040608571459355767}
   m_Layer: 7
   m_Name: LandShark
   m_TagString: Enemy
@@ -315,6 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d7fc9bfbb117d4ba24429ed8b2ea1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageFlash
+  spriteRenderer: {fileID: 0}
   _flashSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -350,6 +357,19 @@ MonoBehaviour:
     m_RotationOrder: 4
   flashColor: {r: 1, g: 1, b: 1, a: 1}
   flashTime: 0.25
+--- !u!114 &2040608571459355767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2708827541387919028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97d5fc8f6bbe41d4095aad5c6c8ff91f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LandSharkInfo
+  enemyPrefab: {fileID: 2708827541387919028}
 --- !u!1 &3746219611513018431
 GameObject:
   m_ObjectHideFlags: 0
