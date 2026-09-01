@@ -148,7 +148,7 @@ Transform:
   m_GameObject: {fileID: 280627015625706992}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.45, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1711,7 +1711,7 @@ MonoBehaviour:
   climbAboveBelowCheckLength: 1
   climbSnapSpeed: 0.2
   climbDelayTime: 0.4
-  climbDebug: 1
+  climbDebug: 0
   _ropeHandler: {fileID: 7954448484511661488}
   ropeClimbSpeed: 5
   dirHoldDuration: 0.3
@@ -2145,7 +2145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6c3d1e6b944e1a4cabc29aea99fcdc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ConsumableManager
-  consumableSpawnTransform: {fileID: 3772056237199473288}
+  consumableSpawnTransform: {fileID: 5577571645946893149}
   consumableParentTransform: {fileID: 0}
   debug: 0
   testConsumableConfig: {fileID: 0}

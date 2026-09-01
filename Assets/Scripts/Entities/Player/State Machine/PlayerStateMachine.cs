@@ -273,14 +273,6 @@ public class PlayerStateMachine : MonoBehaviour
         // Performed and canceled callbacks incorrectly flip the transform. Ignore them.
         if (context.performed || context.canceled) return;
         
-
-        // bool moveDirChanged = Mathf.Sign(_moveDirection.x) != Mathf.Sign(_previousDirection.x);
-        // bool changedDirAfterClimbing = Mathf.Sign(_moveDirection.x) != Mathf.Sign(_climbInitialDir.x);
-        // Debug.Log($"{changedDirAfterClimbing}");
-        // if ((!IsClimbing && moveDirChanged) || changedDirAfterClimbing)
-        // {
-        //     onDirectionChanged?.Invoke(Mathf.Sign(_moveDirection.x));
-        // }
         if (!IsClimbing) CheckForFlipTransform();
 
         _previousDirection = _moveDirection;

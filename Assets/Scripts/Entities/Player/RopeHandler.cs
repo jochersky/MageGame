@@ -32,7 +32,7 @@ public class RopeHandler : MonoBehaviour
 
         Vector3 pointA = new Vector3(transform.position.x - boxCollider.size.x / 2, transform.position.y + boxCollider.size.y / 2, 0);
         Vector3 pointB = new Vector3(transform.position.x + boxCollider.size.x / 2, transform.position.y - boxCollider.size.y / 2, 0);
-        Debug.DrawLine(pointA, pointB, Color.red, 1f);
+        // Debug.DrawLine(pointA, pointB, Color.red, 1f);
 
         int n = Physics2D.OverlapArea(pointA, pointB, _contactFilter, _colliders);
         if (n > 0)

@@ -77,6 +77,7 @@ public class LineOfSightSensor : MonoBehaviour
 
         foreach (Health tar in sortedObjects)
         {
+            if (tar.CurrentHealth <= 0) continue;
             Vector2 dir = (tar.transform.position - transform.position).normalized;
             RaycastHit2D hit = Physics2D.Raycast(LineOfSightTransform.position, dir, maxLineOfSightDistance, _mask);
             if (debug) Debug.DrawRay(LineOfSightTransform.position, dir * maxLineOfSightDistance, Color.red, 0.5f);

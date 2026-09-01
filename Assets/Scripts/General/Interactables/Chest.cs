@@ -38,13 +38,13 @@ public class Chest : MonoBehaviour, IInteractable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!_itemTaken) outline.enabled = true;
+        if (!_itemTaken && collision.CompareTag("Player")) outline.enabled = true;
         if (_chestOpened) EventBus.Instance.HandleChestOpened(true);
     }
     
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (!_itemTaken) outline.enabled = false;
+        if (!_itemTaken && other.CompareTag("Player")) outline.enabled = false;
         if (_chestOpened) EventBus.Instance.HandleChestOpened(false);
     }
 
