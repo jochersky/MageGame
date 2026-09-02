@@ -74,6 +74,7 @@ public class GameManager : MonoBehaviour
             Player playerComponent = debugPlayerObject.GetComponent<Player>();
             playerComponent.HealthBar = healthBar;
             playerComponent.ManaBar = manaBar;
+            SaveSystem.Delete();
             return;
         }
         
@@ -88,6 +89,8 @@ public class GameManager : MonoBehaviour
             Player playerComponent = playerInst.GetComponent<Player>();
             playerComponent.HealthBar = healthBar;
             playerComponent.ManaBar = manaBar;
+            Player = playerComponent;
+            Debug.Log($"game manager start up: {Player}");
             
             // load player's items once these scripts have finished running
             playerComponent.OnStartDone += () => { PlayerComponentLoaded = true; };

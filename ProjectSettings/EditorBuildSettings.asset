@@ -21,20 +21,23 @@ EditorBuildSettings:
     path: Assets/Scenes/Level 2.unity
     guid: 6652d0e91bdd4e24ba2a26c7901588bd
   - enabled: 1
+    path: Assets/Scenes/Level 3.unity
+    guid: f775c145cc477c4458d7f0f663b707c6
+  - enabled: 1
     path: Assets/Scenes/MovementTestScene.unity
     guid: f8a48c56496846747b7cefaffff71ead
   - enabled: 1
     path: Assets/Scenes/SaveTest.unity
     guid: 8c6cd40593d53e94f9d031abd8c34cbb
   - enabled: 1
-    path: Assets/Scenes/Level 3.unity
-    guid: f775c145cc477c4458d7f0f663b707c6
-  - enabled: 1
     path: Assets/Scenes/GameWin.unity
     guid: f1f655b93b8be5749aff60b3048ad4f9
   - enabled: 1
     path: Assets/Scenes/CharacterSelect.unity
     guid: 3343454b4e502de42a128f7a11f10cb8
+  - enabled: 1
+    path: Assets/Scenes/TransitionArea1.unity
+    guid: 9e8e56b0f03758b4996ae1980c803569
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

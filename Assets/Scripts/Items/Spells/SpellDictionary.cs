@@ -15,6 +15,10 @@ public class SpellDictionary
         _configs["Reverse Footsteps"] = Resources.Load<SpellConfig>("Data/Spells/SpellConfigs/ReverseFootstepsSpellConfig");
         _configs["Snap Speed"] = Resources.Load<SpellConfig>("Data/Spells/SpellConfigs/SnapSpeedSpellConfig");
         _configs["World Aflame"] = Resources.Load<SpellConfig>("Data/Spells/SpellConfigs/WorldAflameSpellConfig");
+        _configs["Devour"] = Resources.Load<SpellConfig>("Data/Spells/SpellConfigs/DevourSpellConfig");
+        _configs["Dodge"] = Resources.Load<SpellConfig>("Data/Spells/SpellConfigs/DodgeSpellConfig");
+        _configs["Feathery Dive"] = Resources.Load<SpellConfig>("Data/Spells/SpellConfigs/FeatheryDiveSpellConfig");
+        _configs["Light Spear"] = Resources.Load<SpellConfig>("Data/Spells/SpellConfigs/LightSpearSpellConfig");
     }
 
     public SpellConfig GetConfig(string configName)
