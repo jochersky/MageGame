@@ -172,6 +172,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PoisonBubble
   speed: 3
   effects: {fileID: 5252093620989588086, guid: af2fe0d194b69984c80010f4a929b3ea, type: 3}
+  popSounds:
+  - {fileID: 8300000, guid: 9cafa28d3d806b044a6ff8becbd7c99f, type: 3}
+  - {fileID: 8300000, guid: d30ad9538cf85234eb864f4a64edb9f3, type: 3}
+  - {fileID: 8300000, guid: d94b9404553697e4abe1671f21484d0b, type: 3}
+  popVolume: 0.5
 --- !u!1 &8530922059858952056
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,4 +259,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  cameraShakeAmt: 0
+  cameraShakeDuration: 0
+  knockBackForce: 0
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders: []
