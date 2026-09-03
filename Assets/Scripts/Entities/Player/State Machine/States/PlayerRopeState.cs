@@ -20,8 +20,12 @@ public class PlayerRopeState : PlayerBaseState
         
         Context.VerticalMovement = Context.VerticalDirection.y;
         
-        if (Context.IsPressingJump && Context.MoveDirection.x != 0) SwitchState(Dictionary.Jump());
-        else if (!Context.CanClimbRope || Context.IsPressingJump) SwitchState(Dictionary.Fall());
+        if (Context.IsPressingJump && Context.VerticalDirection.y >= -0.25) SwitchState(Dictionary.Jump());
+        else if (!Context.CanClimbRope || (Context.VerticalDirection.y <= -0.25 && Context.NewJumpPress))
+        {
+            Context.NewJumpPress = false;
+            SwitchState(Dictionary.Fall());
+        }
     }
 
     public override void ExitState()

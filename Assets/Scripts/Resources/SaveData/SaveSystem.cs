@@ -56,4 +56,10 @@ public class SaveSystem
         if (GameManager.Instance.Player) GameManager.Instance.Player.Load(ref _saveData.playerData);
         if (InventoryManager.Instance) InventoryManager.Instance.Load(ref _saveData.inventoryData);
     }
+
+    public static void Delete()
+    {
+        if (!SaveDataExists()) return;
+        File.Delete(SaveFileName());
+    }
 }

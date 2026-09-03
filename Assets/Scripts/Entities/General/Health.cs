@@ -21,7 +21,16 @@ public class Health : MonoBehaviour
     public bool ignore;
     
     public int MaxHealth { get => maxHealth; set => maxHealth = value; }
-    public int CurrentHealth { get => _currentHealth; set => _currentHealth = value; }
+
+    public int CurrentHealth
+    {
+        get => _currentHealth;
+        set
+        { 
+            _currentHealth = value;
+            OnHealthChanged?.Invoke(value);
+        } 
+    }
     
     public delegate void HealthChange(int newHealth);
     public event HealthChange OnHealthChanged;

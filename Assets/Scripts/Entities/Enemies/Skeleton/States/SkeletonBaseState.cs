@@ -36,6 +36,7 @@ public abstract class SkeletonBaseState
     {
         ExitState();
         newState.EnterState();
+        SubState = null;
 
         if (_isRootState)
         {

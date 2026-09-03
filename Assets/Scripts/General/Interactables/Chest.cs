@@ -8,6 +8,7 @@ public class Chest : MonoBehaviour, IInteractable
     [Header("UI")]
     [SerializeField] private GameObject itemFramePrefab;
     [SerializeField] private Transform itemFrameTransform;
+    [SerializeField] private SpriteRenderer outline;
     [SerializeField] bool randomSpell = false;
     
     private Animator _animator;
@@ -15,6 +16,7 @@ public class Chest : MonoBehaviour, IInteractable
     private GameObject _itemPrefabInstance;
     private GameObject _itemFramePrefabInstance;
     private bool _chestOpened = false;
+    private bool _itemTaken;
     
     private readonly int _closed = Animator.StringToHash("ChestClosed");
     private readonly int _open = Animator.StringToHash("ChestOpen");
@@ -36,11 +38,13 @@ public class Chest : MonoBehaviour, IInteractable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!_itemTaken && collision.CompareTag("Player")) outline.enabled = true;
         if (_chestOpened) EventBus.Instance.HandleChestOpened(true);
     }
     
     private void OnTriggerExit2D(Collider2D other)
     {
+        if (!_itemTaken && other.CompareTag("Player")) outline.enabled = false;
         if (_chestOpened) EventBus.Instance.HandleChestOpened(false);
     }
 
@@ -55,6 +59,8 @@ public class Chest : MonoBehaviour, IInteractable
             InventoryManager.Instance.AddItem(itemConfig, count);
             _boxCollider2D.enabled = false;
             _itemFramePrefabInstance.SetActive(false);
+            _itemTaken = true;
+            outline.enabled = false;
         }
         
         // only let item be added with extra button press

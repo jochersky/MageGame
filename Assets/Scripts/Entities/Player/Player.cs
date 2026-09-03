@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     
     private void Awake()
     {
-        GameManager.Instance.Player = this;
+        // GameManager.Instance.Player = this;
         
         _health = GetComponent<Health>();
         _spellManager = GetComponent<SpellManager>();
@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
         passiveSpellAffects.OnLightRadiusUpdated += (lightRadiusDiff) =>
         {
             float newSize = stats.lightRadiusSize + lightRadiusDiff;
-            lightTransform.localScale = new Vector3(newSize, newSize, newSize);
+            if (lightTransform) lightTransform.localScale = new Vector3(newSize, newSize, newSize);
         };
 
         if (HealthBar)
@@ -67,7 +67,6 @@ public class Player : MonoBehaviour
 
     public void Save(ref PlayerSaveData data)
     {
-        data.position = transform.position;
         data.healthAmt = _health.CurrentHealth;
         data.manaAmt = _spellManager.Mana;
         data.moneyAmt = InventoryManager.Instance.GetMoneyCount();
@@ -75,7 +74,6 @@ public class Player : MonoBehaviour
 
     public void Load(ref PlayerSaveData data)
     {
-        transform.position = data.position;
         _health.CurrentHealth = data.healthAmt;
         _spellManager.Mana = data.manaAmt;
         InventoryManager.Instance.UpdateMoney(data.moneyAmt);
@@ -85,7 +83,6 @@ public class Player : MonoBehaviour
 [System.Serializable]
 public struct PlayerSaveData
 {
-    public Vector3 position;
     public int healthAmt;
     public int manaAmt;
     public int moneyAmt;

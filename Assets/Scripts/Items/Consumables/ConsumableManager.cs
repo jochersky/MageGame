@@ -108,22 +108,27 @@ public class ConsumableManager : MonoBehaviour
         bool changePos = _equippedConsumable.changePositionOnObstruction;
         bool placeAtCenter = changePos &&
                              Physics2D.Raycast(_psm.transform.position, _psm.PreviousDirection, 1, _layerMask);
-        
+
+        bool consumedItem = false;
         if (_equippedConsumable.type == ConsumableType.Base)
         {
             if (placeAtCenter) strategy.UseConsumable(_psm.transform, _psm.transform.position);
             else strategy.UseConsumable(consumableParentTransform, consumableSpawnTransform.position);
+            consumedItem = true;
         }
         else if (_equippedConsumable.type == ConsumableType.Placeable)
         {
-            if (placeAtCenter || _equippedConsumable.snapToGrid) strategy.UsePlaceableConsumable(_psm.transform, _psm.transform.position);
+            if (placeAtCenter || _equippedConsumable.snapToGrid) consumedItem = strategy.UsePlaceableConsumable(_psm.transform, _psm.transform.position);
             else strategy.UsePlaceableConsumable(consumableParentTransform, consumableSpawnTransform.position);
         }
         else if (_equippedConsumable.type == ConsumableType.Throwable)
         {
             if (placeAtCenter) strategy.UseThrowingConsumable(_psm.transform, _psm.transform.position, Vector3.zero, Vector3.zero);
             else strategy.UseThrowingConsumable(_psm.transform, _psm.transform.position, _psm.PreviousDirection, _psm.Rigidbody.linearVelocity);
+            consumedItem = true;
         }
+
+        if (!consumedItem) return;
         
         consumableCounts[_equippedConsumable.itemName]--;
         int consumableEquipped = _equippedConsumable == consumableConfig1 ? 1 : 2;

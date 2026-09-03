@@ -8,6 +8,7 @@ public class PlayerWalkState : PlayerBaseState
     public override void EnterState()
     {
         Context.Animator.CrossFade(Context.Walk, 0, 0);
+        Context.VerticalMovement = 0;
     }
 
     public override void UpdateState()
