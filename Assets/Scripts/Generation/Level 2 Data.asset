@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: Level 2 Data
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
   ruleTile: {fileID: 11400000, guid: 2637be4fb90dc17488e0ab4acd1984aa, type: 2}
-  enemies: []
-  enemySpawnCounts: 
+  enemies:
+  - {fileID: 6045644551114850117, guid: 2cbb281bce676394eae0c94b200220af, type: 3}
+  - {fileID: 2040608571459355767, guid: 15225b2b3bd67cf4a807a481538023ea, type: 3}
+  - {fileID: 5906092078357794332, guid: a1fbef5c1c4850d4facf310f6b7d26f2, type: 3}
+  enemySpawnCounts: 0f0000000a00000000000000
   traps:
   - {fileID: -4953609966504343084, guid: 51da806946d8d864c85b0331b50b6607, type: 3}
   - {fileID: 7538096920546485033, guid: daa1390b2605ec442962fff08b238205, type: 3}

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 098b78546a8e8d5438263c2b9e9df00d
+<<<<<<<< HEAD:Assets/Sprites/Enemies/BombRat.meta
+guid: 05073643a64eeaa4fb612e4e8275406c
+========
+guid: aaa71fab6625cf04289bf5161860c68b
+>>>>>>>> Alpha11Bugfixes:Assets/Scripts/Entities/Enemies/Dancing Plant/States.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

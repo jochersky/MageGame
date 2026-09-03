@@ -20,5 +20,6 @@ MonoBehaviour:
   manaCost: 10
   cooldown: 1
   twoPartCast: 0
+  altersMovement: 0
   strategy: {fileID: 11400000, guid: 874c2299709bc984f8d2c859c49822bf, type: 2}
   effectsStrategy: {fileID: 0}

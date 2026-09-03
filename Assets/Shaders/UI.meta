@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Shaders/UI.meta
 guid: 8c88b5a5ab6af3244820691917223cbf
+========
+guid: 2389a51db108a744ea98aa9dbd774c6c
+>>>>>>>> Alpha11Bugfixes:Assets/UI Toolkit/UnityThemes.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

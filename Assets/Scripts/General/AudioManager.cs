@@ -5,6 +5,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip background_music;
     bool playingAudio;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

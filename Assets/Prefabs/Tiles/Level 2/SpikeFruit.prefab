@@ -115,6 +115,8 @@ MonoBehaviour:
   spike: {fileID: 1025555446283719436, guid: 6ea962f97a216204397c1d6effb71ef9, type: 3}
   rb: {fileID: 8722985402832975373}
   burstEffect: {fileID: 2496577900146846488, guid: c16a18501c0dd8d409fec2cccc674649, type: 3}
+  fallingSpeed: 1
+  spikeSpawnVerticalOffset: 0.1
 --- !u!50 &8722985402832975373
 Rigidbody2D:
   serializedVersion: 5
@@ -130,7 +132,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -139,7 +141,7 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 2
+  m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!61 &7914092648601600764

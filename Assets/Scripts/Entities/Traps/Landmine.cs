@@ -21,15 +21,16 @@ public class Landmine : Trap
     {
         bool self = colliderMap.HasTile(tileCoords) || nonColliderMap.HasTile(tileCoords);
         bool below = colliderMap.HasTile(new Vector3Int(tileCoords.x, tileCoords.y - 1));
-        bool above = colliderMap.HasTile(new Vector3Int(tileCoords.x, tileCoords.y + 1)) || nonColliderMap.HasTile(new Vector3Int(tileCoords.x, tileCoords.y + 1));
-        return !self && below && !above;
+        bool above = colliderMap.HasTile(new Vector3Int(tileCoords.x, tileCoords.y + 1));  //|| nonColliderMap.HasTile(new Vector3Int(tileCoords.x, tileCoords.y + 1))
+        bool top_right = colliderMap.HasTile(new Vector3Int(tileCoords.x + 1, tileCoords.y + 1));
+        bool top_left = colliderMap.HasTile(new Vector3Int(tileCoords.x - 1, tileCoords.y + 1));
+        return !self && below && !top_left && !top_right && !above;
     }
 
     void Start()
     {
         _particleLifetimeTimer = new CountdownTimer(explosionRadius.main.startLifetime.constantMax);
         _particleLifetimeTimer.OnTimerStop += () => { Destroy(gameObject); };
-        
         damageHitbox.enabled = false;
         explosionHitbox.enabled = false;
     }
@@ -65,5 +66,10 @@ public class Landmine : Trap
         damageHitbox.enabled = false;
         explosionHitbox.enabled = false;
         lightGO.SetActive(false);
+        }
+
+    void Update()
+    {
+        _particleLifetimeTimer.Tick(Time.deltaTime);
     }
 }

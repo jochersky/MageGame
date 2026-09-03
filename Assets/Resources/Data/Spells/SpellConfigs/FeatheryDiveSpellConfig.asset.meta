@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Resources/Data/Spells/SpellConfigs/FeatheryDiveSpellConfig.asset.meta
 guid: 275b62a7e2d21864589d43df5afe75fd
+========
+guid: c0687d025c3c82d43956f61f84532d39
+>>>>>>>> Alpha11Bugfixes:Assets/Resources/Data/Spells/SpellStrategies/LightSpearSpellStrategy.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 11400000
