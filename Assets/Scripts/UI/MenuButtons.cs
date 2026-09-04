@@ -10,6 +10,8 @@ public class MenuButtons : MonoBehaviour
     [SerializeField] AudioClip clickSFX;
     [SerializeField] EventSystem eventSystem;
     [SerializeField] GameObject defaultButton;
+    [SerializeField] GameObject settings;
+    [SerializeField] GameObject menuButtons;
     AudioSource audioSource;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,7 +30,15 @@ public class MenuButtons : MonoBehaviour
     public void SettingsPressed()
     {
         audioSource.PlayOneShot(clickSFX);
-        Debug.Log("Loading settings...");
+        menuButtons.SetActive(false);
+        settings.SetActive(true);
+    }
+
+    public void BackPressed()
+    {
+        audioSource.PlayOneShot(clickSFX);
+        menuButtons.SetActive(true);
+        settings.SetActive(false);
     }
 
     public void QuitPressed()
