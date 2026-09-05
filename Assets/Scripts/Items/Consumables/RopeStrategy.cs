@@ -36,13 +36,13 @@ public class RopeStrategy : PlaceableConsumableStrategy
         
         Physics2D.Raycast(adjustedSpawnLocation,overlapDir, _contactFilter, _interactHits, overlapWidth);
 
-        Debug.DrawRay(adjustedSpawnLocation,overlapDir, Color.teal, 5f);
+        if (debug) Debug.DrawRay(adjustedSpawnLocation,overlapDir, Color.teal, 5f);
 
         foreach (var iHit in _interactHits)
         {
             if (iHit.collider.gameObject.TryGetComponent<Rope>(out Rope rope))
             {
-                Debug.Log("rope already here");
+                if (debug) Debug.Log("rope already here");
                 _interactHits.Clear();
                 return false;
             }

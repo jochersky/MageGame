@@ -11,6 +11,9 @@ public class MenuButtons : MonoBehaviour
     [SerializeField] EventSystem eventSystem;
     [SerializeField] GameObject defaultButton;
     AudioSource audioSource;
+
+    private bool _startAlreadyPressed = false;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,7 +24,11 @@ public class MenuButtons : MonoBehaviour
     // Button Press SFX courtesy of Sonic SoundFX
     public void StartPressed()
     {
+        if (_startAlreadyPressed) return;
+        
+        _startAlreadyPressed = true;
         audioSource.PlayOneShot(clickSFX);
+        SaveSystem.ResetToStartingSaveState(); 
         SceneManager.LoadScene(gameStartScene);
     }
 
@@ -37,5 +44,5 @@ public class MenuButtons : MonoBehaviour
         Application.Quit();
         Debug.Log("Quitting game...");
     }
-
+    
 }

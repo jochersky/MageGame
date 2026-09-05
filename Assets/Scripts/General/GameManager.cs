@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.TextCore.Text;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,13 +22,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private HUDBar manaBar;
     [SerializeField] private FullScreenEffect fullScreenEffect;
     [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private EquippedUI equippedUI;
+    [SerializeField] private GameObject listItemPrefab;
     
     [Header("Debugging")]
     [SerializeField] private bool debug;
     [SerializeField] private GameObject debugPlayerObject;
-    
-    private bool _playerComponentLoaded;
-    private bool _inventoryManagerLoaded;
+
+    private bool _playerComponentLoaded = false;
+    private bool _inventoryManagerLoaded = false;
 
     private CountdownTimer _loadTimer;
     
@@ -90,12 +93,13 @@ public class GameManager : MonoBehaviour
             playerComponent.HealthBar = healthBar;
             playerComponent.ManaBar = manaBar;
             Player = playerComponent;
-            Debug.Log($"game manager start up: {Player}");
             
             // load player's items once these scripts have finished running
             playerComponent.OnStartDone += () => { PlayerComponentLoaded = true; };
             InventoryManager.Instance.OnStartDone += () => { InventoryManagerLoaded = true; };
         }
+        
+        equippedUI?.SubscribeToEvents();
     }
 
     public GameObject SpawnPlayer()
@@ -117,6 +121,49 @@ public class GameManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void ResetStatsAndItems()
+    {
+        // Remove items from inventory
+        InventoryManager.Instance.ClearItemData();
+        
+        // Get character info to add starting items back to inventory
+        CharacterInfo characterInfo = baseCharacterInfo;
+        switch (CharacterType)
+        {
+            case CharacterType.Base: characterInfo = baseCharacterInfo; break;
+            case CharacterType.Pyromancer: characterInfo = pyromancerInfo; break;
+            case CharacterType.Hound: characterInfo = houndInfo; break;
+            case CharacterType.Warden: characterInfo = wardenInfo; break;
+        }
+        
+        if (characterInfo.startingConsumable1)
+        {
+            InventoryManager.Instance.AddItem(characterInfo.startingConsumable1, 5);
+            InventoryManager.Instance.AddConsumableListItem(Instantiate(listItemPrefab), characterInfo.startingConsumable1);
+        }
+        if (characterInfo.startingConsumable2)
+        {
+            InventoryManager.Instance.AddItem(characterInfo.startingConsumable2, 5);
+            InventoryManager.Instance.AddConsumableListItem(Instantiate(listItemPrefab), characterInfo.startingConsumable2);
+        }
+        if (characterInfo.startingSpell1)
+        {
+            // InventoryManager.Instance.AddItem(characterInfo.startingSpell1, 0);
+            InventoryManager.Instance.AddSpellListItem(Instantiate(listItemPrefab), characterInfo.startingSpell1);
+        }
+        if (characterInfo.startingSpell2)
+        {
+            // InventoryManager.Instance.AddItem(characterInfo.startingSpell2, 0);
+            InventoryManager.Instance.AddSpellListItem(Instantiate(listItemPrefab), characterInfo.startingSpell2);
+        }
+        
+        // Reset health and mana values
+        Player.UpdateHealthAndMana();
+        
+        // Reset money counter
+        InventoryManager.Instance.UpdateMoney(-InventoryManager.Instance.GetMoneyCount());
     }
 
     public void LoadPlayerStatsAndItems()

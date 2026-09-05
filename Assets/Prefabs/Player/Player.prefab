@@ -1356,7 +1356,7 @@ GameObject:
   - component: {fileID: 3092119275389195811}
   m_Layer: 11
   m_Name: InteractCollider
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1563,6 +1563,26 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: df8226dd-ab9e-40f8-82c2-4edd7f97a3ed
     m_ActionName: 'Player/UseConsumable[/Keyboard/q]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bfa07293-f962-4d0d-bd21-f903608298d8
+    m_ActionName: 'Player/Spell 2[/Mouse/rightButton,/Keyboard/l]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2e72a4a1-e95b-4b0d-a838-4d0fc5d64665
+    m_ActionName: 'Player/SwitchConsumable[/Keyboard/u]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4b139800-7e6e-43ed-80a9-f7efd26f1287
+    m_ActionName: 'Player/Attack[/Keyboard/k]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8ea01e6e-fcdf-46e8-8970-956a2b0fdc82
+    m_ActionName: 'Player/Inventory[/Keyboard/tab]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8cfd1a28-8532-4a30-98fa-972e86e79fc7
+    m_ActionName: 'Player/Dodge[/Keyboard/shift]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -1706,11 +1726,11 @@ MonoBehaviour:
   climbDistanceFromWall: 0.8
   climbCheckOffset: {x: 0, y: 0}
   climbCheckDir: {x: 1, y: 0}
-  climbCheckDistance: 0.6
-  climbCheckHeight: 0.55
+  climbCheckDistance: 0.65
+  climbCheckHeight: 0.65
   climbAboveBelowCheckLength: 1
-  climbSnapSpeed: 0.2
-  climbDelayTime: 0.4
+  climbSnapSpeed: 0.4
+  climbDelayTime: 0.7
   climbDebug: 0
   _ropeHandler: {fileID: 7954448484511661488}
   ropeClimbSpeed: 5
@@ -1732,7 +1752,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  debugCount: 0
 --- !u!114 &1016283095906686779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2192,7 +2211,7 @@ GameObject:
   - component: {fileID: 8656288525767866780}
   m_Layer: 0
   m_Name: Torch
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

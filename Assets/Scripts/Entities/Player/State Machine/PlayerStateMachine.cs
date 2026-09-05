@@ -187,8 +187,6 @@ public class PlayerStateMachine : MonoBehaviour
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
     public bool IsClimbing => _currentState == _states.Climb();
 
-    public int debugCount = 0;
-    
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();

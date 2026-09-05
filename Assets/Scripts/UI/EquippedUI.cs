@@ -27,9 +27,8 @@ public class EquippedUI : MonoBehaviour
         _spell2CooldownMat = spell2Cooldown.material;
     }
 
-    private void OnEnable()
+    public void SubscribeToEvents()
     {
-        // Subscribe to events
         InventoryManager.Instance.OnConsumableSwitched += UpdateEquippedConsumableUI;
         InventoryManager.Instance.OnConsumableCountUpdated += UpdateConsumableCountUI;
         InventoryManager.Instance.OnSpell1Equipped += UpdateEquippedSpell1UI;
@@ -38,7 +37,6 @@ public class EquippedUI : MonoBehaviour
         InventoryManager.Instance.OnSpell2Unequipped += UpdateEquippedSpell2UI;
         GameManager.Instance.SpellManager.OnSpell1Casted += cooldown => StartCoroutine(CooldownSpell1(cooldown));
         GameManager.Instance.SpellManager.OnSpell2Casted += cooldown => StartCoroutine(CooldownSpell2(cooldown));
-        
     }
 
     private void UpdateEquippedConsumableUI(ConsumableConfig config, int amount)

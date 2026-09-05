@@ -6,6 +6,9 @@ public class HUDUI : MonoBehaviour
 
     private void Start()
     {
-        EventBus.Instance.OnChestOpened += chestInteractable => { addToInventoryText.SetActive(chestInteractable); };
+        EventBus.Instance.OnChestOpened += chestInteractable =>
+        {
+            if (addToInventoryText) addToInventoryText?.SetActive(chestInteractable);
+        };
     }
 }

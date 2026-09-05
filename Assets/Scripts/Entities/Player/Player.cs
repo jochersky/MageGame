@@ -37,10 +37,12 @@ public class Player : MonoBehaviour
         // GameManager.Instance.PlayerHealth = _health;
         // GameManager.Instance.SpellManager = _spellManager;
 
-        _health.CurrentHealth = stats.health;
-        _health.UpdateMaxHealth(stats.health);
-        _spellManager.MaxMana = stats.mana;
-        _spellManager.Mana = _spellManager.MaxMana;
+        // _health.CurrentHealth = stats.health;
+        // _health.UpdateMaxHealth(stats.health);
+        // _spellManager.MaxMana = stats.mana;
+        // _spellManager.Mana = _spellManager.MaxMana;
+        
+        UpdateHealthAndMana();
 
         float size = stats.lightRadiusSize + passiveSpellAffects.LightRadiusDiff;
         lightTransform.localScale = new Vector3(size, size, size);
@@ -63,6 +65,14 @@ public class Player : MonoBehaviour
         }
         
         OnStartDone?.Invoke();
+    }
+
+    public void UpdateHealthAndMana()
+    {
+        _health.CurrentHealth = stats.health;
+        _health.UpdateMaxHealth(stats.health);
+        _spellManager.MaxMana = stats.mana;
+        _spellManager.Mana = _spellManager.MaxMana;
     }
 
     public void Save(ref PlayerSaveData data)

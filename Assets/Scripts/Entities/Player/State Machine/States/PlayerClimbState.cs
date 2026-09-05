@@ -1,7 +1,11 @@
+using System.Text;
+using System.Threading;
 using UnityEngine;
 
 public class PlayerClimbState : PlayerBaseState
 {
+    private bool _snapToPos = false;
+    
     public PlayerClimbState(PlayerStateMachine context, PlayerStateDictionary playerStateDictionary)
         : base(context, playerStateDictionary)
     {
@@ -18,6 +22,7 @@ public class PlayerClimbState : PlayerBaseState
         Context.HorizontalMovement = 0;
         // Set so that player can jump when climbing.
         Context.WasClimbing = true;
+        _snapToPos = true;
 
         Context.ClimbDir = Context.MoveDirection;
 
@@ -29,8 +34,14 @@ public class PlayerClimbState : PlayerBaseState
         if (Context.IsDead) SwitchState(Dictionary.Dead());
         
         Vector2 pos = Context.transform.position;
-        if ((pos - Context.ClimbPosition).magnitude >= 0.1f)
+        if (_snapToPos && (pos - Context.ClimbPosition).magnitude >= 0.01f)
+        {
             Context.transform.position = Vector3.MoveTowards(pos, Context.ClimbPosition, Context.ClimbSnapSpeed);
+        }
+        else
+        {
+            _snapToPos = false;
+        }
         
         if (Context.NewJumpPress) SwitchState(Dictionary.Jump());
         else if (Context.VerticalDirection.y < 0)

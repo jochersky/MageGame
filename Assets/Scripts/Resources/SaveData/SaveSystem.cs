@@ -4,7 +4,8 @@ using UnityEngine.XR;
 
 public class SaveSystem
 {
-    private static bool _release = true;
+    // TODO: toggle to true when releasing build
+    private static bool _release = false;
     private static string _debugFilePath = Application.dataPath + "/Scripts/Resources/SaveData";
     private static string _releaseFilePath = Application.persistentDataPath;
     
@@ -61,5 +62,15 @@ public class SaveSystem
     {
         if (!SaveDataExists()) return;
         File.Delete(SaveFileName());
+    }
+
+    public static void ResetToStartingSaveState()
+    {
+        _saveData.inventoryData.spells = null;
+        _saveData.inventoryData.consumables = null;
+        File.WriteAllText(SaveFileName(), JsonUtility.ToJson(_saveData, true));
+        
+        GameManager.Instance.ResetStatsAndItems();
+        Save();
     }
 }

@@ -334,6 +334,19 @@ public class InventoryManager : MonoBehaviour
             AddItem(_consumableDictionary.GetConfig(i.name), i.count);
         }
     }
+
+    public void ClearItemData()
+    {
+        spellListItemInstances.Clear();
+
+        foreach (var i in consumableListItemInstances)
+        {
+            _consumableManager.consumableCounts[i.Value.itemName] = 0;
+            Destroy(i.Key);
+        }
+        
+        consumableListItemInstances.Clear();
+    }
 }
 
 [System.Serializable]

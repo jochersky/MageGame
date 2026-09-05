@@ -3,11 +3,6 @@
         "characterType": 1
     },
     "playerData": {
-        "position": {
-            "x": 0.0,
-            "y": 0.0,
-            "z": 0.0
-        },
         "healthAmt": 5,
         "manaAmt": 150,
         "moneyAmt": 0

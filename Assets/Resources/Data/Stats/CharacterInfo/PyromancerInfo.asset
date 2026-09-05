@@ -19,4 +19,4 @@ MonoBehaviour:
   startingSpell1: {fileID: 11400000, guid: 56f12bf654c087a418e5cf3d4b7ada55, type: 2}
   startingSpell2: {fileID: 0}
   startingConsumable1: {fileID: 11400000, guid: 2ceda6a4b1162ff43837faea8d3d0b2c, type: 2}
-  startingConsumable2: {fileID: 11400000, guid: 61929a01407792948a0b0272f8bea603, type: 2}
+  startingConsumable2: {fileID: 11400000, guid: dddd47c1650d67e4aa41bd74fdc5acc8, type: 2}
