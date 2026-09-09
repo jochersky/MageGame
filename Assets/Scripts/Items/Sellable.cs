@@ -25,6 +25,7 @@ public class Sellable : MonoBehaviour
     void Start()
     {
         _input = FindAnyObjectByType<PlayerInput>();
+        Debug.Log(_input.actions["Interact"]);
         _input.actions["Interact"].performed += OnInteract;
         randy = new System.Random();
         GenerateSellable();

@@ -9,6 +9,7 @@ public class PlayerIdleState : PlayerBaseState
     {
         Context.Animator.CrossFade(Context.Idle, 0, 0);
         Context.HorizontalMovement = 0;
+        Context.VerticalMovement = 0;
     }
 
     public override void UpdateState()

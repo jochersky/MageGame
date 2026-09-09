@@ -12,7 +12,7 @@ public class SkeletonAggroState : SkeletonBaseState
         Context.Animator.CrossFade(Context.Aggro, 0);
         
         Context.CurrentMoveSpeed = Context.AggroMoveSpeed;
-        Context.HorizontalMovement = Context.MoveDir.x * Context.CurrentMoveSpeed;;
+        Context.HorizontalMovement = Context.MoveDir.x * Context.CurrentMoveSpeed;
     }
 
     public override void UpdateState()

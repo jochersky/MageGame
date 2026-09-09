@@ -33,7 +33,7 @@ public class CharacterSelect : MonoBehaviour
         InventoryManager.Instance.OnStartDone += FinishEmbark;
     }
 
-    public void FinishEmbark()
+    private void FinishEmbark()
     {
         if (_characterInfo.startingConsumable1)
         {

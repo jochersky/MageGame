@@ -10,8 +10,8 @@ public class SkeletonDeadState : SkeletonBaseState
 
     public override void EnterState()
     {
-        Context.Animator.CrossFade(Context.Dead, 0);
-        
+        Context.Animator.CrossFade(Context.Dead, 0, 0);
+        Context.CurrentMoveSpeed = 0;
         Context.HorizontalMovement = 0;
     }
 

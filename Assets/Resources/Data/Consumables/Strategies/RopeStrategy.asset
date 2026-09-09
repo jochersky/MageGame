@@ -16,11 +16,15 @@ MonoBehaviour:
   environmentLayer:
     serializedVersion: 2
     m_Bits: 64
+  interactLayer:
+    serializedVersion: 2
+    m_Bits: 2048
   maxHeight: 5
   yMaxMargin: 0.5
   yMinMargin: 0
+  overlapWidth: 0.53
   topSprite: {fileID: 8662384261516989540, guid: 036380db571df32489dba6df13ee9654, type: 3}
   topEndSprite: {fileID: -101285690, guid: 036380db571df32489dba6df13ee9654, type: 3}
   midSprite: {fileID: 973116412, guid: 036380db571df32489dba6df13ee9654, type: 3}
   botSprite: {fileID: 1847636002, guid: 036380db571df32489dba6df13ee9654, type: 3}
-  debug: 0
+  debug: 1

@@ -1,7 +1,11 @@
+using System.Text;
+using System.Threading;
 using UnityEngine;
 
 public class PlayerClimbState : PlayerBaseState
 {
+    private bool _snapToPos = false;
+    
     public PlayerClimbState(PlayerStateMachine context, PlayerStateDictionary playerStateDictionary)
         : base(context, playerStateDictionary)
     {
@@ -18,8 +22,10 @@ public class PlayerClimbState : PlayerBaseState
         Context.HorizontalMovement = 0;
         // Set so that player can jump when climbing.
         Context.WasClimbing = true;
+        _snapToPos = true;
 
-        Context.transform.position = Context.ClimbPosition;
+        Context.ClimbDir = Context.MoveDirection;
+
         Context.StartClimbDelay();
     }
 
@@ -27,16 +33,27 @@ public class PlayerClimbState : PlayerBaseState
     {
         if (Context.IsDead) SwitchState(Dictionary.Dead());
         
-        if (Context.IsPressingJump) SwitchState(Dictionary.Jump());
-        else if (Context.MoveDirection.y < 0)
+        Vector2 pos = Context.transform.position;
+        if (_snapToPos && (pos - Context.ClimbPosition).magnitude >= 0.01f)
         {
-            Context.WasClimbing = false;
+            Context.transform.position = Vector3.MoveTowards(pos, Context.ClimbPosition, Context.ClimbSnapSpeed);
+        }
+        else
+        {
+            _snapToPos = false;
+        }
+        
+        if (Context.NewJumpPress) SwitchState(Dictionary.Jump());
+        else if (Context.VerticalDirection.y < 0)
+        {
+            // Context.WasClimbing = false;
             SwitchState(Dictionary.Fall());
         }
     }
 
     public override void ExitState()
     {
+        Context.CheckForFlipTransform();
     }
 
     public override void InitializeSubState()

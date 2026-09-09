@@ -17,5 +17,5 @@ public class ConsumableStrategy : ScriptableObject
     // TODO : bomb
     public virtual void UseThrowingConsumable(Transform spawnTransform, Vector3 spawnPosition, Vector3 direction, Vector3 velocity) { }
     // TODO : rope
-    public virtual void UsePlaceableConsumable(Transform spawnTransform, Vector3 spawnPosition) { }
+    public virtual bool UsePlaceableConsumable(Transform spawnTransform, Vector3 spawnPosition) { return false; }
 }

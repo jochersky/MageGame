@@ -36,8 +36,17 @@ public class SpellManager : MonoBehaviour
     private bool _canConsumeGibs;
     
     public int MaxMana { get => maxMana; set => maxMana = value; }
-    public int Mana { get => _mana; set => _mana = value; }
-    
+
+    public int Mana
+    {
+        get => _mana;
+        set
+        {
+            _mana = value;
+            OnManaChanged?.Invoke(value);
+        }
+    }
+
     public delegate void ManaChange(int newMana);
     public event ManaChange OnManaChanged;
 

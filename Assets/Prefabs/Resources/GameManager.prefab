@@ -56,6 +56,9 @@ MonoBehaviour:
   wardenInfo: {fileID: 11400000, guid: 24f7de4e0427291408cf559e3860079f, type: 2}
   healthBar: {fileID: 0}
   manaBar: {fileID: 0}
+  fullScreenEffect: {fileID: 0}
   inventoryUI: {fileID: 0}
+  equippedUI: {fileID: 0}
+  listItemPrefab: {fileID: 2108252100021298958, guid: 82308ff4824331d4faccf4250463d519, type: 3}
   debug: 0
   debugPlayerObject: {fileID: 0}

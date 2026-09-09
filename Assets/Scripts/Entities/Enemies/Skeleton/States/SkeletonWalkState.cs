@@ -23,6 +23,7 @@ public class SkeletonWalkState : SkeletonBaseState
 
     public override void UpdateState()
     {
+        // if (Context.IsDead) SwitchState(Dictionary.Dead());
         if (Context.IsAggroed || Context.TookDamage) SwitchState(Dictionary.Aggro());
         
         _walkTimer.Tick(Time.deltaTime);

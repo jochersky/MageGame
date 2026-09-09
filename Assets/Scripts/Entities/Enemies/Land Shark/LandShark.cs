@@ -53,7 +53,7 @@ public class LandShark : MonoBehaviour
             hurtbox.gameObject.SetActive(false);
             hitbox.gameObject.SetActive(false);
             _rb.linearVelocity = Vector2.zero;
-            StopCoroutine(_rotateCoroutine);
+            if (_rotateCoroutine != null) StopCoroutine(_rotateCoroutine);
             StartCoroutine(DeathAnimation());
         };
     }

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
@@ -37,7 +39,7 @@ public class SkeletonStateMachine : Entity
     [SerializeField] private bool ledgeCheckDebug;
     
     [Header("Knock Back")]
-    [SerializeField, Range(0, 1)] private float reduceConst = 0.3f;
+    [SerializeField, UnityEngine.Range(0, 1)] private float reduceConst = 0.3f;
     
     [Header("State Debug")]
     public string stateName = "";
