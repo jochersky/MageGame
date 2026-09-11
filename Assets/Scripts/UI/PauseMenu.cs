@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -8,40 +9,43 @@ public class PauseMenu : MonoBehaviour
     
     [SerializeField] string menuSceneName;
     [SerializeField] GameObject pauseMenuUI;
+    [SerializeField] string inputEventName;
     [SerializeField] Slider masterSlider;
     [SerializeField] Slider musicSlider;
     [SerializeField] Slider sfxSlider;
-    MixerManager mixerManager;
-    PlayerInput playerInput;
-    void Awake()
+    private PlayerInput playerInput;
+    bool showing = false; 
+    void Start()
     {
-        mixerManager = FindFirstObjectByType<MixerManager>();
-        if (mixerManager != null)
+        StartCoroutine(DelayedStart());
+    }
+    // because player gets swapped out at start
+    IEnumerator DelayedStart()
+    {
+        yield return new WaitForEndOfFrame();
+        playerInput = FindAnyObjectByType<PlayerInput>();
+        Debug.Log(playerInput.actions[inputEventName]);
+        playerInput.actions[inputEventName].performed += Toggle;
+    }
+
+    public void Toggle()
+    {
+        if (showing)
         {
-            masterSlider.onValueChanged.AddListener(mixerManager.SetMasterVolume);
-            musicSlider.onValueChanged.AddListener(mixerManager.SetMasterVolume);
-            sfxSlider.onValueChanged.AddListener(mixerManager.SetMasterVolume);
+            pauseMenuUI.SetActive(false);
+            showing = false;
+            //playerInput.SwitchCurrentActionMap(playerInput.defaultActionMap);
         } else
         {
-            Debug.Log("Pause Menu could not find MixerManager!");
+            pauseMenuUI.SetActive(true);
+            showing = true;
+            //playerInput.SwitchCurrentActionMap("UI");
         }
-        playerInput = FindFirstObjectByType<PlayerInput>();
-        if (playerInput != null)
-        {
-            //playerInput.uiInputModule.
-        } else
-        {
-            Debug.Log("Pause Menu could not find Player Input!");
-        }
+    }
+    public void Toggle(InputAction.CallbackContext context)
+    {
+        Toggle();
         
-    }
-    private void Show()
-    {
-        pauseMenuUI.SetActive(false);
-    }
-    public void OnBackPressed()
-    {
-        pauseMenuUI.SetActive(false);
     }
     public void OnQuitPressed()
     {
