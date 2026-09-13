@@ -8,6 +8,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioSource audioSourcePrefab;
     [SerializeField] AudioClip background_music;
+    [SerializeField] AudioSource musicManager;
     bool playingAudio;
     
     void Awake()
@@ -16,6 +17,10 @@ public class AudioManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
+        } else
+        {
+            Destroy(gameObject);
         }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -24,9 +29,24 @@ public class AudioManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+
+    public void ChangeMusic(AudioClip music)
+    {
+        musicManager.clip = music;
+        musicManager.Play();
+    }
+
     public void PlayRandomClipFromAt(AudioClip[] audioClips, Transform location, float volume)
     {
         PlayClipAt(audioClips[Random.Range(0, audioClips.Length)], location, volume);
+    }
+    public void PlayClipAt(AudioClip audioClip, Transform location)
+    {
+        AudioSource audioSrcInstance = Instantiate(audioSourcePrefab, location.position, Quaternion.identity);
+        audioSrcInstance.clip = audioClip;
+        audioSrcInstance.volume = audioSource.volume;
+        audioSrcInstance.Play();
+        Destroy(audioSrcInstance, audioClip.length);
     }
 
     public void PlayClipAt(AudioClip audioClip, Transform location, float volume)

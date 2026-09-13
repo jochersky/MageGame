@@ -235,7 +235,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2042415709172098960}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
-        m_MethodName: OnBackPressed
+        m_MethodName: Toggle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -296,9 +296,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   menuSceneName: MainMenu
   pauseMenuUI: {fileID: 6542196985879845823}
-  masterSlider: {fileID: 0}
-  musicSlider: {fileID: 0}
-  sfxSlider: {fileID: 0}
+  inputEventName: Pause
+  masterSlider: {fileID: 8717388009678589265}
+  musicSlider: {fileID: 1267052334768737388}
+  sfxSlider: {fileID: 5150883728859099015}
 --- !u!1 &436351554009670563
 GameObject:
   m_ObjectHideFlags: 0
@@ -2990,6 +2991,8 @@ MonoBehaviour:
   defaultButton: {fileID: 4178771734486655409}
   settings: {fileID: 0}
   menuButtons: {fileID: 0}
+  isMainMenu: 0
+  audioManager: {fileID: 0}
 --- !u!82 &628909205256501376
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5397,7 +5400,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1435191877254868337
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8725,15 +8728,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1308395151582860000, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.49995
       objectReference: {fileID: 0}
     - target: {fileID: 1308395151582860000, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1308395151582860000, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.49995
       objectReference: {fileID: 0}
     - target: {fileID: 1669667506792575213, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_Pivot.x
@@ -8833,31 +8836,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3487119914860972299, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.49995
       objectReference: {fileID: 0}
     - target: {fileID: 3487119914860972299, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3487119914860972299, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.49995
       objectReference: {fileID: 0}
     - target: {fileID: 3712644270115590845, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.49995
       objectReference: {fileID: 0}
     - target: {fileID: 3712644270115590845, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4320760757161697999, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.49995
       objectReference: {fileID: 0}
     - target: {fileID: 4320760757161697999, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5927115721658974421, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_Name
@@ -8865,34 +8868,67 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6168539624104223796, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.49995
       objectReference: {fileID: 0}
     - target: {fileID: 6168539624104223796, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6168539624104223796, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.49995
       objectReference: {fileID: 0}
     - target: {fileID: 8903927059588446825, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.49995
       objectReference: {fileID: 0}
     - target: {fileID: 8903927059588446825, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
+--- !u!114 &1267052334768737388 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5247476683581027879, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
+  m_PrefabInstance: {fileID: 6433305616152115787}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
+--- !u!114 &5150883728859099015 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2178664881186264524, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
+  m_PrefabInstance: {fileID: 6433305616152115787}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!224 &5651006665175567014 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1669667506792575213, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
   m_PrefabInstance: {fileID: 6433305616152115787}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8717388009678589265 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2431331826747438874, guid: c9f1e44bf1b98e248908152b63fef606, type: 3}
+  m_PrefabInstance: {fileID: 6433305616152115787}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!1001 &7489587711561102627
 PrefabInstance:
   m_ObjectHideFlags: 0

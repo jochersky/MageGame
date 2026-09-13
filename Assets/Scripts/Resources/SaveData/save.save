@@ -3,12 +3,18 @@
         "characterType": 1
     },
     "playerData": {
-        "healthAmt": 5,
-        "manaAmt": 150,
+        "healthAmt": 1,
+        "manaAmt": 120,
         "moneyAmt": 0
     },
     "inventoryData": {
         "spells": [
+            {
+                "name": "Dragon's Fury"
+            },
+            {
+                "name": "Reverse Footsteps"
+            },
             {
                 "name": "Dragon's Fury"
             }
@@ -16,7 +22,7 @@
         "consumables": [
             {
                 "name": "Bomb",
-                "count": 5
+                "count": 4
             },
             {
                 "name": "Rope",

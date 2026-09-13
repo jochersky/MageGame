@@ -136,6 +136,7 @@ public class MapGenerator : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         PlaceRopes();
+        player.transform.position = startingPosition;
     }
 
     void SpawnEntities()

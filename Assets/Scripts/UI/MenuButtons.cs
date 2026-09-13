@@ -14,45 +14,44 @@ public class MenuButtons : MonoBehaviour
     [SerializeField] GameObject settings;
     [SerializeField] GameObject menuButtons;
     [SerializeField] bool isMainMenu = false;
-    AudioSource audioSource;
+    [SerializeField] AudioManager audioManager;
 
     private bool _startAlreadyPressed = false;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        audioManager = FindFirstObjectByType<AudioManager>();
         eventSystem.firstSelectedGameObject = defaultButton;
     }
-    // TODO: This SFX system is bugged and will have problems later
     // Button Press SFX courtesy of Sonic SoundFX
     public void StartPressed()
     {
         if (_startAlreadyPressed) return;
         
         _startAlreadyPressed = true;
-        audioSource.PlayOneShot(clickSFX);
+        audioManager.PlayAudio(clickSFX, clickSFX.length);
         if (!isMainMenu) SaveSystem.ResetToStartingSaveState(); 
         SceneManager.LoadScene(gameStartScene);
     }
 
     public void SettingsPressed()
     {
-        audioSource.PlayOneShot(clickSFX);
+        audioManager.PlayAudio(clickSFX, clickSFX.length);
         menuButtons.SetActive(false);
         settings.SetActive(true);
     }
 
     public void BackPressed()
     {
-        audioSource.PlayOneShot(clickSFX);
+        audioManager.PlayAudio(clickSFX, clickSFX.length);
         menuButtons.SetActive(true);
         settings.SetActive(false);
     }
 
     public void QuitPressed()
     {
-        audioSource.PlayOneShot(clickSFX);
+        audioManager.PlayAudio(clickSFX, clickSFX.length);
         Application.Quit();
         Debug.Log("Quitting game...");
     }

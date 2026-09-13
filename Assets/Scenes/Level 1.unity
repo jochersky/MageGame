@@ -214,7 +214,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!43 &865641381
+--- !u!43 &298850495
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -745,6 +745,10 @@ PrefabInstance:
       propertyPath: m_margin.z
       value: 39.77485
       objectReference: {fileID: 0}
+    - target: {fileID: 8025636002942055118, guid: 2d115855e83d0674194d6cc4748ad915, type: 3}
+      propertyPath: levelMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 741f5640508636d44a5fb84493d6d89b, type: 3}
     - target: {fileID: 8171900622542614584, guid: 2d115855e83d0674194d6cc4748ad915, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
