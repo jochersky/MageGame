@@ -1,4 +1,5 @@
 using System;
+using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,6 +13,7 @@ public class MenuButtons : MonoBehaviour
     [SerializeField] GameObject defaultButton;
     [SerializeField] GameObject settings;
     [SerializeField] GameObject menuButtons;
+    [SerializeField] bool isMainMenu = false;
     AudioSource audioSource;
 
     private bool _startAlreadyPressed = false;
@@ -30,7 +32,7 @@ public class MenuButtons : MonoBehaviour
         
         _startAlreadyPressed = true;
         audioSource.PlayOneShot(clickSFX);
-        SaveSystem.ResetToStartingSaveState(); 
+        if (!isMainMenu) SaveSystem.ResetToStartingSaveState(); 
         SceneManager.LoadScene(gameStartScene);
     }
 

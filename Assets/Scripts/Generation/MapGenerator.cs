@@ -127,6 +127,7 @@ public class MapGenerator : MonoBehaviour
         EventBus.Instance.HandleTileMapChanged();
         PlaceEntities();
         // teleport player to starting position
+        Debug.Log("Player moved to " + startingPosition);
         player.transform.position = startingPosition;
         StartCoroutine(DelayedStart());
     }

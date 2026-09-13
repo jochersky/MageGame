@@ -155,6 +155,7 @@ MonoBehaviour:
   defaultButton: {fileID: 1006414045}
   settings: {fileID: 1343511437}
   menuButtons: {fileID: 911642204}
+  isMainMenu: 1
 --- !u!4 &82404274
 Transform:
   m_ObjectHideFlags: 0

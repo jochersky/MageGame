@@ -8,7 +8,20 @@
         "moneyAmt": 0
     },
     "inventoryData": {
-        "spells": [],
-        "consumables": []
+        "spells": [
+            {
+                "name": "Dragon's Fury"
+            }
+        ],
+        "consumables": [
+            {
+                "name": "Bomb",
+                "count": 5
+            },
+            {
+                "name": "Rope",
+                "count": 5
+            }
+        ]
     }
 }
