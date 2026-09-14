@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2414087994258535347}
   - component: {fileID: 8025636002942055118}
   m_Layer: 0
-  m_Name: Level 1
+  m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,6 +55,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneManagement
   levelMusic: {fileID: 0}
+  audioManagerPrefab: {fileID: 5894921908654064854}
 --- !u!1001 &302538960299749926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -201,9 +202,21 @@ PrefabInstance:
       value: MixerManager
       objectReference: {fileID: 0}
     - target: {fileID: 7820500967949326517, guid: d83bd775697a21c4091f00193d98f0fc, type: 3}
+      propertyPath: sfxSlider
+      value: 
+      objectReference: {fileID: 4237691949952041408}
+    - target: {fileID: 7820500967949326517, guid: d83bd775697a21c4091f00193d98f0fc, type: 3}
       propertyPath: audioMixer
       value: 
       objectReference: {fileID: 24100000, guid: 82a1a18e55eb3334b80f568ee684ef9e, type: 2}
+    - target: {fileID: 7820500967949326517, guid: d83bd775697a21c4091f00193d98f0fc, type: 3}
+      propertyPath: musicSlider
+      value: 
+      objectReference: {fileID: 7791696258609488427}
+    - target: {fileID: 7820500967949326517, guid: d83bd775697a21c4091f00193d98f0fc, type: 3}
+      propertyPath: masterSlider
+      value: 
+      objectReference: {fileID: 382437773391733526}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1263,3 +1276,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4830272564612570175, guid: 3340f325d3281e04987964f79d55bbcb, type: 3}
   m_PrefabInstance: {fileID: 9166548817745159394}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5894921908654064854 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3384709841963737140, guid: 3340f325d3281e04987964f79d55bbcb, type: 3}
+  m_PrefabInstance: {fileID: 9166548817745159394}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6e1f9055c5f852408e79025be027f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
