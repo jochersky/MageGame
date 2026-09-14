@@ -894,6 +894,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 382437773391733526}
     - target: {fileID: 2042415709172098960, guid: e144f097b1003ec409365d73b2a25653, type: 3}
+      propertyPath: closeEventName
+      value: Cancel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2042415709172098960, guid: e144f097b1003ec409365d73b2a25653, type: 3}
       propertyPath: inputEventName
       value: Pause
       objectReference: {fileID: 0}

@@ -10,6 +10,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] string menuSceneName;
     [SerializeField] GameObject pauseMenuUI;
     [SerializeField] string inputEventName;
+    [SerializeField] string closeEventName;
     [SerializeField] Slider masterSlider;
     [SerializeField] Slider musicSlider;
     [SerializeField] Slider sfxSlider;
@@ -26,21 +27,29 @@ public class PauseMenu : MonoBehaviour
         playerInput = FindAnyObjectByType<PlayerInput>();
         Debug.Log(playerInput.actions[inputEventName]);
         playerInput.actions[inputEventName].performed += Toggle;
+        playerInput.actions[closeEventName].performed += Toggle;
     }
 
     public void Toggle()
     {
         if (showing)
         {
+            Time.timeScale = 1f;
             pauseMenuUI.SetActive(false);
             showing = false;
-            //playerInput.SwitchCurrentActionMap(playerInput.defaultActionMap);
+            playerInput.currentActionMap.Disable();
+            playerInput.SwitchCurrentActionMap(playerInput.defaultActionMap);
+            playerInput.currentActionMap.Enable();
         } else
         {
+            Time.timeScale = 0f;
             pauseMenuUI.SetActive(true);
             showing = true;
-            //playerInput.SwitchCurrentActionMap("UI");
+            playerInput.currentActionMap.Disable();
+            playerInput.SwitchCurrentActionMap("UI");
+            playerInput.currentActionMap.Enable();
         }
+        Debug.Log(playerInput.currentActionMap);
     }
     public void Toggle(InputAction.CallbackContext context)
     {
@@ -49,6 +58,7 @@ public class PauseMenu : MonoBehaviour
     }
     public void OnQuitPressed()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(menuSceneName);
     }
 }
