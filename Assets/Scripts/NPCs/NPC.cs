@@ -30,14 +30,23 @@ public class NPC : MonoBehaviour
     private bool _isTalking = false;
     private PlayerInput _input;
     private Coroutine talking;
+
+    void Awake()
+    {
+        FindAnyObjectByType<MapGenerator>().OnPlayerPlaced += PlayerSetup;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public virtual void Start()
     {
-        // this is only way to do this without disrupting the current event setup it seems
-        _input = FindAnyObjectByType<PlayerInput>();
-        _input.actions["Interact"].performed += OnInteract;
+        
         text.text = string.Empty;
         dialogueBox.enabled = false;
+    }
+
+    void PlayerSetup(GameObject player)
+    {
+        _input = player.GetComponent<PlayerInput>();
+        _input.actions["Interact"].performed += OnInteract;
     }
 
     void OnInteract(InputAction.CallbackContext context)

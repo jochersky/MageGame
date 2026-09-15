@@ -20,12 +20,13 @@ public class PauseMenu : MonoBehaviour
     {
         StartCoroutine(DelayedStart());
     }
+
+
     // because player gets swapped out at start
     IEnumerator DelayedStart()
     {
         yield return new WaitForEndOfFrame();
         playerInput = FindAnyObjectByType<PlayerInput>();
-        Debug.Log(playerInput.actions[inputEventName]);
         playerInput.actions[inputEventName].performed += Toggle;
         playerInput.actions[closeEventName].performed += Toggle;
     }
@@ -49,7 +50,6 @@ public class PauseMenu : MonoBehaviour
             playerInput.SwitchCurrentActionMap("UI");
             playerInput.currentActionMap.Enable();
         }
-        Debug.Log(playerInput.currentActionMap);
     }
     public void Toggle(InputAction.CallbackContext context)
     {

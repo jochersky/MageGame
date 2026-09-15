@@ -1942,6 +1942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneManagement
   levelMusic: {fileID: 8300000, guid: 1ee9d49bc68989e43a135a310edd3dcc, type: 3}
+  audioManagerPrefab: {fileID: 0}
 --- !u!4 &1618696840
 Transform:
   m_ObjectHideFlags: 0
@@ -2367,7 +2368,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -0.6694412, w: 0}
+  m_margin: {x: 0, y: 27.172852, z: -0.6694412, w: 29.02555}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

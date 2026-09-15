@@ -77,6 +77,9 @@ public class MapGenerator : MonoBehaviour
     List<(int x, int y)> specialRoomCoords = new();
     List<Vector2> ropeCoords = new();
 
+    public delegate void PlayerPlaced(GameObject player);
+    public event PlayerPlaced OnPlayerPlaced;
+
     
     // this is apparently how you do multidimensional arrays
     int[,] map;
@@ -137,6 +140,7 @@ public class MapGenerator : MonoBehaviour
         yield return new WaitForEndOfFrame();
         PlaceRopes();
         player.transform.position = startingPosition;
+        OnPlayerPlaced?.Invoke(player);
     }
 
     void SpawnEntities()

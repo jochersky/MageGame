@@ -36456,7 +36456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c45b076fcfa943245b7e1b8a8468decb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquippedUI
---- !u!43 &1065078204
+--- !u!43 &997670505
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -37041,7 +37041,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7898580744639545284, guid: 3340f325d3281e04987964f79d55bbcb, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

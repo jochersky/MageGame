@@ -297,6 +297,7 @@ MonoBehaviour:
   menuSceneName: MainMenu
   pauseMenuUI: {fileID: 6542196985879845823}
   inputEventName: Pause
+  closeEventName: Cancel
   masterSlider: {fileID: 8717388009678589265}
   musicSlider: {fileID: 1267052334768737388}
   sfxSlider: {fileID: 5150883728859099015}
