@@ -1,3 +1,4 @@
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public class PoisonBubble : MonoBehaviour
     Rigidbody2D rb;
     [SerializeField] float speed = 50f;
     [SerializeField] TemporaryEffect effects;
+    [SerializeField] AudioClip[] popSounds;
+    [SerializeField] float popVolume;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,6 +23,7 @@ public class PoisonBubble : MonoBehaviour
         if (!collision.isTrigger || collision.CompareTag("Hitbox"))
         {
             Instantiate(effects, transform.position, quaternion.identity);
+            AudioManager.instance.PlayRandomClipFromAt(popSounds, transform, popVolume);
             Destroy(gameObject);
         } 
     }

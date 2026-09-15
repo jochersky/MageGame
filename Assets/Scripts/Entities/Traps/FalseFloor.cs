@@ -9,12 +9,10 @@ public class FalseFloor : MonoBehaviour
     [SerializeField] TemporaryEffect breakEffect;
     [SerializeField] SpriteRenderer spriteRenderer;
     Tilemap colliderTilemap;
-    private AudioManager audioManager;
     bool triggered = false;
 
     void Start()
     {
-        audioManager = FindAnyObjectByType<AudioManager>();
         MapGenerator mapGenerator = FindAnyObjectByType<MapGenerator>();
         if (mapGenerator != null)
         {
@@ -37,7 +35,7 @@ public class FalseFloor : MonoBehaviour
                 colliderTilemap.SetTile(pos, null);
             }
             Instantiate(breakEffect, transform.position, quaternion.identity);
-            audioManager.PlayAudio(breakingSound, audioDelayForVolumeControl);
+            AudioManager.instance.PlayAudio(breakingSound, audioDelayForVolumeControl);
             //EventBus.Instance.HandleTileMapChanged();
             Destroy(gameObject);
         }

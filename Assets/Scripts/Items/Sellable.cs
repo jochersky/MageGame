@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
@@ -22,17 +23,26 @@ public class Sellable : MonoBehaviour
     private PlayerInput _input;
     private System.Random randy;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Awake()
+    {
+        FindAnyObjectByType<MapGenerator>().OnPlayerPlaced += PlayerSetup;
+    }
     void Start()
     {
-        _input = FindAnyObjectByType<PlayerInput>();
-        Debug.Log(_input.actions["Interact"]);
-        _input.actions["Interact"].performed += OnInteract;
         randy = new System.Random();
         GenerateSellable();
         display.sprite = item.icon;
         price = randy.Next(0, maxPrice);
         priceText.text = price.ToString();
+
     }
+
+    void PlayerSetup(GameObject player)
+    {
+        _input = player.GetComponent<PlayerInput>();
+        _input.actions["Interact"].performed += OnInteract;
+    }
+
 
     // probably inefficent for each sellable to do this
     void GenerateSellable()
