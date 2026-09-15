@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,23 +17,21 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] Slider sfxSlider;
     private PlayerInput playerInput;
     bool showing = false; 
-    void Start()
+    void Awake()
     {
-        StartCoroutine(DelayedStart());
+        FindAnyObjectByType<MapGenerator>().OnPlayerPlaced += SetupInput;
     }
 
-
-    // because player gets swapped out at start
-    IEnumerator DelayedStart()
+    void SetupInput(GameObject player)
     {
-        yield return new WaitForEndOfFrame();
-        playerInput = FindAnyObjectByType<PlayerInput>();
+        playerInput = player.GetComponent<PlayerInput>();
         playerInput.actions[inputEventName].performed += Toggle;
         playerInput.actions[closeEventName].performed += Toggle;
     }
 
     public void Toggle()
     {
+        Debug.Log(playerInput);
         if (showing)
         {
             Time.timeScale = 1f;
