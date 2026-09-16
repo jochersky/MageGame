@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -39,6 +40,8 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private Sprite wardenPortrait;
     [SerializeField] private TextMeshProUGUI characterName;
     [SerializeField] private TextMeshProUGUI giftDescription;
+    [Header("Input")]
+    [SerializeField] private EventSystem eventSystem;
     
     void Start()
     {
@@ -68,6 +71,8 @@ public class InventoryUI : MonoBehaviour
         InventoryManager.Instance.OnSpellAdded += AddSpellToSpellSelection;
         
         InventoryManager.Instance.OnMoneyUpdated += (money => moneyText.text = money.ToString());
+
+        EventBus.Instance.OnInventoryPressed += HandleInventoryPressed;
     }
     
     private void UpdateConsumableCountUI(ConsumableConfig consumableConfig, int count)
@@ -147,6 +152,12 @@ public class InventoryUI : MonoBehaviour
         consumableSelectionMenu.SetActive(true);
         spellSelectionMenu.SetActive(false);
         InventoryManager.Instance.consumableToEquip = consumableID;
+        GameObject listItem = consumableItemElementSpawnTransform.transform.GetChild(0).gameObject;
+        if (listItem != null)
+        {
+            Debug.Log(listItem.name);
+            eventSystem.SetSelectedGameObject(listItem);
+        }
     }
 
     public void HideConsumableSelectionMenu()
@@ -164,6 +175,7 @@ public class InventoryUI : MonoBehaviour
         spellSelectionMenu.SetActive(true);
         consumableSelectionMenu.SetActive(false);
         InventoryManager.Instance.spellToEquip = spellID;
+        eventSystem.SetSelectedGameObject(spellSelectionMenu.gameObject);
     }
 
     public void HideSpellSelectionMenu()
@@ -216,13 +228,19 @@ public class InventoryUI : MonoBehaviour
         HUD.SetActive(false);
     }
 
-    public void OnInventoryPressed(InputAction.CallbackContext context)
+    public void HandleInventoryPressed()
     {
-        if (context.performed || context.canceled) return;
-        
         HideConsumableSelectionMenu();
         HideSpellSelectionMenu();
         UIElements.SetActive(!UIElements.activeSelf);
+        
+        if (UIElements.activeSelf) eventSystem.SetSelectedGameObject(consumable1Image.gameObject);
         // HUD.SetActive(!UIElements.activeSelf);
+    }
+
+    private void I()
+    {
+        eventSystem.SetSelectedGameObject(consumable1Image.gameObject);
+        // eventSystem.currentSelectedGameObject
     }
 }

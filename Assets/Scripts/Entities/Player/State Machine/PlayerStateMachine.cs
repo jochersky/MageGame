@@ -25,6 +25,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private StatusEffectManager statusEffectManager;
     private Rigidbody2D _rb;
     private InputActionMap _playerInputMap;
+    private InputActionMap _UIInputMap;
     private Stats _stats;
     private CameraManager _cameraManager;
     
@@ -191,6 +192,8 @@ public class PlayerStateMachine : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _playerInputMap = playerInput.actions.actionMaps[0];
+        _UIInputMap = playerInput.actions.actionMaps[1];
+        playerInput.currentActionMap = _playerInputMap;
         _stats = new Stats(new StatsMediator(), baseStats);
         _cameraManager = GetComponentInChildren<CameraManager>();
         _lookHoldTimer = new CountdownTimer(dirHoldDuration);
@@ -330,6 +333,8 @@ public class PlayerStateMachine : MonoBehaviour
     public void OnInventoryPressed(InputAction.CallbackContext context)
     {
         if (context.performed || context.canceled) return;
+        
+        EventBus.Instance.HandleInventoryPressed();
 
         _inputDisabled = !_inputDisabled;
         
@@ -337,7 +342,9 @@ public class PlayerStateMachine : MonoBehaviour
         // so that the player cannot move while it is open
         foreach (InputAction action in _playerInputMap.actions)
         {
-            if (action.name != "Inventory")
+            if (action.name == "Inventory") continue;
+            
+            if (!action.name.Contains("UI"))
             {
                 if (_inputDisabled) action.Disable();
                 else action.Enable();

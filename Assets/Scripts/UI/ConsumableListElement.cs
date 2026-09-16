@@ -34,11 +34,17 @@ public class ConsumableListElement : MonoBehaviour, IPointerClickHandler, IPoint
     {
         if (eventData.button != PointerEventData.InputButton.Left) return;
         
-        InventoryManager.Instance.EquipConsumable(gameObject);
+        ClickedConsumable();
     }
     
     public void OnPointerEnter(PointerEventData eventData)
     {
         GameManager.Instance.InventoryUI.UpdateItemDescription(description);
+    }
+
+    public void ClickedConsumable()
+    {
+        InventoryManager.Instance.EquipConsumable(gameObject);
+        Debug.Log($"clicked {consumableName}");
     }
 }

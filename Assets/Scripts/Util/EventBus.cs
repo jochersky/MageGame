@@ -8,9 +8,11 @@ public class EventBus : MonoBehaviour
 
     public delegate void TileMapChanged();
     public event TileMapChanged OnTileMapChanged;
-
     public delegate void ChestOpened(bool chestInteractable);
     public event ChestOpened OnChestOpened;
+    
+    public delegate void InventoryPressed();
+    public event InventoryPressed OnInventoryPressed;
     
     private void Awake()
     {
@@ -39,5 +41,10 @@ public class EventBus : MonoBehaviour
     public void HandleChestOpened(bool chestInteractable) 
     {
         OnChestOpened?.Invoke(chestInteractable);    
+    }
+
+    public void HandleInventoryPressed()
+    {
+        OnInventoryPressed?.Invoke();
     }
 }

@@ -275,7 +275,7 @@
                 {
                     "name": "",
                     "id": "143bb1cd-cc10-4eca-a2f0-a3664166fe91",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -355,7 +355,7 @@
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Gamepad",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -373,8 +373,8 @@
                 },
                 {
                     "name": "",
-                    "id": "f56d01f1-dcc5-4c2a-a102-52d3d37abdd7",
-                    "path": "<Gamepad>/buttonWest",
+                    "id": "61583a59-a5c5-4a20-930f-1e7e6f9299d7",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -384,11 +384,11 @@
                 },
                 {
                     "name": "",
-                    "id": "61583a59-a5c5-4a20-930f-1e7e6f9299d7",
-                    "path": "<Keyboard>/e",
+                    "id": "f56d01f1-dcc5-4c2a-a102-52d3d37abdd7",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Gamepad",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -406,11 +406,33 @@
                 },
                 {
                     "name": "",
+                    "id": "008c3d44-6b16-425d-8857-65740742cf75",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "UseConsumable",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "4421ff14-531b-42d6-a7e3-f1606d1f0607",
                     "path": "<Keyboard>/u",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
+                    "action": "SwitchConsumable",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c41a0771-9b9c-4b48-99aa-82119f44e39f",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
                     "action": "SwitchConsumable",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -428,12 +450,45 @@
                 },
                 {
                     "name": "",
+                    "id": "70732514-3c3d-4fde-bb26-c75f097a9aa8",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Spell 2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f55241b8-9cbf-4355-bfd2-326d4b68d889",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6e725d8a-5534-45b2-afae-e34014b2fc4b",
                     "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "775f4dd6-230c-420d-91f6-699e0fcf946f",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -458,6 +513,17 @@
                     "action": "Dodge",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "69c93574-f4f7-4a2c-991f-952386e88b23",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Dodge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -478,7 +544,7 @@
                     "name": "Submit",
                     "type": "Button",
                     "id": "27680f31-94b8-4af4-ba62-7c2a06e80948",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -487,7 +553,7 @@
                     "name": "Cancel",
                     "type": "Button",
                     "id": "ba230109-2114-445b-a187-1b314d32e906",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -916,6 +982,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3d82b8a0-a519-42d8-a51f-5bf926f5bfa3",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
