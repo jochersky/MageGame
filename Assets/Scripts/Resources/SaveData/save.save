@@ -3,14 +3,17 @@
         "characterType": 1
     },
     "playerData": {
-        "healthAmt": 5,
-        "manaAmt": 150,
-        "moneyAmt": 0
+        "healthAmt": 1,
+        "manaAmt": 30,
+        "moneyAmt": 2
     },
     "inventoryData": {
         "spells": [
             {
                 "name": "Dragon's Fury"
+            },
+            {
+                "name": "Dodge"
             }
         ],
         "consumables": [
