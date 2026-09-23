@@ -193,7 +193,7 @@ public class MapGenerator : MonoBehaviour
             foundExit = Pathfind();
         }
         AgeMap();
-        PlaceChestRooms();
+        PlaceSpecialRooms();
         Debug.Log("Generation complete!");
     
         // Potentially print array here for debugging porpoises
@@ -245,8 +245,10 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    private void PlaceChestRooms()
+    private void PlaceSpecialRooms()
     {
+        // Note: It may be necessary to rescan every room placed so that we don't overwrite paths
+
         // scan map for empty rooms
         List<Vector2Int> unlabeled_rooms = new();
         for (int row = 0; row < map.GetLength(0); row++)
@@ -260,6 +262,7 @@ public class MapGenerator : MonoBehaviour
                
             }
         }
+        // place chest rooms
         for (int chestRoom = 0; chestRoom < numChestRooms; chestRoom++)
         {
             // select a random unlabeled room as a chest room
@@ -288,7 +291,49 @@ public class MapGenerator : MonoBehaviour
             }
             AgeMap();
         }
-        
+        // scan map for empty rooms again
+        unlabeled_rooms = new();
+        for (int row = 0; row < map.GetLength(0); row++)
+        {
+            for (int col = 0; col < map.GetLength(1); col++)
+            {
+                if (map[col, row].roomStyle == ROOM_STYLE.UNSPECIFIED)
+                {
+                    unlabeled_rooms.Add(new Vector2Int(col, row));
+                }
+               
+            }
+        }
+         // place NPC rooms
+        for (int npcIdx = 0; npcIdx < NPCInstances.Count; npcIdx++)
+        {
+            // select a random unlabeled room as an NPC room
+            if (unlabeled_rooms.Count <= 0)
+            {
+                Debug.Log("Error: No space for all NPC rooms");
+                return;
+            }
+            int randomIndex = randy.Next(unlabeled_rooms.Count);
+            Vector2Int roomCoords = unlabeled_rooms[randomIndex];
+            unlabeled_rooms.RemoveAt(randomIndex);
+            row = roomCoords.y;
+            col = roomCoords.x;
+            MapRoom room = map[row, col];
+            room.roomQuality = ROOM_QUALITY.NPC;
+            room.NPCIdx = npcIdx;
+            // random walk a path from that room to any room labeled not by this process
+            bool connected = false;
+            while (!connected)
+            {
+                List<int> directions = new();
+                for (int i = 0; i < 4; i++)
+                {
+                    directions.Add(i);
+                }
+                connected = ConnectedPathfind(directions);
+            }
+            AgeMap();
+        }
     }
 
     // a variation of pathfinding adapted for branches rather than the main path
@@ -493,16 +538,27 @@ public class MapGenerator : MonoBehaviour
                     // check for starting and ending rooms
                     if (row == 0 && col == entranceCol) room.roomQuality = ROOM_QUALITY.STARTING;
                     if (row == (mapDimensions - 1) && col == exitCol) room.roomQuality = ROOM_QUALITY.ENDING;
-                    ROOM_STYLE roomNum = room.roomStyle;
-                    switch (roomNum)
+                    if (room.roomQuality == ROOM_QUALITY.NPC)
                     {
-                        case ROOM_STYLE.LEFT_RIGHT: InstantiateRoom(room1s, x, y, room.roomQuality, -1); break;
-                        case ROOM_STYLE.BOTTOM_LEFT_RIGHT: InstantiateRoom(room2s, x, y, room.roomQuality, -1); break;
-                        case ROOM_STYLE.TOP_LEFT_RIGHT: InstantiateRoom(room3s, x, y, room.roomQuality, -1); break;
-                        case ROOM_STYLE.CROSS: InstantiateRoom(room4s, x, y, room.roomQuality, -1); break;
-                        //case 5: specialRoomCoords.Add((x,y)); break;
-                        default: InstantiateRoom(room0s, x, y, room.roomQuality, -1); break;
-                    } 
+                        // hack fix since InstantiateRoom expects an array
+                        Sprite[] roomArray = new Sprite[1];
+                        // may have to cast
+                        roomArray[0] = NPCInstances[room.NPCIdx].room;
+                        InstantiateRoom(roomArray, x, y, room.roomQuality, room.NPCIdx);
+                    } else
+                    {
+                        ROOM_STYLE roomNum = room.roomStyle;
+                        switch (roomNum)
+                        {
+                            case ROOM_STYLE.LEFT_RIGHT: InstantiateRoom(room1s, x, y, room.roomQuality, -1); break;
+                            case ROOM_STYLE.BOTTOM_LEFT_RIGHT: InstantiateRoom(room2s, x, y, room.roomQuality, -1); break;
+                            case ROOM_STYLE.TOP_LEFT_RIGHT: InstantiateRoom(room3s, x, y, room.roomQuality, -1); break;
+                            case ROOM_STYLE.CROSS: InstantiateRoom(room4s, x, y, room.roomQuality, -1); break;
+                            //case 5: specialRoomCoords.Add((x,y)); break;
+                            default: InstantiateRoom(room0s, x, y, room.roomQuality, -1); break;
+                        } 
+                    }
+                    
                 }
                 
                 x += roomDimensions;
@@ -939,12 +995,14 @@ public class MapGenerator : MonoBehaviour
         public ROOM_QUALITY roomQuality = ROOM_QUALITY.REGULAR;
         public ROOM_STYLE roomStyle = ROOM_STYLE.UNSPECIFIED;
         public bool recent = true;
+        public int NPCIdx = -1;
 
         public MapRoom()
         {
             roomQuality = ROOM_QUALITY.REGULAR;
             roomStyle = ROOM_STYLE.UNSPECIFIED;
             recent = true;
+            NPCIdx = -1;
         }
     }
 }
