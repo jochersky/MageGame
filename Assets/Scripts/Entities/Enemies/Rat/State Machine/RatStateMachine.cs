@@ -23,6 +23,7 @@ public class RatStateMachine : Entity
     [SerializeField] private float lungeTime = 2f;
     [SerializeField] private float lungeVelocityX = 1;
     [SerializeField] private float lungeVelocityY = 1;
+    [SerializeField] private float flippedDirTime = 0.1f;
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheckTransform;
@@ -64,6 +65,8 @@ public class RatStateMachine : Entity
     private bool _isDead;
     private RaycastHit2D[] _hits = new RaycastHit2D[3];
     private Vector2 _knockBackForce;
+    private float _prevFlipTime;
+    private bool _flipDirDisabled = false;
     
     // Event for flipping the transform.
     public UnityEvent<float> onDirectionChanged;
@@ -82,6 +85,7 @@ public class RatStateMachine : Entity
     public bool IsAggroed { get { return _isAggroed; } set { _isAggroed = value; } }
     public float LungeTime { get { return lungeTime; } set { lungeTime = value; } }
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
+    public bool FlipDirDisabled { get { return _flipDirDisabled; } set { _flipDirDisabled = value; } }
 
     private void Awake()
     {
@@ -113,6 +117,7 @@ public class RatStateMachine : Entity
             _currentMoveSpeed = aggroMoveSpeed;
             _horizontalMovement = _moveDir.x * _currentMoveSpeed;
             _isAggroed = true;
+            _flipDirDisabled = false;
         };
         
         knockBack.OnKnockBackApplied += force => { _knockBackForce = force; }; 
@@ -169,7 +174,7 @@ public class RatStateMachine : Entity
 
     private void CheckHitWall()
     {
-        if (_isDead) return;
+        if (_isDead || _flipDirDisabled) return;
 
         Vector2 start = (Vector2)transform.position + wallCheckOffset * Math.Sign(_moveDir.x);
         if (wallCheckDebug)
@@ -187,9 +192,18 @@ public class RatStateMachine : Entity
             if (!hit) break;
             if (hit.collider != _ownCollider)
             {
-                _moveDir = -_moveDir;
-                onDirectionChanged?.Invoke(Mathf.Sign(_moveDir.x));
-                _horizontalMovement = _moveDir.x * _currentMoveSpeed;
+                if (Time.time - _prevFlipTime > flippedDirTime)
+                {
+                    _moveDir = -_moveDir;
+                    onDirectionChanged?.Invoke(Mathf.Sign(_moveDir.x));
+                    _horizontalMovement = _moveDir.x * _currentMoveSpeed;
+                    _prevFlipTime = Time.time;
+                }
+                else
+                {
+                    _flipDirDisabled = true;
+                    _horizontalMovement = 0;
+                }
                 break;
             }
         }
@@ -197,7 +211,7 @@ public class RatStateMachine : Entity
 
     private void CheckForLedge()
     {
-        if (!_isGrounded || _isDead) return;
+        if (!_isGrounded || _isDead || _flipDirDisabled) return;
         
         Vector2 start = (Vector2)transform.position + _moveDir * ledgeCheckDistance;
         if (ledgeCheckDebug)
@@ -206,9 +220,18 @@ public class RatStateMachine : Entity
         }
         if (!Physics2D.Raycast(start, Vector2.down, 1f, environmentLayer))
         {
-            _moveDir = -_moveDir;
-            onDirectionChanged?.Invoke(Mathf.Sign(_moveDir.x));
-            _horizontalMovement = _moveDir.x * _currentMoveSpeed;
+            if (Time.time - _prevFlipTime > flippedDirTime)
+            {
+                _moveDir = -_moveDir;
+                onDirectionChanged?.Invoke(Mathf.Sign(_moveDir.x));
+                _horizontalMovement = _moveDir.x * _currentMoveSpeed;
+                _prevFlipTime = Time.time;
+            }
+            else
+            {
+                _flipDirDisabled = true;
+                _horizontalMovement = 0;
+            }
         }
     }
 }
