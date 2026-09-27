@@ -25,7 +25,7 @@ public class PlayerJumpState : PlayerBaseState
         // allows double jumps to occur while in the Jump state
         TryDoubleJump();
         
-        if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
+        if (Context.IsClimbingRope && Context.IsPressingUp) SwitchState(Dictionary.Rope());
         else if (Context.IsPressingDodge && Context.NumDodges > 0 && Context.CanDodge) SwitchState(Dictionary.Dodge());
         else if (Context.LinearVelocityY < 0)
         {

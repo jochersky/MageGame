@@ -44,11 +44,7 @@ public class PlayerClimbState : PlayerBaseState
         }
         
         if (Context.NewJumpPress) SwitchState(Dictionary.Jump());
-        else if (Context.VerticalDirection.y < 0)
-        {
-            // Context.WasClimbing = false;
-            SwitchState(Dictionary.Fall());
-        }
+        else if (Context.IsPressingDown) SwitchState(Dictionary.Fall());
     }
 
     public override void ExitState()
