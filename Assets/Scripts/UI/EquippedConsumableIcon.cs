@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EquippedConsumableIcon : MonoBehaviour, IPointerClickHandler
+public class EquippedConsumableIcon : MonoBehaviour, IPointerClickHandler, ISelectHandler, IDeselectHandler
 {
     [SerializeField] private int consumableIconID = 0;
     [SerializeField] private GameObject highlight;
@@ -16,22 +16,33 @@ public class EquippedConsumableIcon : MonoBehaviour, IPointerClickHandler
         highlight.SetActive(false);
     }
     
+    // Handles mouse specific controls
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            highlight.SetActive(true);
-            OnEquippedConsumablePressed?.Invoke(consumableIconID);
-        }
-        else if (eventData.button == PointerEventData.InputButton.Right)
+        if (eventData.button == PointerEventData.InputButton.Right)
         {
             highlight.SetActive(false);
             OnUnequippedConsumablePressed?.Invoke(consumableIconID);
         }
     }
+
+    public void HandleOnClick()
+    {
+        OnEquippedConsumablePressed?.Invoke(consumableIconID);
+    }
     
     public void DisableHighlight()
     {
         highlight.SetActive(false);
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        highlight.SetActive(true);
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        DisableHighlight();
     }
 }

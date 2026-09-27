@@ -20,7 +20,7 @@ public class PlayerWalkState : PlayerBaseState
         
         if (Context.MoveDirection == Vector2.zero) SwitchState(Dictionary.Idle());
         else if (Context.IsPressingDodge && Context.NumDodges > 0 && Context.CanDodge) SwitchState(Dictionary.Dodge());
-        else if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
+        else if (Context.IsClimbingRope && Context.IsPressingUp) SwitchState(Dictionary.Rope());
         else if (Context.IsCrouching) SwitchState(Dictionary.Crouch());
     }
 

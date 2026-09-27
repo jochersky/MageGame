@@ -22,7 +22,7 @@ public class PlayerFallState : PlayerBaseState
         
         Context.HorizontalMovement = Context.MoveDirection.x * Context.Stats.Speed;
 
-        if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
+        if (Context.IsClimbingRope && Context.IsPressingUp) SwitchState(Dictionary.Rope());
         else if (Context.NewJumpPress &&
                  ((Context.CanJump && !Context.CoyoteJumpDisabled) || Context.NumDoubleJumps > 0)) 
             SwitchState(Dictionary.Jump());

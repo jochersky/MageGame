@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -20,6 +22,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private GameObject consumableSelectionMenu;
     [SerializeField] private Transform consumableItemElementSpawnTransform;
     [SerializeField] private GameObject consumableListElementPrefab;
+    [SerializeField] private ScrollRect consumableListScrollRect;
     [Header("Spells")]
     [SerializeField] private Image spell1Image;
     [SerializeField] private Image spell2Image;
@@ -28,6 +31,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private GameObject spellSelectionMenu;
     [SerializeField] private Transform spellItemElementSpawnTransform;
     [SerializeField] private GameObject spellListElementPrefab;
+    [SerializeField] private ScrollRect spellListScrollRect;
     [Header("Stats")]
     [SerializeField] private TextMeshProUGUI itemDescription;
     [SerializeField] private TextMeshProUGUI maxHealthText;
@@ -40,8 +44,24 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI characterName;
     [SerializeField] private TextMeshProUGUI giftDescription;
     
-    void Start()
+    private EventSystem _eventSystem;
+    private GameObject _iconToEquip;
+    private ConsumableListElement _firstConsumableSelected;
+    private SpellListElement _firstSpellSelected;
+    
+    private List<ConsumableListElement> _consumableListElements;
+    private List<SpellListElement> _spellListElements;
+
+    private void Awake()
     {
+        _consumableListElements = new List<ConsumableListElement>();
+        _spellListElements = new List<SpellListElement>();
+    }
+    
+    private void Start()
+    {
+        _eventSystem = FindFirstObjectByType<EventSystem>();
+        
         HideConsumableSelectionMenu();
         HideSpellSelectionMenu();
         UIElements.SetActive(false);
@@ -122,7 +142,25 @@ public class InventoryUI : MonoBehaviour
         GameObject inst = Instantiate(consumableListElementPrefab, consumableItemElementSpawnTransform);
         if (inst.TryGetComponent<ConsumableListElement>(out ConsumableListElement listItem))
         {
-            listItem.Initialize(consumableConfig, count);
+            _consumableListElements.Add(listItem);
+            listItem.Initialize(consumableConfig, count, _consumableListElements.Count-1);
+            
+            if (_consumableListElements.Count >= 2)
+            {
+                int newIndex = _consumableListElements.Count - 1;
+                for (int i = 1; i < _consumableListElements.Count; i++)
+                {
+                    int upIndex = i - 1;
+                    int downIndex = i != newIndex ? i + 1 : 0;
+                    ConsumableListElement item = _consumableListElements[i];
+                    item.UpdateNavigationNeighbors(_consumableListElements[upIndex].Button, _consumableListElements[downIndex].Button);
+                }
+                _firstConsumableSelected.UpdateNavigationNeighbors(_consumableListElements[newIndex].Button, _consumableListElements[1].Button);
+            }
+            else
+            {
+                _firstConsumableSelected = listItem;
+            }
         }
         InventoryManager.Instance.AddConsumableListItem(inst, consumableConfig);
     }
@@ -132,21 +170,52 @@ public class InventoryUI : MonoBehaviour
         GameObject inst = Instantiate(spellListElementPrefab, spellItemElementSpawnTransform);
         if (inst.TryGetComponent<SpellListElement>(out SpellListElement listItem))
         {
-            listItem.Initialize(spellConfig);
+            _spellListElements.Add(listItem);
+            listItem.Initialize(spellConfig, _spellListElements.Count-1);
+            
+            if (_spellListElements.Count >= 2)
+            {
+                int newIndex = _spellListElements.Count - 1;
+                for (int i = 1; i < _spellListElements.Count; i++)
+                {
+                    int upIndex = i - 1;
+                    int downIndex = i != newIndex ? i + 1 : 0;
+                    SpellListElement item = _spellListElements[i];
+                    item.UpdateNavigationNeighbors(_spellListElements[upIndex].Button, _spellListElements[downIndex].Button);
+                }
+                _firstSpellSelected.UpdateNavigationNeighbors(_spellListElements[newIndex].Button, _spellListElements[1].Button);
+            }
+            else
+            {
+                _firstSpellSelected = listItem;
+            }
         }
         InventoryManager.Instance.AddSpellListItem(inst, spellConfig);
     }
 
     private void ShowConsumableSelectionMenu(int consumableID)
     {
+        consumableListScrollRect.verticalNormalizedPosition = 0;
+        
         switch (consumableID)
         {
-            case 1: equippedConsumable2.DisableHighlight(); break;
-            case 2: equippedConsumable1.DisableHighlight(); break;
+            case 1: 
+                equippedConsumable2.DisableHighlight(); 
+                _iconToEquip = consumable1Image.gameObject;
+                break;
+            case 2: 
+                equippedConsumable1.DisableHighlight(); 
+                _iconToEquip = consumable2Image.gameObject;
+                break;
         }
         consumableSelectionMenu.SetActive(true);
         spellSelectionMenu.SetActive(false);
         InventoryManager.Instance.consumableToEquip = consumableID;
+
+        if (_consumableListElements.Count > 0)
+        {
+            _eventSystem.SetSelectedGameObject(_consumableListElements[0].gameObject);
+        }
     }
 
     public void HideConsumableSelectionMenu()
@@ -158,12 +227,23 @@ public class InventoryUI : MonoBehaviour
     {
         switch (spellID)
         {
-            case 1: equippedSpell2.DisableHighlight(); break;
-            case 2: equippedSpell1.DisableHighlight(); break;
+            case 1: 
+                equippedSpell2.DisableHighlight();
+                _iconToEquip = spell1Image.gameObject;
+                break;
+            case 2: 
+                equippedSpell1.DisableHighlight();
+                _iconToEquip = spell2Image.gameObject;
+                break;
         }
         spellSelectionMenu.SetActive(true);
         consumableSelectionMenu.SetActive(false);
         InventoryManager.Instance.spellToEquip = spellID;
+
+        if (_spellListElements.Count > 0)
+        {
+            _eventSystem.SetSelectedGameObject(_spellListElements[0].gameObject);
+        }
     }
 
     public void HideSpellSelectionMenu()
@@ -216,13 +296,37 @@ public class InventoryUI : MonoBehaviour
         HUD.SetActive(false);
     }
 
-    public void OnInventoryPressed(InputAction.CallbackContext context)
+    public void OnInventoryPressed(bool visible)
     {
-        if (context.performed || context.canceled) return;
+        HideConsumableSelectionMenu();
+        HideSpellSelectionMenu();
+        UIElements.SetActive(visible);
+        // HUD.SetActive(!UIElements.activeSelf);
+        _eventSystem.SetSelectedGameObject(consumable1Image.gameObject);
+    }
+
+    public void UpdateConsumableListDisplay(int index)
+    {
+        // 1 = top, 0 = bottom
+        consumableListScrollRect.verticalNormalizedPosition = 1 - ((float)index / (_consumableListElements.Count - 1));
+    }
+
+    public void UpdateSpellListDisplay(int index)
+    {
+        // 1 = top, 0 = bottom
+        spellListScrollRect.verticalNormalizedPosition = 1 - ((float)index / (_spellListElements.Count - 1));
+    }
+    
+
+    public void OnCancelPressed()
+    {
+        if (!spellSelectionMenu.activeInHierarchy && !consumableSelectionMenu.activeInHierarchy) return;
         
         HideConsumableSelectionMenu();
         HideSpellSelectionMenu();
-        UIElements.SetActive(!UIElements.activeSelf);
-        // HUD.SetActive(!UIElements.activeSelf);
+        
+        _eventSystem.SetSelectedGameObject(_iconToEquip ? _iconToEquip : consumable1Image.gameObject);
+        
+        UpdateItemDescription("");
     }
 }
