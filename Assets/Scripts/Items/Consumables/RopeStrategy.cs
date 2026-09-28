@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [CreateAssetMenu(fileName = "RopeStrategy", menuName = "Consumable Strategies/RopeStrategy")]
 public class RopeStrategy : PlaceableConsumableStrategy
@@ -31,6 +32,8 @@ public class RopeStrategy : PlaceableConsumableStrategy
             useTriggers = true,
         };
 
+        // Check for duplicate ropes
+        
         Vector2 adjustedSpawnLocation = new Vector2(spawnPosition.x + overlapWidth / 2, spawnPosition.y);
         Vector2 overlapDir = new Vector2(-overlapWidth, 0f);
         
@@ -50,72 +53,57 @@ public class RopeStrategy : PlaceableConsumableStrategy
         
         _interactHits.Clear();
         
-        RaycastHit2D hit = Physics2D.Raycast(spawnPosition, Vector2.up, maxHeight, environmentLayer);
+        // Place rope where hit occurs
         
-        // max height rope
-        if (hit.distance == 0)
+        // Check distance above player
+        RaycastHit2D upperHit = Physics2D.Raycast(spawnPosition, Vector2.up, maxHeight, environmentLayer);
+        float upperDistance = upperHit.distance != 0 ? upperHit.distance : maxHeight;
+
+        // Check distance below player
+        Vector2 upperCheckVector = new Vector2(spawnPosition.x, spawnPosition.y + upperDistance - 0.05f); // offset to avoid hitting ceiling
+        RaycastHit2D lowerHit = Physics2D.Raycast(upperCheckVector, Vector2.down, maxHeight, environmentLayer);
+        float lowerDistance = lowerHit.distance != 0 ? lowerHit.distance : maxHeight;
+
+        // distance + 1, cutoff at next closest int
+        int numRope = (int) lowerDistance + 1;
+
+        // -0.5f accounts for middle of a tile
+        Vector2 placementVec = new Vector2(spawnPosition.x, spawnPosition.y + upperDistance - 0.5f);
+        GameObject inst;
+        for (int i = 0; i < numRope; i++)
         {
-            // top
-            Vector3 ropeTopP = Vector3.up * (Mathf.RoundToInt(spawnPosition.y + maxHeight) - 2f);
-            GameObject inst = SpawnRope(spawnTransform, spawnPosition + ropeTopP, topSprite);
-            GameObject topInst = inst;
-            BoxCollider2D boxCollider = inst.GetComponent<BoxCollider2D>();
-            boxCollider.offset = new Vector2(boxCollider.offset.x, -maxHeight / 2 + 0.5f);
-            boxCollider.size = new Vector2(boxCollider.size.x, maxHeight);
-            
-            // middle
-            for (int i = 1; i < maxHeight - 1; i++)
+            // first rope must always be top rope sprite
+            if (i == 0)
             {
-                inst = SpawnRope(spawnTransform, spawnPosition + ropeTopP - (Vector3.up * i), midSprite);
+                inst = SpawnRope(spawnTransform, placementVec, topSprite);
+                
+                // collision only necessary for top rope, adjust the bounds
+                BoxCollider2D boxCollider = inst.GetComponent<BoxCollider2D>();
+                boxCollider.offset = new Vector2(boxCollider.offset.x, (float)-numRope / 2 + 0.5f);
+                boxCollider.size = new Vector2(boxCollider.size.x, numRope - 0.5f); // offset to provide end padding 
+                
+                SetRopeMinMaxHeight(inst, spawnPosition.y - lowerDistance + 0.25f, spawnPosition.y + upperDistance - 0.25f);
+            }
+            // last rope must always be bot rope sprite
+            else if (i == numRope - 1)
+            {
+                inst = SpawnRope(spawnTransform, placementVec, botSprite);
                 inst.GetComponent<BoxCollider2D>().enabled = false;
             }
-            
-            // end
-            inst = SpawnRope(spawnTransform, spawnPosition, botSprite);
-            inst.GetComponent<BoxCollider2D>().enabled = false;
-            
-            float ropeYPos = boxCollider.transform.position.y + boxCollider.offset.y;
-            SetRopeMinMaxHeight(topInst, ropeYPos - (boxCollider.size.y / 2) + yMinMargin, ropeYPos + (boxCollider.size.y / 2) - yMaxMargin);
-        }
-        else
-        {
-            // single tall rope
-            if (hit.distance < 1)
-            {
-                GameObject inst = SpawnRope(spawnTransform, spawnPosition, topEndSprite);
-                SetRopeMinMaxHeight(inst, inst.transform.position.y - 0.5f, inst.transform.position.y + 0.5f);
-            }
-            // variable size rope
             else
             {
-                // top
-                Vector3 ropeTopP = Vector3.up * (hit.distance - 0.5f);
-                GameObject inst = SpawnRope(spawnTransform, spawnPosition + ropeTopP, topSprite);
-                GameObject topInst = inst;
-                BoxCollider2D boxCollider = inst.GetComponent<BoxCollider2D>();
-                boxCollider.offset = new Vector2(boxCollider.offset.x, -(hit.distance - 0.5f) / 2);
-                boxCollider.size = new Vector2(boxCollider.size.x, hit.distance + 0.5f);
-        
-                // middle
-                for (int i = 1; i < hit.distance - 0.5f; i++)
-                {
-                    inst = SpawnRope(spawnTransform, spawnPosition + ropeTopP - (Vector3.up * i), midSprite);
-                    inst.GetComponent<BoxCollider2D>().enabled = false;
-                }
-            
-                // end
-                inst = SpawnRope(spawnTransform, spawnPosition, botSprite);
+                inst = SpawnRope(spawnTransform, placementVec, midSprite);
                 inst.GetComponent<BoxCollider2D>().enabled = false;
-
-                float ropeYPos = boxCollider.transform.position.y + boxCollider.offset.y;
-                SetRopeMinMaxHeight(topInst, ropeYPos - (boxCollider.size.y / 2) + yMinMargin, ropeYPos + (boxCollider.size.y / 2) - yMaxMargin);
             }
+            
+            // displace rope tiles by 1 unit
+            placementVec.y -= 1f;
         }
-
+        
         if (debug)
         {
-            Debug.DrawRay(spawnPosition, Vector2.up * maxHeight, Color.green, 10f);
-            Debug.DrawRay(spawnPosition, Vector2.up * hit.distance, Color.red, 10f);
+            Debug.DrawRay(spawnPosition, Vector2.up * upperDistance, Color.green, 10f); // upper hit
+            Debug.DrawRay(new Vector3(upperCheckVector.x + 0.1f, upperCheckVector.y), Vector2.down * lowerDistance, Color.red, 10f); // lower hit
         }
 
         return false;
