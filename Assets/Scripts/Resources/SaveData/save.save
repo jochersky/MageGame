@@ -3,20 +3,14 @@
         "characterType": 1
     },
     "playerData": {
-        "healthAmt": 2,
-        "manaAmt": 110,
-        "moneyAmt": 10
+        "healthAmt": 5,
+        "manaAmt": 150,
+        "moneyAmt": 0
     },
     "inventoryData": {
         "spells": [
             {
                 "name": "Dragon's Fury"
-            },
-            {
-                "name": "Light Spear"
-            },
-            {
-                "name": "Devour"
             }
         ],
         "consumables": [
