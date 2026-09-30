@@ -5,17 +5,23 @@ using UnityEngine.Tilemaps;
 public class FalseFloor : MonoBehaviour
 {
     [SerializeField] AudioClip breakingSound;
+    [SerializeField] AudioClip[] crackingSounds;
     [SerializeField] float audioDelayForVolumeControl = 0.1f;
     [SerializeField] TemporaryEffect breakEffect;
+    [SerializeField] TemporaryEffect crackEffect;
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] Sprite crackedFloorSprite;
     [SerializeField] Hurtbox hurtbox;
-    string playerFeetTag = "Stomp";
+    readonly float crackSFXVolume = 0.1f;
+    readonly string playerFeetTag = "Stomp";
     Tilemap colliderTilemap;
+    float maxDurability;
     float durability = 0.5f;
     bool crumbling = false;
 
     void Start()
     {
+        maxDurability = durability;
         hurtbox.OnDamageTaken += OnHit;
         MapGenerator mapGenerator = FindAnyObjectByType<MapGenerator>();
         if (mapGenerator != null)
@@ -31,6 +37,14 @@ public class FalseFloor : MonoBehaviour
     {
         if (crumbling)
         {
+            if (durability == maxDurability || durability == maxDurability / 1.8f)
+            {
+                spriteRenderer.sprite = crackedFloorSprite;
+                if (AudioManager.instance != null)
+                    AudioManager.instance.PlayRandomClipFromAt(crackingSounds, transform, crackSFXVolume);
+                else Debug.Log("No AudioManager found");
+                Instantiate(crackEffect, transform.position, quaternion.identity);
+            }
             durability -= Time.deltaTime;
             // if full or half broken, add cracks and dust effect, crack SFX
             if (durability <= 0.0f)
@@ -49,6 +63,13 @@ public class FalseFloor : MonoBehaviour
         {
             crumbling = false;
             Break();
+        } else
+        {
+            spriteRenderer.sprite = crackedFloorSprite;
+            if (AudioManager.instance != null)
+                AudioManager.instance.PlayRandomClipFromAt(crackingSounds, transform, crackSFXVolume);
+            else Debug.Log("No AudioManager found");
+            Instantiate(crackEffect, transform.position, quaternion.identity);
         }
         // play effects
     }
@@ -75,7 +96,9 @@ public class FalseFloor : MonoBehaviour
         Vector3 worldPos = transform.position;
         Vector3Int pos = colliderTilemap.WorldToCell(worldPos);
         Instantiate(breakEffect, transform.position, quaternion.identity);
-        AudioManager.instance.PlayAudio(breakingSound, audioDelayForVolumeControl);
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlayAudio(breakingSound, audioDelayForVolumeControl);
+        else Debug.Log("No AudioManager found");
         if (colliderTilemap.GetTile(pos))
         {
             // I guess this 'destroys' the object

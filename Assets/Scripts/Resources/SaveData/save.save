@@ -1,24 +1,21 @@
 {
     "gameSaveData": {
-        "characterType": 2
+        "characterType": 1
     },
     "playerData": {
-        "healthAmt": 2,
-        "manaAmt": 49,
-        "moneyAmt": 2
+        "healthAmt": 5,
+        "manaAmt": 150,
+        "moneyAmt": 0
     },
     "inventoryData": {
         "spells": [
             {
-                "name": "Devour"
-            },
-            {
-                "name": "Light Spell"
+                "name": "Dragon's Fury"
             }
         ],
         "consumables": [
             {
-                "name": "Drill Bomb",
+                "name": "Bomb",
                 "count": 5
             },
             {

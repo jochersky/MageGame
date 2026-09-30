@@ -92,7 +92,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hurtbox
   ignoreTag: Enemy
-  ignoreTag2: Player
 --- !u!1 &3916987777019526961
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,7 +375,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FalseFloor
   breakingSound: {fileID: 8300000, guid: 7ca758b51bedd7546aa65877a68e95de, type: 3}
+  crackingSounds:
+  - {fileID: 8300000, guid: a16f02056b818584e896dad87d6c40c1, type: 3}
+  - {fileID: 8300000, guid: 21b0c7bc82f1416408d241b4b5b9427a, type: 3}
+  - {fileID: 8300000, guid: 820a3b0331728d74d90570ff88a91840, type: 3}
   audioDelayForVolumeControl: 0.1
   breakEffect: {fileID: 2547257811329932293, guid: 97361122e64dd2a4e85bb0c768edbd47, type: 3}
+  crackEffect: {fileID: 1446407404170301673, guid: e017efea8c3f3d5438887bfee5721dc7, type: 3}
   spriteRenderer: {fileID: 6733792079447504657}
+  crackedFloorSprite: {fileID: 21300000, guid: fbfd517e9e6138448833bc6a559feb50, type: 3}
   hurtbox: {fileID: 1711811600248247620}

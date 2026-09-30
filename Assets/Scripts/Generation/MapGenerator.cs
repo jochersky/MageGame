@@ -211,7 +211,7 @@ public class MapGenerator : MonoBehaviour
         Debug.Log("Generation complete!");
 
         // Potentially print array here for debugging porpoises
-        // DebugPrintMap();
+        DebugPrintMap();
     }
 
     private bool Pathfind()
@@ -277,8 +277,8 @@ public class MapGenerator : MonoBehaviour
             int randomIndex = randy.Next(unlabeled_rooms.Count);
             Vector2Int roomCoords = unlabeled_rooms[randomIndex];
             unlabeled_rooms.RemoveAt(randomIndex);
-            row = roomCoords.y;
-            col = roomCoords.x;
+            row = roomCoords.x;
+            col = roomCoords.y;
             MapRoom room = map[row, col];
             room.roomQuality = ROOM_QUALITY.CHEST;
             // random walk a path from that room to any room labeled not by this process
@@ -307,8 +307,8 @@ public class MapGenerator : MonoBehaviour
             int randomIndex = randy.Next(unlabeled_rooms.Count);
             Vector2Int roomCoords = unlabeled_rooms[randomIndex];
             unlabeled_rooms.RemoveAt(randomIndex);
-            row = roomCoords.y;
-            col = roomCoords.x;
+            row = roomCoords.x;
+            col = roomCoords.y;
             MapRoom room = map[row, col];
             room.roomQuality = ROOM_QUALITY.NPC;
             room.NPCIdx = npcIdx;
@@ -334,9 +334,9 @@ public class MapGenerator : MonoBehaviour
         {
             for (int col = 0; col < map.GetLength(1); col++)
             {
-                if (map[col, row].roomStyle == ROOM_STYLE.UNSPECIFIED)
+                if (map[row, col].roomStyle == ROOM_STYLE.UNSPECIFIED)
                 {
-                    unlabeled_rooms.Add(new Vector2Int(col, row));
+                    unlabeled_rooms.Add(new Vector2Int(row, col));
                 }
                
             }
@@ -1043,8 +1043,8 @@ public class MapGenerator : MonoBehaviour
                     room_symbol = "E";
                 }
                 
-                else if (map[row, col].roomQuality == ROOM_QUALITY.CHEST) {
-                    room_symbol = "C";
+                else if (map[row, col].roomQuality == ROOM_QUALITY.NPC) {
+                    room_symbol = "N";
                 }
                 
                 else
