@@ -12,7 +12,7 @@ public class FalseFloor : MonoBehaviour
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Sprite crackedFloorSprite;
     [SerializeField] Hurtbox hurtbox;
-    readonly float crackSFXVolume = 0.1f;
+    readonly float crackSFXVolume = 0.2f;
     readonly string playerFeetTag = "Stomp";
     Tilemap colliderTilemap;
     float maxDurability;
