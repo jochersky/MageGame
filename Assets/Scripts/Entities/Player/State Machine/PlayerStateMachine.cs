@@ -129,8 +129,10 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _isCrouching;
     private bool _isLookingUp;
     private Vector2 _knockBackForce;
+    private bool _justTookDamage;
 
     private CountdownTimer _lookHoldTimer;
+    private CountdownTimer _tookDamageTimer;
 
     [Header("State Debug")]
     public String stateName = "";
@@ -190,6 +192,7 @@ public class PlayerStateMachine : MonoBehaviour
     public bool IsClimbing => _currentState == _states.Climb();
     public bool IsPressingUp => _verticalDirection.y >= minVerticalInput;
     public bool IsPressingDown => _verticalDirection.y <= minClimbFallInput;
+    public bool JustTookDamage => _tookDamageTimer.IsRunning;
 
     void Start()
     {
@@ -198,12 +201,14 @@ public class PlayerStateMachine : MonoBehaviour
         _stats = new Stats(new StatsMediator(), baseStats);
         _cameraManager = GetComponentInChildren<CameraManager>();
         _lookHoldTimer = new CountdownTimer(dirHoldDuration);
+        _tookDamageTimer = new CountdownTimer(health.InvulnerabilityTime / 10);
         
         // Passive spell affects initialization
         _numDoubleJumps = passiveSpellAffects.doubleJumps + baseStats.jumps;
         _numDodges = passiveSpellAffects.dodges + baseStats.dodges;
 
         health.OnDeath += () => { _isDead = true; };
+        health.OnDamageTaken += (dam) => { _tookDamageTimer.Start(); };
         knockBack.OnKnockBackApplied += force => { _knockBackForce = force; }; 
         _lookHoldTimer.OnTimerStop += () => { HandleCamera(); };
         
@@ -225,6 +230,7 @@ public class PlayerStateMachine : MonoBehaviour
         stateName = _currentState.ToString();
         
         _lookHoldTimer.Tick(Time.deltaTime);
+        _tookDamageTimer.Tick(Time.deltaTime);
         
         if (_previousState != _currentState) _previousState = _currentState;
     }
@@ -371,7 +377,7 @@ public class PlayerStateMachine : MonoBehaviour
             _airTime += Time.deltaTime;
             _canJump = _airTime < coyoteJumpTimer && !_coyoteJumpDisabled;
         }
-        else if ((countsAsGrounded && !_justJumped) || IsClimbing)
+        else if ((countsAsGrounded && !_justJumped) || IsClimbing || IsClimbingRope)
         {
             _airTime = 0;
             _canJump = true;
