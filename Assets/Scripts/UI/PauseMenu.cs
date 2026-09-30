@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,11 +16,17 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] Slider masterSlider;
     [SerializeField] Slider musicSlider;
     [SerializeField] Slider sfxSlider;
+    [SerializeField] GameObject backButtonGO;
+    [SerializeField] GameObject unpausedSelectedGO;
+    [SerializeField] EventSystem eventSystem;
+    [SerializeField] bool debug;
     private PlayerInput playerInput;
     bool showing = false; 
-    void Awake()
+    
+    void Start()
     {
-        FindAnyObjectByType<MapGenerator>().OnPlayerPlaced += SetupInput;
+        if (!debug) FindAnyObjectByType<MapGenerator>().OnPlayerPlaced += SetupInput;
+        else SetupInput(GameManager.Instance.Player.gameObject);
     }
 
     void SetupInput(GameObject player)
@@ -33,6 +40,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (showing)
         {
+            eventSystem.SetSelectedGameObject(unpausedSelectedGO);
             Time.timeScale = 1f;
             pauseMenuUI.SetActive(false);
             showing = false;
@@ -41,6 +49,7 @@ public class PauseMenu : MonoBehaviour
             playerInput.currentActionMap.Enable();
         } else
         {
+            eventSystem.SetSelectedGameObject(backButtonGO);
             Time.timeScale = 0f;
             pauseMenuUI.SetActive(true);
             showing = true;

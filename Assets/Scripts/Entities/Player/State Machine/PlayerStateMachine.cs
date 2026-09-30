@@ -30,6 +30,7 @@ public class PlayerStateMachine : MonoBehaviour
     
     [Header("Walk")]
     [SerializeField] private float maxWalkSpeed = 1f;
+    [SerializeField] private float minInputVecMag = 0.25f;
     
     [Header("Jump")] 
     [SerializeField] private float maxJumpHeight = 5f;
@@ -62,11 +63,13 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private float climbAboveBelowCheckLength = 0.5f;
     [SerializeField] private float climbSnapSpeed = 0.2f;
     [SerializeField] private float climbDelayTime = 0.1f;
+    [SerializeField] private float minClimbFallInput = -0.95f;
     [SerializeField] private bool climbDebug;
 
     [Header("Rope")] 
     [SerializeField] private RopeHandler _ropeHandler;
     [SerializeField] private float ropeClimbSpeed = 0.25f;
+    [SerializeField] private float minVerticalInput = 0.8f;
 
     [Header("Camera Movement")] [SerializeField]
     private float dirHoldDuration = 1.5f;
@@ -117,7 +120,6 @@ public class PlayerStateMachine : MonoBehaviour
     private bool _climbCooldown;
     // private Tilemap _climbingTilemap;
     private bool _isDead;
-    private bool _inputDisabled;
     private bool _canClimbRope;
     private bool _isClimbingRope;
     private bool _wasClimbingRope;
@@ -186,6 +188,8 @@ public class PlayerStateMachine : MonoBehaviour
     public bool IsCrouching { get { return _isCrouching; } set { _isCrouching = value; } }
     public bool IsDead { get { return _isDead; } set { _isDead = value; } }
     public bool IsClimbing => _currentState == _states.Climb();
+    public bool IsPressingUp => _verticalDirection.y >= minVerticalInput;
+    public bool IsPressingDown => _verticalDirection.y <= minClimbFallInput;
 
     void Start()
     {
@@ -267,9 +271,12 @@ public class PlayerStateMachine : MonoBehaviour
         if (_isDead) return;
         
         _moveDirection = context.ReadValue<Vector2>();
+        
+        // input should be over certain threshold, only important for controller input
+        _moveDirection = _moveDirection.magnitude >= minInputVecMag ? _moveDirection : Vector2.zero;
 
-        // Performed and canceled callbacks incorrectly flip the transform. Ignore them.
-        if (context.performed || context.canceled) return;
+        // Canceled callbacks incorrectly flip the transform. Ignore them.
+        if (context.canceled) return;
         
         if (!IsClimbing) CheckForFlipTransform();
 
@@ -278,10 +285,15 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void CheckForFlipTransform()
     {
-        bool moveDirChanged = Mathf.Sign(_moveDirection.x) != Mathf.Sign(_previousDirection.x);
-        bool changedDirAfterClimbing = Mathf.Sign(_moveDirection.x) != Mathf.Sign(_climbDir.x);
-        // Debug.Log($"changedDirAfterClimbing {_moveDirection} {_climbInitialDir}");
-        // Debug.Log($"moveDirChanged {_moveDirection} {_previousDirection}");
+        bool prevDirZero = _previousDirection.x == 0;
+        
+        // Move dir is changed only when changing direction of input. shouldn't be "changed" when input stops
+        bool moveDirChanged = !Mathf.Approximately(_moveDirection.x, 0);
+        moveDirChanged &= Mathf.Sign(_moveDirection.x) != Mathf.Sign(_previousDirection.x) || prevDirZero;
+        
+        bool changedDirAfterClimbing = !Mathf.Approximately(_moveDirection.x, 0);
+        changedDirAfterClimbing &= Mathf.Sign(_moveDirection.x) != Mathf.Sign(_climbDir.x);
+        
         if (moveDirChanged || changedDirAfterClimbing)
         {
             onDirectionChanged?.Invoke(Mathf.Sign(_moveDirection.x));
@@ -294,9 +306,9 @@ public class PlayerStateMachine : MonoBehaviour
         if (_isDead) return;
         
         _verticalDirection = context.ReadValue<Vector2>();
-
+        
         // rope
-        if (_canClimbRope && _verticalDirection.y >= 0.5f)
+        if (_canClimbRope && IsPressingUp)
         {
             _isClimbingRope = true;
         }
@@ -325,24 +337,6 @@ public class PlayerStateMachine : MonoBehaviour
     public void OnDodge(InputAction.CallbackContext context)
     {
         _isPressingDodge = context.ReadValueAsButton();
-    }
-    
-    public void OnInventoryPressed(InputAction.CallbackContext context)
-    {
-        if (context.performed || context.canceled) return;
-
-        _inputDisabled = !_inputDisabled;
-        
-        // Disable all actions besides the ability to open/close inventory 
-        // so that the player cannot move while it is open
-        foreach (InputAction action in _playerInputMap.actions)
-        {
-            if (action.name != "Inventory")
-            {
-                if (_inputDisabled) action.Disable();
-                else action.Enable();
-            }
-        }
     }
 
     private void CheckGrounded()

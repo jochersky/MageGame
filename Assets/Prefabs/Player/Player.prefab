@@ -581,7 +581,7 @@ GameObject:
   - component: {fileID: 3924917097501142207}
   m_Layer: 9
   m_Name: PlayerHurtbox
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1644,6 +1644,7 @@ GameObject:
   - component: {fileID: 2560371365361338957}
   - component: {fileID: 4620436022231371514}
   - component: {fileID: 7987879501707214221}
+  - component: {fileID: 6106741817835769575}
   m_Layer: 12
   m_Name: Player
   m_TagString: Player
@@ -1713,6 +1714,7 @@ MonoBehaviour:
   knockBack: {fileID: 4620436022231371514}
   statusEffectManager: {fileID: 7987879501707214221}
   maxWalkSpeed: 8
+  minInputVecMag: 0.25
   maxJumpHeight: 8
   maxDoubleJumpHeight: 10
   jumpCheckTransform: {fileID: 1587937387225483812}
@@ -1735,9 +1737,11 @@ MonoBehaviour:
   climbAboveBelowCheckLength: 1
   climbSnapSpeed: 0.4
   climbDelayTime: 0.7
+  minClimbFallInput: -0.95
   climbDebug: 0
   _ropeHandler: {fileID: 7954448484511661488}
   ropeClimbSpeed: 5
+  minVerticalInput: 0.95
   dirHoldDuration: 0.3
   reduceConst: 0.75
   stateName: 
@@ -2051,6 +2055,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 009bce67-08f2-4ef0-8f67-8ee63de16aa8
     m_ActionName: 'Player/Pause[/Keyboard/escape,/Keyboard/p]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0d6d9013-03e8-4296-a7b0-9c9a8711bf7c
+    m_ActionName: 'Player/Cancel[/XInputControllerWindows/buttonEast,/XInputControllerWindows1/buttonEast]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -2220,6 +2228,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afc6803adbd9cdb448006070d4beebf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+--- !u!114 &6106741817835769575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8863640782204810548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50694c1a1862da24ba7c4985439238ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  playerInput: {fileID: 8788688971398276464}
 --- !u!1 &8941550617777362682
 GameObject:
   m_ObjectHideFlags: 0

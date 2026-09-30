@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _playerComponentLoaded = value;
+            SubscribeToPlayerInputEvents();
             LoadPlayerStatsAndItems();
         }
     }
@@ -74,10 +75,11 @@ public class GameManager : MonoBehaviour
         // for character already placed in scene
         if (debug)
         {
-            Player playerComponent = debugPlayerObject.GetComponent<Player>();
-            playerComponent.HealthBar = healthBar;
-            playerComponent.ManaBar = manaBar;
+            Player = debugPlayerObject.GetComponent<Player>();
+            Player.HealthBar = healthBar;
+            Player.ManaBar = manaBar;
             SaveSystem.Delete();
+            SubscribeToPlayerInputEvents();
             return;
         }
         
@@ -100,6 +102,15 @@ public class GameManager : MonoBehaviour
         }
         
         equippedUI?.SubscribeToEvents();
+    }
+    
+    // handles event subscription for other scripts that need access to the player's PlayerInput input events 
+    private void SubscribeToPlayerInputEvents()
+    {
+        InputManager input = Player.GetComponent<InputManager>();
+        
+        input.OnPlayerPressedInventory += inventoryUI.OnInventoryPressed;
+        input.OnPlayerPressedCancel += inventoryUI.OnCancelPressed;
     }
 
     public GameObject SpawnPlayer()

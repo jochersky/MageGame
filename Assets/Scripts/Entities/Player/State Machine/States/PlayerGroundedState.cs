@@ -26,7 +26,7 @@ public class PlayerGroundedState : PlayerBaseState
         }
         else if (Context.IsPressingDodge && Context.NumDodges > 0 && Context.CanDodge) SwitchState(Dictionary.Dodge());
         else if (!Context.IsGrounded && Context.LinearVelocityY < -0.1f) SwitchState(Dictionary.Fall());
-        else if (Context.IsClimbingRope && Context.VerticalDirection == Vector2.up) SwitchState(Dictionary.Rope());
+        else if (Context.IsClimbingRope && Context.IsPressingUp) SwitchState(Dictionary.Rope());
     }
 
     public override void ExitState()
