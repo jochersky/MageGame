@@ -713,7 +713,6 @@ public class MapGenerator : MonoBehaviour
                 {
                     if (room_quality == ROOM_QUALITY.STARTING || room_quality == ROOM_QUALITY.ENDING)
                     {
-                        Debug.Log("Start/End found");
                         roomProbs[row * roomDimensions + col] = -99;
                     } else {
                         roomProbs[row * roomDimensions + col] = 0;
@@ -1038,7 +1037,6 @@ public class MapGenerator : MonoBehaviour
                 
                 if (map[row, col].roomQuality == ROOM_QUALITY.STARTING)
                 {
-                    Debug.Log("Placing S");
                     room_symbol = "S";
                 } else if (map[row, col].roomQuality == ROOM_QUALITY.ENDING)
                 {
