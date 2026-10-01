@@ -291,3 +291,8 @@ MonoBehaviour:
   - {r: 0.8235295, g: 0.6784314, b: 0.2509804, a: 1}
   stoneSprite: {fileID: 6902414266458737357}
   light2D: {fileID: 7346739795046393754}
+  dropSound: {fileID: 8300000, guid: 6b55a29cb86669641886cd5901cb5fcc, type: 3}
+  furthestDropDistance: 20
+  dropVolume: 0.4
+  dropPitchMin: 1
+  dropPitchMax: 2

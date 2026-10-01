@@ -16,6 +16,7 @@ public class ThrowableConsumableStrategy : ConsumableStrategy
 
         // "throw" in direction of player movement
         Rigidbody2D rb = inst.GetComponentInChildren<Rigidbody2D>();
+        direction = direction.normalized;
         rb.linearVelocityX = direction.x * horizontalThrowForce;
         rb.linearVelocityY = velocity.y * verticalThrowForce;
     }

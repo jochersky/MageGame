@@ -286,7 +286,7 @@ public class PlayerStateMachine : MonoBehaviour
         
         if (!IsClimbing) CheckForFlipTransform();
 
-        _previousDirection = _moveDirection;
+        _previousDirection = _moveDirection != Vector2.zero ? _moveDirection : _previousDirection;
     }
 
     public void CheckForFlipTransform()
