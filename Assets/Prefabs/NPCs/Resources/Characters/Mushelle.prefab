@@ -162,7 +162,7 @@ MonoBehaviour:
   - Oh, you did it!
   - Thank you so mush!
   - I'll be going now, but here is your reward.
-  reward: {fileID: 5369546599424313923, guid: 2243d88e43bf809439bda32aca71ce8c, type: 3}
+  reward: {fileID: 2467777248196494029, guid: d3cbab79a247d7841b314df9a10d6e78, type: 3}
 --- !u!1 &6631568217333438146
 GameObject:
   m_ObjectHideFlags: 0

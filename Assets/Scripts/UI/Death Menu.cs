@@ -24,7 +24,6 @@ public class DeathMenu : MonoBehaviour
     
     private void OnPlayerDeath()
     {
-        print("START DEATH MENU COROUTINE");
         StartCoroutine(MenuCoroutine());
     }
 

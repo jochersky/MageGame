@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -6,31 +7,41 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Barrel : MonoBehaviour
 {
-    [SerializeField] GameObject enemy; 
     [SerializeField] GameObject manaCapsule;
     [SerializeField] GameObject coin;
     [SerializeField] GameObject heart;
     [SerializeField] GameObject bomb;
-    [SerializeField] int chanceForNothing;
-    [SerializeField] int chanceForEnemy;
-    [SerializeField] int chanceForMana;
-    [SerializeField] int chanceForCoin;
-    [SerializeField] int chanceForHeart;
-    [SerializeField] int chanceForBomb;
+    [SerializeField] int defaultChanceForNothing;
+    [SerializeField] int defaultChanceForMana;
+    [SerializeField] int defaultChanceForCoin;
+    [SerializeField] int defaultChanceForHeart;
+    [SerializeField] int defaultChanceForBomb;
+    int chanceForNothing;
+    int chanceForMana;
+    int chanceForCoin;
+    int chanceForHeart;
+    int chanceForBomb;
     [SerializeField] Hurtbox hurtbox;
     [SerializeField] TemporaryEffect effect;
-    private int _enemyIndex = 0;
+    private GameObject _player;
     readonly List<GameObject> potentialDrops = new();
-    bool triggered = false;
     System.Random randy;
+    void Awake()
+    {
+        FindAnyObjectByType<MapGenerator>().OnPlayerPlaced += (player) => {_player = player;};  
+    }
     void Start()
     {
-        if (chanceForBomb + chanceForCoin + chanceForEnemy + chanceForHeart + chanceForMana + chanceForNothing != 100) {
+        chanceForBomb = defaultChanceForBomb;
+        chanceForCoin = defaultChanceForCoin;
+        chanceForHeart = defaultChanceForHeart;
+        chanceForMana = defaultChanceForMana;
+        chanceForNothing = defaultChanceForNothing;
+        if (chanceForBomb + chanceForCoin + chanceForHeart + chanceForMana + chanceForNothing != 100) {
             Debug.Log("Error: Barrel drop rates do not sum to 100%");
         }
         hurtbox.OnDamageTaken += OnDestroyed;
         randy = new System.Random();
-        potentialDrops.Add(enemy);
         potentialDrops.Add(manaCapsule);
         potentialDrops.Add(coin);
         potentialDrops.Add(heart);
@@ -39,46 +50,62 @@ public class Barrel : MonoBehaviour
 
     void OnDestroyed(DamageProperties damageProperties)
     {
+        RecalculateChances();
         Instantiate(effect, transform.position, quaternion.identity);
         int roll = randy.Next(1, 101); // 1-100
         if (roll >= chanceForNothing)
         {
             int index = -1;
             roll -= chanceForNothing;
-            if (roll <= chanceForEnemy)
+            if (roll <= chanceForMana)
             {
                 index = 0;
             } else
             {
-                roll -= chanceForEnemy;
-                if (roll <= chanceForMana)
+                roll -= chanceForMana;
+                if (roll <= chanceForCoin)
                 {
                     index = 1;
                 } else
                 {
-                    roll -= chanceForMana;
-                    if (roll <= chanceForCoin)
+                    roll -= chanceForCoin;
+                    if (roll <= chanceForHeart)
                     {
                         index = 2;
                     } else
                     {
-                        roll -= chanceForCoin;
-                        if (roll <= chanceForHeart)
-                        {
-                            index = 3;
-                        } else
-                        {
-                            index = 4;
-                        }
+                        index = 3;
                     }
                 }
             }
-            if (potentialDrops[index].TryGetComponent<Health>(out Health health))
-            {
-                health.spawnInvulnerable = true;
-            }
-            GameObject spawned = Instantiate(potentialDrops[index], transform.position, quaternion.identity);
+            // if (potentialDrops[index].TryGetComponent<Health>(out Health health))
+            // {
+            //     health.spawnInvulnerable = true;
+            // }
+            Instantiate(potentialDrops[index], transform.position, quaternion.identity);
         }
         Destroy(gameObject);
+    }
+
+    private void RecalculateChances()
+    {
+        Health health = _player.GetComponent<Health>();
+        float healthPct = (float)health.CurrentHealth / health.MaxHealth;
+        SpellManager spellMan = _player.GetComponent<SpellManager>();
+        float manaPct = (float)spellMan.Mana / spellMan.MaxMana;
+        int goodPct = chanceForCoin + chanceForHeart + chanceForMana;
+        chanceForHeart = (int)((1 - healthPct) * goodPct);
+        chanceForMana = (int)((1 - manaPct) * goodPct);
+        if (chanceForHeart + chanceForMana > goodPct)
+        {
+            chanceForMana = goodPct - chanceForHeart;
+            chanceForCoin = 0;
+        } else
+        {
+            chanceForCoin = goodPct - chanceForHeart - chanceForMana;
+        }
+        // print("Coin: " + chanceForCoin);
+        // print("Mana: " + chanceForMana);
+        // print("Heart: " + chanceForHeart);
     }
 }
