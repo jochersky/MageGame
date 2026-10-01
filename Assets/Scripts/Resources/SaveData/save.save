@@ -1,0 +1,41 @@
+{
+    "gameSaveData": {
+        "characterType": 3
+    },
+    "playerData": {
+        "healthAmt": 4,
+        "manaAmt": 75,
+        "moneyAmt": 0
+    },
+    "inventoryData": {
+        "spells": [
+            {
+                "name": "Snap Speed"
+            }
+        ],
+        "equippedSpell1": {
+            "name": "Snap Speed"
+        },
+        "equippedSpell2": {
+            "name": ""
+        },
+        "consumables": [
+            {
+                "name": "Sol Stone",
+                "count": 5
+            },
+            {
+                "name": "Rope",
+                "count": 5
+            }
+        ],
+        "equippedConsumable1": {
+            "name": "Sol Stone",
+            "count": 0
+        },
+        "equippedConsumable2": {
+            "name": "Rope",
+            "count": 0
+        }
+    }
+}
