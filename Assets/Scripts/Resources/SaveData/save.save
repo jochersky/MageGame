@@ -1,6 +1,6 @@
 {
     "gameSaveData": {
-        "characterType": 3
+        "characterType": 2
     },
     "playerData": {
         "healthAmt": 4,
@@ -10,18 +10,18 @@
     "inventoryData": {
         "spells": [
             {
-                "name": "Snap Speed"
+                "name": "Reverse Footsteps"
             }
         ],
         "equippedSpell1": {
-            "name": "Snap Speed"
+            "name": "Reverse Footsteps"
         },
         "equippedSpell2": {
             "name": ""
         },
         "consumables": [
             {
-                "name": "Sol Stone",
+                "name": "Drill Bomb",
                 "count": 5
             },
             {
@@ -30,7 +30,7 @@
             }
         ],
         "equippedConsumable1": {
-            "name": "Sol Stone",
+            "name": "Drill Bomb",
             "count": 0
         },
         "equippedConsumable2": {
