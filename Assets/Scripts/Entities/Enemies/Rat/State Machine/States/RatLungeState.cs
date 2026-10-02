@@ -11,6 +11,8 @@ public class RatLungeState : RatBaseState
     public override void EnterState()
     {
         if (Context.IsDead) SwitchState(Dictionary.Dead());
+
+        Context.FlipDirDisabled = false;
         
         Context.Animator.CrossFade(Context.Lunge, 0, 0);
         Context.LinearVelocityX = Context.LinearVelocityX;
