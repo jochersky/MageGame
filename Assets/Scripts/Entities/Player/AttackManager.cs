@@ -5,6 +5,8 @@ public class AttackManager : MonoBehaviour
 {
     [SerializeField] GameObject staff;
     [SerializeField] private int frames = 30;
+    [SerializeField] AudioClip[] swingSFX;
+    readonly float swingVolume = 0.25f;
     int animationFrames = 30;
     float animationDuration = 0.15f;
     bool isAttacking = false;
@@ -20,6 +22,8 @@ public class AttackManager : MonoBehaviour
         if (!isAttacking)
         {
             isAttacking = true;
+            if (AudioManager.instance != null)
+                AudioManager.instance.PlayRandomClipFromAt(swingSFX, transform, swingVolume);
             StartCoroutine(SwingAnimation()); 
         }
     }

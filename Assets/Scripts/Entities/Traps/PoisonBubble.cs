@@ -23,7 +23,8 @@ public class PoisonBubble : MonoBehaviour
         if (!collision.isTrigger || collision.CompareTag("Hitbox"))
         {
             Instantiate(effects, transform.position, quaternion.identity);
-            AudioManager.instance.PlayRandomClipFromAt(popSounds, transform, popVolume);
+            if (AudioManager.instance != null)
+                AudioManager.instance.PlayRandomClipFromAt(popSounds, transform, popVolume);
             Destroy(gameObject);
         } 
     }
