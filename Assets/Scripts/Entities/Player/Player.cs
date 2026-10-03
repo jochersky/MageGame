@@ -8,8 +8,11 @@ public class Player : MonoBehaviour
     [SerializeField] private PassiveSpellAffects passiveSpellAffects;
     [Header("References")]
     [SerializeField] private Transform lightTransform;
+    [SerializeField] private PlayerTorch playerTorch;
     private Health _health;
     private SpellManager _spellManager;
+    [Header("Experience Stats")]
+    [SerializeField] private int expForNextLevel;
 
     public HUDBar HealthBar { get; set; }
     public HUDBar ManaBar { get; set; }
@@ -17,6 +20,8 @@ public class Player : MonoBehaviour
     
     public delegate void StartDone();
     public event StartDone OnStartDone;
+
+    private int _exp;
     
     private void Awake()
     {
@@ -53,6 +58,8 @@ public class Player : MonoBehaviour
             if (lightTransform) lightTransform.localScale = new Vector3(newSize, newSize, newSize);
         };
 
+        playerTorch.OnExpGained += UpdateExp;
+
         if (HealthBar)
         {
             HealthBar.InitializeBar(_health.CurrentHealth, _health.MaxHealth);
@@ -65,6 +72,12 @@ public class Player : MonoBehaviour
         }
         
         OnStartDone?.Invoke();
+    }
+
+    public void UpdateExp(int amt)
+    {
+        _exp += amt;
+        Debug.Log($"{_exp} / {expForNextLevel}");
     }
 
     public void UpdateHealthAndMana()

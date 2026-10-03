@@ -7,7 +7,7 @@ public class Lightable : MonoBehaviour
     [SerializeField] private Light2D light;
     [SerializeField] private bool isLit;
     
-    public bool IsLit { get { return isLit; } }
+    public virtual bool IsLit { get { return isLit; } }
     
     public delegate void LightActivated();
     public event LightActivated OnLightActivated;
@@ -39,7 +39,7 @@ public class Lightable : MonoBehaviour
     {
         if (other.TryGetComponent<Lightable>(out Lightable lightable))
         {
-            if (isLit && lightable.isLit) return;
+            if (lightable.CompareTag("Player") || isLit && lightable.isLit) return;
             
             if (!isLit && lightable.IsLit) 
                 ActivateLightSource();
