@@ -11,7 +11,9 @@ using UnityEngine.UI;
 public class NPC : MonoBehaviour
 {
     [SerializeField] SpriteRenderer outline;
-    [SerializeField] Image dialogueBox;
+    [SerializeField] GameObject dialogueBox;
+    [SerializeField] string npcName;
+    [SerializeField] TextMeshProUGUI nameTextBox;
     [SerializeField] TextMeshProUGUI text;
     // list of lines of dialogue to be spoken right now
     public string[] dialogue;
@@ -38,9 +40,9 @@ public class NPC : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public virtual void Start()
     {
-        
+        nameTextBox.text = npcName;
         text.text = string.Empty;
-        dialogueBox.enabled = false;
+        dialogueBox.SetActive(false);
     }
 
     void PlayerSetup(GameObject player)
@@ -72,7 +74,7 @@ public class NPC : MonoBehaviour
         text.text = string.Empty;
         if (_lineIdx < dialogue.Length)
         {
-            dialogueBox.enabled = true;
+            dialogueBox.SetActive(true);
             foreach (char ch in dialogue[_lineIdx])
             {
                 text.text += ch;
@@ -116,7 +118,7 @@ public class NPC : MonoBehaviour
 
     public virtual void CloseDialogue()
     {
-        dialogueBox.enabled = false;
+        dialogueBox.SetActive(false);
         _lineIdx = 0;
     }
 }

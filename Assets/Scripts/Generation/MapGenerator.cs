@@ -211,7 +211,7 @@ public class MapGenerator : MonoBehaviour
         Debug.Log("Generation complete!");
 
         // Potentially print array here for debugging porpoises
-        DebugPrintMap();
+        //DebugPrintMap();
     }
 
     private bool Pathfind()
@@ -297,6 +297,10 @@ public class MapGenerator : MonoBehaviour
          // place NPC rooms
         for (int npcIdx = 0; npcIdx < NPCInstances.Count; npcIdx++)
         {
+            if (NPCInstances[npcIdx].room == null)
+            {
+                continue;
+            }
             List<Vector2Int> unlabeled_rooms = GetUnlabeledRooms();
             // select a random unlabeled room as an NPC room
             if (unlabeled_rooms.Count <= 0)
