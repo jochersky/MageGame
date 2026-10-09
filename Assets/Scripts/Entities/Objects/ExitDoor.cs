@@ -3,17 +3,25 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ExitDoor : MonoBehaviour
+public class ExitDoor : MonoBehaviour, IInteractable
 {
     public string nextLevel;
     [SerializeField] string playerTag = "Player";
-
-    void OnTriggerEnter2D(Collider2D collision)
+    [SerializeField] GameObject outline;
+    
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(playerTag))
-        {
-            StartCoroutine(GoToNextLevel());
-        }
+        if (collision.CompareTag(playerTag)) outline.SetActive(true);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag(playerTag)) outline.SetActive(false);
+    }
+    
+    public void Interact()
+    {
+        StartCoroutine(GoToNextLevel());
     }
 
     private IEnumerator GoToNextLevel()

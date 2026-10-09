@@ -307,6 +307,11 @@ public class InventoryManager : MonoBehaviour
             spellsToSave.Add(spellData);
         }
         data.spells = spellsToSave.ToArray();
+        if (_spellManager.spellConfig1)
+            data.equippedSpell1 = new SpellSaveData { name = _spellManager.spellConfig1.itemName };
+
+        if (_spellManager.spellConfig2)
+            data.equippedSpell2 = new SpellSaveData { name = _spellManager.spellConfig2.itemName };
         
         List<ConsumableSaveData> consumablesToSave = new List<ConsumableSaveData>();
         foreach (var i in consumableListItemInstances)
@@ -320,24 +325,62 @@ public class InventoryManager : MonoBehaviour
             consumablesToSave.Add(consumableData);
         }
         data.consumables = consumablesToSave.ToArray();
+        if (_consumableManager.consumableConfig1)
+            data.equippedConsumable1 = new ConsumableSaveData { name = _consumableManager.consumableConfig1.itemName };
+        if (_consumableManager.consumableConfig2)
+            data.equippedConsumable2 = new ConsumableSaveData { name = _consumableManager.consumableConfig2.itemName };
     }
 
     public void Load(ref InventorySaveData data)
     {
+        // Load spells
+        SpellConfig spellConfig;
         foreach (var i in data.spells)
         {
-            AddItem(_spellDictionary.GetConfig(i.name), 0);
+            spellConfig = _spellDictionary.GetConfig(i.name);
+            AddItem(spellConfig, 0);
+        }
+
+        if (data.equippedSpell1.name != "")
+        {
+            spellConfig = _spellDictionary.GetConfig(data.equippedSpell1.name);
+            _spellManager.EquipSpell1(spellConfig);
+            OnSpell1Equipped?.Invoke(spellConfig.icon, true);
+        }
+        if (data.equippedSpell2.name != "")
+        {
+            spellConfig = _spellDictionary.GetConfig(data.equippedSpell2.name);
+            _spellManager.EquipSpell2(spellConfig);
+            OnSpell2Equipped?.Invoke(spellConfig.icon, true);
         }
         
+        // Load consumables
+        ConsumableConfig consumableConfig;
         foreach (var i in data.consumables)
         {
-            AddItem(_consumableDictionary.GetConfig(i.name), i.count);
+            consumableConfig = _consumableDictionary.GetConfig(i.name);
+            AddItem(consumableConfig, i.count);
+        }
+
+        if (data.equippedConsumable1.name != "")
+        {
+            consumableConfig = _consumableDictionary.GetConfig(data.equippedConsumable1.name);
+            _consumableManager.EquipConsumable1(consumableConfig);
+            OnConsumable1Equipped?.Invoke(1, consumableConfig, data.equippedConsumable1.count, true);
+        }
+        if (data.equippedConsumable2.name != "")
+        {
+            consumableConfig = _consumableDictionary.GetConfig(data.equippedConsumable2.name);
+            _consumableManager.EquipConsumable2(consumableConfig);
+            OnConsumable2Equipped?.Invoke(2, consumableConfig, data.equippedConsumable2.count, true);
         }
     }
 
     public void ClearItemData()
     {
         spellListItemInstances.Clear();
+        _spellManager.UnequipSpell1();
+        _spellManager.UnequipSpell2();
 
         foreach (var i in consumableListItemInstances)
         {
@@ -346,6 +389,8 @@ public class InventoryManager : MonoBehaviour
         }
         
         consumableListItemInstances.Clear();
+        _consumableManager.UnequipConsumable(1);
+        _consumableManager.UnequipConsumable(2);
     }
 }
 
@@ -353,7 +398,11 @@ public class InventoryManager : MonoBehaviour
 public struct InventorySaveData
 {
     public SpellSaveData[] spells;
+    public SpellSaveData equippedSpell1;
+    public SpellSaveData equippedSpell2;
     public ConsumableSaveData[] consumables;
+    public ConsumableSaveData equippedConsumable1;
+    public ConsumableSaveData equippedConsumable2;
 }
 
 [System.Serializable]

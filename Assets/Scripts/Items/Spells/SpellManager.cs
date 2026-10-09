@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -86,7 +87,7 @@ public class SpellManager : MonoBehaviour
         if (_manaRegenTimer >= manaRegenTime)
         {
             _manaRegenTimer = 0;
-            _mana = Math.Min(maxMana, _mana + manaRegenRate);
+            UpdateMana(manaRegenRate);
         }
     }
 

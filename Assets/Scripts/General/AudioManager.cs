@@ -58,6 +58,16 @@ public class AudioManager : MonoBehaviour
         Destroy(audioSrcInstance, audioClip.length);
     }
 
+    public void PlayClipAt(AudioClip audioClip, Transform location, float volume, float pitch)
+    {
+        AudioSource audioSrcInstance = Instantiate(audioSourcePrefab, location.position, Quaternion.identity);
+        audioSrcInstance.clip = audioClip;
+        audioSrcInstance.volume = volume;
+        audioSrcInstance.pitch = pitch;
+        audioSrcInstance.Play();
+        Destroy(audioSrcInstance, audioClip.length);
+    }
+
     public void PlayAudio(AudioClip audio, float duration)
     {
         if (!playingAudio)

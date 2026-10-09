@@ -21,7 +21,6 @@ public class Health : MonoBehaviour
     public bool ignore;
     
     public int MaxHealth { get => maxHealth; set => maxHealth = value; }
-
     public int CurrentHealth
     {
         get => _currentHealth;
@@ -31,6 +30,7 @@ public class Health : MonoBehaviour
             OnHealthChanged?.Invoke(value);
         } 
     }
+    public float InvulnerabilityTime { get => invulnerabilityTime; set => invulnerabilityTime = value; }
     
     public delegate void HealthChange(int newHealth);
     public event HealthChange OnHealthChanged;

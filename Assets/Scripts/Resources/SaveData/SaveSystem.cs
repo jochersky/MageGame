@@ -66,11 +66,19 @@ public class SaveSystem
 
     public static void ResetToStartingSaveState()
     {
+        // Clear items and stats
         _saveData.inventoryData.spells = null;
+        _saveData.inventoryData.equippedSpell1.name = "";
+        _saveData.inventoryData.equippedSpell2.name = "";
         _saveData.inventoryData.consumables = null;
+        _saveData.inventoryData.equippedConsumable1.name = "";
+        _saveData.inventoryData.equippedConsumable2.name = "";
         File.WriteAllText(SaveFileName(), JsonUtility.ToJson(_saveData, true));
         
+        // Once items and stats cleared, add the starting stats and items for the chosen character
         GameManager.Instance.ResetStatsAndItems();
+        
+        // Save this fresh character
         Save();
     }
 }

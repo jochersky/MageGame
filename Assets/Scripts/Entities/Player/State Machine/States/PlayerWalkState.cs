@@ -14,6 +14,8 @@ public class PlayerWalkState : PlayerBaseState
     public override void UpdateState()
     {
         if (Context.IsDead) SwitchState(Dictionary.Dead());
+
+        Context.Animator.speed = Mathf.Abs(Context.MoveDirection.x);
         
         // this is so stupid. HorizontalMovement is set to this value while walking and dodge is peformed.
         if (!Context.IsDodging) Context.HorizontalMovement = Context.MoveDirection.x * Context.Stats.Speed;
@@ -26,6 +28,7 @@ public class PlayerWalkState : PlayerBaseState
 
     public override void ExitState()
     {
+        Context.Animator.speed = 1;
     }
     
     public override void InitializeSubState()
