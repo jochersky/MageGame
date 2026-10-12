@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public HUDBar HealthBar { get; set; }
     public HUDBar ManaBar { get; set; }
     public Health Health => _health;
+    public bool CanLevelUp => _exp >= expForNextLevel;
     
     public delegate void StartDone();
     public event StartDone OnStartDone;
@@ -78,6 +79,17 @@ public class Player : MonoBehaviour
     {
         _exp += amt;
         Debug.Log($"{_exp} / {expForNextLevel}");
+    }
+
+    public bool LevelUp()
+    {
+        if (CanLevelUp)
+        {
+            _exp -= expForNextLevel;
+            return true;
+        }
+        
+        return false;
     }
 
     public void UpdateHealthAndMana()
