@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using NUnit.Framework;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.LightTransport.PostProcessing;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
@@ -14,6 +16,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] int mapDimensions = 5;
     [SerializeField] int roomDimensions = 8; 
     [SerializeField] int level = 1;
+    [SerializeField] int seed = 0;
     [SerializeField] GameObject tilemapPrefab;
     [SerializeField] Color32 guaranteeSquareColor;
     [SerializeField] Color32 highProbabilityColor;
@@ -82,7 +85,7 @@ public class MapGenerator : MonoBehaviour
 
     
     // this is apparently how you do multidimensional arrays
-    int[,] map;
+    MapRoom[,] map;
     int row = 0;
     int col = 0;
     // there is also a UnityEngine.Random
@@ -91,14 +94,34 @@ public class MapGenerator : MonoBehaviour
     {
         BELOW,
         LEFT,
-        RIGHT
+        RIGHT,
+        UP
     }
 
     enum ROOM_QUALITY
     {
         STARTING,
         ENDING,
-        REGULAR
+        REGULAR,
+        CHEST,
+        NPC
+    }
+
+
+    
+    // Room type 0 has no guaranteed exits
+    // Room type 1 has exits on the left and right guaranteed
+    // Room type 2 has exits on the left, right, and bottom (we love the Oxford comma)
+    // Room type 3 has exits on the left, right, and top
+    // Room type 4 has exits on the left, right, top, and bottom
+    // The recent designation identifies it as having been placed as a part of the current path, as opposed to another path
+    enum ROOM_STYLE
+    {
+        UNSPECIFIED,
+        LEFT_RIGHT,
+        BOTTOM_LEFT_RIGHT,
+        TOP_LEFT_RIGHT,
+        CROSS
     }
 
     public Tilemap getColliderMap()
@@ -116,12 +139,22 @@ public class MapGenerator : MonoBehaviour
         room3s = Resources.LoadAll<Sprite>("Rooms/Room Style 3");
         room4s = Resources.LoadAll<Sprite>("Rooms/Room Style 4");
         NPCPrefabs = Resources.LoadAll<NPC>(NPCpath);
-        randy = new System.Random();
+        if (seed == 0)
+        {
+            randy = new System.Random();
+            seed = randy.Next(int.MinValue, int.MaxValue);
+            randy = new System.Random(seed);
+            
+        } else
+        {
+            randy = new System.Random(seed);
+        }
+        Debug.Log("Generation using seed: " + seed);
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        map = new int[mapDimensions, mapDimensions];
+        map = new MapRoom[mapDimensions, mapDimensions];
         SpawnEntities();
         GenRoomPaths();
         PlaceMap();
@@ -130,9 +163,9 @@ public class MapGenerator : MonoBehaviour
         EventBus.Instance.HandleTileMapChanged();
         PlaceEntities();
         // teleport player to starting position
-        Debug.Log("Player moved to " + startingPosition);
         player.transform.position = startingPosition;
         StartCoroutine(DelayedStart());
+        
     }
 
     IEnumerator DelayedStart()
@@ -160,7 +193,7 @@ public class MapGenerator : MonoBehaviour
         {
             for (int col = 0; col < map.GetLength(1); col++)
             {
-               map[row,col] = 0;
+               map[row,col] = new();
             }
         }
         // pick a starting room from the top row
@@ -172,11 +205,13 @@ public class MapGenerator : MonoBehaviour
         while (!foundExit)
         {
             foundExit = Pathfind();
-        }    
+        }
+        AgeMap();
+        PlaceSpecialRooms();
         Debug.Log("Generation complete!");
-    
-        // Potentially print array here for debugging porpoises
 
+        // Potentially print array here for debugging porpoises
+        DebugPrintMap();
     }
 
     private bool Pathfind()
@@ -187,10 +222,9 @@ public class MapGenerator : MonoBehaviour
         if (direction == 1 || direction == 2)
         {
             // if left is not the edge of the map AND we haven't been there yet, we are good
-            if (col - 1 >= 0 && map[row, col-1] == 0)
+            if (col - 1 >= 0 && map[row, col-1].roomStyle == ROOM_STYLE.UNSPECIFIED)
             {
                 LabelRoomNum(MOVING_TO.LEFT);
-                MarkPotentialChestRooms(MOVING_TO.LEFT);
                 col -= 1;
                 return false;
             }
@@ -199,10 +233,9 @@ public class MapGenerator : MonoBehaviour
         if (direction == 3 || direction == 4)
         {
             // if right is not the edge of the map AND we haven't been there yet, we are good
-            if (col + 1 < map.GetLength(0) && map[row, col+1] == 0)
+            if (col + 1 < map.GetLength(0) && map[row, col+1].roomStyle == ROOM_STYLE.UNSPECIFIED)
             {
                 LabelRoomNum(MOVING_TO.RIGHT);
-                MarkPotentialChestRooms(MOVING_TO.RIGHT);
                 col += 1;
                 return false;
             }
@@ -214,8 +247,6 @@ public class MapGenerator : MonoBehaviour
         {
             // we are lying here, because we aren't actually moving anywhere, but want room types 1 and 3 anyway. Should probably fix.
             LabelRoomNum(MOVING_TO.LEFT);
-            // for the purposes of chest rooms, we are moving down
-            MarkPotentialChestRooms(MOVING_TO.BELOW);
             // store exit column
             exitCol = col;
             return true;
@@ -223,36 +254,193 @@ public class MapGenerator : MonoBehaviour
         {
           // standard case, actually move down a floor
           LabelRoomNum(MOVING_TO.BELOW);
-          MarkPotentialChestRooms(MOVING_TO.BELOW);
           row += 1;
           return false;  
         }
     }
 
-    private void MarkPotentialChestRooms(MOVING_TO direction)
+    private void PlaceSpecialRooms()
     {
-        // if we are moving left or down
-        if (direction == MOVING_TO.LEFT || direction == MOVING_TO.BELOW)
+
+        
+        // place chest rooms
+        for (int chestRoom = 0; chestRoom < numChestRooms; chestRoom++)
         {
-            // and there exists a room to our right that is unvisited
-            if (col + 1 < map.GetLength(0) && map[row, col+1] == 0)
+            // scan map for empty rooms
+            List<Vector2Int> unlabeled_rooms = GetUnlabeledRooms();
+            // select a random unlabeled room as a chest room
+            if (unlabeled_rooms.Count <= 0)
             {
-                // mark it as a potential chest room
-                map[row, col + 1] = 5;
+                Debug.Log("Error: No space for all chest rooms");
+                return;
             }
-            
+            int randomIndex = randy.Next(unlabeled_rooms.Count);
+            Vector2Int roomCoords = unlabeled_rooms[randomIndex];
+            unlabeled_rooms.RemoveAt(randomIndex);
+            row = roomCoords.x;
+            col = roomCoords.y;
+            MapRoom room = map[row, col];
+            room.roomQuality = ROOM_QUALITY.CHEST;
+            // random walk a path from that room to any room labeled not by this process
+            bool connected = false;
+            while (!connected)
+            {
+                List<int> directions = new();
+                for (int i = 0; i < 4; i++)
+                {
+                    directions.Add(i);
+                }
+                connected = ConnectedPathfind(directions);
+            }
+            AgeMap();
         }
-        // if we are moving right or down
-        if (direction == MOVING_TO.RIGHT || direction == MOVING_TO.BELOW)
+         // place NPC rooms
+        for (int npcIdx = 0; npcIdx < NPCInstances.Count; npcIdx++)
         {
-            // and there exists a room to our left that is unvisited
-            if (col - 1 >= 0 && map[row, col-1] == 0)
+            List<Vector2Int> unlabeled_rooms = GetUnlabeledRooms();
+            // select a random unlabeled room as an NPC room
+            if (unlabeled_rooms.Count <= 0)
             {
-                // mark it as a potential chest room
-                map[row, col - 1] = 5;
+                Debug.Log("Error: No space for all NPC rooms");
+                return;
             }
-            
+            int randomIndex = randy.Next(unlabeled_rooms.Count);
+            Vector2Int roomCoords = unlabeled_rooms[randomIndex];
+            unlabeled_rooms.RemoveAt(randomIndex);
+            row = roomCoords.x;
+            col = roomCoords.y;
+            MapRoom room = map[row, col];
+            room.roomQuality = ROOM_QUALITY.NPC;
+            room.NPCIdx = npcIdx;
+            // random walk a path from that room to any room labeled not by this process
+            bool connected = false;
+            while (!connected)
+            {
+                List<int> directions = new();
+                for (int i = 0; i < 4; i++)
+                {
+                    directions.Add(i);
+                }
+                connected = ConnectedPathfind(directions);
+            }
+            AgeMap();
         }
+    }
+
+    private List<Vector2Int> GetUnlabeledRooms()
+    {
+        List<Vector2Int> unlabeled_rooms = new();
+        for (int row = 0; row < map.GetLength(0); row++)
+        {
+            for (int col = 0; col < map.GetLength(1); col++)
+            {
+                if (map[row, col].roomStyle == ROOM_STYLE.UNSPECIFIED)
+                {
+                    unlabeled_rooms.Add(new Vector2Int(row, col));
+                }
+               
+            }
+        }
+        return unlabeled_rooms;
+    }
+
+    // a variation of pathfinding adapted for branches rather than the main path
+    private bool ConnectedPathfind(List<int> directions)
+    {
+        // Randomly pick 0-3
+        // 0 means up, 1 means right, 2 means down, 3 means left
+        int random_index = randy.Next(directions.Count);
+        int direction = directions[random_index];
+        if (direction == 0)
+        {
+            // if up is off the map or already a part of this path, remove direction and retry
+            if (row - 1 < 0 || map[row - 1, col].recent)
+            {
+                directions.RemoveAt(random_index);
+                return ConnectedPathfind(directions);
+            }
+            // we're going up
+            LabelRoomNum(MOVING_TO.UP);
+            row -= 1;
+            // if up is an unlabeled room, label it and continue
+            if (map[row, col].roomStyle == ROOM_STYLE.UNSPECIFIED)
+            {
+
+                return false;
+            }
+            // if up is an already placed path, we have found our destination
+            // so ensure that the destination knows to change itself
+            LabelRoomNum(MOVING_TO.BELOW);
+            return true;
+        }
+        else if (direction == 2)
+        {
+            // if below is off the map or already a part of this path, remove direction and retry
+            if (row + 1 >= mapDimensions || map[row + 1, col].recent)
+            {
+                directions.RemoveAt(random_index);
+                return ConnectedPathfind(directions);
+            }
+            // we're going down
+            LabelRoomNum(MOVING_TO.BELOW);
+            row += 1;
+            // if up is an unlabeled room, label it and continue
+            if (map[row, col].roomStyle == ROOM_STYLE.UNSPECIFIED)
+            {
+                return false;
+            }
+            // if down is an already placed path, we have found our destination
+            // so ensure that the destination knows to change itself
+            LabelRoomNum(MOVING_TO.UP);
+            return true;
+        } 
+        else if (direction == 1)
+        {
+            // if right is off the map or already a part of this path, remove direction and retry
+            if (col + 1 >= mapDimensions || map[row, col + 1].recent)
+            {
+                directions.RemoveAt(random_index);
+                return ConnectedPathfind(directions);
+            }
+            // we're going right
+            LabelRoomNum(MOVING_TO.RIGHT);
+            col += 1;
+            // if right is an unlabeled room, label it and continue
+            if (map[row, col].roomStyle == ROOM_STYLE.UNSPECIFIED)
+            {
+                return false;
+            }
+            // if right is an already placed path, we have found our destination
+            // so ensure that the destination knows to change itself
+            LabelRoomNum(MOVING_TO.LEFT);
+            return true;
+        } 
+        else if (direction == 3)
+        {
+            // if left is off the map or already a part of this path, remove direction and retry
+            if (col - 1 < 0 || map[row, col - 1].recent)
+            {
+                directions.RemoveAt(random_index);
+                return ConnectedPathfind(directions);
+            }
+            // we're going left
+            LabelRoomNum(MOVING_TO.LEFT);
+            col -= 1;
+            // if left is an unlabeled room, label it and continue
+            if (map[row, col].roomStyle == ROOM_STYLE.UNSPECIFIED)
+            {
+                return false;
+            }
+            // if left is an already placed path, we have found our destination
+            // so ensure that the destination knows to change itself
+            LabelRoomNum(MOVING_TO.RIGHT);
+            return true;
+        } else
+        {
+            Debug.Log("ERROR: Non-orthogonal direction chosen");
+            return true;
+        }
+        
     }
 
     // Room type 0 has no guaranteed exits
@@ -262,30 +450,104 @@ public class MapGenerator : MonoBehaviour
     // Room type 4 has exits on the left, right, top, and bottom
     private void LabelRoomNum(MOVING_TO direction)
     {
-        // if we are moving left or right, then we are either 1 or 3.
-        // if the room above us is offscreen, or is of type 0, 1, or 3, then we are type 1.
+        // if we are moving up, then we are either type 3 or 4
+        if (direction == MOVING_TO.UP)
+        {
+            if (row + 1 >= mapDimensions)
+            {
+                map[row, col].roomStyle = ROOM_STYLE.TOP_LEFT_RIGHT;
+                return;
+            }
+            MapRoom room = map[row + 1, col];
+            // if below us is offscreen, or a room of type 0, 1 or 2, then we are 3
+            if (room.roomStyle == ROOM_STYLE.UNSPECIFIED || room.roomStyle == ROOM_STYLE.LEFT_RIGHT || room.roomStyle == ROOM_STYLE.BOTTOM_LEFT_RIGHT)
+            {
+                map[row, col].roomStyle = ROOM_STYLE.TOP_LEFT_RIGHT;
+            } else
+            {
+                map[row, col].roomStyle = ROOM_STYLE.CROSS;
+            }
+        }
+        // if we are moving left or right, then we are either 1, 2 or 3.
+        // if the room above us is offscreen, or is of type 0, 1, or 3, then we are type 1 or 2.
+        //  if the room below is type 3 or 4, we are type 2, otherwise type 1
         // otherwise the room above us is type 2 or 4 which means we need a top exit and are type 3.
         if (direction == MOVING_TO.LEFT || direction == MOVING_TO.RIGHT)
         {
-            if (row - 1 < 0 || map[row - 1, col] == 0 || map[row - 1, col] == 1 || map[row - 1, col] == 3)
+            MapRoom room;
+            // nothing above us
+            if (row - 1 < 0)
             {
-                map[row, col] = 1;
+                // check below. Shouldn't need to bounds check
+                room = map[row + 1, col];
+                // connection below, we are type 2
+                if (room.roomStyle == ROOM_STYLE.TOP_LEFT_RIGHT || room.roomStyle == ROOM_STYLE.CROSS)
+                {
+                    map[row, col].roomStyle = ROOM_STYLE.BOTTOM_LEFT_RIGHT;
+                } else
+                {
+                    map[row, col].roomStyle = ROOM_STYLE.LEFT_RIGHT;
+                }
+                return;
+            }
+            // there is a room above
+            room = map[row - 1, col];
+            if (room.roomStyle == ROOM_STYLE.UNSPECIFIED  || room.roomStyle == ROOM_STYLE.LEFT_RIGHT || room.roomStyle == ROOM_STYLE.TOP_LEFT_RIGHT)
+            {
+                if (row + 1 >= mapDimensions)
+                {
+                    map[row, col].roomStyle = ROOM_STYLE.LEFT_RIGHT;
+                } else
+                {
+                    room = map[row + 1, col];
+                    if (room.roomStyle == ROOM_STYLE.TOP_LEFT_RIGHT || room.roomStyle == ROOM_STYLE.CROSS)
+                    {
+                        map[row, col].roomStyle = ROOM_STYLE.BOTTOM_LEFT_RIGHT;
+                    } else
+                    {
+                        map[row, col].roomStyle = ROOM_STYLE.LEFT_RIGHT;
+                    }
+                }
+                
             } else
             {
-                map[row, col] = 3;
+                map[row, col].roomStyle = ROOM_STYLE.TOP_LEFT_RIGHT;
             }
+
         }
         // otherwise, we are moving down
         // if the room above us is offscreen, or is of type 0, 1, or 3, then we are type 2.
         // otherwise the room above us is type 2 or 4 which means we need a top exit and are type 4.
         else
         {
-            if (row - 1 < 0 || map[row - 1, col] == 0 || map[row - 1, col] == 1 || map[row - 1, col] == 3)
+            if (row - 1 < 0)
             {
-                map[row, col] = 2;
+                map[row, col].roomStyle = ROOM_STYLE.BOTTOM_LEFT_RIGHT;
+                return;
+            }
+            MapRoom room = map[row - 1, col];
+            if (room.roomStyle == ROOM_STYLE.UNSPECIFIED || room.roomStyle == ROOM_STYLE.LEFT_RIGHT || room.roomStyle == ROOM_STYLE.TOP_LEFT_RIGHT)
+            {
+                map[row, col].roomStyle = ROOM_STYLE.BOTTOM_LEFT_RIGHT;
             } else
             {
-                map[row, col] = 4;
+                map[row, col].roomStyle = ROOM_STYLE.CROSS;
+            }
+        }
+    }
+
+    // scans map and removes the recent status from all rooms
+    // to be called after a path is finished being created
+    private void AgeMap()
+    {
+        for (int row = 0; row < map.GetLength(0); row++)
+        {
+            for (int col = 0; col < map.GetLength(1); col++)
+            {
+               if (map[row, col].recent)
+                {
+                    map[row, col].recent = false;
+                }
             }
         }
     }
@@ -295,32 +557,43 @@ public class MapGenerator : MonoBehaviour
     {
         int x = 0;
         int y = 0;
-        bool isStartingRoom = false;
-        bool isEndingRoom = false;
         // +2 comes from extra top and bottom rows
         for (int row = -1; row < map.GetLength(0) + 1; row++)
         {
             for (int col = -1; col < map.GetLength(1) + 1; col++)
             {
-                // check for starting and ending rooms
-                isStartingRoom = row == 0 && col == entranceCol;
-                isEndingRoom = row == (mapDimensions - 1) && col == exitCol;
+                
                 // top and bottom rows are all filled, as are the leftmost and rightmost columns
                 if (row == -1 || row == map.GetLength(0) || col == -1 || col == map.GetLength(0))
                 {
-                    InstantiateRoom(filledRoom, x, y, isStartingRoom, isEndingRoom, -1);
+                    InstantiateRoom(filledRoom, x, y, ROOM_QUALITY.REGULAR, -1);
                 } else // normal room creation
                 {
-                   int roomNum = map[row,col];
-                    switch (roomNum)
+                    MapRoom room = map[row,col];
+                    // check for starting and ending rooms
+                    if (row == 0 && col == entranceCol) room.roomQuality = ROOM_QUALITY.STARTING;
+                    if (row == (mapDimensions - 1) && col == exitCol) room.roomQuality = ROOM_QUALITY.ENDING;
+                    if (room.roomQuality == ROOM_QUALITY.NPC)
                     {
-                        case 1: InstantiateRoom(room1s, x, y, isStartingRoom, isEndingRoom, -1); break;
-                        case 2: InstantiateRoom(room2s, x, y, isStartingRoom, isEndingRoom, -1); break;
-                        case 3: InstantiateRoom(room3s, x, y, isStartingRoom, isEndingRoom, -1); break;
-                        case 4: InstantiateRoom(room4s, x, y, isStartingRoom, isEndingRoom, -1); break;
-                        case 5: specialRoomCoords.Add((x,y)); break;
-                        default: InstantiateRoom(room0s, x, y, isStartingRoom, isEndingRoom, -1); break;
-                    } 
+                        // hack fix since InstantiateRoom expects an array
+                        Sprite[] roomArray = new Sprite[1];
+                        // may have to cast
+                        roomArray[0] = NPCInstances[room.NPCIdx].room;
+                        InstantiateRoom(roomArray, x, y, room.roomQuality, room.NPCIdx);
+                    } else
+                    {
+                        ROOM_STYLE roomNum = room.roomStyle;
+                        switch (roomNum)
+                        {
+                            case ROOM_STYLE.LEFT_RIGHT: InstantiateRoom(room1s, x, y, room.roomQuality, -1); break;
+                            case ROOM_STYLE.BOTTOM_LEFT_RIGHT: InstantiateRoom(room2s, x, y, room.roomQuality, -1); break;
+                            case ROOM_STYLE.TOP_LEFT_RIGHT: InstantiateRoom(room3s, x, y, room.roomQuality, -1); break;
+                            case ROOM_STYLE.CROSS: InstantiateRoom(room4s, x, y, room.roomQuality, -1); break;
+                            //case 5: specialRoomCoords.Add((x,y)); break;
+                            default: InstantiateRoom(room0s, x, y, room.roomQuality, -1); break;
+                        } 
+                    }
+                    
                 }
                 
                 x += roomDimensions;
@@ -328,48 +601,45 @@ public class MapGenerator : MonoBehaviour
             x = 0;
             y -= roomDimensions;
         }
-        InstantiateSpecialRooms(numChestRooms);
+        //InstantiateSpecialRooms(numChestRooms);
     }
 
-    private void InstantiateSpecialRooms(int numChestRooms)
-    {
-        // instantiate chest rooms
-        for (int room = 0; room < numChestRooms; room++)
-        {
-            int randIdx = randy.Next(0, specialRoomCoords.Count);
-            (int x, int y) = specialRoomCoords[randIdx];
-            specialRoomCoords.RemoveAt(randIdx);
-            InstantiateRoom(chestRoom, x,  y, false, false, -1);
-        }
-        // instantiate other special rooms
-        for (int npc_idx = 0; npc_idx < NPCInstances.Count; npc_idx++)
-        {
-            int randIdx = randy.Next(0, specialRoomCoords.Count);
-            // BUG: randIdx is out of bounds sometimes
-            (int x, int y) = specialRoomCoords[randIdx];
-            specialRoomCoords.RemoveAt(randIdx);
-            Sprite[] temp_arr = new Sprite[1];
-            // may have to cast
-            temp_arr[0] = NPCInstances[npc_idx].room;
-            InstantiateRoom(temp_arr, x,  y, false, false, npc_idx);
-        }
-        // instantiate all remaining marked rooms as 0s
-        for (int room = 0; room < specialRoomCoords.Count; room++)
-        {
-            (int x, int y) = specialRoomCoords[room];
-            InstantiateRoom(room0s, x,  y, false, false, -1);
-        }
-    }
+    // private void InstantiateSpecialRooms(int numChestRooms)
+    // {
+    //     // instantiate chest rooms
+    //     for (int room = 0; room < numChestRooms; room++)
+    //     {
+    //         int randIdx = randy.Next(0, specialRoomCoords.Count);
+    //         (int x, int y) = specialRoomCoords[randIdx];
+    //         specialRoomCoords.RemoveAt(randIdx);
+    //         InstantiateRoom(chestRoom, x,  y, false, false, -1);
+    //     }
+    //     // instantiate other special rooms
+    //     for (int npc_idx = 0; npc_idx < NPCInstances.Count; npc_idx++)
+    //     {
+    //         int randIdx = randy.Next(0, specialRoomCoords.Count);
+    //         // BUG: randIdx is out of bounds sometimes
+    //         (int x, int y) = specialRoomCoords[randIdx];
+    //         specialRoomCoords.RemoveAt(randIdx);
+    //         Sprite[] temp_arr = new Sprite[1];
+    //         // may have to cast
+    //         temp_arr[0] = NPCInstances[npc_idx].room;
+    //         InstantiateRoom(temp_arr, x,  y, false, false, npc_idx);
+    //     }
+    //     // instantiate all remaining marked rooms as 0s
+    //     for (int room = 0; room < specialRoomCoords.Count; room++)
+    //     {
+    //         (int x, int y) = specialRoomCoords[room];
+    //         InstantiateRoom(room0s, x,  y, false, false, -1);
+    //     }
+    // }
 
-    void InstantiateRoom(Sprite[] rooms, int x, int y, bool isStartingRoom, bool isEndingRoom, int specialIdx)
+    void InstantiateRoom(Sprite[] rooms, int x, int y, ROOM_QUALITY room_quality, int specialIdx)
     {
-        ROOM_QUALITY room_quality = ROOM_QUALITY.REGULAR;
-        if (isStartingRoom) { room_quality = ROOM_QUALITY.STARTING; }
-        if (isEndingRoom) { room_quality = ROOM_QUALITY.ENDING; }
         template = rooms[randy.Next(rooms.Length)];
         Color32[] pixels = ConvertSpriteToPixelArray(template);
         int[] room = TranslateColorsToProbabilities(pixels, room_quality);
-        GenerateRoom(room, x, y, specialIdx);
+        GenerateRoom(room, x, y, room_quality, specialIdx);
     }
 
     Color32[] ConvertSpriteToPixelArray(Sprite sprite)
@@ -464,7 +734,7 @@ public class MapGenerator : MonoBehaviour
     }
 
 
-    void GenerateRoom(int[] room, int xOffset, int yOffset, int specialIdx)
+    void GenerateRoom(int[] room, int xOffset, int yOffset, ROOM_QUALITY roomQuality, int specialIdx)
     {
         for (int row = 0; row < roomDimensions; row++)
         {
@@ -560,6 +830,37 @@ public class MapGenerator : MonoBehaviour
                 {
                     colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.ruleTile);
                 }
+            }
+        }
+        if (roomQuality == ROOM_QUALITY.CHEST)
+        {
+            //Debug.Log("Looking for chest spot...");
+            List<Vector3Int> possibleChestSpots = new();
+            // ignore bottom row
+            for (int row = 0; row < roomDimensions - 1; row++)
+            {
+                for (int col = 0; col < roomDimensions; col++)
+                {
+                    
+                    int xCoord = col + xOffset;
+                    int yCoord = row + yOffset;
+                    Vector3Int coords = new(xCoord, yCoord, 0);
+                    bool self = colliderTilemap.HasTile(coords); 
+                    bool below = colliderTilemap.HasTile(new(xCoord, yCoord - 1, 0));
+                    if (!self && below)
+                    {
+                        possibleChestSpots.Add(coords);
+                    }
+                }
+            }
+            if (possibleChestSpots.Count <= 0)
+            {
+                Debug.Log("Error: No space for a chest");
+            } else
+            {
+                Vector3Int randCoords = possibleChestSpots[randy.Next(possibleChestSpots.Count)];
+                nonColliderTilemap.SetTile(randCoords, chest);
+                //Debug.Log("Placing Chest at " + randCoords);
             }
         }
     }
@@ -722,5 +1023,60 @@ public class MapGenerator : MonoBehaviour
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfFrame();
         Instantiate(enemy.enemyPrefab, new Vector2(enemy.spawnPositions[randIdx].x, enemy.spawnPositions[randIdx].y), quaternion.identity);
+    }
+
+    void DebugPrintMap()
+    {
+        for (int row = 0; row < map.GetLength(0); row++)
+        {
+            StringBuilder stringBuilder = new();
+            for (int col = 0; col < map.GetLength(1); col++)
+            {
+                string room_symbol = "";
+                ROOM_STYLE mapRoomStyle = map[row, col].roomStyle;
+                
+                if (map[row, col].roomQuality == ROOM_QUALITY.STARTING)
+                {
+                    room_symbol = "S";
+                } else if (map[row, col].roomQuality == ROOM_QUALITY.ENDING)
+                {
+                    room_symbol = "E";
+                }
+                
+                else if (map[row, col].roomQuality == ROOM_QUALITY.NPC) {
+                    room_symbol = "N";
+                }
+                
+                else
+                {
+                    switch (mapRoomStyle)
+                    {
+                        case ROOM_STYLE.UNSPECIFIED: room_symbol = "0"; break;
+                        case ROOM_STYLE.LEFT_RIGHT: room_symbol = "-"; break;
+                        case ROOM_STYLE.BOTTOM_LEFT_RIGHT: room_symbol = "T"; break;
+                        case ROOM_STYLE.TOP_LEFT_RIGHT: room_symbol = "-L"; break;
+                        case ROOM_STYLE.CROSS: room_symbol = "+"; break;
+                    }
+                }
+                stringBuilder.Append(" [ " + room_symbol  +" ] ");
+            }
+            Debug.Log(stringBuilder);
+        }
+    }
+
+    class MapRoom
+    {
+        public ROOM_QUALITY roomQuality = ROOM_QUALITY.REGULAR;
+        public ROOM_STYLE roomStyle = ROOM_STYLE.UNSPECIFIED;
+        public bool recent = true;
+        public int NPCIdx = -1;
+
+        public MapRoom()
+        {
+            roomQuality = ROOM_QUALITY.REGULAR;
+            roomStyle = ROOM_STYLE.UNSPECIFIED;
+            recent = true;
+            NPCIdx = -1;
+        }
     }
 }

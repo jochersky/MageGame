@@ -38,7 +38,6 @@ public class PauseMenu : MonoBehaviour
 
     public void Toggle()
     {
-        Debug.Log(playerInput);
         if (showing)
         {
             eventSystem.SetSelectedGameObject(unpausedSelectedGO);

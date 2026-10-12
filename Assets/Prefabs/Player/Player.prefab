@@ -1774,6 +1774,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AttackManager
   staff: {fileID: 2615795943972236996}
   frames: 15
+  swingSFX:
+  - {fileID: 8300000, guid: 48def86263f068a46b14b3aa8aa268c6, type: 3}
+  - {fileID: 8300000, guid: df2c3bd80023fa244af1dbab869783dc, type: 3}
+  - {fileID: 8300000, guid: a9c1c704d9199224aba3f22872124765, type: 3}
 --- !u!114 &8257964444960817894
 MonoBehaviour:
   m_ObjectHideFlags: 0
