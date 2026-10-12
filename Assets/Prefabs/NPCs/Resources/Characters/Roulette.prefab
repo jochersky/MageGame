@@ -239,6 +239,7 @@ MonoBehaviour:
   npcName: Roulette
   nameTextBox: {fileID: 335095857717337690}
   text: {fileID: 5863862873486810491}
+  dialogueOptions: {fileID: 3495332711824198674}
   dialogue:
   - 'Hey there, hotshot. Care to roll the dice? '
   textSpeed: 0.025
@@ -267,6 +268,10 @@ MonoBehaviour:
   - A straight. Straight to the exit with you, that is.
   bustLines:
   - Ouch, a bust, That's gotta hurt. Nothing to do but try again, right?
+  decline: Decline
+  wager1: Wager $1
+  wager5: Wager $5
+  wager10: Wager $10
 --- !u!1001 &406463540750325151
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -275,6 +280,70 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8838441414337891006}
     m_Modifications:
+    - target: {fileID: 2088195158490126430, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2088195158490126430, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2088195158490126430, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2088195158490126430, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2349512727253962781, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2349512727253962781, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2349512727253962781, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2349512727253962781, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105569113678490346, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105569113678490346, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105569113678490346, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105569113678490346, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4645971480007240103, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4645971480007240103, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4645971480007240103, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4645971480007240103, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5570609091266089887, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -379,6 +448,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &3495332711824198674 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3829721022861908365, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+  m_PrefabInstance: {fileID: 406463540750325151}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4816933780892115529 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5151312785257625558, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}

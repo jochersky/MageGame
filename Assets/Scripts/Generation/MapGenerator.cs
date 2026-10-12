@@ -70,7 +70,7 @@ public class MapGenerator : MonoBehaviour
     int exitCol;
 
     // Reference to player
-    public GameObject player;
+    public Player player;
     [SerializeField] float startingPositionOffset;
     Vector2 startingPosition;
     bool startingPositionAssigned = false;
@@ -80,7 +80,7 @@ public class MapGenerator : MonoBehaviour
     List<(int x, int y)> specialRoomCoords = new();
     List<Vector2> ropeCoords = new();
 
-    public delegate void PlayerPlaced(GameObject player);
+    public delegate void PlayerPlaced(Player player);
     public event PlayerPlaced OnPlayerPlaced;
 
     

@@ -148,6 +148,7 @@ MonoBehaviour:
   npcName: Mushelle
   nameTextBox: {fileID: 2002676881725607004}
   text: {fileID: 5623922658667024253}
+  dialogueOptions: {fileID: 0}
   dialogue:
   - Hi I am Mushelle!
   - My mush room has been invaded by RATS!

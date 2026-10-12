@@ -11,10 +11,13 @@ using UnityEngine.UI;
 public class NPC : MonoBehaviour
 {
     [SerializeField] SpriteRenderer outline;
-    [SerializeField] GameObject dialogueBox;
+    [SerializeField] protected GameObject dialogueBox;
     [SerializeField] string npcName;
     [SerializeField] TextMeshProUGUI nameTextBox;
     [SerializeField] TextMeshProUGUI text;
+    [SerializeField] GameObject dialogueOptions;
+    // the set of dialogue options to be shown next
+    [SerializeField] protected Dictionary<string, UnityEngine.Events.UnityAction> currentDialogueOptions = new();
     // list of lines of dialogue to be spoken right now
     public string[] dialogue;
     // time in seconds between each character appearing
@@ -35,7 +38,21 @@ public class NPC : MonoBehaviour
 
     void Awake()
     {
-        FindAnyObjectByType<MapGenerator>().OnPlayerPlaced += PlayerSetup;
+        MapGenerator mapGenerator = FindAnyObjectByType<MapGenerator>();
+        if (mapGenerator)
+        {
+            mapGenerator.OnPlayerPlaced += PlayerSetup;
+        } else
+        {
+            Player player = FindAnyObjectByType<Player>();
+            if (player)
+            {
+                PlayerSetup(player);
+            } else
+            {
+                Debug.Log("No player found. Dialogue will not function.");
+            }
+        }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public virtual void Start()
@@ -45,9 +62,9 @@ public class NPC : MonoBehaviour
         dialogueBox.SetActive(false);
     }
 
-    void PlayerSetup(GameObject player)
+    protected virtual void PlayerSetup(Player _player)
     {
-        _input = player.GetComponent<PlayerInput>();
+        _input = _player.GetComponent<PlayerInput>();
         _input.actions["Interact"].performed += OnInteract;
     }
 
@@ -68,6 +85,14 @@ public class NPC : MonoBehaviour
         
     }
 
+    protected void PlayNewLines(string[] _newDialogue)
+    {
+        dialogue = _newDialogue;
+        _lineIdx = 0;
+        Talk();
+    }
+
+
     IEnumerator AnimateText()
     {
         _isTalking = true;
@@ -81,6 +106,15 @@ public class NPC : MonoBehaviour
                 yield return new WaitForSeconds(textSpeed);
             }
             _lineIdx += 1;
+            if (_lineIdx == dialogue.Length)
+            {
+                DialogueBox dBox = dialogueBox.GetComponent<DialogueBox>();
+                foreach (string key in currentDialogueOptions.Keys)
+                {
+                    dBox.AddDialogueOption(key, currentDialogueOptions[key]);
+                }
+                currentDialogueOptions.Clear();
+            }
         } else
         {
             CloseDialogue();
@@ -118,7 +152,15 @@ public class NPC : MonoBehaviour
 
     public virtual void CloseDialogue()
     {
+        ResetToDefaultDialogueOptions();
         dialogueBox.SetActive(false);
+        
         _lineIdx = 0;
+    }
+
+    // Define the dialogue options for when the player initiates a conversation
+    protected virtual void ResetToDefaultDialogueOptions()
+    {
+        dialogueBox.GetComponent<DialogueBox>().ClearDialogueOptions();
     }
 }
