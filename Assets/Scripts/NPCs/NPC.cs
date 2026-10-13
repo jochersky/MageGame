@@ -10,6 +10,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Collider2D))]
 public class NPC : MonoBehaviour
 {
+    [SerializeField] SpriteRenderer sprite;
     [SerializeField] SpriteRenderer outline;
     [SerializeField] protected GameObject dialogueBox;
     [SerializeField] string npcName;
@@ -33,8 +34,11 @@ public class NPC : MonoBehaviour
     int _lineIdx = 0;
     private bool _inRange = false;
     private bool _isTalking = false;
+    private Player player;
     private PlayerInput _input;
     private Coroutine talking;
+    private const float FORWARD = 0.0f;
+    private const float BACKWARD = 180.0f;
 
     void Awake()
     {
@@ -64,6 +68,7 @@ public class NPC : MonoBehaviour
 
     protected virtual void PlayerSetup(Player _player)
     {
+        player = _player;
         _input = _player.GetComponent<PlayerInput>();
         _input.actions["Interact"].performed += OnInteract;
     }
@@ -72,6 +77,13 @@ public class NPC : MonoBehaviour
     {
         if (_inRange)
         {
+            if (player.gameObject.transform.position.x > transform.position.x)
+            {
+                sprite.transform.SetPositionAndRotation(transform.position, Quaternion.Euler(new Vector3(0, BACKWARD, 0)));
+            } else
+            {
+                sprite.transform.SetPositionAndRotation(transform.position, Quaternion.Euler(new Vector3(0, FORWARD, 0)));
+            }
             Talk();
         }
     }
