@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ee3710dcf43c454ab98247e7cb83953, type: 3}
   m_Name: SnowRuleTile
   m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.RuleTile
-  m_DefaultSprite: {fileID: -802477181, guid: 191c33de839128e41b633b44a5952886, type: 3}
+  m_DefaultSprite: {fileID: 1823616984, guid: 191c33de839128e41b633b44a5952886, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:

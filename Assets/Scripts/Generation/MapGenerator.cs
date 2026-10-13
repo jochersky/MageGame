@@ -824,7 +824,7 @@ public class MapGenerator : MonoBehaviour
                 else if (roomProbability == -55){
                     if (randy.Next(0,100) < 25)
                     {
-                        colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), flamethrower);
+                        nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), flamethrower);
                     } else
                     {
                         colliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.ruleTile);

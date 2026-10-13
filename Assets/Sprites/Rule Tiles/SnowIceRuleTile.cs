@@ -13,7 +13,7 @@ public class SnowIceRuleTile : RuleTile<SnowIceRuleTile.Neighbor> {
 
     public class Neighbor : RuleTile.TilingRule.Neighbor {
         public const int selfOrConnectable = 1;
-        //public const int noTile = 2;
+        public const int notThisOrLike = 2;
         public const int self = 3;
     }
 
@@ -24,7 +24,7 @@ public class SnowIceRuleTile : RuleTile<SnowIceRuleTile.Neighbor> {
             Neighbor.self => this == tile,
             Neighbor.selfOrConnectable => IsConnectable(tile),
             // delete this?
-            //Neighbor.noTile => tile == null,
+            Neighbor.notThisOrLike => !IsConnectable(tile),
             _ => base.RuleMatch(neighbor, tile),
         };
     }
