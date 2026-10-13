@@ -71,13 +71,13 @@ public class Roulette : NPC
         if (roll <= 617)
         {
             PlayNewLines(bustLines);
-            // if (playerHealth == null)
-            // {
-            //     print("Error: No Health component found");
-            // } else
-            // {
-            //     playerHealth.
-            // }
+            if (playerHealth == null)
+            {
+                print("Error: No Health component found");
+            } else
+            {
+                playerHealth.CurrentHealth = playerHealth.CurrentHealth - BUST_DAMAGE;
+            }
         } else if (roll <= 5247)
         {
             PlayNewLines(onePairLines);

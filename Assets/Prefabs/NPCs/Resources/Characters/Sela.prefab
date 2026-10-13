@@ -234,11 +234,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bb187c7a2ea742408ddaba685e3f143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Sela
+  sprite: {fileID: 1157636605308039259}
   outline: {fileID: 6159685099395401221}
   dialogueBox: {fileID: 8243693738517027659}
   npcName: Sela
   nameTextBox: {fileID: 3753798597615707992}
   text: {fileID: 7052342556658787449}
+  dialogueOptions: {fileID: 0}
   dialogue:
   - Welcome, traveler, to my store!
   - Everything is for sale, even you!

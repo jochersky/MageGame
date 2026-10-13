@@ -180,6 +180,7 @@ public class MapGenerator : MonoBehaviour
     {
         foreach (NPC npc in NPCPrefabs)
         {
+            print("SPawning " + npc.name);
             NPCInstances.Add(Instantiate(npc, transform));
         }
     }

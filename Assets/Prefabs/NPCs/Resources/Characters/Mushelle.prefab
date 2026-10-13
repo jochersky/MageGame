@@ -143,6 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10319ec91002c7349ae1cb1823e51e02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mushelle
+  sprite: {fileID: 5436234672285939315}
   outline: {fileID: 8166991116924070856}
   dialogueBox: {fileID: 6752479327141589071}
   npcName: Mushelle

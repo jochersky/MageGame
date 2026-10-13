@@ -91,129 +91,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!1 &1049639515076263158
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8352810028757883576}
-  - component: {fileID: 2958174253866288493}
-  - component: {fileID: 1446130301115564215}
-  m_Layer: 0
-  m_Name: PlayerInteraction
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8352810028757883576
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049639515076263158}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8838441414337891006}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &2958174253866288493
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049639515076263158}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 1
---- !u!114 &1446130301115564215
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049639515076263158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0097835b722ac9c4aafcfece99595fb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  outline: {fileID: 6505613740043205292}
-  dialogueBox: {fileID: 4816933780892115529}
-  npcName: Roulette
-  nameTextBox: {fileID: 335095857717337690}
-  text: {fileID: 5863862873486810491}
-  dialogueOptions: {fileID: 3495332711824198674}
-  dialogue:
-  - 'Hey there, hotshot. Care to roll the dice? '
-  textSpeed: 0.025
-  room: {fileID: 0}
-  specialEnemy: {fileID: 0}
-  specialTile: {fileID: 0}
-  specialObject: {fileID: 0}
-  specialEnemies: []
-  spawnPoint: {x: 0, y: 0}
-  greetingLines:
-  - Hey there, hotshot. Care to roll the dice?
-  declineLines:
-  - Your loss. I'll see you later.
-  notEnoughMoneyLines:
-  - You aren't rich enough for that, pal. Come back later.
-  fiveKindLines:
-  - Whoa! Five of a kind! Incredible, I've never seen this before!
-  - You are now the proud owner of this great family heirloom. Treasure it dearly.
-  fourKindLines:
-  - Wow! Four of a kind! Looks like a big payday for you, pal.
-  threeKindLines:
-  - Three of kind, not bad. That's triple back for you.
-  twoPairLines:
-  - Two pair it seems. The worst victory, but a victory nonetheless.
-  onePairLines:
-  - 'Just one pair. I''ll be keeping that wager. '
-  fullHouseLines:
-  - Oh, a full house! That'll heal you right up. And your money back of course.
-  straightLines:
-  - A straight. Straight to the exit with you, that is.
-  bustLines:
-  - Ouch, a bust, That's gotta hurt. Nothing to do but try again, right?
-  decline: Decline
-  wager1: Wager $1
-  wager5: Wager $5
-  wager10: Wager $10
 --- !u!1 &4091935891431998708
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,6 +101,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8838441414337891006}
   - component: {fileID: 1647329456792552738}
+  - component: {fileID: 717005187834504699}
+  - component: {fileID: 5571677412062376373}
   - component: {fileID: 8205581592490720469}
   - component: {fileID: 6988779734326093121}
   m_Layer: 0
@@ -248,7 +127,6 @@ Transform:
   m_Children:
   - {fileID: 3487990999156008366}
   - {fileID: 7109885302601418667}
-  - {fileID: 8352810028757883576}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1647329456792552738
@@ -310,6 +188,97 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &717005187834504699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4091935891431998708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0097835b722ac9c4aafcfece99595fb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  sprite: {fileID: 1647329456792552738}
+  outline: {fileID: 6505613740043205292}
+  dialogueBox: {fileID: 4816933780892115529}
+  npcName: Roulette
+  nameTextBox: {fileID: 335095857717337690}
+  text: {fileID: 5863862873486810491}
+  dialogueOptions: {fileID: 3495332711824198674}
+  dialogue:
+  - 'Hey there, hotshot. Care to roll the dice? '
+  textSpeed: 0.025
+  room: {fileID: 0}
+  specialEnemy: {fileID: 0}
+  specialTile: {fileID: 0}
+  specialObject: {fileID: 0}
+  specialEnemies: []
+  spawnPoint: {x: 0, y: 0}
+  greetingLines:
+  - Hey there, hotshot. Care to roll the dice?
+  declineLines:
+  - Your loss. I'll see you later.
+  notEnoughMoneyLines:
+  - You aren't rich enough for that, pal. Come back later.
+  fiveKindLines:
+  - Whoa! Five of a kind! Incredible, I've never seen this before!
+  - You are now the proud owner of this great family heirloom. Treasure it dearly.
+  fourKindLines:
+  - Wow! Four of a kind! Looks like a big payday for you, pal.
+  threeKindLines:
+  - Three of kind, not bad. That's triple back for you.
+  twoPairLines:
+  - Two pair it seems. The worst victory, but a victory nonetheless.
+  onePairLines:
+  - 'Just one pair. I''ll be keeping that wager. '
+  fullHouseLines:
+  - Oh, a full house! That'll heal you right up. And your money back of course.
+  straightLines:
+  - A straight. Straight to the exit with you, that is.
+  bustLines:
+  - Ouch, a bust, That's gotta hurt. Nothing to do but try again, right?
+  decline: Decline
+  wager1: Wager $1
+  wager5: Wager $5
+  wager10: Wager $10
+--- !u!58 &5571677412062376373
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4091935891431998708}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 1
 --- !u!50 &8205581592490720469
 Rigidbody2D:
   serializedVersion: 5
@@ -353,7 +322,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 4224
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
