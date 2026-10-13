@@ -35,10 +35,32 @@ public class Jellyfish : Entity
         Floating,
         Launching
     }
+    void Awake()
+    {
+        MapGenerator mapGenerator = FindAnyObjectByType<MapGenerator>();
+        if (mapGenerator)
+        {
+            mapGenerator.OnPlayerPlaced += PlayerSetup;
+        } else
+        {
+            Player player = FindAnyObjectByType<Player>();
+            if (player)
+            {
+                PlayerSetup(player);
+            } else
+            {
+                Debug.Log("No player found. Jellyfish will not function.");
+            }
+        }
+    }
+
+    void PlayerSetup(Player _player)
+    {
+        player = _player;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player = FindAnyObjectByType<Player>();
         health.OnDeath += () =>
         {
             Destroy(gameObject);
