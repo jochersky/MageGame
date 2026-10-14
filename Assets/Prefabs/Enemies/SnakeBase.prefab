@@ -534,6 +534,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  cameraShakeAmt: 0
+  cameraShakeDuration: 0
+  knockBackForce: 0
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders:
   - {fileID: 5906411769093026780}
 --- !u!61 &5906411769093026780
@@ -714,6 +722,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  cameraShakeAmt: 0
+  cameraShakeDuration: 0
+  knockBackForce: 0
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders:
   - {fileID: 8482075849144900894}
 --- !u!61 &8482075849144900894
@@ -924,8 +940,14 @@ MonoBehaviour:
   - {fileID: 3718473783519466570}
   - {fileID: 2994076516801882688}
   - {fileID: 2194220320140607669}
+  chainLinkLayer: {fileID: 0}
+  equidistantPositioning: 0
   distance: 0.012
   startingProgress: 0.25
+  frontLayer: 0
+  backLayer: 0
+  goToFrontPercentage: 0
+  goToBackPercentage: 0
 --- !u!1 &5833023391366323621
 GameObject:
   m_ObjectHideFlags: 0
@@ -1120,6 +1142,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3877945917110914318}
   - component: {fileID: 2982069864591783851}
+  - component: {fileID: -5920547085819101532}
   m_Layer: 0
   m_Name: SnakeBase
   m_TagString: Untagged
@@ -1274,6 +1297,19 @@ MonoBehaviour:
         Knot: 0
       - Spline: 0
         Knot: 2
+--- !u!114 &-5920547085819101532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6143594438635889774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71bedf5b1c7794145a900ca432cb557b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SnakeInfo
+  enemyPrefab: {fileID: 6143594438635889774}
 --- !u!1 &6320920397457258014
 GameObject:
   m_ObjectHideFlags: 0
@@ -1426,6 +1462,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  cameraShakeAmt: 0
+  cameraShakeDuration: 0
+  knockBackForce: 0
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders:
   - {fileID: 536573940131450939}
 --- !u!61 &536573940131450939
@@ -1626,6 +1670,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  cameraShakeAmt: 0
+  cameraShakeDuration: 0
+  knockBackForce: 0
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders:
   - {fileID: 8371688639723305725}
 --- !u!61 &8371688639723305725
@@ -1918,6 +1970,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  cameraShakeAmt: 0
+  cameraShakeDuration: 0
+  knockBackForce: 0
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders:
   - {fileID: 3051694851982050719}
 --- !u!61 &3051694851982050719
@@ -2012,6 +2072,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  cameraShakeAmt: 0
+  cameraShakeDuration: 0
+  knockBackForce: 0
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders:
   - {fileID: 8019190928028151592}
 --- !u!61 &8019190928028151592
