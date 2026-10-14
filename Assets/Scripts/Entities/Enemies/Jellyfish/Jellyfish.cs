@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using NUnit.Framework;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Jellyfish : Entity
 {
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] TemporaryEffect deathBurst;
     [SerializeField] Animator animator;
     [SerializeField] Rigidbody2D body;
     [SerializeField] Health health;
@@ -63,6 +65,7 @@ public class Jellyfish : Entity
     {
         health.OnDeath += () =>
         {
+            Instantiate(deathBurst, transform.position, Quaternion.identity);
             Destroy(gameObject);
         };
 

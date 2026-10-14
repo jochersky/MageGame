@@ -207,6 +207,7 @@ public class MapGenerator : MonoBehaviour
             foundExit = Pathfind();
         }
         AgeMap();
+        //DebugPrintMap();
         PlaceSpecialRooms();
         Debug.Log("Generation complete!");
 
@@ -281,8 +282,10 @@ public class MapGenerator : MonoBehaviour
             col = roomCoords.y;
             MapRoom room = map[row, col];
             room.roomQuality = ROOM_QUALITY.CHEST;
+            room.debugID = chestRoom;
             // random walk a path from that room to any room labeled not by this process
             bool connected = false;
+            //print("CHEST " + chestRoom);
             while (!connected)
             {
                 List<int> directions = new();
@@ -318,6 +321,7 @@ public class MapGenerator : MonoBehaviour
             room.NPCIdx = npcIdx;
             // random walk a path from that room to any room labeled not by this process
             bool connected = false;
+            //print("NPC");
             while (!connected)
             {
                 List<int> directions = new();
@@ -355,6 +359,7 @@ public class MapGenerator : MonoBehaviour
         // 0 means up, 1 means right, 2 means down, 3 means left
         int random_index = randy.Next(directions.Count);
         int direction = directions[random_index];
+
         if (direction == 0)
         {
             // if up is off the map or already a part of this path, remove direction and retry
@@ -364,6 +369,7 @@ public class MapGenerator : MonoBehaviour
                 return ConnectedPathfind(directions);
             }
             // we're going up
+            //print("UP");
             LabelRoomNum(MOVING_TO.UP);
             row -= 1;
             // if up is an unlabeled room, label it and continue
@@ -386,6 +392,7 @@ public class MapGenerator : MonoBehaviour
                 return ConnectedPathfind(directions);
             }
             // we're going down
+            //print("DOWN");
             LabelRoomNum(MOVING_TO.BELOW);
             row += 1;
             // if up is an unlabeled room, label it and continue
@@ -408,6 +415,7 @@ public class MapGenerator : MonoBehaviour
             }
             // we're going right
             LabelRoomNum(MOVING_TO.RIGHT);
+            //print("RIGHT");
             col += 1;
             // if right is an unlabeled room, label it and continue
             if (map[row, col].roomStyle == ROOM_STYLE.UNSPECIFIED)
@@ -428,6 +436,7 @@ public class MapGenerator : MonoBehaviour
                 return ConnectedPathfind(directions);
             }
             // we're going left
+            //print("LEFT");
             LabelRoomNum(MOVING_TO.LEFT);
             col -= 1;
             // if left is an unlabeled room, label it and continue
@@ -454,9 +463,12 @@ public class MapGenerator : MonoBehaviour
     // Room type 4 has exits on the left, right, top, and bottom
     private void LabelRoomNum(MOVING_TO direction)
     {
+        // ensure that the room is labeled as recent so that it is known to be part of the current path
+        //map[row, col].recent = true;
         // if we are moving up, then we are either type 3 or 4
         if (direction == MOVING_TO.UP)
         {
+            // nothing below us
             if (row + 1 >= mapDimensions)
             {
                 map[row, col].roomStyle = ROOM_STYLE.TOP_LEFT_RIGHT;
@@ -1050,6 +1062,11 @@ public class MapGenerator : MonoBehaviour
                 else if (map[row, col].roomQuality == ROOM_QUALITY.NPC) {
                     room_symbol = "N";
                 }
+
+                else if (map[row, col].roomQuality == ROOM_QUALITY.CHEST) {
+                    room_symbol = "C" + map[row, col].debugID;
+                }
+                
                 
                 else
                 {
@@ -1074,6 +1091,7 @@ public class MapGenerator : MonoBehaviour
         public ROOM_STYLE roomStyle = ROOM_STYLE.UNSPECIFIED;
         public bool recent = true;
         public int NPCIdx = -1;
+        public int debugID = -1;
 
         public MapRoom()
         {
@@ -1081,6 +1099,7 @@ public class MapGenerator : MonoBehaviour
             roomStyle = ROOM_STYLE.UNSPECIFIED;
             recent = true;
             NPCIdx = -1;
+            debugID = -1;
         }
     }
 }

@@ -94,9 +94,9 @@ GameObject:
   - component: {fileID: 5108743524191347976}
   - component: {fileID: 7502332315309096273}
   - component: {fileID: 5450382601559337934}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Hitbox
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -166,6 +166,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  cameraShakeAmt: 0.1
+  cameraShakeDuration: 0.2
+  knockBackForce: 3
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders: []
 --- !u!1 &5009902635257386859
 GameObject:
@@ -435,6 +443,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Jellyfish
   freezable: 1
   spriteRenderer: {fileID: 1537606283569305979}
+  deathBurst: {fileID: 8326993088807014785, guid: e252d03568c7c004b898b0af619f1749, type: 3}
   animator: {fileID: 7568278180488656783}
   body: {fileID: 1924034307085045993}
   health: {fileID: 7648789556373775853}
@@ -494,6 +503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d7fc9bfbb117d4ba24429ed8b2ea1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageFlash
+  spriteRenderer: {fileID: 0}
   _flashSpeedCurve:
     serializedVersion: 2
     m_Curve:
