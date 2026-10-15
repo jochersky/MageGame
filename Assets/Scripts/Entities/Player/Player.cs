@@ -11,12 +11,14 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerTorch playerTorch;
     private Health _health;
     private SpellManager _spellManager;
+    private PlayerStateMachine _psm;
     [Header("Experience Stats")]
     [SerializeField] private int expForNextLevel;
 
     public HUDBar HealthBar { get; set; }
     public HUDBar ManaBar { get; set; }
     public Health Health => _health;
+    public int Exp => _exp;
     public bool CanLevelUp => _exp >= expForNextLevel;
     
     public delegate void StartDone();
@@ -30,6 +32,7 @@ public class Player : MonoBehaviour
         
         _health = GetComponent<Health>();
         _spellManager = GetComponent<SpellManager>();
+        _psm = GetComponent<PlayerStateMachine>();
         
         GameManager.Instance.PlayerHealth = _health;
         GameManager.Instance.SpellManager = _spellManager;
@@ -81,15 +84,29 @@ public class Player : MonoBehaviour
         Debug.Log($"{_exp} / {expForNextLevel}");
     }
 
-    public bool LevelUp()
+    public bool LevelUp(Wish wish)
     {
         if (CanLevelUp)
         {
-            _exp -= expForNextLevel;
+            UpdateExp(-expForNextLevel);
+            BasicStatModifier wishModifier = 
+                new BasicStatModifier(wish.statType, wish.duration, s => s + wish.increaseAmt,
+                    $"{wish.statType.ToString()} wish", true);
+            _psm.Stats.Mediator.AddModifier(wishModifier);
+            SyncStats();
             return true;
         }
         
         return false;
+    }
+
+    private void SyncStats()
+    {
+        // Update the max stat values for when they're updated (i.e. when making wish)
+        // _health.UpdateMaxHealth((int)_psm.Stats.Health);
+        // _spellManager.UpdateMaxMana((int)_psm.Stats.Mana);
+        HealthBar.UpdateMaxValue((int)_psm.Stats.Health);
+        ManaBar.UpdateMaxValue((int)_psm.Stats.Mana);
     }
 
     public void UpdateHealthAndMana()

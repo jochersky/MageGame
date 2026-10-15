@@ -13,7 +13,7 @@ public class WishButton : MonoBehaviour
     public void InitializeWish(Wish wish)
     {
         _currentWish = wish;
-        wishName.text = _currentWish.statType.ToString();
+        if (wishName.text == "") wishName.text = _currentWish.statType.ToString();
     }
 
     public void UpdateWish()

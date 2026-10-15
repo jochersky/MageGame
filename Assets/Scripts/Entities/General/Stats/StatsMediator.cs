@@ -23,6 +23,11 @@ public class StatsMediator
             modifiers.Remove(modifier);
             Queries -= modifier.Handle;
         };
+
+        foreach (var mod in modifiers)
+        {
+            Debug.Log(mod.Source);
+        }
     }
 
     public void Update(float deltaTime)

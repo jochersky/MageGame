@@ -4,15 +4,13 @@ public class LevelUpArea : MonoBehaviour, IInteractable
 {
     public void Interact()
     {
-        Player player = FindFirstObjectByType<Player>();
-        if (!player)
+        WishMenuUI menu = FindFirstObjectByType<WishMenuUI>();
+        if (!menu)
         {
-            Debug.Log("Player not found");
+            Debug.Log("WishMenuUI not found");
             return;
         }
         
-        // TODO: change to a UI pop up which allows player to make selection for upgrade.
-        // LevelUp will be called by the UI 
-        Debug.Log(player.LevelUp());
+        menu.ShowMenu();
     }
 }

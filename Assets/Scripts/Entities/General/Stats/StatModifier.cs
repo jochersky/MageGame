@@ -40,11 +40,12 @@ public abstract class StatModifier : IDisposable
 
     protected StatModifier(float duration, string source, bool stackableSource = false)
     {
+        Source = source;
+        StackableSource = stackableSource;
+        
         // permanent modifiers have 0/negative value
         if (duration <= 0) return;
         
-        Source = source;
-        StackableSource = stackableSource;
         timer = new CountdownTimer(duration);
         timer.OnTimerStop += Dispose;
         timer.Start();

@@ -33,7 +33,6 @@ public class PauseMenu : MonoBehaviour
     {
         playerInput = player.GetComponent<PlayerInput>();
         playerInput.actions[inputEventName].performed += Toggle;
-        playerInput.actions[closeEventName].performed += Toggle;
     }
 
     public void Toggle()

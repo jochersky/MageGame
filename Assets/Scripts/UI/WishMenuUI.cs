@@ -1,11 +1,27 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class WishMenuUI : MonoBehaviour
 {
+     [Header("References")]
+     [SerializeField] private GameObject menu;
+     [SerializeField] private TextMeshProUGUI emberCount;
      [SerializeField] private WishButton[] wishButtons;
-
+     
+     private EventSystem _eventSystem;
+     
      private void Start()
      {
+          _eventSystem = FindFirstObjectByType<EventSystem>();
+          
+          // TODO: disable input when interact pressed
+          InputManager.Instance.OnPlayerPressedInteract += CheckForDisablingInput;
+          // InputManager.Instance.OnPlayerPressedInteract += HideMenu;
+          InputManager.Instance.OnPlayerPressedCancel += HideMenu;
+          
+          InitializeButtons();
+          
           foreach (WishButton wishButton in wishButtons)
           {
                wishButton.OnWishChosen += GrantWish;
@@ -14,22 +30,32 @@ public class WishMenuUI : MonoBehaviour
 
      private void GrantWish(Wish wish)
      {
-          
+          GameManager.Instance.Player.LevelUp(wish);
+          emberCount.text = $"Embers: \n{GameManager.Instance.Player.Exp}";
      }
 
      public void ShowMenu()
      {
           UpdateButtons();
-          gameObject.SetActive(true);
+          emberCount.text = $"Embers: \n{GameManager.Instance.Player.Exp}";
+          
+          // menu.SetActive(true);
+          
+          _eventSystem.SetSelectedGameObject(wishButtons[0].gameObject);
      }
 
      private void HideMenu()
      {
-          gameObject.SetActive(false);
+          if (!menu.activeInHierarchy) return;
+          
+          menu.SetActive(false);
+          InputManager.Instance.ToggleNonInventoryInput(menu.activeInHierarchy);
      }
 
      private void InitializeButtons()
      {
+          // As of now there are only a set amount of wishes to make,
+          // TODO: in the future this could be randomized to random wishes
           Wish healthWish = new Wish()
           {
                wishName = "Vitality",
@@ -53,5 +79,16 @@ public class WishMenuUI : MonoBehaviour
           {
                button.UpdateWish();
           }
+     }
+
+     private void CheckForDisablingInput()
+     {
+          // Toggle menu
+          menu.SetActive(!menu.activeInHierarchy);
+          
+          bool menuVisible = menu.activeInHierarchy;
+          Debug.Log(menuVisible);
+          InputManager.Instance.ToggleNonInventoryInput(menuVisible);
+          if (menuVisible) ShowMenu();
      }
 }

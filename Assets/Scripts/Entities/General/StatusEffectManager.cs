@@ -15,7 +15,7 @@ public class StatusEffectManager : MonoBehaviour
         _health.OnDamageTaken += properties => ApplyStatusEffect(properties.effect);
     }
 
-    private async void ApplyStatusEffect(StatusEffect statusEffect)
+    public async void ApplyStatusEffect(StatusEffect statusEffect)
     {
         BasicStatModifier mod = statusEffect.operatorType switch
         {

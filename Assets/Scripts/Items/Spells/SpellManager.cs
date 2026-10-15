@@ -97,6 +97,12 @@ public class SpellManager : MonoBehaviour
         OnManaChanged?.Invoke(_mana);
     }
 
+    public void UpdateMaxMana(int amount)
+    {
+        // TODO: needs to invoke event when that updates max value in UI
+        maxMana = amount;
+    }
+
     public int AddSpell(SpellConfig spellConfig)
     {
         int spellEquipped = 0;
