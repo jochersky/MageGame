@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class FireballProjectile : MonoBehaviour
+public class FireballProjectile : Entity
 {
     Rigidbody2D rb;
     [SerializeField] float speed = 50f;

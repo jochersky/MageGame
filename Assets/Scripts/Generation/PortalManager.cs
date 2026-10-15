@@ -26,7 +26,6 @@ public class PortalManager : MonoBehaviour
         // Assign each portal a random partner
         System.Random randy = new();
         while (portals.Count > 1) {
-            print("Pairing");
             int randIdx1 = randy.Next(portals.Count);
             Portal portal1 = portals[randIdx1];
             portals.Remove(portal1);
