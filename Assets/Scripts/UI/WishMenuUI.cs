@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class WishMenuUI : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class WishMenuUI : MonoBehaviour
      [SerializeField] private GameObject menu;
      [SerializeField] private TextMeshProUGUI emberCount;
      [SerializeField] private WishButton[] wishButtons;
+     [Header("Properties")]
+     [SerializeField] private string[] activeActions;
      
      private EventSystem _eventSystem;
      
@@ -31,13 +34,14 @@ public class WishMenuUI : MonoBehaviour
      private void GrantWish(Wish wish)
      {
           GameManager.Instance.Player.LevelUp(wish);
-          emberCount.text = $"Embers: \n{GameManager.Instance.Player.Exp}";
+          emberCount.text = $"Embers: \n{GameManager.Instance.Player.Embers}";
+          UpdateButtons();
      }
 
      public void ShowMenu()
      {
           UpdateButtons();
-          emberCount.text = $"Embers: \n{GameManager.Instance.Player.Exp}";
+          emberCount.text = $"Embers: \n{GameManager.Instance.Player.Embers}";
           
           // menu.SetActive(true);
           
@@ -49,7 +53,8 @@ public class WishMenuUI : MonoBehaviour
           if (!menu.activeInHierarchy) return;
           
           menu.SetActive(false);
-          InputManager.Instance.ToggleNonInventoryInput(menu.activeInHierarchy);
+          bool menuVisible = menu.activeInHierarchy;
+          InputManager.Instance.ToggleInputsBesides(activeActions, menuVisible);
      }
 
      private void InitializeButtons()
@@ -78,6 +83,7 @@ public class WishMenuUI : MonoBehaviour
           foreach (WishButton button in wishButtons)
           {
                button.UpdateWish();
+               button.ToggleButton(GameManager.Instance.Player.CanGetWish);
           }
      }
 
@@ -87,8 +93,7 @@ public class WishMenuUI : MonoBehaviour
           menu.SetActive(!menu.activeInHierarchy);
           
           bool menuVisible = menu.activeInHierarchy;
-          Debug.Log(menuVisible);
-          InputManager.Instance.ToggleNonInventoryInput(menuVisible);
+          InputManager.Instance.ToggleInputsBesides(activeActions, menuVisible);
           if (menuVisible) ShowMenu();
      }
 }

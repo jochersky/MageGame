@@ -1,5 +1,7 @@
 using System;
+using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
@@ -12,19 +14,22 @@ public class Player : MonoBehaviour
     private Health _health;
     private SpellManager _spellManager;
     private PlayerStateMachine _psm;
-    [Header("Experience Stats")]
-    [SerializeField] private int expForNextLevel;
+    [Header("Player Stats")]
+    [SerializeField] private int embersForWish;
 
     public HUDBar HealthBar { get; set; }
     public HUDBar ManaBar { get; set; }
     public Health Health => _health;
-    public int Exp => _exp;
-    public bool CanLevelUp => _exp >= expForNextLevel;
+    public int Embers => _embers;
+    public bool CanGetWish => _embers >= embersForWish;
     
     public delegate void StartDone();
     public event StartDone OnStartDone;
 
-    private int _exp;
+    public delegate void EmbersUpdated(int amt);
+    public event EmbersUpdated OnEmbersUpdated;
+
+    private int _embers;
     
     private void Awake()
     {
@@ -62,7 +67,7 @@ public class Player : MonoBehaviour
             if (lightTransform) lightTransform.localScale = new Vector3(newSize, newSize, newSize);
         };
 
-        playerTorch.OnExpGained += UpdateExp;
+        playerTorch.OnExpGained += UpdateEmbers;
 
         if (HealthBar)
         {
@@ -78,17 +83,17 @@ public class Player : MonoBehaviour
         OnStartDone?.Invoke();
     }
 
-    public void UpdateExp(int amt)
+    public void UpdateEmbers(int amt)
     {
-        _exp += amt;
-        Debug.Log($"{_exp} / {expForNextLevel}");
+        _embers += amt;
+        OnEmbersUpdated?.Invoke(_embers);
     }
 
     public bool LevelUp(Wish wish)
     {
-        if (CanLevelUp)
+        if (CanGetWish)
         {
-            UpdateExp(-expForNextLevel);
+            UpdateEmbers(-embersForWish);
             BasicStatModifier wishModifier = 
                 new BasicStatModifier(wish.statType, wish.duration, s => s + wish.increaseAmt,
                     $"{wish.statType.ToString()} wish", true);

@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +18,7 @@ public class InputManager : MonoBehaviour
     public event PlayerPressedInteract OnPlayerPressedInteract;
     
     private bool _inputDisabled;
+    private string[] _inventoryMenuActiveActions = { "Inventory", "Cancel" };
     
     // Singleton instance
     public static InputManager Instance { get; private set; }
@@ -48,18 +50,20 @@ public class InputManager : MonoBehaviour
         _inputDisabled = !_inputDisabled;
         OnPlayerPressedInventory?.Invoke(_inputDisabled);
         
+        ToggleInputsBesides(_inventoryMenuActiveActions, _inputDisabled);
+        
         // Disable all actions besides the ability to open/close inventory 
         // so that the player cannot move while it is open
-        foreach (InputAction action in _playerInputMap.actions)
-        {
-            if (action.name.Contains("UI")) continue;
-            
-            if (action.name != "Inventory" && action.name != "Cancel")
-            {
-                if (_inputDisabled) action.Disable();
-                else action.Enable();
-            }
-        }
+        // foreach (InputAction action in _playerInputMap.actions)
+        // {
+        //     if (action.name.Contains("UI")) continue;
+        //     
+        //     if (action.name != "Inventory" && action.name != "Cancel")
+        //     {
+        //         if (_inputDisabled) action.Disable();
+        //         else action.Enable();
+        //     }
+        // }
     }
     
     public void OnCancelPressed(InputAction.CallbackContext context)
@@ -83,15 +87,15 @@ public class InputManager : MonoBehaviour
         OnPlayerPressedInteract?.Invoke();
     }
 
-    public void ToggleNonInventoryInput(bool disable)
+    // Toggles all inputs besides the inputs with the names provided in activeActions.
+    // Use-case is primarily in menus.
+    public void ToggleInputsBesides(string[] activeActions, bool disable)
     {
-        // Disable all actions besides the ability to open/close inventory 
-        // so that the player cannot move while it is open
         foreach (InputAction action in _playerInputMap.actions)
         {
-            if (action.name.Contains("UI")) continue;
+            // if (action.name.Contains("UI")) continue;
             
-            if (action.name != "Inventory" && action.name != "Cancel" && action.name != "Interact")
+            if (!activeActions.Contains(action.name))
             {
                 if (disable) action.Disable();
                 else action.Enable();
