@@ -75,6 +75,13 @@ public class StatsMediator
 
         return false;
     }
+
+    public BasicStatModifier[] GetWishModifiers()
+    {
+        List<BasicStatModifier> wishes = new();
+        foreach (var modifier in modifiers) if (modifier.Source == "Wish") wishes.Add((BasicStatModifier) modifier);
+        return wishes.ToArray();
+    }
 }
 
 public class Query

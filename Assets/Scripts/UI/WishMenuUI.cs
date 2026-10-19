@@ -11,6 +11,8 @@ public class WishMenuUI : MonoBehaviour
      [SerializeField] private WishButton[] wishButtons;
      [Header("Properties")]
      [SerializeField] private string[] activeActions;
+
+     public bool MenuOpen => menu.activeInHierarchy;
      
      private EventSystem _eventSystem;
      
@@ -18,9 +20,7 @@ public class WishMenuUI : MonoBehaviour
      {
           _eventSystem = FindFirstObjectByType<EventSystem>();
           
-          // TODO: disable input when interact pressed
-          InputManager.Instance.OnPlayerPressedInteract += CheckForDisablingInput;
-          // InputManager.Instance.OnPlayerPressedInteract += HideMenu;
+          // InputManager.Instance.OnPlayerPressedInteract += CheckToCloseWithInteract;
           InputManager.Instance.OnPlayerPressedCancel += HideMenu;
           
           InitializeButtons();
@@ -43,18 +43,17 @@ public class WishMenuUI : MonoBehaviour
           UpdateButtons();
           emberCount.text = $"Embers: \n{GameManager.Instance.Player.Embers}";
           
-          // menu.SetActive(true);
-          
+          menu.SetActive(true);
           _eventSystem.SetSelectedGameObject(wishButtons[0].gameObject);
+          InputManager.Instance.ToggleInputsBesides(activeActions, true);
      }
 
-     private void HideMenu()
+     public void HideMenu()
      {
           if (!menu.activeInHierarchy) return;
           
           menu.SetActive(false);
-          bool menuVisible = menu.activeInHierarchy;
-          InputManager.Instance.ToggleInputsBesides(activeActions, menuVisible);
+          InputManager.Instance.ToggleInputsBesides(activeActions, false);
      }
 
      private void InitializeButtons()
@@ -87,13 +86,13 @@ public class WishMenuUI : MonoBehaviour
           }
      }
 
-     private void CheckForDisablingInput()
+     private void CheckToCloseWithInteract()
      {
           // Toggle menu
-          menu.SetActive(!menu.activeInHierarchy);
+          // menu.SetActive(!menu.activeInHierarchy);
           
-          bool menuVisible = menu.activeInHierarchy;
-          InputManager.Instance.ToggleInputsBesides(activeActions, menuVisible);
-          if (menuVisible) ShowMenu();
+          // bool menuVisible = menu.activeInHierarchy;
+          // if (!menuVisible) InputManager.Instance.ToggleInputsBesides(activeActions, menuVisible);
+          // if (menuVisible) ShowMenu();
      }
 }

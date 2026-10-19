@@ -95,8 +95,7 @@ public class Player : MonoBehaviour
         {
             UpdateEmbers(-embersForWish);
             BasicStatModifier wishModifier = 
-                new BasicStatModifier(wish.statType, wish.duration, s => s + wish.increaseAmt,
-                    $"{wish.statType.ToString()} wish", true);
+                new BasicStatModifier(wish.statType, wish.duration, s => s + wish.increaseAmt, "Wish", true);
             _psm.Stats.Mediator.AddModifier(wishModifier);
             SyncStats();
             return true;
@@ -127,13 +126,41 @@ public class Player : MonoBehaviour
         data.healthAmt = _health.CurrentHealth;
         data.manaAmt = _spellManager.Mana;
         data.moneyAmt = InventoryManager.Instance.GetMoneyCount();
+        data.emberAmt = _embers;
+
+        BasicStatModifier[] wishes = _psm.Stats.Mediator.GetWishModifiers();
+        int newHealthWishCount = 0;
+        int newManaWishCount = 0;
+        foreach (BasicStatModifier wish in wishes)
+        {
+            if (wish.Type == StatType.Health) newHealthWishCount++;
+            if (wish.Type == StatType.Mana) newManaWishCount++;
+        }
+        data.healthWishCount = newHealthWishCount;
+        data.manaWishCount = newManaWishCount;
     }
 
     public void Load(ref PlayerSaveData data)
     {
+        // Wishes loaded first in order to assign max health and max mana before updating current health and current mana
+        for (int i = 0; i < data.healthWishCount; i++)
+        {
+            BasicStatModifier wishModifier = 
+                new BasicStatModifier(StatType.Health, 0, s => s + 1, "Wish", true);
+            _psm.Stats.Mediator.AddModifier(wishModifier);
+        }
+        for (int i = 0; i < data.manaWishCount; i++)
+        {
+            BasicStatModifier wishModifier = 
+                new BasicStatModifier(StatType.Mana, 0, s => s + 20, "Wish", true);
+            _psm.Stats.Mediator.AddModifier(wishModifier);
+        }
+        SyncStats();
+        
         _health.CurrentHealth = data.healthAmt;
         _spellManager.Mana = data.manaAmt;
         InventoryManager.Instance.UpdateMoney(data.moneyAmt);
+        _embers = data.emberAmt;
     }
 }
 
@@ -143,4 +170,7 @@ public struct PlayerSaveData
     public int healthAmt;
     public int manaAmt;
     public int moneyAmt;
+    public int emberAmt;
+    public int healthWishCount;
+    public int manaWishCount;
 }

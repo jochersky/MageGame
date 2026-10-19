@@ -1,0 +1,47 @@
+{
+    "gameSaveData": {
+        "characterType": 3
+    },
+    "playerData": {
+        "healthAmt": 4,
+        "manaAmt": 45,
+        "moneyAmt": 3,
+        "emberAmt": 750,
+        "healthWishCount": 2,
+        "manaWishCount": 1
+    },
+    "inventoryData": {
+        "spells": [
+            {
+                "name": "Feathery Dive"
+            },
+            {
+                "name": "Light Spell"
+            }
+        ],
+        "equippedSpell1": {
+            "name": "Feathery Dive"
+        },
+        "equippedSpell2": {
+            "name": "Light Spell"
+        },
+        "consumables": [
+            {
+                "name": "Sol Stone",
+                "count": 5
+            },
+            {
+                "name": "Rope",
+                "count": 5
+            }
+        ],
+        "equippedConsumable1": {
+            "name": "Sol Stone",
+            "count": 0
+        },
+        "equippedConsumable2": {
+            "name": "Rope",
+            "count": 0
+        }
+    }
+}

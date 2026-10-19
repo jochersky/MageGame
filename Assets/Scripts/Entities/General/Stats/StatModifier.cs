@@ -12,6 +12,8 @@ public class BasicStatModifier : StatModifier
     private string _source;
     private readonly StatType _type;
     private readonly Func<float, float> _operation;
+    
+    public StatType Type => _type;
 
     public BasicStatModifier(StatType statType, float duration, Func<float, float> operation, string source, bool stackableSource = false) : base(duration, source, stackableSource)
     {
