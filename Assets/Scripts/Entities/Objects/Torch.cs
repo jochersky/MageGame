@@ -5,6 +5,7 @@ using UnityEngine;
 public class Torch : Lightable
 {
     public AudioSource litSound;
+    [SerializeField] private ParticleSystem particles;
     private Animator _animator;
 
     // Animation Hashes
@@ -26,6 +27,7 @@ public class Torch : Lightable
         {
             _animator.CrossFade(_lit, 0 , 0);
             litSound.Play();
+            particles.Play();
         };
         OnLightDeactivated += () =>
         {
