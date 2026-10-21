@@ -61,6 +61,8 @@ public class Health : MonoBehaviour
 
     public void UpdateMaxHealth(int amount)
     {
+        // TODO: needs to invoke event when that updates max value in UI
+        
         maxHealth = amount;
         if (_currentHealth > maxHealth)
         {

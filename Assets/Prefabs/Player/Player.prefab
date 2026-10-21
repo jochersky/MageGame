@@ -1691,6 +1691,8 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: 2128e3719ca695c45b205b547a6ae145, type: 2}
   passiveSpellAffects: {fileID: 11400000, guid: 4dd963e0c99e82748a95667a2c7a6379, type: 2}
   lightTransform: {fileID: 6567778946512780379}
+  playerTorch: {fileID: 4005721168106876118}
+  embersForWish: 100
 --- !u!114 &1389070659067755822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1956,6 +1958,18 @@ MonoBehaviour:
       - m_Target: {fileID: 6245977453980720465}
         m_TargetAssemblyTypeName: Interact, Assembly-CSharp
         m_MethodName: OnInteract
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6106741817835769575}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: OnInteractPressed
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2264,7 +2278,7 @@ GameObject:
   - component: {fileID: 8227988092366229097}
   - component: {fileID: 5753810009819856959}
   - component: {fileID: 232539114002362975}
-  - component: {fileID: 1492951298044185179}
+  - component: {fileID: 4005721168106876118}
   - component: {fileID: 8656288525767866780}
   m_Layer: 0
   m_Name: Torch
@@ -2370,7 +2384,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1492951298044185179
+--- !u!114 &4005721168106876118
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2379,12 +2393,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8941550617777362682}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abc1a4d5899772e43b2d76c998f725a3, type: 3}
+  m_Script: {fileID: 11500000, guid: 76e38ab6de760ef439d5173f6c8995c6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Torch
+  m_EditorClassIdentifier: '::'
   light: {fileID: 8899097152374815958}
   isLit: 1
   litSound: {fileID: 0}
+  torchExp: 25
 --- !u!61 &8656288525767866780
 BoxCollider2D:
   m_ObjectHideFlags: 0

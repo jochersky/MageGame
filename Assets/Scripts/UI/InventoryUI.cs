@@ -37,6 +37,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI maxHealthText;
     [SerializeField] private TextMeshProUGUI maxManaText;
     [SerializeField] private TextMeshProUGUI moneyText;
+    [SerializeField] private TextMeshProUGUI emberText;
     [SerializeField] private Image characterPortrait;
     [SerializeField] private Sprite pyroPortrait;
     [SerializeField] private Sprite houndPortrait;
@@ -87,7 +88,8 @@ public class InventoryUI : MonoBehaviour
         equippedSpell2.OnUnequippedSpellPressed += UnequipSpellInSlot;
         InventoryManager.Instance.OnSpellAdded += AddSpellToSpellSelection;
         
-        InventoryManager.Instance.OnMoneyUpdated += (money => moneyText.text = money.ToString());
+        InventoryManager.Instance.OnMoneyUpdated += (money => moneyText.text = $"$ {money.ToString()}");
+        GameManager.Instance.Player.OnEmbersUpdated += (embers => emberText.text = $"*~ {embers.ToString()}");
     }
     
     private void UpdateConsumableCountUI(ConsumableConfig consumableConfig, int count)
@@ -275,7 +277,7 @@ public class InventoryUI : MonoBehaviour
     {
         maxHealthText.text = maxHealth.ToString();
         maxManaText.text = maxMana.ToString();
-        moneyText.text = "-1";
+        moneyText.text = "$ 0";
         switch (characterType)
         {
             case CharacterType.Base: characterPortrait.sprite = pyroPortrait; characterName.text = "[ character name ]"; break;
