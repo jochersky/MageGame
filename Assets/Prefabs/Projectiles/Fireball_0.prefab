@@ -85,6 +85,11 @@ MonoBehaviour:
   cameraShakeAmt: 0.5
   cameraShakeDuration: 0.2
   knockBackForce: 15
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders: []
 --- !u!1 &4265959885888012626
 GameObject:
@@ -137,6 +142,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a8c2096c8cb7a47a07417cd80d1dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireballProjectile
+  freezable: 0
+  teleportable: 1
   speed: 12
 --- !u!212 &703598685739847293
 SpriteRenderer:
