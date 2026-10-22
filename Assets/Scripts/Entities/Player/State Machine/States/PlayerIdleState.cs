@@ -8,7 +8,7 @@ public class PlayerIdleState : PlayerBaseState
     public override void EnterState()
     {
         Context.Animator.CrossFade(Context.Idle, 0, 0);
-        Context.HorizontalMovement = 0;
+        // Context.HorizontalMovement = 0;
         Context.VerticalMovement = 0;
     }
 
