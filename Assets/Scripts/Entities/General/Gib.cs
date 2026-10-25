@@ -7,7 +7,7 @@ public class Gib : MonoBehaviour, ILockedInteractable
     [Header("References")]
     [SerializeField] private GameObject objectToDestroy;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private ParticleSystem particleSystem;
+    [SerializeField] private ParticleSystem particles;
     [Header("Properties")]
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private Color color;
@@ -26,10 +26,9 @@ public class Gib : MonoBehaviour, ILockedInteractable
 
     IEnumerator DestroyProcedure()
     {
-        // particleSystem.
-        particleSystem.Play();
+        particles.Play();
         spriteRenderer.enabled = false;
-        yield return new WaitForSeconds(particleSystem.main.duration);
+        yield return new WaitForSeconds(particles.main.duration);
         Destroy(objectToDestroy);
     }
 

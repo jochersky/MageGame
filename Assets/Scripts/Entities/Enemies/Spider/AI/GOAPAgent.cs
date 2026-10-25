@@ -41,13 +41,13 @@ public class GOAPAgent : MonoBehaviour
     private GOAPPlanner goalPlanner;
 
     // normal
-    private int _killEnemyInitialPriority = 3;
-    private int _stayAwayFromDangerInitialPriority = 1;
-    private int _gainHealthInitialPriority = 1;
+    // private int _killEnemyInitialPriority = 3;
+    // private int _stayAwayFromDangerInitialPriority = 1;
+    // private int _gainHealthInitialPriority = 1;
     // low health
-    private int _killEnemyPriorityWithLowHealth = 1;
-    private int _stayAwayFromDangerPriorityWithLowHealth = 2;
-    private int _gainHealthPriorityWithLowHealth = 3;
+    // private int _killEnemyPriorityWithLowHealth = 1;
+    // private int _stayAwayFromDangerPriorityWithLowHealth = 2;
+    // private int _gainHealthPriorityWithLowHealth = 3;
     
     Dictionary<string, int> initialPriorities = new()
     {

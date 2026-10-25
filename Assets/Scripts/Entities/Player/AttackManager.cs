@@ -7,7 +7,6 @@ public class AttackManager : MonoBehaviour
     [SerializeField] private int frames = 30;
     [SerializeField] AudioClip[] swingSFX;
     readonly float swingVolume = 0.25f;
-    int animationFrames = 30;
     float animationDuration = 0.15f;
     bool isAttacking = false;
     int totalRotation = -120;

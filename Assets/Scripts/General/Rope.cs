@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /*
  * Class that contains creation of ropes.
@@ -16,8 +17,9 @@ public class Rope : MonoBehaviour
     [Header("Properties")]
     [SerializeField] private float maxHeight = 5f;
     [SerializeField] private LayerMask environmentLayer;
+    [FormerlySerializedAs("collider")]
     [Header("References")]
-    [SerializeField] private BoxCollider2D collider;
+    [SerializeField] private BoxCollider2D boxCollider;
     [SerializeField] private GameObject ropeSpritePrefab;
     [Header("Sprites")]
     [SerializeField] private Sprite topSprite;
@@ -58,8 +60,8 @@ public class Rope : MonoBehaviour
                 SnapPositionToGrid(transform, transform.position);
                 
                 // collision only necessary for top rope, adjust the bounds
-                collider.offset = new Vector2(collider.offset.x, (float)-numRope / 2 + 0.5f);
-                collider.size = new Vector2(collider.size.x, numRope - 0.5f); // offset to provide end padding 
+                boxCollider.offset = new Vector2(boxCollider.offset.x, (float)-numRope / 2 + 0.5f);
+                boxCollider.size = new Vector2(boxCollider.size.x, numRope - 0.5f); // offset to provide end padding 
                 
                 yMin = transform.position.y - lowerDistance + 0.25f;
                 yMax = transform.position.y + upperDistance - 0.25f;

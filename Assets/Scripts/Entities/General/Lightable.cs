@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
 public class Lightable : MonoBehaviour
 {
-    [SerializeField] private Light2D light;
+    [FormerlySerializedAs("light")] [SerializeField] private Light2D lighting;
     [SerializeField] private bool isLit;
     
     public virtual bool IsLit { get { return isLit; } }
@@ -19,17 +20,17 @@ public class Lightable : MonoBehaviour
     {
         if (!isLit)
         {
-            light.enabled = false;
+            lighting.enabled = false;
         }
     }
 
     protected void Update()
     {
-        if (isLit && !light.enabled)
+        if (isLit && !lighting.enabled)
         {
             ActivateLightSource();
         } 
-        else if (!isLit && light.enabled)
+        else if (!isLit && lighting.enabled)
         {
             DeactivateLightSource();
         }
@@ -51,14 +52,14 @@ public class Lightable : MonoBehaviour
     public void ActivateLightSource()
     {
         isLit = true;
-        light.enabled = true;
+        lighting.enabled = true;
         OnLightActivated?.Invoke();
     }
 
     public void DeactivateLightSource()
     {
         isLit = false;
-        light.enabled = false;
+        lighting.enabled = false;
         OnLightDeactivated?.Invoke();
     }
 }

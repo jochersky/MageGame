@@ -1,11 +1,12 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CharacterPanel : MonoBehaviour
 {
     [SerializeField] private CharacterInfo characterInfo;
-    [SerializeField] private TextMeshProUGUI name;
+    [FormerlySerializedAs("name")] [SerializeField] private TextMeshProUGUI characterName;
     [SerializeField] private TextMeshProUGUI health;
     [SerializeField] private TextMeshProUGUI mana;
     [SerializeField] private TextMeshProUGUI gift;
@@ -18,7 +19,7 @@ public class CharacterPanel : MonoBehaviour
     {
         if (!characterInfo) return;
         
-        name.text = characterInfo.characterName;
+        characterName.text = characterInfo.characterName;
         health.text = "Health: " + characterInfo.characterStats.health.ToString();
         mana.text = "Mana: " + characterInfo.characterStats.mana.ToString();
         gift.text = characterInfo.giftDescription;
