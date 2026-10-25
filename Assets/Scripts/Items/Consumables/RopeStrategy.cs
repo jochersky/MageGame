@@ -51,6 +51,7 @@ public class RopeStrategy : PlaceableConsumableStrategy
         _interactHits.Clear();
 
         GameObject inst = Instantiate(prefab, spawnTransform);
+        inst.transform.position = spawnPosition;
         inst.transform.parent = null;
 
         return true;

@@ -30,12 +30,6 @@ public class Rope : MonoBehaviour
 
     private void Start()
     {
-        float snappedX = Mathf.RoundToInt(transform.position.x) + 0.5f;
-        Vector3 snappedToGrid = new Vector3(snappedX, transform.position.y, transform.position.z);
-        transform.position = snappedToGrid;
-        // null so that it won't follow the player's movement 
-        transform.parent = null;
-
         GrowRope();
     }
 
@@ -61,6 +55,7 @@ public class Rope : MonoBehaviour
             if (i == 0)
             {
                 transform.position = placementVec;
+                SnapPositionToGrid(transform, transform.position);
                 
                 // collision only necessary for top rope, adjust the bounds
                 collider.offset = new Vector2(collider.offset.x, (float)-numRope / 2 + 0.5f);
@@ -95,11 +90,16 @@ public class Rope : MonoBehaviour
         GameObject inst = Instantiate(ropeSpritePrefab, transform);
         
         // Round position of rope tile
-        float snappedX = Mathf.RoundToInt(spawnPosition.x) + 0.5f;
-        Vector3 snappedToGrid = new Vector3(snappedX, spawnPosition.y, spawnPosition.z);
-        inst.transform.position = snappedToGrid;
+        SnapPositionToGrid(inst.transform, spawnPosition);
         
         // Adjust sprite to its height in the rope
         inst.GetComponent<SpriteRenderer>().sprite = sprite;
+    }
+
+    private void SnapPositionToGrid(Transform tsfm, Vector2 position)
+    {
+        float snappedX = Mathf.RoundToInt(position.x - 0.5f) + 0.5f;
+        Vector2 snappedToGrid = new Vector2(snappedX, position.y);
+        tsfm.position = snappedToGrid;
     }
 }
