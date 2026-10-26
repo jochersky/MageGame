@@ -33,7 +33,7 @@ public class Roulette : NPC
     const int FIVE_KIND_PAYOUT = 50;
 
 
-    public override void Start()
+    protected override void Start()
     {
         base.Start();
         ResetToDefaultDialogueOptions();

@@ -40,7 +40,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1989680451516111954}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -103,6 +103,8 @@ GameObject:
   - component: {fileID: 6325079889997679731}
   - component: {fileID: 5274980275106240797}
   - component: {fileID: 4031758611948177707}
+  - component: {fileID: 1902449105860421411}
+  - component: {fileID: 6841860777282254247}
   m_Layer: 0
   m_Name: TheWitness
   m_TagString: Untagged
@@ -119,7 +121,7 @@ Transform:
   m_GameObject: {fileID: 8834506141215207662}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.15, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -222,6 +224,85 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Float
   amplitude: 0.1
   speed: 1.2
+--- !u!58 &1902449105860421411
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8834506141215207662}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 1
+--- !u!114 &6841860777282254247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8834506141215207662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b561e8f962536541a5f5223ed601ae0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Witness
+  sprite: {fileID: 6325079889997679731}
+  outline: {fileID: 5477807934668691989}
+  dialogueBox: {fileID: 1751365096142675851}
+  npcName: The Witness
+  nameTextBox: {fileID: 6787286850283185048}
+  text: {fileID: 862323541137498297}
+  dialogueOptions: {fileID: 7644539392394588624}
+  dialogue: []
+  textSpeed: 0
+  room: {fileID: 0}
+  specialEnemy: {fileID: 0}
+  specialTile: {fileID: 0}
+  specialObject: {fileID: 0}
+  specialEnemies: []
+  spawnPoint: {x: 0, y: 0}
+  firstMeetLines:
+  - Greetings. I am known as the Witness.
+  - I oversee deals with dark forces of this world.
+  alreadyDoneLines:
+  - I have nothing more for you at this time.
+  declineLines:
+  - To be great, you must learn when to forsake caution.
+  agreeLines:
+  - It is done.
+  offerLineBasis: 'At this time, you may sacrifice '
+  decline: 'Decline '
+  accept: Accept
+  offerWords:
+  - health
+  - power
+  - wealth
 --- !u!1001 &6859891433838438493
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -387,8 +468,40 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+--- !u!114 &862323541137498297 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6108196492627560676, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+  m_PrefabInstance: {fileID: 6859891433838438493}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &1751365096142675851 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5151312785257625558, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+  m_PrefabInstance: {fileID: 6859891433838438493}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &4052207796331575913 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7426276822884946484, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+  m_PrefabInstance: {fileID: 6859891433838438493}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6787286850283185048 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 72747571614862277, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+  m_PrefabInstance: {fileID: 6859891433838438493}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &7644539392394588624 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3829721022861908365, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
   m_PrefabInstance: {fileID: 6859891433838438493}
   m_PrefabAsset: {fileID: 0}

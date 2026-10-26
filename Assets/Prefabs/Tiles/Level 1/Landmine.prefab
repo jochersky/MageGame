@@ -50,6 +50,11 @@ MonoBehaviour:
   cameraShakeAmt: 0
   cameraShakeDuration: 0
   knockBackForce: 0
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders: []
 --- !u!50 &8073543123879281221
 Rigidbody2D:

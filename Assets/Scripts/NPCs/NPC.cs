@@ -59,7 +59,7 @@ public class NPC : MonoBehaviour
         }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public virtual void Start()
+    protected virtual void Start()
     {
         nameTextBox.text = npcName;
         text.text = string.Empty;
