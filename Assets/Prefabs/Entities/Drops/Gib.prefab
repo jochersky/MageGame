@@ -4943,7 +4943,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Gib
   objectToDestroy: {fileID: 948560983991040983}
   spriteRenderer: {fileID: 8569152164329396093}
-  particleSystem: {fileID: 6904517354128810579}
+  particles: {fileID: 6904517354128810579}
   sprites:
   - {fileID: -1733329441981915676, guid: 7d24b78a621ca474584470c833f780ba, type: 3}
   - {fileID: -1829106086385525621, guid: 7d24b78a621ca474584470c833f780ba, type: 3}

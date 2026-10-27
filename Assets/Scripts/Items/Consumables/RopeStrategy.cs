@@ -5,14 +5,8 @@ using UnityEngine.Rendering;
 [CreateAssetMenu(fileName = "RopeStrategy", menuName = "Consumable Strategies/RopeStrategy")]
 public class RopeStrategy : PlaceableConsumableStrategy
 {
-    // public LayerMask environmentLayer;
     public LayerMask interactLayer;
-    // public float maxHeight = 5f;
     public float overlapWidth = 2f;
-    // public Sprite topSprite;
-    // public Sprite topEndSprite;
-    // public Sprite midSprite;
-    // public Sprite botSprite;
 
     public bool debug = true;
 

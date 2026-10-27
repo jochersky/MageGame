@@ -14,7 +14,6 @@ public class Bomb : Consumable
     [SerializeField] private ParticleSystem explosionRadius;
     [SerializeField] private ParticleSystem explosionParticles;
     [SerializeField, Range(0, 10)] private float explodeTime = 1;
-    [SerializeField] private float flashSpeed = 1f;
     [SerializeField] TemporaryEffect explosionEffect;
 
     private CountdownTimer _particleLifetimeTimer;

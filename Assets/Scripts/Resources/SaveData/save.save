@@ -1,0 +1,47 @@
+{
+    "gameSaveData": {
+        "characterType": 2
+    },
+    "playerData": {
+        "healthAmt": 4,
+        "manaAmt": 75,
+        "moneyAmt": 0,
+        "emberAmt": 0,
+        "healthWishCount": 0,
+        "manaWishCount": 0
+    },
+    "inventoryData": {
+        "spells": [
+            {
+                "name": "Reverse Footsteps"
+            },
+            {
+                "name": "Dodge"
+            }
+        ],
+        "equippedSpell1": {
+            "name": "Reverse Footsteps"
+        },
+        "equippedSpell2": {
+            "name": "Dodge"
+        },
+        "consumables": [
+            {
+                "name": "Drill Bomb",
+                "count": 5
+            },
+            {
+                "name": "Rope",
+                "count": 5
+            }
+        ],
+        "equippedConsumable1": {
+            "name": "Drill Bomb",
+            "count": 0
+        },
+        "equippedConsumable2": {
+            "name": "Rope",
+            "count": 0
+        }
+    }
+}

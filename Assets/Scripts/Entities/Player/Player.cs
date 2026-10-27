@@ -39,7 +39,6 @@ public class Player : MonoBehaviour
         _spellManager = GetComponent<SpellManager>();
         _psm = GetComponent<PlayerStateMachine>();
         
-        GameManager.Instance.PlayerHealth = _health;
         GameManager.Instance.SpellManager = _spellManager;
     }
 

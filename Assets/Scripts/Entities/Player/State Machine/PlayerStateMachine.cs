@@ -33,7 +33,6 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private float maxWalkSpeed = 1f;
     [SerializeField] private float minInputVecMag = 0.25f;
     [SerializeField] private float normalDrag = 1f;
-    [SerializeField] private float iceDrag = 0.2f;
     
     [Header("Jump")] 
     [SerializeField] private float maxJumpHeight = 5f;
@@ -47,7 +46,6 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private float maxDodgeSpeed = 20f;
     [SerializeField] private float dodgeDuration = 0.2f;
     [SerializeField] private float dodgeCooldown = 0.4f;
-    [SerializeField] private float dodgeInvulnerabilityTime = 0.2f;
     
     [Header("Airborne")]
     [SerializeField] private float maxAirborneMoveSpeed = 1f;
@@ -136,7 +134,6 @@ public class PlayerStateMachine : MonoBehaviour
     private float _yRopeMin;
     private float _yRopeMax;
     private bool _isCrouching;
-    private bool _isLookingUp;
     private Vector2 _slideForce;
     private Vector2 _knockBackForce;
     private bool _justTookDamage;
@@ -341,7 +338,6 @@ public class PlayerStateMachine : MonoBehaviour
             _lookHoldTimer.Reset();
             _cameraManager.ReturnCameraToOriginalPosition();
             _isCrouching = false;
-            _isLookingUp = false;
         }
         else if (context.started && _isGrounded)
         {
@@ -529,7 +525,6 @@ public class PlayerStateMachine : MonoBehaviour
         else if (!_isClimbingRope && _verticalDirection.y > 0.5f)
         {
             _cameraManager.ShiftCameraUp();
-            _isLookingUp = true;
         }
     }
 

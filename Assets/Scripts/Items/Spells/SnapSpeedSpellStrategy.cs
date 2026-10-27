@@ -9,13 +9,12 @@ public class SnapSpeedSpellStrategy : SpellStrategy
     public float debuffAmount = 0.25f;
     public float duration = 1f;
     
-    private SpellManager _spellManager;
     private PlayerStateMachine _psm;
     private CountdownTimer _debuffTimer;
     
     public override void Equip(SpellManager spellManager, PlayerStateMachine playerStateMachine)
     {
-        _spellManager = spellManager;
+        SpellManager = spellManager;
         _psm = playerStateMachine;
     }
 
