@@ -56,6 +56,7 @@ public class SaveSystem
         GameManager.Instance.Load(ref _saveData);
         if (GameManager.Instance.Player) GameManager.Instance.Player.Load(ref _saveData.playerData);
         if (InventoryManager.Instance) InventoryManager.Instance.Load(ref _saveData.inventoryData);
+        if (GameManager.Instance.PostRunStatsMenuUI) GameManager.Instance.PostRunStatsMenuUI.Load(ref _saveData);
     }
 
     public static void Delete()

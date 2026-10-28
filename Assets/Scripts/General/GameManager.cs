@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private FullScreenEffect fullScreenEffect;
     [SerializeField] private InventoryUI inventoryUI;
     [SerializeField] private EquippedUI equippedUI;
+    [SerializeField] private PostRunStatsMenuUI postRunStatsMenuUI;
     [SerializeField] private GameObject listItemPrefab;
     
     [Header("Debugging")]
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
     public SpellManager SpellManager { get; set; }
     public InventoryUI InventoryUI => inventoryUI;
     public FullScreenEffect FullScreenEffect => fullScreenEffect;
+    public PostRunStatsMenuUI PostRunStatsMenuUI => postRunStatsMenuUI;
     
     public static GameManager Instance { get; private set; }
     
@@ -209,4 +211,11 @@ public enum CharacterType
 public struct GameSaveData
 {
     public CharacterType characterType;
+    public string currentStage;
+    public int runSeed;
+    public Time runTime;
+    public int enemiesSlain;
+    public int damageTaken;
+    public int moneyCollected;
+    public int wishesMade;
 }

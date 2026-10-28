@@ -1,33 +1,39 @@
 {
     "gameSaveData": {
-        "characterType": 2
+        "characterType": 3,
+        "currentStage": "",
+        "runSeed": 0,
+        "enemiesSlain": 0,
+        "damageTaken": 0,
+        "moneyCollected": 0,
+        "wishesMade": 0
     },
     "playerData": {
-        "healthAmt": 4,
+        "healthAmt": 5,
         "manaAmt": 75,
-        "moneyAmt": 0,
-        "emberAmt": 0,
+        "moneyAmt": 5,
+        "emberAmt": 350,
         "healthWishCount": 0,
         "manaWishCount": 0
     },
     "inventoryData": {
         "spells": [
             {
-                "name": "Reverse Footsteps"
+                "name": "Feathery Dive"
             },
             {
-                "name": "Dodge"
+                "name": "Snap Speed"
             }
         ],
         "equippedSpell1": {
-            "name": "Reverse Footsteps"
+            "name": "Feathery Dive"
         },
         "equippedSpell2": {
             "name": "Dodge"
         },
         "consumables": [
             {
-                "name": "Drill Bomb",
+                "name": "Sol Stone",
                 "count": 5
             },
             {
@@ -36,7 +42,7 @@
             }
         ],
         "equippedConsumable1": {
-            "name": "Drill Bomb",
+            "name": "Sol Stone",
             "count": 0
         },
         "equippedConsumable2": {

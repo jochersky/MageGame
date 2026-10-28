@@ -19,6 +19,7 @@ public class InventoryManager : MonoBehaviour
     public Dictionary<GameObject, SpellConfig> spellListItemInstances = new Dictionary<GameObject, SpellConfig>();
     [HideInInspector] public int spellToEquip = 0;
     private SpellDictionary _spellDictionary;
+    public SpellDictionary SpellDictionary => _spellDictionary;
     
     // Money
     private int _money = 0;
