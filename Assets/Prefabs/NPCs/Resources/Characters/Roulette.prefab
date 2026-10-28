@@ -243,6 +243,8 @@ MonoBehaviour:
   wager1: Wager $1
   wager5: Wager $5
   wager10: Wager $10
+  teleportDelay: 1.75
+  exitLocation: {x: 0, y: 0}
 --- !u!58 &5571677412062376373
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -280,7 +280,7 @@ MonoBehaviour:
   text: {fileID: 862323541137498297}
   dialogueOptions: {fileID: 7644539392394588624}
   dialogue: []
-  textSpeed: 0
+  textSpeed: 0.025
   room: {fileID: 0}
   specialEnemy: {fileID: 0}
   specialTile: {fileID: 0}

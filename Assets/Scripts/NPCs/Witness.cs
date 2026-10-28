@@ -59,7 +59,7 @@ public class Witness : NPC
         System.Random randy = new();
         List<Offer> offers = offerMap.Keys.ToList<Offer>();
         int rand_idx = randy.Next(offers.Count);
-        print(rand_idx);
+        //print(rand_idx);
         currentOffer = offers[rand_idx];
         offers.RemoveAt(rand_idx);
         rand_idx = randy.Next(offers.Count);

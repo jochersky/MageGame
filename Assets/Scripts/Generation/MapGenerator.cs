@@ -74,7 +74,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] float startingPositionOffset;
     Vector2 startingPosition;
     bool startingPositionAssigned = false;
-    Vector2 exitPosition;
+    public Vector2 ExitPosition {get; private set;}
 
     int numChestRooms = 3;
     List<(int x, int y)> specialRoomCoords = new();
@@ -772,7 +772,7 @@ public class MapGenerator : MonoBehaviour
                     } else
                     {
                         nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.exitDoor);
-                        exitPosition = new Vector2(xCoord, yCoord);
+                        ExitPosition = new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset);
                     }
                 }
                 // check for special value indicating spikes

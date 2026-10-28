@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -19,11 +20,17 @@ public class Roulette : NPC
     [SerializeField] string wager1;
     [SerializeField] string wager5;
     [SerializeField] string wager10;
+    [SerializeField] float teleportDelay;
 
     // player managers
+    Player player;
     InventoryManager inventoryManager;
     Health playerHealth;
     SpellManager spellManager;
+
+    // public variables
+    public Vector2 exitLocation;
+
 
     // Payouts
     const int BUST_DAMAGE = 1;
@@ -36,6 +43,10 @@ public class Roulette : NPC
     protected override void Start()
     {
         base.Start();
+        if (mapGenerator != null)
+        {
+            exitLocation = mapGenerator.ExitPosition;
+        }
         ResetToDefaultDialogueOptions();
         
     }
@@ -43,6 +54,7 @@ public class Roulette : NPC
     protected override void PlayerSetup(Player _player)
     {
         base.PlayerSetup(_player);
+        player = _player;
         inventoryManager = _player.GetComponent<InventoryManager>();
         playerHealth = _player.GetComponent<Health>();
         spellManager = _player.GetComponent<SpellManager>();
@@ -93,6 +105,7 @@ public class Roulette : NPC
         {
             PlayNewLines(straightLines);
             inventoryManager.UpdateMoney(wager);
+            StartCoroutine(TeleportPlayerToExit());
         } else if (roll <= 9800)
         {
             PlayNewLines(fullHouseLines);
@@ -114,6 +127,16 @@ public class Roulette : NPC
             PlayNewLines(fiveKindLines);
             inventoryManager.UpdateMoney(FIVE_KIND_PAYOUT * wager);
         }
+    }
+
+    IEnumerator TeleportPlayerToExit()
+    {
+        yield return new WaitForSeconds(teleportDelay);
+        if (player.transform.position != null)
+        {
+            player.transform.position = exitLocation;
+        }
+        
     }
 
     void RollWager1()

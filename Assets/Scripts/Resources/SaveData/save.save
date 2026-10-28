@@ -3,9 +3,9 @@
         "characterType": 3
     },
     "playerData": {
-        "healthAmt": 8,
-        "manaAmt": 75,
-        "moneyAmt": 0
+        "healthAmt": 5,
+        "manaAmt": 25,
+        "moneyAmt": 39
     },
     "inventoryData": {
         "spells": [

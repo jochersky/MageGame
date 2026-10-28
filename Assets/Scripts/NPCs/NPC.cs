@@ -30,6 +30,7 @@ public class NPC : MonoBehaviour
     public TileBase specialObject;
     public List<GameObject> specialEnemies = new();
     public Vector2 spawnPoint;
+    protected MapGenerator mapGenerator;
     // current line of dialogue in the list of lines
     int _lineIdx = 0;
     private bool _inRange = false;
@@ -42,7 +43,8 @@ public class NPC : MonoBehaviour
 
     void Awake()
     {
-        MapGenerator mapGenerator = FindAnyObjectByType<MapGenerator>();
+        MapGenerator _mapGenerator = FindAnyObjectByType<MapGenerator>();
+        mapGenerator = _mapGenerator;
         if (mapGenerator)
         {
             mapGenerator.OnPlayerPlaced += PlayerSetup;
