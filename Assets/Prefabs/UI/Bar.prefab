@@ -814,6 +814,7 @@ MonoBehaviour:
   growBySegment: 1
   startingRightVal: 128
   rightGrowAmt: -43.25
+  maxWidth: 383
 --- !u!1 &6590084939280360114
 GameObject:
   m_ObjectHideFlags: 0

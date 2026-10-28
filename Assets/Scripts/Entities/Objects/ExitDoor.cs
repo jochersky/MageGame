@@ -21,7 +21,6 @@ public class ExitDoor : MonoBehaviour, IInteractable
     
     public void Interact()
     {
-        print("Called");
         StartCoroutine(GoToNextLevel());
     }
 

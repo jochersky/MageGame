@@ -1,5 +1,7 @@
 using System;
+using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
@@ -8,15 +10,26 @@ public class Player : MonoBehaviour
     [SerializeField] private PassiveSpellAffects passiveSpellAffects;
     [Header("References")]
     [SerializeField] private Transform lightTransform;
+    [SerializeField] private PlayerTorch playerTorch;
     private Health _health;
     private SpellManager _spellManager;
+    private PlayerStateMachine _psm;
+    [Header("Player Stats")]
+    [SerializeField] private int embersForWish;
 
     public HUDBar HealthBar { get; set; }
     public HUDBar ManaBar { get; set; }
     public Health Health => _health;
+    public int Embers => _embers;
+    public bool CanGetWish => _embers >= embersForWish;
     
     public delegate void StartDone();
     public event StartDone OnStartDone;
+
+    public delegate void EmbersUpdated(int amt);
+    public event EmbersUpdated OnEmbersUpdated;
+
+    private int _embers;
     
     private void Awake()
     {
@@ -24,8 +37,8 @@ public class Player : MonoBehaviour
         
         _health = GetComponent<Health>();
         _spellManager = GetComponent<SpellManager>();
+        _psm = GetComponent<PlayerStateMachine>();
         
-        GameManager.Instance.PlayerHealth = _health;
         GameManager.Instance.SpellManager = _spellManager;
     }
 
@@ -53,6 +66,8 @@ public class Player : MonoBehaviour
             if (lightTransform) lightTransform.localScale = new Vector3(newSize, newSize, newSize);
         };
 
+        playerTorch.OnExpGained += UpdateEmbers;
+
         if (HealthBar)
         {
             HealthBar.InitializeBar(_health.CurrentHealth, _health.MaxHealth);
@@ -65,6 +80,36 @@ public class Player : MonoBehaviour
         }
         
         OnStartDone?.Invoke();
+    }
+
+    public void UpdateEmbers(int amt)
+    {
+        _embers += amt;
+        OnEmbersUpdated?.Invoke(_embers);
+    }
+
+    public bool LevelUp(Wish wish)
+    {
+        if (CanGetWish)
+        {
+            UpdateEmbers(-embersForWish);
+            BasicStatModifier wishModifier = 
+                new BasicStatModifier(wish.statType, wish.duration, s => s + wish.increaseAmt, "Wish", true);
+            _psm.Stats.Mediator.AddModifier(wishModifier);
+            SyncStats();
+            return true;
+        }
+        
+        return false;
+    }
+
+    private void SyncStats()
+    {
+        // Update the max stat values for when they're updated (i.e. when making wish)
+        // _health.UpdateMaxHealth((int)_psm.Stats.Health);
+        // _spellManager.UpdateMaxMana((int)_psm.Stats.Mana);
+        HealthBar.UpdateMaxValue((int)_psm.Stats.Health);
+        ManaBar.UpdateMaxValue((int)_psm.Stats.Mana);
     }
 
     public void UpdateHealthAndMana()
@@ -80,13 +125,41 @@ public class Player : MonoBehaviour
         data.healthAmt = _health.CurrentHealth;
         data.manaAmt = _spellManager.Mana;
         data.moneyAmt = InventoryManager.Instance.GetMoneyCount();
+        data.emberAmt = _embers;
+
+        BasicStatModifier[] wishes = _psm.Stats.Mediator.GetWishModifiers();
+        int newHealthWishCount = 0;
+        int newManaWishCount = 0;
+        foreach (BasicStatModifier wish in wishes)
+        {
+            if (wish.Type == StatType.Health) newHealthWishCount++;
+            if (wish.Type == StatType.Mana) newManaWishCount++;
+        }
+        data.healthWishCount = newHealthWishCount;
+        data.manaWishCount = newManaWishCount;
     }
 
     public void Load(ref PlayerSaveData data)
     {
+        // Wishes loaded first in order to assign max health and max mana before updating current health and current mana
+        for (int i = 0; i < data.healthWishCount; i++)
+        {
+            BasicStatModifier wishModifier = 
+                new BasicStatModifier(StatType.Health, 0, s => s + 1, "Wish", true);
+            _psm.Stats.Mediator.AddModifier(wishModifier);
+        }
+        for (int i = 0; i < data.manaWishCount; i++)
+        {
+            BasicStatModifier wishModifier = 
+                new BasicStatModifier(StatType.Mana, 0, s => s + 20, "Wish", true);
+            _psm.Stats.Mediator.AddModifier(wishModifier);
+        }
+        SyncStats();
+        
         _health.CurrentHealth = data.healthAmt;
         _spellManager.Mana = data.manaAmt;
         InventoryManager.Instance.UpdateMoney(data.moneyAmt);
+        _embers = data.emberAmt;
     }
 }
 
@@ -96,4 +169,7 @@ public struct PlayerSaveData
     public int healthAmt;
     public int manaAmt;
     public int moneyAmt;
+    public int emberAmt;
+    public int healthWishCount;
+    public int manaWishCount;
 }

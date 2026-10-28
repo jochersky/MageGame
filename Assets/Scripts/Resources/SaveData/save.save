@@ -1,27 +1,33 @@
 {
     "gameSaveData": {
-        "characterType": 3
+        "characterType": 2
     },
     "playerData": {
-        "healthAmt": 5,
-        "manaAmt": 25,
-        "moneyAmt": 39
+        "healthAmt": 4,
+        "manaAmt": 75,
+        "moneyAmt": 0,
+        "emberAmt": 0,
+        "healthWishCount": 0,
+        "manaWishCount": 0
     },
     "inventoryData": {
         "spells": [
             {
-                "name": "Feathery Dive"
+                "name": "Reverse Footsteps"
+            },
+            {
+                "name": "Dodge"
             }
         ],
         "equippedSpell1": {
-            "name": "Feathery Dive"
+            "name": "Reverse Footsteps"
         },
         "equippedSpell2": {
-            "name": ""
+            "name": "Dodge"
         },
         "consumables": [
             {
-                "name": "Sol Stone",
+                "name": "Drill Bomb",
                 "count": 5
             },
             {
@@ -30,7 +36,7 @@
             }
         ],
         "equippedConsumable1": {
-            "name": "Sol Stone",
+            "name": "Drill Bomb",
             "count": 0
         },
         "equippedConsumable2": {

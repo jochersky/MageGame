@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     private CountdownTimer _loadTimer;
     
     public Player Player { get; set; }
-    public Health PlayerHealth { get; set; }
+    public Health PlayerHealth => Player.Health;
     public SpellManager SpellManager { get; set; }
     public InventoryUI InventoryUI => inventoryUI;
     public FullScreenEffect FullScreenEffect => fullScreenEffect;
@@ -75,9 +75,7 @@ public class GameManager : MonoBehaviour
         // for character already placed in scene
         if (debug)
         {
-            Player = debugPlayerObject.GetComponent<Player>();
-            Player.HealthBar = healthBar;
-            Player.ManaBar = manaBar;
+            AssignPlayerAndReferences(debugPlayerObject);
             SaveSystem.Delete();
             SubscribeToPlayerInputEvents();
             return;
@@ -91,17 +89,21 @@ public class GameManager : MonoBehaviour
             GameObject playerInst = SpawnPlayer();
             if (mapGenerator) mapGenerator.player = playerInst.GetComponent<Player>();
             
-            Player playerComponent = playerInst.GetComponent<Player>();
-            playerComponent.HealthBar = healthBar;
-            playerComponent.ManaBar = manaBar;
-            Player = playerComponent;
+            AssignPlayerAndReferences(playerInst);
             
             // load player's items once these scripts have finished running
-            playerComponent.OnStartDone += () => { PlayerComponentLoaded = true; };
+            Player.OnStartDone += () => { PlayerComponentLoaded = true; };
             InventoryManager.Instance.OnStartDone += () => { InventoryManagerLoaded = true; };
         }
         
         equippedUI?.SubscribeToEvents();
+    }
+
+    private void AssignPlayerAndReferences(GameObject playerGO)
+    {
+        Player = playerGO.GetComponent<Player>();
+        Player.HealthBar = healthBar;
+        Player.ManaBar = manaBar;
     }
     
     // handles event subscription for other scripts that need access to the player's PlayerInput input events 

@@ -23,6 +23,11 @@ public class StatsMediator
             modifiers.Remove(modifier);
             Queries -= modifier.Handle;
         };
+
+        foreach (var mod in modifiers)
+        {
+            Debug.Log(mod.Source);
+        }
     }
 
     public void Update(float deltaTime)
@@ -69,6 +74,13 @@ public class StatsMediator
         }
 
         return false;
+    }
+
+    public BasicStatModifier[] GetWishModifiers()
+    {
+        List<BasicStatModifier> wishes = new();
+        foreach (var modifier in modifiers) if (modifier.Source == "Wish") wishes.Add((BasicStatModifier) modifier);
+        return wishes.ToArray();
     }
 }
 

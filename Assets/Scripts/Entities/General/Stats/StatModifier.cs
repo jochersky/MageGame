@@ -12,6 +12,8 @@ public class BasicStatModifier : StatModifier
     private string _source;
     private readonly StatType _type;
     private readonly Func<float, float> _operation;
+    
+    public StatType Type => _type;
 
     public BasicStatModifier(StatType statType, float duration, Func<float, float> operation, string source, bool stackableSource = false) : base(duration, source, stackableSource)
     {
@@ -40,11 +42,12 @@ public abstract class StatModifier : IDisposable
 
     protected StatModifier(float duration, string source, bool stackableSource = false)
     {
+        Source = source;
+        StackableSource = stackableSource;
+        
         // permanent modifiers have 0/negative value
         if (duration <= 0) return;
         
-        Source = source;
-        StackableSource = stackableSource;
         timer = new CountdownTimer(duration);
         timer.OnTimerStop += Dispose;
         timer.Start();

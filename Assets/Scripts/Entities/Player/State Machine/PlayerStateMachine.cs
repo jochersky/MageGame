@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Data;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using NUnit.Framework;
@@ -31,6 +32,7 @@ public class PlayerStateMachine : Entity
     [Header("Walk")]
     [SerializeField] private float maxWalkSpeed = 1f;
     [SerializeField] private float minInputVecMag = 0.25f;
+    [SerializeField] private float normalDrag = 1f;
     
     [Header("Jump")] 
     [SerializeField] private float maxJumpHeight = 5f;
@@ -44,7 +46,6 @@ public class PlayerStateMachine : Entity
     [SerializeField] private float maxDodgeSpeed = 20f;
     [SerializeField] private float dodgeDuration = 0.2f;
     [SerializeField] private float dodgeCooldown = 0.4f;
-    [SerializeField] private float dodgeInvulnerabilityTime = 0.2f;
     
     [Header("Airborne")]
     [SerializeField] private float maxAirborneMoveSpeed = 1f;
@@ -76,6 +77,11 @@ public class PlayerStateMachine : Entity
     
     [Header("Knock Back")]
     [SerializeField, UnityEngine.Range(0, 1)] private float reduceConst = 0.3f;
+
+    [Header("Ice Movement")] 
+    [SerializeField] private float iceSlideMaxSpeed = 3f;
+    [SerializeField, UnityEngine.Range(0, 1)] private float iceReduceConst = 0.8f;
+    [SerializeField] private float iceCheckDepth = 1f;
     
     // State Variables
     private PlayerBaseState _previousState;
@@ -98,6 +104,7 @@ public class PlayerStateMachine : Entity
     private float _horizontalMovement;
     private float _verticalMovement;
     private bool _isGrounded;
+    private float _drag;
     private float _airTime;
     private bool _canJump;
     private bool _justPressedJump;
@@ -127,7 +134,7 @@ public class PlayerStateMachine : Entity
     private float _yRopeMin;
     private float _yRopeMax;
     private bool _isCrouching;
-    private bool _isLookingUp;
+    private Vector2 _slideForce;
     private Vector2 _knockBackForce;
     private bool _justTookDamage;
 
@@ -217,8 +224,10 @@ public class PlayerStateMachine : Entity
         _currentState = _isGrounded ? _states.Grounded() : _states.Fall();
         _currentState.EnterState();
     
+        // Variable initialization
         // provide initial direction for dodging (facing right)
         _previousDirection.x = 1;
+        _drag = normalDrag;
         
         statusEffectManager.Initialize(_stats.Mediator);
     }
@@ -267,9 +276,13 @@ public class PlayerStateMachine : Entity
         }
 
         _rb.linearVelocity = new Vector2(x, y);
+
+        // Apply additional forces after calculating base velocity
+        _rb.linearVelocity += _slideForce;
         _rb.linearVelocity += _knockBackForce;
 
         UpdateKnockBackForce();
+        UpdateSlideForce();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -325,7 +338,6 @@ public class PlayerStateMachine : Entity
             _lookHoldTimer.Reset();
             _cameraManager.ReturnCameraToOriginalPosition();
             _isCrouching = false;
-            _isLookingUp = false;
         }
         else if (context.started && _isGrounded)
         {
@@ -347,12 +359,12 @@ public class PlayerStateMachine : Entity
 
     private void CheckGrounded()
     {
-        bool rawGrounded = Physics2D.OverlapBox(jumpCheckTransform.position, jumpCheckSize, 0, environmentLayer)
+        _isGrounded = Physics2D.OverlapBox(jumpCheckTransform.position, jumpCheckSize, 0, environmentLayer)
                            && LinearVelocityY <= 0.1f;
 
         if (_justJumped)
         {
-            if (!rawGrounded)
+            if (!_isGrounded)
             {
                 // actually left the ground
                 _justJumped = false;
@@ -370,27 +382,37 @@ public class PlayerStateMachine : Entity
             }
         }
 
-        bool countsAsGrounded = rawGrounded;
-
-        if (!countsAsGrounded && _canJump)
+        if (!_isGrounded && _canJump)
         {
             _airTime += Time.deltaTime;
             _canJump = _airTime < coyoteJumpTimer && !_coyoteJumpDisabled;
         }
-        else if ((countsAsGrounded && !_justJumped) || IsClimbing || IsClimbingRope)
+        else if ((_isGrounded && !_justJumped) || IsClimbing || IsClimbingRope)
         {
             _airTime = 0;
             _canJump = true;
             _numDoubleJumps = passiveSpellAffects.doubleJumps + baseStats.jumps;
         }
 
-        if (countsAsGrounded && !_dodgeInCooldown)
+        if (_isGrounded && !_dodgeInCooldown)
         {
             _canDodge = true;
             _numDodges = passiveSpellAffects.dodges + baseStats.dodges;
         }
 
-        _isGrounded = countsAsGrounded;
+        if (!_isGrounded) return;
+
+        // Ice movement checks
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, iceCheckDepth, environmentLayer);
+        if (!hit) return;
+
+        bool onIce = hit.collider.TryGetComponent<Ice>(out _);
+
+        if (!onIce)
+            _slideForce = Vector2.zero;
+        // Only allow the player to slide on ice if they have moved on it already
+        else if (_moveDirection != Vector2.zero)
+            _slideForce = new Vector2(_previousDirection.x, 0) * iceSlideMaxSpeed;
     }
     
     private void OnDrawGizmosSelected()
@@ -425,6 +447,15 @@ public class PlayerStateMachine : Entity
     {
         _knockBackForce *= reduceConst;
         if (_knockBackForce.magnitude <= 0.1f) _knockBackForce = Vector2.zero;
+    }
+
+    private void UpdateSlideForce()
+    {
+        _slideForce *= iceReduceConst;
+        if (_slideForce.magnitude <= 0.1f) _slideForce = Vector2.zero;
+        
+        // Don't allow the player to slide when they are climbing
+        if (_currentState == _states.Climb()) _slideForce = Vector2.zero;
     }
 
     public void EnemyStomped()
@@ -494,7 +525,6 @@ public class PlayerStateMachine : Entity
         else if (!_isClimbingRope && _verticalDirection.y > 0.5f)
         {
             _cameraManager.ShiftCameraUp();
-            _isLookingUp = true;
         }
     }
 

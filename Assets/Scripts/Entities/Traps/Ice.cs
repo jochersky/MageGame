@@ -9,5 +9,4 @@ public class Ice : Trap
         bool above = colliderMap.HasTile(new Vector3Int(tileCoords.x, tileCoords.y + 1));
         return self && !above;
     }
-
 }

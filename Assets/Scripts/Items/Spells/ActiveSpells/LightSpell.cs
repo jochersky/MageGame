@@ -11,13 +11,10 @@ public class LightSpell : MonoBehaviour, IProjectile
     
     [Header("Properties")]
     [SerializeField] private float radiusGrowSize;
-    [SerializeField] float startingIntensity = 5f;
     // time between fade steps
     [SerializeField] float fadeRate = 1f;
     // How much alpha to reduce by per fade step
     [SerializeField] float spriteFadeStep = 0.1f;
-    // how much intensity to reduce by per fade step
-    [SerializeField] float brightnessFadeStep = 0.3f;
     
     float red;
     float green;

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,12 +14,15 @@ public class HUDBar : MonoBehaviour
     [SerializeField] private bool growBySegment;
     [SerializeField] private float startingRightVal;
     [SerializeField] private float rightGrowAmt;
+    [SerializeField] private float maxWidth;
     
     public void InitializeBar(int initialValue, int maxValue)
     {
         slider.maxValue = maxValue;
         Vector2 temp = fillBarRectTransform.offsetMax;
-        fillBarRectTransform.offsetMax = new Vector2(-startingRightVal - rightGrowAmt * maxValue, temp.y);
+        // Width of the bar shouldn't surpass the max width, will continue to increase max value though.
+        float width = Mathf.Min(-startingRightVal - rightGrowAmt * maxValue, maxWidth);
+        fillBarRectTransform.offsetMax = new Vector2(width, temp.y);
         
         UpdateValue(initialValue);
     }
@@ -27,5 +31,10 @@ public class HUDBar : MonoBehaviour
     {
         slider.value = Mathf.Clamp(newValue, slider.minValue, slider.maxValue);
         counterText.text = newValue + " | " + slider.maxValue;
+    }
+
+    public void UpdateMaxValue(int newMax)
+    {
+        InitializeBar((int)slider.value, newMax);
     }
 }

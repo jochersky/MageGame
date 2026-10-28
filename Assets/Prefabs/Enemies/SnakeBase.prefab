@@ -193,7 +193,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8819534849944075644}
-  - component: {fileID: 6772924425204896021}
   - component: {fileID: 437780512765276525}
   m_Layer: 0
   m_Name: SnakeLink
@@ -219,18 +218,6 @@ Transform:
   - {fileID: 7274664491882210877}
   m_Father: {fileID: 3877945917110914318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6772924425204896021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1397015248975876625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd10cae0c99b56f46bf2c78ff616582a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!212 &437780512765276525
 SpriteRenderer:
   serializedVersion: 2
@@ -299,7 +286,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2994076516801882688}
-  - component: {fileID: 2839757982341382977}
   - component: {fileID: 1765507822017700856}
   m_Layer: 0
   m_Name: SnakeLink
@@ -325,18 +311,6 @@ Transform:
   - {fileID: 5894289183400424659}
   m_Father: {fileID: 3877945917110914318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2839757982341382977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2954363755243815146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd10cae0c99b56f46bf2c78ff616582a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!212 &1765507822017700856
 SpriteRenderer:
   serializedVersion: 2
@@ -791,6 +765,7 @@ GameObject:
   - component: {fileID: 6290254435840300238}
   - component: {fileID: 3935934211721828769}
   - component: {fileID: 2344388653373051453}
+  - component: {fileID: 6330320503490056136}
   m_Layer: 0
   m_Name: SnakeLink (Head)
   m_TagString: Enemy
@@ -841,7 +816,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 98e78d23cdc2e29469cc6eabaa1fbe9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -915,7 +890,7 @@ MonoBehaviour:
   - {fileID: 5771699683713392170}
   - {fileID: 5184861388841414011}
   - {fileID: 1759903522081024677}
-  maxHealth: 500
+  maxHealth: 5
   invulnerabilityTime: 1.5
   capHealth: 1
   spawnInvulnerable: 0
@@ -934,12 +909,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   spline: {fileID: 2982069864591783851}
   links:
-  - {fileID: 218626485692913348}
-  - {fileID: 8819534849944075644}
-  - {fileID: 1405521958923699646}
-  - {fileID: 3718473783519466570}
-  - {fileID: 2994076516801882688}
-  - {fileID: 2194220320140607669}
+  - {fileID: 4779656243962044350}
+  - {fileID: 1397015248975876625}
+  - {fileID: 6320920397457258014}
+  - {fileID: 7638375051520134586}
+  - {fileID: 2954363755243815146}
+  - {fileID: 6734252435298847753}
   chainLinkLayer: {fileID: 0}
   equidistantPositioning: 0
   distance: 0.012
@@ -948,6 +923,54 @@ MonoBehaviour:
   backLayer: 0
   goToFrontPercentage: 0
   goToBackPercentage: 0
+--- !u!114 &6330320503490056136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779656243962044350}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18d7fc9bfbb117d4ba24429ed8b2ea1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFlash
+  spriteRenderer: {fileID: 434446168596443436}
+  _flashSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.055929556
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.22654364
+    - serializedVersion: 3
+      time: 0.25
+      value: 0
+      inSlope: -5.152768
+      outSlope: -5.152768
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.25
 --- !u!1 &5833023391366323621
 GameObject:
   m_ObjectHideFlags: 0
@@ -1142,7 +1165,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3877945917110914318}
   - component: {fileID: 2982069864591783851}
-  - component: {fileID: -5920547085819101532}
   m_Layer: 0
   m_Name: SnakeBase
   m_TagString: Untagged
@@ -1297,19 +1319,6 @@ MonoBehaviour:
         Knot: 0
       - Spline: 0
         Knot: 2
---- !u!114 &-5920547085819101532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6143594438635889774}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71bedf5b1c7794145a900ca432cb557b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SnakeInfo
-  enemyPrefab: {fileID: 6143594438635889774}
 --- !u!1 &6320920397457258014
 GameObject:
   m_ObjectHideFlags: 0
@@ -1319,7 +1328,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1405521958923699646}
-  - component: {fileID: 5285221675127647023}
   - component: {fileID: 7053245692659029345}
   m_Layer: 0
   m_Name: SnakeLink
@@ -1345,18 +1353,6 @@ Transform:
   - {fileID: 1560278182313790286}
   m_Father: {fileID: 3877945917110914318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5285221675127647023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6320920397457258014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd10cae0c99b56f46bf2c78ff616582a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!212 &7053245692659029345
 SpriteRenderer:
   serializedVersion: 2
@@ -1527,7 +1523,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2194220320140607669}
-  - component: {fileID: 1122763377694810856}
   - component: {fileID: 7194874807511603490}
   m_Layer: 0
   m_Name: SnakeLink (Tail)
@@ -1553,18 +1548,6 @@ Transform:
   - {fileID: 1807856046256457199}
   m_Father: {fileID: 3877945917110914318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1122763377694810856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6734252435298847753}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd10cae0c99b56f46bf2c78ff616582a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!212 &7194874807511603490
 SpriteRenderer:
   serializedVersion: 2
@@ -1735,7 +1718,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3718473783519466570}
-  - component: {fileID: 2139291892279691}
   - component: {fileID: 6040039697661883310}
   m_Layer: 0
   m_Name: SnakeLink
@@ -1761,18 +1743,6 @@ Transform:
   - {fileID: 6951463267058444226}
   m_Father: {fileID: 3877945917110914318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2139291892279691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7638375051520134586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd10cae0c99b56f46bf2c78ff616582a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!212 &6040039697661883310
 SpriteRenderer:
   serializedVersion: 2
