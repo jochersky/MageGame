@@ -303,6 +303,7 @@ MonoBehaviour:
   - health
   - power
   - wealth
+  - light
 --- !u!1001 &6859891433838438493
 PrefabInstance:
   m_ObjectHideFlags: 0

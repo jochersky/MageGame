@@ -23,7 +23,6 @@ public class Roulette : NPC
     [SerializeField] float teleportDelay;
 
     // player managers
-    Player player;
     InventoryManager inventoryManager;
     Health playerHealth;
     SpellManager spellManager;
@@ -54,7 +53,6 @@ public class Roulette : NPC
     protected override void PlayerSetup(Player _player)
     {
         base.PlayerSetup(_player);
-        player = _player;
         inventoryManager = _player.GetComponent<InventoryManager>();
         playerHealth = _player.GetComponent<Health>();
         spellManager = _player.GetComponent<SpellManager>();

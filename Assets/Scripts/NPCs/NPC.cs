@@ -31,11 +31,11 @@ public class NPC : MonoBehaviour
     public List<GameObject> specialEnemies = new();
     public Vector2 spawnPoint;
     protected MapGenerator mapGenerator;
+    protected Player player;
     // current line of dialogue in the list of lines
     int _lineIdx = 0;
     private bool _inRange = false;
     private bool _isTalking = false;
-    private Player player;
     private PlayerInput _input;
     private Coroutine talking;
     private const float FORWARD = 0.0f;
@@ -50,10 +50,10 @@ public class NPC : MonoBehaviour
             mapGenerator.OnPlayerPlaced += PlayerSetup;
         } else
         {
-            Player player = FindAnyObjectByType<Player>();
-            if (player)
+            Player foundPlayer = FindAnyObjectByType<Player>();
+            if (foundPlayer)
             {
-                PlayerSetup(player);
+                PlayerSetup(foundPlayer);
             } else
             {
                 Debug.Log("No player found. Dialogue will not function.");
