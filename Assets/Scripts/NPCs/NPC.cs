@@ -90,7 +90,7 @@ public class NPC : MonoBehaviour
         }
     }
 
-    void Talk()
+    protected virtual void Talk()
     {
         if (!_isTalking)
         {
