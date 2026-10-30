@@ -37,7 +37,7 @@ public class Sellable : MonoBehaviour
 
     }
 
-    void PlayerSetup(GameObject player)
+    void PlayerSetup(Player player)
     {
         _input = player.GetComponent<PlayerInput>();
         _input.actions["Interact"].performed += OnInteract;

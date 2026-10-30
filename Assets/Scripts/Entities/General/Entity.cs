@@ -5,6 +5,7 @@ public class Entity : MonoBehaviour
 {
     [Header("Entity Properties")]
     [SerializeField] private bool freezable = true;
+    public bool teleportable = true;
 
     protected bool frozen;
     private float _freezeDuration;

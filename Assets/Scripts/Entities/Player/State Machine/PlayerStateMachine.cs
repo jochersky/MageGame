@@ -13,7 +13,7 @@ using UnityEngine.InputSystem.Controls;
 using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerStateMachine : MonoBehaviour
+public class PlayerStateMachine : Entity
 {
     [Header("References")]
     [SerializeField] private PlayerInput playerInput;

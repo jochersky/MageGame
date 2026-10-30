@@ -3,7 +3,7 @@ using UnityEngine;
 public class Hitbox : MonoBehaviour
 {
     [Header("Damage Properties")]
-    public int damageAmt;
+    [SerializeField] private int damageAmt;
     [SerializeField] private float cameraShakeAmt;
     [SerializeField] private float cameraShakeDuration;
     [SerializeField] private float knockBackForce;
@@ -19,6 +19,14 @@ public class Hitbox : MonoBehaviour
 
     private DamageProperties _damageProperties;
     public DamageProperties DamageProperties => _damageProperties;
+
+    public int DamageAmt {
+            get => damageAmt;
+            set {
+                damageAmt = value;
+                _damageProperties.amount = value;
+            }
+        }
     
     private void Start()
     {

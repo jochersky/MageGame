@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
         if (spawnPoint)
         {
             GameObject playerInst = SpawnPlayer();
-            if (mapGenerator) mapGenerator.player = playerInst;
+            if (mapGenerator) mapGenerator.player = playerInst.GetComponent<Player>();
             
             AssignPlayerAndReferences(playerInst);
             

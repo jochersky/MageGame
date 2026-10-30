@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!43 &1061098767
+--- !u!43 &277612386
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -382,14 +382,37 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7384317603997443674, guid: 2d115855e83d0674194d6cc4748ad915, type: 3}
+      propertyPath: level
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7384317603997443674, guid: 2d115855e83d0674194d6cc4748ad915, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 2066019580}
+    - target: {fileID: 7384317603997443674, guid: 2d115855e83d0674194d6cc4748ad915, type: 3}
       propertyPath: levelData
       value: 
       objectReference: {fileID: 11400000, guid: 522f295b4d7be0c408c7b63dcfe109a3, type: 2}
+    - target: {fileID: 8025636002942055118, guid: 2d115855e83d0674194d6cc4748ad915, type: 3}
+      propertyPath: levelMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: e3777e1471ad19d4eb099d4e55cdc818, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d115855e83d0674194d6cc4748ad915, type: 3}
+--- !u!114 &2066019580 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6195843704886432160, guid: 2d115855e83d0674194d6cc4748ad915, type: 3}
+  m_PrefabInstance: {fileID: 2066019579}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35bccb6f8539c14ab5bd98f8ff033c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!43 &2098689359
 Mesh:
   m_ObjectHideFlags: 0

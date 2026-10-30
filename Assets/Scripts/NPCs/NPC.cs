@@ -10,9 +10,15 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Collider2D))]
 public class NPC : MonoBehaviour
 {
+    [SerializeField] SpriteRenderer sprite;
     [SerializeField] SpriteRenderer outline;
-    [SerializeField] Image dialogueBox;
+    [SerializeField] protected GameObject dialogueBox;
+    [SerializeField] string npcName;
+    [SerializeField] TextMeshProUGUI nameTextBox;
     [SerializeField] TextMeshProUGUI text;
+    [SerializeField] GameObject dialogueOptions;
+    // the set of dialogue options to be shown next
+    [SerializeField] protected Dictionary<string, UnityEngine.Events.UnityAction> currentDialogueOptions = new();
     // list of lines of dialogue to be spoken right now
     public string[] dialogue;
     // time in seconds between each character appearing
@@ -24,28 +30,48 @@ public class NPC : MonoBehaviour
     public TileBase specialObject;
     public List<GameObject> specialEnemies = new();
     public Vector2 spawnPoint;
+    protected MapGenerator mapGenerator;
+    protected Player player;
     // current line of dialogue in the list of lines
     int _lineIdx = 0;
     private bool _inRange = false;
     private bool _isTalking = false;
     private PlayerInput _input;
     private Coroutine talking;
+    private const float FORWARD = 0.0f;
+    private const float BACKWARD = 180.0f;
 
     void Awake()
     {
-        FindAnyObjectByType<MapGenerator>().OnPlayerPlaced += PlayerSetup;
+        MapGenerator _mapGenerator = FindAnyObjectByType<MapGenerator>();
+        mapGenerator = _mapGenerator;
+        if (mapGenerator)
+        {
+            mapGenerator.OnPlayerPlaced += PlayerSetup;
+        } else
+        {
+            Player foundPlayer = FindAnyObjectByType<Player>();
+            if (foundPlayer)
+            {
+                PlayerSetup(foundPlayer);
+            } else
+            {
+                Debug.Log("No player found. Dialogue will not function.");
+            }
+        }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public virtual void Start()
+    protected virtual void Start()
     {
-        
+        nameTextBox.text = npcName;
         text.text = string.Empty;
-        dialogueBox.enabled = false;
+        dialogueBox.SetActive(false);
     }
 
-    void PlayerSetup(GameObject player)
+    protected virtual void PlayerSetup(Player _player)
     {
-        _input = player.GetComponent<PlayerInput>();
+        player = _player;
+        _input = _player.GetComponent<PlayerInput>();
         _input.actions["Interact"].performed += OnInteract;
     }
 
@@ -53,11 +79,18 @@ public class NPC : MonoBehaviour
     {
         if (_inRange)
         {
+            if (player.gameObject.transform.position.x > transform.position.x)
+            {
+                sprite.transform.SetPositionAndRotation(transform.position, Quaternion.Euler(new Vector3(0, BACKWARD, 0)));
+            } else
+            {
+                sprite.transform.SetPositionAndRotation(transform.position, Quaternion.Euler(new Vector3(0, FORWARD, 0)));
+            }
             Talk();
         }
     }
 
-    void Talk()
+    protected virtual void Talk()
     {
         if (!_isTalking)
         {
@@ -66,19 +99,36 @@ public class NPC : MonoBehaviour
         
     }
 
+    protected void PlayNewLines(string[] _newDialogue)
+    {
+        dialogue = _newDialogue;
+        _lineIdx = 0;
+        Talk();
+    }
+
+
     IEnumerator AnimateText()
     {
         _isTalking = true;
         text.text = string.Empty;
         if (_lineIdx < dialogue.Length)
         {
-            dialogueBox.enabled = true;
+            dialogueBox.SetActive(true);
             foreach (char ch in dialogue[_lineIdx])
             {
                 text.text += ch;
                 yield return new WaitForSeconds(textSpeed);
             }
             _lineIdx += 1;
+            if (_lineIdx == dialogue.Length)
+            {
+                DialogueBox dBox = dialogueBox.GetComponent<DialogueBox>();
+                foreach (string key in currentDialogueOptions.Keys)
+                {
+                    dBox.AddDialogueOption(key, currentDialogueOptions[key]);
+                }
+                currentDialogueOptions.Clear();
+            }
         } else
         {
             CloseDialogue();
@@ -116,7 +166,15 @@ public class NPC : MonoBehaviour
 
     public virtual void CloseDialogue()
     {
-        dialogueBox.enabled = false;
+        ResetToDefaultDialogueOptions();
+        dialogueBox.SetActive(false);
+        
         _lineIdx = 0;
+    }
+
+    // Define the dialogue options for when the player initiates a conversation
+    protected virtual void ResetToDefaultDialogueOptions()
+    {
+        dialogueBox.GetComponent<DialogueBox>().ClearDialogueOptions();
     }
 }
