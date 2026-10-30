@@ -60,6 +60,7 @@ public class Axel : NPC
             return;
         }
         enemyHealth.MaxHealth *= HEALTH_FACTOR;
+        enemyHealth.Heal(enemyHealth.MaxHealth);
         enemyHealth.OnDeath += OnMarkDeath;
         Hitbox hitbox = mark.GetComponentInChildren<Hitbox>();
         if (hitbox == null)
@@ -67,7 +68,7 @@ public class Axel : NPC
             dialogue = noEnemiesLines;
             return;
         }
-        hitbox.damageAmt += DAMAGE_INCREASE;
+        hitbox.DamageAmt += DAMAGE_INCREASE;
         SpriteRenderer spriteRenderer = mark.GetComponentInChildren<SpriteRenderer>();
         if (spriteRenderer == null)
         {

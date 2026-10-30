@@ -111,11 +111,6 @@ public class Witness : NPC
         }
     }
 
-    void Exchange(Offer offer, Offer reward)
-    {
-        
-    }
-
     protected override void ResetToDefaultDialogueOptions()
     {
         base.ResetToDefaultDialogueOptions();
