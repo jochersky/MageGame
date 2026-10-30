@@ -132,7 +132,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 1
+  m_Radius: 1.5
 --- !u!50 &2295722287810159387
 Rigidbody2D:
   serializedVersion: 5
@@ -248,7 +248,7 @@ MonoBehaviour:
   - Oh don't look at me like that. I haven't forgotten your reward.
   markColor: {r: 1, g: 0, b: 0, a: 1}
   markGlow: {fileID: 6961637745602742985, guid: 971c34d782473294fa6c7baecd7f1ca1, type: 3}
-  reward: {fileID: 0}
+  reward: {fileID: 2467777248196494029, guid: d3cbab79a247d7841b314df9a10d6e78, type: 3}
 --- !u!1 &7211214449755453223
 GameObject:
   m_ObjectHideFlags: 0

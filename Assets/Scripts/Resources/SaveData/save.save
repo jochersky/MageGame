@@ -1,10 +1,10 @@
 {
     "gameSaveData": {
-        "characterType": 2
+        "characterType": 1
     },
     "playerData": {
-        "healthAmt": 4,
-        "manaAmt": 75,
+        "healthAmt": 6,
+        "manaAmt": 150,
         "moneyAmt": 0,
         "emberAmt": 0,
         "healthWishCount": 0,
@@ -13,21 +13,18 @@
     "inventoryData": {
         "spells": [
             {
-                "name": "Reverse Footsteps"
-            },
-            {
-                "name": "Dodge"
+                "name": "Dragon's Fury"
             }
         ],
         "equippedSpell1": {
-            "name": "Reverse Footsteps"
+            "name": "Dragon's Fury"
         },
         "equippedSpell2": {
-            "name": "Dodge"
+            "name": ""
         },
         "consumables": [
             {
-                "name": "Drill Bomb",
+                "name": "Bomb",
                 "count": 5
             },
             {
@@ -36,7 +33,7 @@
             }
         ],
         "equippedConsumable1": {
-            "name": "Drill Bomb",
+            "name": "Bomb",
             "count": 0
         },
         "equippedConsumable2": {

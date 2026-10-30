@@ -509,6 +509,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3786889230709391423}
     m_Modifications:
+    - target: {fileID: 2104143384714224755, guid: 971c34d782473294fa6c7baecd7f1ca1, type: 3}
+      propertyPath: speed
+      value: 1.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 4667306161374096134, guid: 971c34d782473294fa6c7baecd7f1ca1, type: 3}
+      propertyPath: m_Color.b
+      value: 0.95587206
+      objectReference: {fileID: 0}
+    - target: {fileID: 4667306161374096134, guid: 971c34d782473294fa6c7baecd7f1ca1, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4667306161374096134, guid: 971c34d782473294fa6c7baecd7f1ca1, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4667306161374096134, guid: 971c34d782473294fa6c7baecd7f1ca1, type: 3}
+      propertyPath: m_Intensity
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6961637745602742985, guid: 971c34d782473294fa6c7baecd7f1ca1, type: 3}
       propertyPath: m_Name
       value: Glow
