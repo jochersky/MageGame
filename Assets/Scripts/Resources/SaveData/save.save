@@ -1,18 +1,19 @@
 {
     "gameSaveData": {
         "characterType": 3,
-        "currentStage": "",
-        "runSeed": 0,
+        "currentStage": "1",
+        "runSeed": -1421548756,
+        "runTime": 122.87641143798828,
         "enemiesSlain": 0,
-        "damageTaken": 0,
-        "moneyCollected": 0,
+        "damageTaken": 7,
+        "moneyCollected": 1,
         "wishesMade": 0
     },
     "playerData": {
-        "healthAmt": 5,
-        "manaAmt": 75,
-        "moneyAmt": 5,
-        "emberAmt": 350,
+        "healthAmt": 4,
+        "manaAmt": 55,
+        "moneyAmt": 1,
+        "emberAmt": 75,
         "healthWishCount": 0,
         "manaWishCount": 0
     },
@@ -20,16 +21,13 @@
         "spells": [
             {
                 "name": "Feathery Dive"
-            },
-            {
-                "name": "Snap Speed"
             }
         ],
         "equippedSpell1": {
             "name": "Feathery Dive"
         },
         "equippedSpell2": {
-            "name": "Dodge"
+            "name": "Light Spell"
         },
         "consumables": [
             {

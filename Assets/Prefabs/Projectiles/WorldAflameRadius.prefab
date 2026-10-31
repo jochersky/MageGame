@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8022521bd3e0bf543b94948c1eeeb772, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lightable
-  light: {fileID: 2272913374091639849}
+  lighting: {fileID: 2272913374091639849}
   isLit: 1
 --- !u!114 &2272913374091639849
 MonoBehaviour:
@@ -189,6 +189,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  source: Player
+  cameraShakeAmt: 0
+  cameraShakeDuration: 0
+  knockBackForce: 0
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders:
   - {fileID: 744296857557165403}
 --- !u!114 &7584520421583620589

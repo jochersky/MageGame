@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
 
     public delegate void EmbersUpdated(int amt);
     public event EmbersUpdated OnEmbersUpdated;
+    public delegate void WishMade();
+    public event WishMade OnWishMade;
 
     private int _embers;
     
@@ -97,6 +99,7 @@ public class Player : MonoBehaviour
                 new BasicStatModifier(wish.statType, wish.duration, s => s + wish.increaseAmt, "Wish", true);
             _psm.Stats.Mediator.AddModifier(wishModifier);
             SyncStats();
+            OnWishMade?.Invoke();
             return true;
         }
         

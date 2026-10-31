@@ -54,9 +54,11 @@ public class InventoryManager : MonoBehaviour
     public delegate void Spell2Unequipped(Sprite spellSprite, bool visible);
     public event Spell2Unequipped OnSpell2Unequipped;
     // - Money
-    public delegate void MoneyUpdated(int money);
+    public delegate void MoneyCountChanged(int money);
+    public event MoneyCountChanged OnMoneyCountChanged;
+    public delegate void MoneyUpdated(int updateAmt);
     public event MoneyUpdated OnMoneyUpdated;
-
+    
     public delegate void StartDone();
     public event StartDone OnStartDone;
     
@@ -287,7 +289,8 @@ public class InventoryManager : MonoBehaviour
     public void UpdateMoney(int amt)
     {
         _money += amt;
-        OnMoneyUpdated?.Invoke(_money);
+        OnMoneyCountChanged?.Invoke(_money);
+        OnMoneyUpdated?.Invoke(amt);
     }
 
     public int GetMoneyCount()

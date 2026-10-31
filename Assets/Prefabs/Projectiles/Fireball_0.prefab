@@ -82,9 +82,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  source: Player
   cameraShakeAmt: 0.5
   cameraShakeDuration: 0.2
   knockBackForce: 15
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders: []
 --- !u!1 &4265959885888012626
 GameObject:
@@ -294,9 +300,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abc1a4d5899772e43b2d76c998f725a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Torch
-  light: {fileID: 3214512161563768557}
+  lighting: {fileID: 3214512161563768557}
   isLit: 1
   litSound: {fileID: 0}
+  particles: {fileID: 0}
 --- !u!1 &7636977218041803877
 GameObject:
   m_ObjectHideFlags: 0

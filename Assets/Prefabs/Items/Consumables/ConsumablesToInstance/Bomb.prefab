@@ -287,6 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d7fc9bfbb117d4ba24429ed8b2ea1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageFlash
+  spriteRenderer: {fileID: 0}
   _flashSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -5254,9 +5255,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 2
+  source: Player
   cameraShakeAmt: 1
   cameraShakeDuration: 0.5
   knockBackForce: 25
+  statType: 0
+  operatorType: 0
+  effectAmt: 0
+  effectDuration: 0
+  effectDelay: 0
   colliders: []
 --- !u!70 &7227354829322290746
 CapsuleCollider2D:
@@ -5381,7 +5388,6 @@ MonoBehaviour:
   explosionRadius: {fileID: 7826872666365487292}
   explosionParticles: {fileID: 5383477053552187149}
   explodeTime: 3
-  flashSpeed: 1
   explosionEffect: {fileID: 972232029763160173, guid: ce1ce37bcb7fc304ea6bfd9e5427563f, type: 3}
 --- !u!1 &7998572574467773109
 GameObject:

@@ -49,7 +49,7 @@ public class PostRunStatsMenuUI : MonoBehaviour
         GameSaveData runData = data.gameSaveData;
         
         mainStatsText.text = $"Stage: {runData.currentStage}   " +
-                             $"Total Time: {runData.runTime}   " +
+                             $"Total Time: {GetFormattedTime(runData.runTime)}   " +
                              $"Seed: {runData.runSeed}";
         
         statsText.text = "";
@@ -79,7 +79,8 @@ public class PostRunStatsMenuUI : MonoBehaviour
             else
             {
                 // Populate spell icons with spells collected during the run
-                if (_postRunSpellIcons[i].TryGetComponent<Image>(out var image))
+                GameObject spellIconGO = _postRunSpellIcons[i].transform.GetChild(0).gameObject;
+                if (spellIconGO.TryGetComponent<Image>(out var image))
                 {
                     Sprite spellSprite = InventoryManager.Instance.SpellDictionary.GetConfig(itemData.spells[i].name).icon;
                     image.sprite = spellSprite;
@@ -87,5 +88,11 @@ public class PostRunStatsMenuUI : MonoBehaviour
                 } 
             }
         }
+    }
+
+    private string GetFormattedTime(float time)
+    {
+        // TODO: make format look more like time 
+        return "" + Mathf.Round(time * 100) / 100;
     }
 }

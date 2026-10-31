@@ -1,3 +1,5 @@
+using System;
+using System.Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.TextCore.Text;
@@ -25,16 +27,28 @@ public class GameManager : MonoBehaviour
     [SerializeField] private EquippedUI equippedUI;
     [SerializeField] private PostRunStatsMenuUI postRunStatsMenuUI;
     [SerializeField] private GameObject listItemPrefab;
-    
     [Header("Debugging")]
     [SerializeField] private bool debug;
     [SerializeField] private GameObject debugPlayerObject;
 
+    private MapGenerator _mapGenerator;
+    
     private bool _playerComponentLoaded = false;
     private bool _inventoryManagerLoaded = false;
-
+    
     private CountdownTimer _loadTimer;
     
+    // Stats 
+    private string _currentStage;
+    private int _runSeed;
+    private float _runTime;
+    private int _enemiesSlain;
+    private int _damageTaken;
+    private int _moneyCollected;
+    private int _wishesMade;
+    
+    // References
+    public static GameManager Instance { get; private set; }
     public Player Player { get; set; }
     public Health PlayerHealth => Player.Health;
     public SpellManager SpellManager { get; set; }
@@ -42,9 +56,8 @@ public class GameManager : MonoBehaviour
     public FullScreenEffect FullScreenEffect => fullScreenEffect;
     public PostRunStatsMenuUI PostRunStatsMenuUI => postRunStatsMenuUI;
     
-    public static GameManager Instance { get; private set; }
-    
     public CharacterType CharacterType { get; set; }
+    public int EnemiesSlain { get => _enemiesSlain; set => _enemiesSlain = value; }
 
     public bool PlayerComponentLoaded { get => _playerComponentLoaded;
         set
@@ -52,6 +65,7 @@ public class GameManager : MonoBehaviour
             _playerComponentLoaded = value;
             SubscribeToPlayerInputEvents();
             LoadPlayerStatsAndItems();
+            ConnectStatUpdates();
         }
     }
     
@@ -99,6 +113,10 @@ public class GameManager : MonoBehaviour
         }
         
         equippedUI?.SubscribeToEvents();
+        
+        _mapGenerator = FindFirstObjectByType<MapGenerator>();
+        
+        _runTime = Time.time;
     }
 
     private void AssignPlayerAndReferences(GameObject playerGO)
@@ -140,6 +158,8 @@ public class GameManager : MonoBehaviour
 
     public void ResetStatsAndItems()
     {
+        ResetStats();
+        
         // Remove items from inventory
         InventoryManager.Instance.ClearItemData();
         
@@ -181,6 +201,16 @@ public class GameManager : MonoBehaviour
         InventoryManager.Instance.UpdateMoney(-InventoryManager.Instance.GetMoneyCount());
     }
 
+    private void ResetStats()
+    {
+        _enemiesSlain = 0;
+        _damageTaken = 0;
+        _moneyCollected = 0;
+        _wishesMade = 0;
+        _runSeed = 0;
+        _runTime = 0;
+    }
+
     public void LoadPlayerStatsAndItems()
     {
         if (!_playerComponentLoaded || !_inventoryManagerLoaded) return;
@@ -191,11 +221,36 @@ public class GameManager : MonoBehaviour
     public void Save(ref GameSaveData data)
     {
         data.characterType = CharacterType;
+        data.enemiesSlain = _enemiesSlain;
+        data.damageTaken = _damageTaken;
+        data.moneyCollected = _moneyCollected;
+        data.wishesMade = _wishesMade;
+        if (_mapGenerator)
+        {
+            data.currentStage = _mapGenerator.Level;
+            data.runSeed = _mapGenerator.Seed;
+        }
+        data.runTime += Time.time - _runTime;
     }
 
     public void Load(ref SaveSystem.SaveData data)
     {
         CharacterType = data.gameSaveData.characterType;
+        _enemiesSlain = data.gameSaveData.enemiesSlain;
+        _damageTaken = data.gameSaveData.damageTaken;
+        _moneyCollected = data.gameSaveData.moneyCollected;
+        _wishesMade = data.gameSaveData.wishesMade;
+        _runSeed = data.gameSaveData.runSeed;
+        _currentStage = data.gameSaveData.currentStage;
+        // load for runTime unnecessary since it gets overridden to capture current time
+    }
+
+    private void ConnectStatUpdates()
+    {
+        // Enemies slain updated through setter
+        PlayerHealth.OnDamageTaken += properties => { _damageTaken += properties.amount; };
+        InventoryManager.Instance.OnMoneyUpdated += updateAmt => { if (updateAmt > 0) _moneyCollected += updateAmt; };
+        Player.OnWishMade += () => { _wishesMade++; };
     }
 }
 
@@ -213,7 +268,7 @@ public struct GameSaveData
     public CharacterType characterType;
     public string currentStage;
     public int runSeed;
-    public Time runTime;
+    public float runTime;
     public int enemiesSlain;
     public int damageTaken;
     public int moneyCollected;

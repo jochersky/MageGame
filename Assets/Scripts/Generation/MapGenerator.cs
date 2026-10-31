@@ -80,6 +80,9 @@ public class MapGenerator : MonoBehaviour
     List<(int x, int y)> specialRoomCoords = new();
     List<Vector2> ropeCoords = new();
 
+    public string Level => level.ToString();
+    public int Seed => seed;
+
     public delegate void PlayerPlaced(GameObject player);
     public event PlayerPlaced OnPlayerPlaced;
 
