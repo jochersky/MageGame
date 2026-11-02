@@ -38,8 +38,11 @@ public class SaveSystem
 
     private static void HandleSaveData()
     {
-        GameManager.Instance.Save(ref _saveData.gameSaveData);
-        if (GameManager.Instance.Player) GameManager.Instance.Player.Save(ref _saveData.playerData);
+        if (GameManager.Instance)
+        {
+            GameManager.Instance.Save(ref _saveData.gameSaveData); 
+            if (GameManager.Instance.Player) GameManager.Instance.Player.Save(ref _saveData.playerData);
+        }
         if (InventoryManager.Instance) InventoryManager.Instance.Save(ref _saveData.inventoryData);
     }
 
@@ -77,7 +80,7 @@ public class SaveSystem
         File.WriteAllText(SaveFileName(), JsonUtility.ToJson(_saveData, true));
         
         // Once items and stats cleared, add the starting stats and items for the chosen character
-        GameManager.Instance.ResetStatsAndItems();
+        if (GameManager.Instance) GameManager.Instance.ResetStatsAndItems();
         
         // Save this fresh character
         Save();

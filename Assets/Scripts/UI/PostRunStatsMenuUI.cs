@@ -33,9 +33,10 @@ public class PostRunStatsMenuUI : MonoBehaviour
         menuUI.SetActive(false);
     }
     
-    public void ShowMenu()
+    public void ShowMenu(string runOutcome)
     {
         UpdateInfo();
+        runOutcomeText.text = runOutcome;
         menuUI.SetActive(true);
     }
 
@@ -92,7 +93,12 @@ public class PostRunStatsMenuUI : MonoBehaviour
 
     private string GetFormattedTime(float time)
     {
-        // TODO: make format look more like time 
-        return "" + Mathf.Round(time * 100) / 100;
+        int roundedSeconds = (int)time;
+        int mins = (int)roundedSeconds / 60;
+        int hours = mins / 60;
+        roundedSeconds -= mins * 60;
+        mins -= hours * 60;
+        // hours:mins:roundedSeconds -> 00:00:00.00
+        return $"{(hours > 0 ? hours + ":" : "")}{(mins < 10 ? "0" + mins + ":" : mins + ":")}{(roundedSeconds < 10 ? "0" + roundedSeconds : roundedSeconds)}";
     }
 }

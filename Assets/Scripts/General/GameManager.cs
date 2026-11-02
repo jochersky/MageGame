@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private EquippedUI equippedUI;
     [SerializeField] private PostRunStatsMenuUI postRunStatsMenuUI;
     [SerializeField] private GameObject listItemPrefab;
+    [Header("Settings")] 
+    [SerializeField] private bool recordTimeInScene = true;
     [Header("Debugging")]
     [SerializeField] private bool debug;
     [SerializeField] private GameObject debugPlayerObject;
@@ -230,7 +232,7 @@ public class GameManager : MonoBehaviour
             data.currentStage = _mapGenerator.Level;
             data.runSeed = _mapGenerator.Seed;
         }
-        data.runTime += Time.time - _runTime;
+        if (recordTimeInScene) data.runTime += Time.time - _runTime;
     }
 
     public void Load(ref SaveSystem.SaveData data)
@@ -251,6 +253,22 @@ public class GameManager : MonoBehaviour
         PlayerHealth.OnDamageTaken += properties => { _damageTaken += properties.amount; };
         InventoryManager.Instance.OnMoneyUpdated += updateAmt => { if (updateAmt > 0) _moneyCollected += updateAmt; };
         Player.OnWishMade += () => { _wishesMade++; };
+
+        PlayerHealth.OnDeath += DeathSequence;
+    }
+
+    private void DeathSequence()
+    {
+        SaveSystem.Save();
+        SaveSystem.Load();
+        postRunStatsMenuUI.ShowMenu("YOU FOUND YOUR DEMISE...");
+    }
+
+    private void WinSequence()
+    {
+        SaveSystem.Save();
+        SaveSystem.Load();
+        postRunStatsMenuUI.ShowMenu("TRIUMPH ACHIEVED !");
     }
 }
 

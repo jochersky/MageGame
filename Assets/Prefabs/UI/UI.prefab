@@ -1883,7 +1883,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7512469645482479566}
+      - m_Target: {fileID: 1473416604021491404}
         m_TargetAssemblyTypeName: MenuButtons, Assembly-CSharp
         m_MethodName: QuitPressed
         m_Mode: 1
@@ -4302,7 +4302,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4999920799418469187
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6392,7 +6392,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7512469645482479566}
+      - m_Target: {fileID: 1473416604021491404}
         m_TargetAssemblyTypeName: MenuButtons, Assembly-CSharp
         m_MethodName: StartPressed
         m_Mode: 1
@@ -11122,6 +11122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6600882513605898765}
   - component: {fileID: 7689313139686747938}
+  - component: {fileID: 1473416604021491404}
   m_Layer: 0
   m_Name: PostRunScreen
   m_TagString: Untagged
@@ -11171,6 +11172,26 @@ MonoBehaviour:
   pyroPortrait: {fileID: 21300000, guid: da5bfeffdf5365c4f8995dc368019612, type: 3}
   houndPortrait: {fileID: 5946469008320576219, guid: 51197cbc8800ddd48980d99ce72573e2, type: 3}
   wardenPortrait: {fileID: 7863853797098850978, guid: 89c901d4bc437db439882d89d9abbbe2, type: 3}
+--- !u!114 &1473416604021491404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9068148173740846255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5d061201323653489ddae55203a42d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuButtons
+  gameStartScene: Level 1
+  clickSFX: {fileID: 8300000, guid: 417624938cdb2844eaf60addf8238ded, type: 3}
+  eventSystem: {fileID: 7743164647968585459}
+  defaultButton: {fileID: 5643200005778409570}
+  settings: {fileID: 0}
+  menuButtons: {fileID: 0}
+  isMainMenu: 0
+  audioManager: {fileID: 0}
 --- !u!1 &9098992787811729838
 GameObject:
   m_ObjectHideFlags: 0
