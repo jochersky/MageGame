@@ -8,7 +8,7 @@ public class Mushelle : NPC
     private readonly int questGoal = 3;
     private bool questCompleted = false;
 
-    public override void Start()
+    protected override void Start()
     {
         base.Start();
         foreach (GameObject enemy in specialEnemies)

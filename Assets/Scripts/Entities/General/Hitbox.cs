@@ -20,6 +20,14 @@ public class Hitbox : MonoBehaviour
 
     private DamageProperties _damageProperties;
     public DamageProperties DamageProperties => _damageProperties;
+
+    public int DamageAmt {
+            get => damageAmt;
+            set {
+                damageAmt = value;
+                _damageProperties.amount = value;
+            }
+        }
     
     private void Start()
     {

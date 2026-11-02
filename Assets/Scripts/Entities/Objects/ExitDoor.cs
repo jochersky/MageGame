@@ -28,6 +28,7 @@ public class ExitDoor : MonoBehaviour, IInteractable
     {
         SaveSystem.Save();
         yield return new WaitForSeconds(0.5f);
+        print("Loading " + nextLevel);
         SceneManager.LoadScene(nextLevel);
     }
 }

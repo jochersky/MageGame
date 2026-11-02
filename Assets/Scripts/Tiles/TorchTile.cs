@@ -6,12 +6,11 @@ using UnityEngine.Tilemaps;
 
 public class TorchTile : TileBase
 {
-    [SerializeField] Sprite TileSprite;
     [SerializeField] GameObject TileAssociatedPrefab;
 
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
     {
-        tileData.sprite = TileSprite;
+        tileData.sprite = TileAssociatedPrefab.GetComponent<SpriteRenderer>().sprite;
 
         if (TileAssociatedPrefab && tileData.gameObject == null)
         {

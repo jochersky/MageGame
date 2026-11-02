@@ -26,10 +26,10 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         if (!debug) FindAnyObjectByType<MapGenerator>().OnPlayerPlaced += SetupInput;
-        else SetupInput(GameManager.Instance.Player.gameObject);
+        else SetupInput(GameManager.Instance.Player);
     }
 
-    void SetupInput(GameObject player)
+    void SetupInput(Player player)
     {
         playerInput = player.GetComponent<PlayerInput>();
         playerInput.actions[inputEventName].performed += Toggle;

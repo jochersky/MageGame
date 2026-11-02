@@ -13,17 +13,20 @@ public class SnowIceRuleTile : RuleTile<SnowIceRuleTile.Neighbor> {
 
     public class Neighbor : RuleTile.TilingRule.Neighbor {
         public const int selfOrConnectable = 1;
-        public const int noTile = 2;
+        public const int notThisOrLike = 2;
         public const int self = 3;
     }
 
+    // neighbor is the number/symbol chosen in the RuleTile patterns in the inspector (e.g. check, X, etc.)
     public override bool RuleMatch(int neighbor, TileBase tile) {
-        switch (neighbor) {
-            case Neighbor.self: return this == tile;
-            case Neighbor.selfOrConnectable: return IsConnectable(tile);
-            case Neighbor.noTile: return tile == null;
-        }
-        return base.RuleMatch(neighbor, tile);
+        return neighbor switch
+        {
+            Neighbor.self => this == tile,
+            Neighbor.selfOrConnectable => IsConnectable(tile),
+            // delete this?
+            Neighbor.notThisOrLike => !IsConnectable(tile),
+            _ => base.RuleMatch(neighbor, tile),
+        };
     }
 
     private bool IsConnectable(TileBase other)

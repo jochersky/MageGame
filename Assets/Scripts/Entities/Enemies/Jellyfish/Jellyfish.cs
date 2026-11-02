@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using NUnit.Framework;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Jellyfish : Entity
 {
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] TemporaryEffect deathBurst;
     [SerializeField] Animator animator;
     [SerializeField] Rigidbody2D body;
     [SerializeField] Health health;
@@ -35,12 +37,35 @@ public class Jellyfish : Entity
         Floating,
         Launching
     }
+    void Awake()
+    {
+        MapGenerator mapGenerator = FindAnyObjectByType<MapGenerator>();
+        if (mapGenerator)
+        {
+            mapGenerator.OnPlayerPlaced += PlayerSetup;
+        } else
+        {
+            Player player = FindAnyObjectByType<Player>();
+            if (player)
+            {
+                PlayerSetup(player);
+            } else
+            {
+                Debug.Log("No player found. Jellyfish will not function.");
+            }
+        }
+    }
+
+    void PlayerSetup(Player _player)
+    {
+        player = _player;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player = FindAnyObjectByType<Player>();
         health.OnDeath += () =>
         {
+            Instantiate(deathBurst, transform.position, Quaternion.identity);
             Destroy(gameObject);
         };
 

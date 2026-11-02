@@ -143,9 +143,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10319ec91002c7349ae1cb1823e51e02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mushelle
+  sprite: {fileID: 5436234672285939315}
   outline: {fileID: 8166991116924070856}
-  dialogueBox: {fileID: 6306804129121309702}
+  dialogueBox: {fileID: 6752479327141589071}
+  npcName: Mushelle
+  nameTextBox: {fileID: 2002676881725607004}
   text: {fileID: 5623922658667024253}
+  dialogueOptions: {fileID: 0}
   dialogue:
   - Hi I am Mushelle!
   - My mush room has been invaded by RATS!
@@ -355,6 +359,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+--- !u!114 &2002676881725607004 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 72747571614862277, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+  m_PrefabInstance: {fileID: 1929937045623670681}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &5623922658667024253 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6108196492627560676, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
@@ -366,17 +381,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!114 &6306804129121309702 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5570609091266089887, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+--- !u!1 &6752479327141589071 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5151312785257625558, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
   m_PrefabInstance: {fileID: 1929937045623670681}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!224 &9063473256627049901 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7426276822884946484, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}

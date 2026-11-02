@@ -23,7 +23,7 @@ public class Barrel : MonoBehaviour
     int chanceForBomb;
     [SerializeField] Hurtbox hurtbox;
     [SerializeField] TemporaryEffect effect;
-    private GameObject _player;
+    private Player _player;
     readonly List<GameObject> potentialDrops = new();
     System.Random randy;
     void Awake()

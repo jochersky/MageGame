@@ -11,11 +11,23 @@ PrefabInstance:
     - target: {fileID: 6733792079447504657, guid: 09db645e5d0d04d489b4b60efd05ed9e, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 8d34f903097beec4a8ef7f9eade6dd2f, type: 3}
+      objectReference: {fileID: 21300000, guid: fed1d74f494dccc4aaf6a4c99c83de9f, type: 3}
     - target: {fileID: 7744476860813278961, guid: 09db645e5d0d04d489b4b60efd05ed9e, type: 3}
       propertyPath: m_Name
       value: FalseFloorPrefab Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8507247725306244218, guid: 09db645e5d0d04d489b4b60efd05ed9e, type: 3}
+      propertyPath: breakEffect
+      value: 
+      objectReference: {fileID: 7923037366241592938, guid: 3e510b31c389f9c4e9adde32743d1128, type: 3}
+    - target: {fileID: 8507247725306244218, guid: 09db645e5d0d04d489b4b60efd05ed9e, type: 3}
+      propertyPath: crackEffect
+      value: 
+      objectReference: {fileID: 5284739143470444792, guid: 98a2a5c3855259f48a942d12e3da873e, type: 3}
+    - target: {fileID: 8507247725306244218, guid: 09db645e5d0d04d489b4b60efd05ed9e, type: 3}
+      propertyPath: crackedFloorSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f9de47304d1c61c47837c760ea6243b1, type: 3}
     - target: {fileID: 8538835650129659697, guid: 09db645e5d0d04d489b4b60efd05ed9e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

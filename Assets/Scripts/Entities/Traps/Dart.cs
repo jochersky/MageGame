@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Dart : MonoBehaviour
+public class Dart : Entity
 {
     Rigidbody2D rb;
     public float speed = 500f;
