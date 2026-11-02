@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  source: Player
   cameraShakeAmt: 0
   cameraShakeDuration: 0
   knockBackForce: 3

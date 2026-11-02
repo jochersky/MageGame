@@ -3,7 +3,8 @@ using UnityEngine;
 public class Hitbox : MonoBehaviour
 {
     [Header("Damage Properties")]
-    [SerializeField] private int damageAmt;
+    public int damageAmt;
+    [SerializeField] private string source;
     [SerializeField] private float cameraShakeAmt;
     [SerializeField] private float cameraShakeDuration;
     [SerializeField] private float knockBackForce;
@@ -48,6 +49,7 @@ public class Hitbox : MonoBehaviour
                 delay = effectDelay
             };
         }
+        _damageProperties.source = source;
     }
     
     public void Disable()
@@ -63,10 +65,11 @@ public struct DamageProperties
 {
     public int amount;
     public CameraShakeProperties cameraShakeProperties;
-    // damage source -> hurt box
+    // damage source -> hurt box = direction
     public Vector2 direction;
     public float knockBackForce;
     public StatusEffect effect;
+    public string source;
 }
 
 public struct StatusEffect

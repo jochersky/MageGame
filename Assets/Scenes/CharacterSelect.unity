@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: debug
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1275822930246508952, guid: cbbfbf996cdfbee44aae7c865fae61ee, type: 3}
+      propertyPath: recordTimeInScene
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2361405606008679374, guid: cbbfbf996cdfbee44aae7c865fae61ee, type: 3}
       propertyPath: m_LocalPosition.x
       value: 307.03955

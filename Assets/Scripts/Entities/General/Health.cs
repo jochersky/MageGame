@@ -82,7 +82,11 @@ public class Health : MonoBehaviour
         OnDamageTaken?.Invoke(damageProperties);
         if (damageFlash) damageFlash.StartFlash();
         if (_currentHealth < 0f) OnDestroyed?.Invoke();
-        if (_currentHealth <= 0f) {
+        if (_currentHealth <= 0f)
+        {
+            // A Hitbox's damageProperties.source must be labeled with "Player"
+            // in order to be counted as slain by the player.
+            if (damageProperties.source == "Player") GameManager.Instance.EnemiesSlain++;
             OnDeath?.Invoke();
         }
     }

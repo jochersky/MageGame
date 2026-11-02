@@ -7,7 +7,7 @@ public class MoneyCounter : MonoBehaviour
 
     private void Start()
     {
-        InventoryManager.Instance.OnMoneyUpdated += UpdateMoneyCount;
+        InventoryManager.Instance.OnMoneyCountChanged += UpdateMoneyCount;
     }
     
     public void UpdateMoneyCount(int amt)

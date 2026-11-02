@@ -88,7 +88,7 @@ public class InventoryUI : MonoBehaviour
         equippedSpell2.OnUnequippedSpellPressed += UnequipSpellInSlot;
         InventoryManager.Instance.OnSpellAdded += AddSpellToSpellSelection;
         
-        InventoryManager.Instance.OnMoneyUpdated += (money => moneyText.text = $"$ {money.ToString()}");
+        InventoryManager.Instance.OnMoneyCountChanged += (money => moneyText.text = $"$ {money.ToString()}");
         GameManager.Instance.Player.OnEmbersUpdated += (embers => emberText.text = $"*~ {embers.ToString()}");
     }
     

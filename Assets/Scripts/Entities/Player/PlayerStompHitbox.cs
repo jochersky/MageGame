@@ -16,6 +16,7 @@ public class PlayerStompHitbox : MonoBehaviour
     private void Start()
     {
         _damageProperties.amount = damageAmt;
+        _damageProperties.source = "Player";
     }
     
     private void OnTriggerEnter2D(Collider2D other)
