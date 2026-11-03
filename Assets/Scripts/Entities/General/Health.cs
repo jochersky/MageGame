@@ -32,6 +32,8 @@ public class Health : MonoBehaviour
     }
     public float InvulnerabilityTime { get => invulnerabilityTime; set => invulnerabilityTime = value; }
     
+    public delegate void MaxHealthChanged(int newMax);
+    public event MaxHealthChanged OnMaxHealthChanged;
     public delegate void HealthChange(int newHealth);
     public event HealthChange OnHealthChanged;
     public delegate void damageTaken(DamageProperties damageProperties);
@@ -61,14 +63,14 @@ public class Health : MonoBehaviour
 
     public void UpdateMaxHealth(int amount)
     {
-        // TODO: needs to invoke event when that updates max value in UI
-        
         maxHealth = amount;
         if (_currentHealth > maxHealth)
         {
             _currentHealth = maxHealth;
             OnHealthChanged?.Invoke(_currentHealth);
         }
+        
+        OnMaxHealthChanged?.Invoke(maxHealth);
     }
 
     private void TakeDamage(DamageProperties damageProperties)
