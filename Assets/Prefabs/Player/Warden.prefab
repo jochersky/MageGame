@@ -60,6 +60,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5302559506376252669, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: manaRegenRate
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5302559506376252669, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: manaRegenTime
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6546536738721415743, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
       propertyPath: stats
       value: 

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BaseStats
   health: 8
   mana: 75
-  jumps: 1
+  jumps: 0
   dodges: 0
   speed: 8
   gravity: 1
