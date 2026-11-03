@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -32,6 +33,8 @@ public class NPC : MonoBehaviour
     public Vector2 spawnPoint;
     protected MapGenerator mapGenerator;
     protected Player player;
+    private EventSystem _eventSystem;
+    [SerializeField] private string[] activeActions;
     // current line of dialogue in the list of lines
     int _lineIdx = 0;
     private bool _inRange = false;
@@ -63,6 +66,8 @@ public class NPC : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
+        _eventSystem = FindFirstObjectByType<EventSystem>();
+        
         nameTextBox.text = npcName;
         text.text = string.Empty;
         dialogueBox.SetActive(false);
@@ -94,6 +99,7 @@ public class NPC : MonoBehaviour
     {
         if (!_isTalking)
         {
+            InputManager.Instance.ToggleInputsBesides(activeActions, true);
             talking = StartCoroutine(AnimateText());
         }
         
@@ -128,6 +134,13 @@ public class NPC : MonoBehaviour
                     dBox.AddDialogueOption(key, currentDialogueOptions[key]);
                 }
                 currentDialogueOptions.Clear();
+
+                // Sets UI selection to first dialogue option
+                if (dialogueOptions.transform.childCount > 0)
+                {
+                    GameObject firstDialogueOptionGO = dialogueOptions.transform.GetChild(0).gameObject;
+                    _eventSystem.SetSelectedGameObject(firstDialogueOptionGO);
+                }
             }
         } else
         {
@@ -166,6 +179,8 @@ public class NPC : MonoBehaviour
 
     public virtual void CloseDialogue()
     {
+        InputManager.Instance.ToggleInputsBesides(activeActions, false);
+        
         ResetToDefaultDialogueOptions();
         dialogueBox.SetActive(false);
         

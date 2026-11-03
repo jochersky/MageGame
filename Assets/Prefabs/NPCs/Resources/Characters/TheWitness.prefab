@@ -287,6 +287,8 @@ MonoBehaviour:
   specialObject: {fileID: 0}
   specialEnemies: []
   spawnPoint: {x: 0, y: 0}
+  activeActions:
+  - Interact
   firstMeetLines:
   - Greetings. I am known as the Witness.
   - I oversee deals with dark forces of this world.
