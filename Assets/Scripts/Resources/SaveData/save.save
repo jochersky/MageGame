@@ -1,0 +1,54 @@
+{
+    "gameSaveData": {
+        "characterType": 3,
+        "currentStage": "1",
+        "runSeed": -1230657924,
+        "runTime": 97.8085708618164,
+        "enemiesSlain": 0,
+        "damageTaken": 7,
+        "moneyCollected": 5,
+        "wishesMade": 0
+    },
+    "playerData": {
+        "healthAmt": 0,
+        "manaAmt": 150,
+        "moneyAmt": 5,
+        "emberAmt": 100,
+        "healthWishCount": 0,
+        "manaWishCount": 0
+    },
+    "inventoryData": {
+        "spells": [
+            {
+                "name": "Feathery Dive"
+            },
+            {
+                "name": "Snap Speed"
+            }
+        ],
+        "equippedSpell1": {
+            "name": "Feathery Dive"
+        },
+        "equippedSpell2": {
+            "name": "Snap Speed"
+        },
+        "consumables": [
+            {
+                "name": "Sol Stone",
+                "count": 5
+            },
+            {
+                "name": "Rope",
+                "count": 5
+            }
+        ],
+        "equippedConsumable1": {
+            "name": "Sol Stone",
+            "count": 0
+        },
+        "equippedConsumable2": {
+            "name": "Rope",
+            "count": 0
+        }
+    }
+}
