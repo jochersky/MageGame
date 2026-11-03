@@ -65,6 +65,7 @@ public class PlayerStateMachine : Entity
     [SerializeField] private float climbSnapSpeed = 0.2f;
     [SerializeField] private float climbDelayTime = 0.1f;
     [SerializeField] private float minClimbFallInput = -0.95f;
+    [SerializeField] private bool climbWithoutLedge;
     [SerializeField] private bool climbDebug;
 
     [Header("Rope")] 
@@ -488,7 +489,7 @@ public class PlayerStateMachine : Entity
         {
             Debug.DrawRay(start, direction * climbCheckDistance, Color.orange);
             Debug.DrawRay(start + (Vector2.up * climbCheckHeight), direction * climbCheckDistance, Color.orange);
-            Debug.DrawRay(transform.position, Vector2.down * climbAboveBelowCheckLength, Color.orange);
+            Debug.DrawRay(transform.position, Vector2.down * climbAboveBelowCheckLength, Color.blue);
             Debug.DrawRay(transform.position, Vector3.up * climbAboveBelowCheckLength, Color.orange);
         }
 
@@ -496,9 +497,9 @@ public class PlayerStateMachine : Entity
         _canClimb = !_isGrounded
                     && !_climbCooldown
                     && wallToClimb
-                    && !Physics2D.Raycast(start + (Vector2.up * climbCheckHeight), direction, climbCheckDistance, environmentLayer)
+                    && (!Physics2D.Raycast(start + (Vector2.up * climbCheckHeight), direction, climbCheckDistance, environmentLayer) || climbWithoutLedge)
                     && !Physics2D.Raycast(transform.position, Vector2.down, climbAboveBelowCheckLength, environmentLayer)
-                    && !Physics2D.Raycast(transform.position, Vector2.up, climbAboveBelowCheckLength, environmentLayer);
+                    && (!Physics2D.Raycast(transform.position, Vector2.up, climbAboveBelowCheckLength, environmentLayer) || climbWithoutLedge);
         
         // Climb state uses the tilemap obtained from this raycast to climb onto
         if (_canClimb && wallToClimb.collider.TryGetComponent<Tilemap>(out Tilemap tilemap))

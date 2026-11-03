@@ -162,6 +162,8 @@ MonoBehaviour:
   specialObject: {fileID: 0}
   specialEnemies: []
   spawnPoint: {x: 0, y: 0}
+  activeActions:
+  - Interact
   successLines:
   - Oh, you did it!
   - Thank you so mush!

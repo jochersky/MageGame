@@ -233,6 +233,8 @@ MonoBehaviour:
   specialObject: {fileID: 0}
   specialEnemies: []
   spawnPoint: {x: 0, y: 0}
+  activeActions:
+  - Interact
   greetingLines:
   - Hail, friend. You look strong and capable. Perhaps you can aid me.
   - I seek to slay a mighty beast that lurks around here.

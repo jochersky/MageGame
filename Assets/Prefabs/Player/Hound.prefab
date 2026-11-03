@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: baseStats
       value: 
       objectReference: {fileID: 11400000, guid: fb9bb3cdc1d81ec428a0122d1f5809a7, type: 2}
+    - target: {fileID: 1389070659067755822, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
+      propertyPath: climbWithoutLedge
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1843362600904055376, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -62,11 +66,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5302559506376252669, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
       propertyPath: manaRegenRate
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5302559506376252669, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
       propertyPath: manaRegenTime
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6546536738721415743, guid: f4bf145e7941ef84287045c891e2563d, type: 3}
       propertyPath: stats

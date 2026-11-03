@@ -48,6 +48,8 @@ public class SpellManager : MonoBehaviour
         }
     }
 
+    public delegate void MaxManaChanged(int newMax);
+    public event MaxManaChanged OnMaxManaChanged;
     public delegate void ManaChange(int newMana);
     public event ManaChange OnManaChanged;
 
@@ -99,8 +101,8 @@ public class SpellManager : MonoBehaviour
 
     public void UpdateMaxMana(int amount)
     {
-        // TODO: needs to invoke event when that updates max value in UI
         maxMana = amount;
+        OnMaxManaChanged?.Invoke(maxMana);
     }
 
     public int AddSpell(SpellConfig spellConfig)

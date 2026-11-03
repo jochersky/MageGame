@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterInfo
   characterName: Warden
   characterType: 3
-  giftDescription: 'Stored Power: Innate double jump charge.'
+  giftDescription: 'Stored Power: Steadily regenerate mana over time.'
   characterStats: {fileID: 11400000, guid: 38e0a1b4bfd490e4da421a8de492f534, type: 2}
   startingSpell1: {fileID: 11400000, guid: 275b62a7e2d21864589d43df5afe75fd, type: 2}
   startingSpell2: {fileID: 0}

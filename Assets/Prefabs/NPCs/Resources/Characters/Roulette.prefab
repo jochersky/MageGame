@@ -216,6 +216,8 @@ MonoBehaviour:
   specialObject: {fileID: 0}
   specialEnemies: []
   spawnPoint: {x: 0, y: 0}
+  activeActions:
+  - Interact
   greetingLines:
   - Hey there, hotshot. Care to roll the dice?
   declineLines:

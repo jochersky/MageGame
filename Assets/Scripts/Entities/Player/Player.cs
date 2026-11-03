@@ -98,7 +98,7 @@ public class Player : MonoBehaviour
             BasicStatModifier wishModifier = 
                 new BasicStatModifier(wish.statType, wish.duration, s => s + wish.increaseAmt, "Wish", true);
             _psm.Stats.Mediator.AddModifier(wishModifier);
-            SyncStats();
+            // SyncStats();
             OnWishMade?.Invoke();
             return true;
         }
@@ -109,18 +109,24 @@ public class Player : MonoBehaviour
     private void SyncStats()
     {
         // Update the max stat values for when they're updated (i.e. when making wish)
-        // _health.UpdateMaxHealth((int)_psm.Stats.Health);
-        // _spellManager.UpdateMaxMana((int)_psm.Stats.Mana);
-        HealthBar.UpdateMaxValue((int)_psm.Stats.Health);
-        ManaBar.UpdateMaxValue((int)_psm.Stats.Mana);
+        _health.UpdateMaxHealth((int)_psm.Stats.Health);
+        _spellManager.UpdateMaxMana((int)_psm.Stats.Mana);
+        
+        // HealthBar.UpdateMaxValue((int)_psm.Stats.Health);
+        // ManaBar.UpdateMaxValue((int)_psm.Stats.Mana);
     }
 
     public void UpdateHealthAndMana()
     {
         _health.CurrentHealth = stats.health;
         _health.UpdateMaxHealth(stats.health);
-        _spellManager.MaxMana = stats.mana;
         _spellManager.Mana = _spellManager.MaxMana;
+        _spellManager.UpdateMaxMana(stats.mana);
+        _spellManager.MaxMana = stats.mana;
+
+        // Connect events
+        _health.OnMaxHealthChanged += max => HealthBar.UpdateMaxValue(max);
+        _spellManager.OnMaxManaChanged += max => ManaBar.UpdateMaxValue(max);
     }
 
     public void Save(ref PlayerSaveData data)
