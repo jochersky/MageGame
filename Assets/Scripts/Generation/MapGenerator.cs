@@ -83,7 +83,7 @@ public class MapGenerator : MonoBehaviour
     public string Level => level.ToString();
     public int Seed => seed;
 
-    public delegate void PlayerPlaced(GameObject player);
+    public delegate void PlayerPlaced(Player player);
     public event PlayerPlaced OnPlayerPlaced;
 
     
