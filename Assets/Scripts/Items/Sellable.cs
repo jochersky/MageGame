@@ -20,40 +20,48 @@ public class Sellable : MonoBehaviour
     [SerializeField] int count;
     [SerializeField] string itemConfigPath;
     [SerializeField] string spellConfigPath;
+    // out of 100
+    [SerializeField] int chanceForSpell = 50;
     private PlayerInput _input;
     private System.Random randy;
+    private ChestManager chestManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         FindAnyObjectByType<MapGenerator>().OnPlayerPlaced += PlayerSetup;
-    }
-    void Start()
-    {
-        randy = new System.Random();
-        GenerateSellable();
-        display.sprite = item.icon;
-        price = randy.Next(0, maxPrice);
-        priceText.text = price.ToString();
-
+        chestManager = FindAnyObjectByType<ChestManager>();
     }
 
     void PlayerSetup(Player player)
     {
         _input = player.GetComponent<PlayerInput>();
         _input.actions["Interact"].performed += OnInteract;
+        randy = new System.Random();
+        GenerateSellable();
+        display.sprite = item.icon;
+        price = randy.Next(0, maxPrice);
+        priceText.text = price.ToString();
     }
 
 
     // probably inefficent for each sellable to do this
     void GenerateSellable()
     {
-        ItemConfig[] sellables = Resources.LoadAll<ItemConfig>(itemConfigPath).Concat(Resources.LoadAll<ItemConfig>(spellConfigPath)).ToArray();
-        if (sellables.Length <= 0)
+        // ItemConfig[] sellables = Resources.LoadAll<ItemConfig>(itemConfigPath).Concat(Resources.LoadAll<ItemConfig>(spellConfigPath)).ToArray();
+        // if (sellables.Length <= 0)
+        // {
+        //     throw new System.Exception("No item configs found at config path");
+        // }
+        // //sellables.Concat(Resources.LoadAll<ItemConfig>(spellConfigPath)).ToArray();
+        // item = sellables[randy.Next(0, sellables.Length)];
+        int roll = randy.Next(0, 100);
+        if (roll < chanceForSpell)
         {
-            throw new System.Exception("No item configs found at config path");
+            item = chestManager.GetSpellConfig();
+        } else
+        {
+            item = chestManager.GetConsConfig();
         }
-        //sellables.Concat(Resources.LoadAll<ItemConfig>(spellConfigPath)).ToArray();
-        item = sellables[randy.Next(0, sellables.Length)];
     }
 
     void OnInteract(InputAction.CallbackContext context)

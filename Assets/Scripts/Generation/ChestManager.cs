@@ -21,11 +21,10 @@ public class ChestManager : MonoBehaviour
 
     void CheckPlayerInventory()
     {
-        InventoryManager inventory = FindAnyObjectByType<InventoryManager>();
-        if (inventory)
-            availableSpells = inventory.spells;
-        else 
-            Debug.Log("No inventory found.");
+        foreach (KeyValuePair<GameObject, SpellConfig> kvp in InventoryManager.Instance.spellListItemInstances)
+        {
+            availableSpells.Remove(kvp.Value);
+        }
     }
 
     // TODO: Clean up
