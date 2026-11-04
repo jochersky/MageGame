@@ -7,6 +7,7 @@ public class Mushelle : NPC
     private int questProgress = 0;
     private readonly int questGoal = 3;
     private bool questCompleted = false;
+    private bool rewardGranted = false;
 
     protected override void Start()
     {
@@ -42,8 +43,10 @@ public class Mushelle : NPC
     public override void CloseDialogue()
     {
         base.CloseDialogue();
-        if (questCompleted)
+        if (questCompleted && !rewardGranted)
         {
+            // do this to avoid race condition with other Close Dialogue calls
+            rewardGranted = true;
             GrantReward();
         }
     }
