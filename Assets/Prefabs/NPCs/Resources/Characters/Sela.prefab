@@ -240,7 +240,7 @@ MonoBehaviour:
   npcName: Sela
   nameTextBox: {fileID: 3753798597615707992}
   text: {fileID: 7052342556658787449}
-  dialogueOptions: {fileID: 0}
+  dialogueOptions: {fileID: 17942460120020240}
   dialogue:
   - Welcome, traveler, to my store!
   - Everything is for sale, even you!
@@ -355,6 +355,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+--- !u!1 &17942460120020240 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3829721022861908365, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+  m_PrefabInstance: {fileID: 3826468038402518173}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3753798597615707992 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 72747571614862277, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
