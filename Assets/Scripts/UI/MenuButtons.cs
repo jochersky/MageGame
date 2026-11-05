@@ -12,6 +12,7 @@ public class MenuButtons : MonoBehaviour
     [SerializeField] EventSystem eventSystem;
     [SerializeField] GameObject defaultButton;
     [SerializeField] GameObject settings;
+    [SerializeField] private GameObject defaultSettingsButton;
     [SerializeField] GameObject menuButtons;
     [SerializeField] bool isMainMenu = false;
     [SerializeField] AudioManager audioManager;
@@ -37,6 +38,7 @@ public class MenuButtons : MonoBehaviour
 
     public void SettingsPressed()
     {
+        eventSystem.SetSelectedGameObject(defaultSettingsButton);
         audioManager.PlayAudio(clickSFX, clickSFX.length);
         menuButtons.SetActive(false);
         settings.SetActive(true);
@@ -44,6 +46,7 @@ public class MenuButtons : MonoBehaviour
 
     public void BackPressed()
     {
+        eventSystem.SetSelectedGameObject(defaultButton);
         audioManager.PlayAudio(clickSFX, clickSFX.length);
         menuButtons.SetActive(true);
         settings.SetActive(false);
