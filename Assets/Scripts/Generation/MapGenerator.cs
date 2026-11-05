@@ -65,6 +65,7 @@ public class MapGenerator : MonoBehaviour
     readonly string NPCpath = "Characters/";
     List<(int x, int y)> emptyFloorSpaces = new();
     List<(int x, int y)> emptyCeilingSpaces = new();
+    private Vector2Int exitRoomOffsets;
 
     int entranceCol;
     int exitCol;
@@ -795,6 +796,7 @@ public class MapGenerator : MonoBehaviour
                     } else
                     {
                         nonColliderTilemap.SetTile(new Vector3Int(xCoord, yCoord, 0), levelData.exitDoor);
+                        exitRoomOffsets = new(xOffset, yOffset);
                         ExitPosition = new Vector2(xCoord + startingPositionOffset, yCoord + startingPositionOffset);
                     }
                 }
@@ -1055,6 +1057,37 @@ public class MapGenerator : MonoBehaviour
             
         }
         
+    }
+
+    public Vector3 GetWishGranterSpawnPos()
+    {
+        List<Vector3> possibleSpots = new();
+        // ignore bottom row
+        for (int row = 0; row < roomDimensions - 1; row++)
+        {
+            for (int col = 0; col < roomDimensions; col++)
+            {
+                
+                int xCoord = col + exitRoomOffsets.x;
+                int yCoord = row + exitRoomOffsets.y;
+                Vector3Int coords = new(xCoord, yCoord, 0);
+                bool self = colliderTilemap.HasTile(coords); 
+                bool below = colliderTilemap.HasTile(new(xCoord, yCoord - 1, 0));
+                if (!self && below)
+                {
+                    possibleSpots.Add(new Vector3(coords.x + startingPositionOffset, coords.y + startingPositionOffset,0));
+                }
+            }
+        }
+        if (possibleSpots.Count <= 0)
+        {
+            Debug.Log("Error: No space for a chest");
+            return new Vector3(0,0);
+        } else
+        {
+            return possibleSpots[randy.Next(possibleSpots.Count)];
+        }
+
     }
 
     IEnumerator SpawnEnemy(EnemyInfo enemy, int randIdx)

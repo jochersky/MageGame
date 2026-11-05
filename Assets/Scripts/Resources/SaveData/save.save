@@ -1,19 +1,19 @@
 {
     "gameSaveData": {
         "characterType": 1,
-        "currentStage": "1",
-        "runSeed": 481052693,
-        "runTime": 158.85430908203126,
-        "enemiesSlain": 1,
-        "damageTaken": 0,
-        "moneyCollected": 11,
+        "currentStage": "3",
+        "runSeed": 1137326103,
+        "runTime": 182.158447265625,
+        "enemiesSlain": 0,
+        "damageTaken": 6,
+        "moneyCollected": 1,
         "wishesMade": 0
     },
     "playerData": {
-        "healthAmt": 6,
+        "healthAmt": 0,
         "manaAmt": 120,
-        "moneyAmt": 6,
-        "emberAmt": 600,
+        "moneyAmt": 1,
+        "emberAmt": 150,
         "healthWishCount": 0,
         "manaWishCount": 0
     },
@@ -21,31 +21,22 @@
         "spells": [
             {
                 "name": "Dragon's Fury"
-            },
-            {
-                "name": "Snap Speed"
-            },
-            {
-                "name": "Light Spell"
-            },
-            {
-                "name": "Cold Snap"
             }
         ],
         "equippedSpell1": {
             "name": "Dragon's Fury"
         },
         "equippedSpell2": {
-            "name": "Snap Speed"
+            "name": ""
         },
         "consumables": [
             {
                 "name": "Bomb",
-                "count": 5
+                "count": 3
             },
             {
                 "name": "Rope",
-                "count": 3
+                "count": 5
             }
         ],
         "equippedConsumable1": {
