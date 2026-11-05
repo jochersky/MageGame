@@ -3,18 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Unity.VisualScripting;
+
 #if UNITY_EDITOR
-    using UnityEditor;
+using UnityEditor;
 #endif
 
 [CreateAssetMenu]
 public class SnowIceRuleTile : RuleTile<SnowIceRuleTile.Neighbor> {
     public TileBase[] connectableTiles;
+    [SerializeField] GameObject TileAssociatedPrefab;
 
     public class Neighbor : RuleTile.TilingRule.Neighbor {
         public const int selfOrConnectable = 1;
         public const int notThisOrLike = 2;
         public const int self = 3;
+    }
+
+    public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
+    {
+        base.GetTileData(position, tilemap, ref tileData);
+
+        if (TileAssociatedPrefab)
+        {
+            tileData.gameObject = TileAssociatedPrefab;
+        } else
+        {
+            Debug.Log("Error: Tile has no associated prefab");
+        }
     }
 
     // neighbor is the number/symbol chosen in the RuleTile patterns in the inspector (e.g. check, X, etc.)

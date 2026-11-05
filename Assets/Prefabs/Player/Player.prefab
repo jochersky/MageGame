@@ -935,6 +935,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
+  source: 
   cameraShakeAmt: 0
   cameraShakeDuration: 0
   knockBackForce: 15
@@ -1705,6 +1706,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0a6ac059fa56454394cb93d12602f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStateMachine
+  freezable: 1
+  teleportable: 1
   playerInput: {fileID: 8788688971398276464}
   environmentLayer:
     serializedVersion: 2
@@ -1717,6 +1720,7 @@ MonoBehaviour:
   statusEffectManager: {fileID: 7987879501707214221}
   maxWalkSpeed: 8
   minInputVecMag: 0.25
+  normalDrag: 1
   maxJumpHeight: 8
   maxDoubleJumpHeight: 10
   jumpCheckTransform: {fileID: 1587937387225483812}
@@ -1726,7 +1730,6 @@ MonoBehaviour:
   maxDodgeSpeed: 15
   dodgeDuration: 0.2
   dodgeCooldown: 1.5
-  dodgeInvulnerabilityTime: 0.2
   maxAirborneMoveSpeed: 8
   baseGravity: 3
   maxFallSpeed: 18
@@ -1740,12 +1743,16 @@ MonoBehaviour:
   climbSnapSpeed: 0.4
   climbDelayTime: 0.7
   minClimbFallInput: -0.95
+  climbWithoutLedge: 0
   climbDebug: 0
   _ropeHandler: {fileID: 7954448484511661488}
   ropeClimbSpeed: 5
   minVerticalInput: 0.95
   dirHoldDuration: 0.3
   reduceConst: 0.75
+  iceSlideMaxSpeed: 3
+  iceReduceConst: 0.95
+  iceCheckDepth: 1
   stateName: 
   onDirectionChanged:
     m_PersistentCalls:
@@ -2396,9 +2403,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e38ab6de760ef439d5173f6c8995c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  light: {fileID: 8899097152374815958}
+  lighting: {fileID: 8899097152374815958}
   isLit: 1
   litSound: {fileID: 0}
+  particles: {fileID: 0}
   torchExp: 25
 --- !u!61 &8656288525767866780
 BoxCollider2D:
