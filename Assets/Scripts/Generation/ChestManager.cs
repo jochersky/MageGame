@@ -1,27 +1,54 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ChestManager : MonoBehaviour
 {
     [SerializeField] string configPath;
-    private List<SpellConfig> spells;
+    [SerializeField] string consumableConfigPath;
+    private List<SpellConfig> allSpells;
+    private List<ConsumableConfig> allConsumables;
+    private List<SpellConfig> availableSpells;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         SpellConfig[] spellArray = Resources.LoadAll<SpellConfig>(configPath);
-        spells = new List<SpellConfig>(spellArray);
+        allConsumables = new List<ConsumableConfig>(Resources.LoadAll<ConsumableConfig>(consumableConfigPath));
+        allSpells = new List<SpellConfig>(spellArray);
+        availableSpells = allSpells;
     }
 
-    public SpellConfig GetSpellConfig()
+    void CheckPlayerInventory()
     {
-        if (spells.Count <= 0)
+        foreach (KeyValuePair<GameObject, SpellConfig> kvp in InventoryManager.Instance.spellListItemInstances)
         {
-            throw new System.Exception("ChestManager has no spells available");
+            availableSpells.Remove(kvp.Value);
         }
-        int randIdx = Random.Range(0, spells.Count);
-        SpellConfig spell = spells[randIdx];
-        spells.RemoveAt(randIdx);
-        return spell;
+    }
+
+    // TODO: Clean up
+    public ItemConfig GetSpellConfig()
+    {
+        CheckPlayerInventory();
+        List<SpellConfig> currentlyUnusedSpells = availableSpells;
+        if (currentlyUnusedSpells.Count <= 0)
+        {
+            // player has most or all of the spells, so we give items instead
+            return GetConsConfig();
+        } else
+        {
+            int randIdx = Random.Range(0, currentlyUnusedSpells.Count);
+            SpellConfig spell = currentlyUnusedSpells[randIdx];
+            availableSpells.RemoveAt(randIdx);
+            return spell;
+        }
+    }
+
+    public ConsumableConfig GetConsConfig()
+    {
+        int randIdx = Random.Range(0, allConsumables.Count);
+        ConsumableConfig cons = allConsumables[randIdx];
+        return cons;
     }
 }

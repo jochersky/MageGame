@@ -1,41 +1,38 @@
 {
     "gameSaveData": {
-        "characterType": 3,
-        "currentStage": "1",
-        "runSeed": -1230657924,
-        "runTime": 97.8085708618164,
+        "characterType": 1,
+        "currentStage": "3",
+        "runSeed": 1137326103,
+        "runTime": 182.158447265625,
         "enemiesSlain": 0,
-        "damageTaken": 7,
-        "moneyCollected": 5,
+        "damageTaken": 6,
+        "moneyCollected": 1,
         "wishesMade": 0
     },
     "playerData": {
         "healthAmt": 0,
-        "manaAmt": 150,
-        "moneyAmt": 5,
-        "emberAmt": 100,
+        "manaAmt": 120,
+        "moneyAmt": 1,
+        "emberAmt": 150,
         "healthWishCount": 0,
         "manaWishCount": 0
     },
     "inventoryData": {
         "spells": [
             {
-                "name": "Feathery Dive"
-            },
-            {
-                "name": "Snap Speed"
+                "name": "Dragon's Fury"
             }
         ],
         "equippedSpell1": {
-            "name": "Feathery Dive"
+            "name": "Dragon's Fury"
         },
         "equippedSpell2": {
-            "name": "Snap Speed"
+            "name": ""
         },
         "consumables": [
             {
-                "name": "Sol Stone",
-                "count": 5
+                "name": "Bomb",
+                "count": 3
             },
             {
                 "name": "Rope",
@@ -43,7 +40,7 @@
             }
         ],
         "equippedConsumable1": {
-            "name": "Sol Stone",
+            "name": "Bomb",
             "count": 0
         },
         "equippedConsumable2": {
