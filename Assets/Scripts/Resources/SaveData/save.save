@@ -1,19 +1,19 @@
 {
     "gameSaveData": {
         "characterType": 1,
-        "currentStage": "",
-        "runSeed": 0,
-        "runTime": 100.50241088867188,
-        "enemiesSlain": 0,
+        "currentStage": "1",
+        "runSeed": 481052693,
+        "runTime": 158.85430908203126,
+        "enemiesSlain": 1,
         "damageTaken": 0,
-        "moneyCollected": 5,
+        "moneyCollected": 11,
         "wishesMade": 0
     },
     "playerData": {
         "healthAmt": 6,
-        "manaAmt": 150,
-        "moneyAmt": 5,
-        "emberAmt": 375,
+        "manaAmt": 120,
+        "moneyAmt": 6,
+        "emberAmt": 600,
         "healthWishCount": 0,
         "manaWishCount": 0
     },
@@ -24,6 +24,12 @@
             },
             {
                 "name": "Snap Speed"
+            },
+            {
+                "name": "Light Spell"
+            },
+            {
+                "name": "Cold Snap"
             }
         ],
         "equippedSpell1": {
@@ -39,7 +45,7 @@
             },
             {
                 "name": "Rope",
-                "count": 4
+                "count": 3
             }
         ],
         "equippedConsumable1": {
