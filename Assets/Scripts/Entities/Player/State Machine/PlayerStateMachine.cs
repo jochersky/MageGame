@@ -406,7 +406,7 @@ public class PlayerStateMachine : Entity
         // Ice movement checks
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, iceCheckDepth, environmentLayer);
         if (!hit) return;
-
+    
         bool onIce = hit.collider.TryGetComponent<Ice>(out _);
 
         if (!onIce)

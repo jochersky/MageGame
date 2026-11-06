@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class EquippedUI : MonoBehaviour
@@ -12,20 +14,27 @@ public class EquippedUI : MonoBehaviour
     [SerializeField] private Image spell1Cooldown;
     [SerializeField] private Image spell2Image;
     [SerializeField] private Image spell2Cooldown;
-
-    private ConsumableConfig _consumableConfig1;
-    private ConsumableConfig _consumableConfig2;
+    
     private ConsumableConfig _equippedConsumable;
     private Material _spell1CooldownMat;
     private Material _spell2CooldownMat;
+    private PlayerInput _input;
 
     private static readonly int Progress = Shader.PropertyToID("_Progress");
 
     private void Start()
     {
+        _input = FindFirstObjectByType<PlayerInput>();
+        _input.onControlsChanged += input => Debug.Log($"{input.currentControlScheme}");
+        
         _spell1CooldownMat = spell1Cooldown.material;
         _spell2CooldownMat = spell2Cooldown.material;
     }
+
+    // private void Update()
+    // {
+    //     Debug.Log(_input.currentControlScheme);
+    // }
 
     public void SubscribeToEvents()
     {
