@@ -1,0 +1,1170 @@
+fileFormatVersion: 2
+guid: 4b2855161d626bb4c9a1b6c91e375011
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8855289613822748079
+    second: MushRat_Sprites_0
+  - first:
+      213: -986461351370545945
+    second: MushRat_Sprites_1
+  - first:
+      213: 3788553974137669580
+    second: MushRat_Sprites_2
+  - first:
+      213: -7794872652979849918
+    second: MushRat_Sprites_3
+  - first:
+      213: 1091057551750662452
+    second: MushRat_Sprites_4
+  - first:
+      213: -5267123050122030481
+    second: MushRat_Sprites_5
+  - first:
+      213: -5687574124803691257
+    second: MushRat_Sprites_6
+  - first:
+      213: 347040984412659958
+    second: MushRat_Sprites_7
+  - first:
+      213: 1399684519694404853
+    second: MushRat_Sprites_8
+  - first:
+      213: 5118582956820057616
+    second: MushRat_Sprites_9
+  - first:
+      213: 5087431219290110425
+    second: MushRat_Sprites_10
+  - first:
+      213: 7073328463211428907
+    second: MushRat_Sprites_11
+  - first:
+      213: -134690031398514026
+    second: MushRat_Sprites_12
+  - first:
+      213: 3472151831939673583
+    second: MushRat_Sprites_13
+  - first:
+      213: 3211470779143648222
+    second: MushRat_Sprites_14
+  - first:
+      213: 6061574232778069934
+    second: MushRat_Sprites_15
+  - first:
+      213: 2683187009433534815
+    second: MushRat_Sprites_16
+  - first:
+      213: -6728096229445855886
+    second: MushRat_Sprites_17
+  - first:
+      213: 6746322936866496463
+    second: MushRat_Sprites_18
+  - first:
+      213: -2495543210838965924
+    second: MushRat_Sprites_19
+  - first:
+      213: -8318606686653605663
+    second: MushRat_Sprites_20
+  - first:
+      213: -2663078511721861810
+    second: MushRat_Sprites_21
+  - first:
+      213: 3367846704971202674
+    second: MushRat_Sprites_22
+  - first:
+      213: 4123593419062408649
+    second: MushRat_Sprites_23
+  - first:
+      213: -6196116981580164472
+    second: MushRat_Sprites_24
+  - first:
+      213: 3702475350037650620
+    second: MushRat_Sprites_25
+  - first:
+      213: 5101453673123829993
+    second: MushRat_Sprites_26
+  - first:
+      213: 7907741879158607910
+    second: MushRat_Sprites_27
+  - first:
+      213: 5214242486416865821
+    second: MushRat_Sprites_28
+  - first:
+      213: 4348977738808883067
+    second: MushRat_Sprites_29
+  - first:
+      213: -5295210493747589362
+    second: MushRat_Sprites_30
+  - first:
+      213: -3550948542695048611
+    second: MushRat_Sprites_31
+  - first:
+      213: 8608145743141749813
+    second: MushRat_Sprites_32
+  - first:
+      213: 1878848497451854655
+    second: MushRat_Sprites_33
+  - first:
+      213: -7128048696652972431
+    second: MushRat_Sprites_34
+  - first:
+      213: -4973234571195982474
+    second: MushRat_Sprites_35
+  - first:
+      213: 6471748271551202376
+    second: MushRat_Sprites_36
+  - first:
+      213: 44372719441968791
+    second: MushRat_Sprites_37
+  - first:
+      213: -3976817124448269993
+    second: MushRat_Sprites_38
+  - first:
+      213: 3956402363884043260
+    second: MushRat_Sprites_39
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 15
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: MushRat_Sprites_0
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 223
+        width: 18
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa56c178cfe44ea70800000000000000
+      internalID: 8855289613822748079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_1
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 223
+        width: 19
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e428ee90a26f42f0800000000000000
+      internalID: -986461351370545945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_2
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 223
+        width: 20
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc7ced054c5a39430800000000000000
+      internalID: 3788553974137669580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_3
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 223
+        width: 19
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 245bab10f9c03d390800000000000000
+      internalID: -7794872652979849918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_4
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 223
+        width: 19
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4390b990017342f00800000000000000
+      internalID: 1091057551750662452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_5
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 191
+        width: 17
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6254390e7b67e6b0800000000000000
+      internalID: -5267123050122030481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_6
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 192
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70d6f51b77da111b0800000000000000
+      internalID: -5687574124803691257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_7
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 194
+        width: 21
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f02b66cfefe0d400800000000000000
+      internalID: 347040984412659958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_8
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 194
+        width: 20
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fc8ff1a7adac6310800000000000000
+      internalID: 1399684519694404853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_9
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 191
+        width: 18
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01ec0ae641cd80740800000000000000
+      internalID: 5118582956820057616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_10
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 159
+        width: 18
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d9f4055dbf2a9640800000000000000
+      internalID: 5087431219290110425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_11
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 159
+        width: 20
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2c706dd2c2892260800000000000000
+      internalID: 7073328463211428907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_12
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 159
+        width: 20
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69294bb412c712ef0800000000000000
+      internalID: -134690031398514026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_13
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 159
+        width: 20
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fed6cf4e1bf8f2030800000000000000
+      internalID: 3472151831939673583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_14
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 159
+        width: 18
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed3776598af619c20800000000000000
+      internalID: 3211470779143648222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_15
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 127
+        width: 18
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea7d56c26a90f1450800000000000000
+      internalID: 6061574232778069934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_16
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 127
+        width: 20
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f518a337e589c3520800000000000000
+      internalID: 2683187009433534815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_17
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 127
+        width: 20
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2751c35502001a2a0800000000000000
+      internalID: -6728096229445855886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_18
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 127
+        width: 20
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcf5fffa7f0cf9d50800000000000000
+      internalID: 6746322936866496463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_19
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 127
+        width: 20
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c514e44fbac0e5dd0800000000000000
+      internalID: -2495543210838965924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_20
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 95
+        width: 19
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e892d7da4f5e8c80800000000000000
+      internalID: -8318606686653605663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_21
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 95
+        width: 19
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4da7d30438da0bd0800000000000000
+      internalID: -2663078511721861810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_22
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 95
+        width: 20
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27047cb0cbefcbe20800000000000000
+      internalID: 3367846704971202674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_23
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 95
+        width: 19
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c57a5ded52f93930800000000000000
+      internalID: 4123593419062408649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_24
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 95
+        width: 18
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88216260f68f20aa0800000000000000
+      internalID: -6196116981580164472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_25
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 63
+        width: 18
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbc52acd6b5d16330800000000000000
+      internalID: 3702475350037650620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_26
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 66
+        width: 20
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e858a846110cc640800000000000000
+      internalID: 5101453673123829993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_27
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 66
+        width: 21
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6209ab29751fdbd60800000000000000
+      internalID: 7907741879158607910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_28
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 64
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1a70a74ae5bc5840800000000000000
+      internalID: 5214242486416865821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_29
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 63
+        width: 17
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b77f8c9263caa5c30800000000000000
+      internalID: 4348977738808883067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_30
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 31
+        width: 18
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0f01457c12a386b0800000000000000
+      internalID: -5295210493747589362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_31
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 31
+        width: 20
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5a78f83d1f78bec0800000000000000
+      internalID: -3550948542695048611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_32
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 31
+        width: 20
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53441ca02f6467770800000000000000
+      internalID: 8608145743141749813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_33
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 31
+        width: 20
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3be46df0c2031a10800000000000000
+      internalID: 1878848497451854655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_34
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 31
+        width: 18
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17e3056f975141d90800000000000000
+      internalID: -7128048696652972431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_35
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 0
+        width: 20
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67ddb2fb1858bfab0800000000000000
+      internalID: -4973234571195982474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_36
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 0
+        width: 20
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 844ce81a3c440d950800000000000000
+      internalID: 6471748271551202376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_37
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 0
+        width: 20
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79e7e04d0c4ad9000800000000000000
+      internalID: 44372719441968791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_38
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 0
+        width: 20
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 759029835e18fc8c0800000000000000
+      internalID: -3976817124448269993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MushRat_Sprites_39
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 0
+        width: 18
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfbf2dfecf6f7e630800000000000000
+      internalID: 3956402363884043260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MushRat_Sprites_0: 8855289613822748079
+      MushRat_Sprites_1: -986461351370545945
+      MushRat_Sprites_10: 5087431219290110425
+      MushRat_Sprites_11: 7073328463211428907
+      MushRat_Sprites_12: -134690031398514026
+      MushRat_Sprites_13: 3472151831939673583
+      MushRat_Sprites_14: 3211470779143648222
+      MushRat_Sprites_15: 6061574232778069934
+      MushRat_Sprites_16: 2683187009433534815
+      MushRat_Sprites_17: -6728096229445855886
+      MushRat_Sprites_18: 6746322936866496463
+      MushRat_Sprites_19: -2495543210838965924
+      MushRat_Sprites_2: 3788553974137669580
+      MushRat_Sprites_20: -8318606686653605663
+      MushRat_Sprites_21: -2663078511721861810
+      MushRat_Sprites_22: 3367846704971202674
+      MushRat_Sprites_23: 4123593419062408649
+      MushRat_Sprites_24: -6196116981580164472
+      MushRat_Sprites_25: 3702475350037650620
+      MushRat_Sprites_26: 5101453673123829993
+      MushRat_Sprites_27: 7907741879158607910
+      MushRat_Sprites_28: 5214242486416865821
+      MushRat_Sprites_29: 4348977738808883067
+      MushRat_Sprites_3: -7794872652979849918
+      MushRat_Sprites_30: -5295210493747589362
+      MushRat_Sprites_31: -3550948542695048611
+      MushRat_Sprites_32: 8608145743141749813
+      MushRat_Sprites_33: 1878848497451854655
+      MushRat_Sprites_34: -7128048696652972431
+      MushRat_Sprites_35: -4973234571195982474
+      MushRat_Sprites_36: 6471748271551202376
+      MushRat_Sprites_37: 44372719441968791
+      MushRat_Sprites_38: -3976817124448269993
+      MushRat_Sprites_39: 3956402363884043260
+      MushRat_Sprites_4: 1091057551750662452
+      MushRat_Sprites_5: -5267123050122030481
+      MushRat_Sprites_6: -5687574124803691257
+      MushRat_Sprites_7: 347040984412659958
+      MushRat_Sprites_8: 1399684519694404853
+      MushRat_Sprites_9: 5118582956820057616
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,51 @@
+{
+    "gameSaveData": {
+        "characterType": 0,
+        "currentStage": "1",
+        "runSeed": -737115310,
+        "runTime": 225.48428344726563,
+        "enemiesSlain": 0,
+        "damageTaken": 0,
+        "moneyCollected": 0,
+        "wishesMade": 0
+    },
+    "playerData": {
+        "healthAmt": 5,
+        "manaAmt": 100,
+        "moneyAmt": 0,
+        "emberAmt": 300,
+        "healthWishCount": 0,
+        "manaWishCount": 0
+    },
+    "inventoryData": {
+        "spells": [
+            {
+                "name": "Dragon's Fury"
+            }
+        ],
+        "equippedSpell1": {
+            "name": ""
+        },
+        "equippedSpell2": {
+            "name": ""
+        },
+        "consumables": [
+            {
+                "name": "Bomb",
+                "count": 5
+            },
+            {
+                "name": "Rope",
+                "count": 5
+            }
+        ],
+        "equippedConsumable1": {
+            "name": "Bomb",
+            "count": 0
+        },
+        "equippedConsumable2": {
+            "name": "Rope",
+            "count": 0
+        }
+    }
+}
