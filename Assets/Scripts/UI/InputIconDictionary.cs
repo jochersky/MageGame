@@ -18,15 +18,25 @@ public class InputIconDictionary
         _keyboardIcons["UseConsumable"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_i");
         _keyboardIcons["Spell 1"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_j");
         _keyboardIcons["Spell 2"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_l");
+        _keyboardIcons["Cancel"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_q");
+        _keyboardIcons["Submit"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_e");
+        _keyboardIcons["Interact"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_e");
+        _keyboardIcons["Dodge"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_shift");
+        _keyboardIcons["Jump"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_space");
         
         _gamepadIcons["UseConsumable"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/lb_outline");
         _gamepadIcons["Spell 1"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/lt_outline");
         _gamepadIcons["Spell 2"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/rt_outline");
+        _gamepadIcons["Cancel"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/gp_east_outline");
+        _gamepadIcons["Submit"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/gp_south_outline");
+        _gamepadIcons["Interact"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/gp_west_outline");
+        _gamepadIcons["Dodge"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/gp_east_outline");
+        _gamepadIcons["Jump"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/gp_south_outline");
     }
 
-    public Sprite GetIcon(ControlSchemeType type, InputAction action)
+    public Sprite GetIcon(ControlSchemeType type, string inputActionName)
     {
         Dictionary<string, Sprite> icons = type == ControlSchemeType.KEYBOARD ? _keyboardIcons : _gamepadIcons;
-        return icons.GetValueOrDefault(action.name);
+        return icons.GetValueOrDefault(inputActionName);
     }
 }

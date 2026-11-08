@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
     public InventoryUI InventoryUI => inventoryUI;
     public FullScreenEffect FullScreenEffect => fullScreenEffect;
     public PostRunStatsMenuUI PostRunStatsMenuUI => postRunStatsMenuUI;
+    public EquippedUI EquippedUI => equippedUI;
     
     public CharacterType CharacterType { get; set; }
     public int EnemiesSlain { get => _enemiesSlain; set => _enemiesSlain = value; }
@@ -96,6 +97,13 @@ public class GameManager : MonoBehaviour
             AssignPlayerAndReferences(debugPlayerObject);
             SaveSystem.Delete();
             SubscribeToPlayerInputEvents();
+            
+            // load player's items once these scripts have finished running
+            Player.OnStartDone += () => { PlayerComponentLoaded = true; };
+            if (InventoryManager.Instance) InventoryManager.Instance.OnStartDone += () => { InventoryManagerLoaded = true; };
+            
+            // equippedUI?.SubscribeToEvents();
+            
             return;
         }
         
@@ -114,7 +122,7 @@ public class GameManager : MonoBehaviour
             InventoryManager.Instance.OnStartDone += () => { InventoryManagerLoaded = true; };
         }
         
-        equippedUI?.SubscribeToEvents();
+        // equippedUI?.SubscribeToEvents();
         
         _mapGenerator = FindFirstObjectByType<MapGenerator>();
         

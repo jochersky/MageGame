@@ -590,7 +590,7 @@
                 {
                     "name": "",
                     "id": "3144db70-4db6-49e2-932a-55c612174ba8",
-                    "path": "<Keyboard>/p",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -617,7 +617,7 @@
                     "name": "Submit",
                     "type": "Button",
                     "id": "27680f31-94b8-4af4-ba62-7c2a06e80948",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -967,6 +967,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
+                    "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "93d31b30-8a86-4cff-af02-a8a07ea67ea6",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Submit",
                     "isComposite": false,
                     "isPartOfComposite": false

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "SpellConfig", menuName = "ScriptableObjects/SpellConfig")]
 public class SpellConfig : ItemConfig
@@ -12,4 +13,6 @@ public class SpellConfig : ItemConfig
     
     public SpellStrategy strategy;
     public PassiveEffectsStrategy effectsStrategy;
+
+    public string uniqueInput;
 }

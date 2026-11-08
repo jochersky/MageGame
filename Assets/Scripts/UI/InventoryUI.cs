@@ -127,13 +127,13 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    private void UpdateEquippedSpell1UI(Sprite spellSprite, bool visible)
+    private void UpdateEquippedSpell1UI(Sprite spellSprite, bool visible, string uniqueAction)
     {
         spell1Image.color = visible ? Color.white : Color.clear;
         spell1Image.sprite = spellSprite;
     }
 
-    private void UpdateEquippedSpell2UI(Sprite spellSprite, bool visible)
+    private void UpdateEquippedSpell2UI(Sprite spellSprite, bool visible, string uniqueAction)
     {
         spell2Image.color = visible ? Color.white : Color.clear;
         spell2Image.sprite = spellSprite;
@@ -263,8 +263,8 @@ public class InventoryUI : MonoBehaviour
     private void UnequipSpellInSlot(int spellID)
     {
         InventoryManager.Instance.UnequipSpell(spellID);
-        if (spellID == 1) UpdateEquippedSpell1UI(null, false);
-        else UpdateEquippedSpell2UI(null, false);
+        if (spellID == 1) UpdateEquippedSpell1UI(null, false, "");
+        else UpdateEquippedSpell2UI(null, false, "");
         HideSpellSelectionMenu();
     }
 

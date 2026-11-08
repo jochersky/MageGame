@@ -21,6 +21,7 @@ MonoBehaviour:
   manaCost: 1
   cooldown: 0
   twoPartCast: 0
-  altersMovement: 1
+  spawnsProjectile: 0
   strategy: {fileID: 11400000, guid: d5316acf2b6ad084e860e8a05b3247bb, type: 2}
   effectsStrategy: {fileID: 11400000, guid: cdd8c5a76c176234d89dc35b8012f78a, type: 2}
+  uniqueInput: Jump

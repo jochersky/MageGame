@@ -20,5 +20,7 @@ MonoBehaviour:
   manaCost: 30
   cooldown: 0
   twoPartCast: 0
+  spawnsProjectile: 0
   strategy: {fileID: 0}
   effectsStrategy: {fileID: 11400000, guid: 91595fcabba48e646b85604625051d01, type: 2}
+  uniqueInput: Interact

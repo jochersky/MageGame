@@ -20,6 +20,7 @@ MonoBehaviour:
   manaCost: 1
   cooldown: 0
   twoPartCast: 0
-  altersMovement: 0
+  spawnsProjectile: 0
   strategy: {fileID: 0}
   effectsStrategy: {fileID: 11400000, guid: da6b1f6a296bd88469f2debb33777d4f, type: 2}
+  uniqueInput: Dodge

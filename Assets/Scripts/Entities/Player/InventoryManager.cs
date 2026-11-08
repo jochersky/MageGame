@@ -45,13 +45,13 @@ public class InventoryManager : MonoBehaviour
     // - Spells
     public delegate void SpellAdded(SpellConfig spellConfig);
     public event SpellAdded OnSpellAdded;
-    public delegate void Spell1Equipped(Sprite spellSprite, bool visible);
+    public delegate void Spell1Equipped(Sprite spellSprite, bool visible, string uniqueAction);
     public event Spell1Equipped OnSpell1Equipped;
-    public delegate void Spell2Equipped(Sprite spellSprite, bool visible);
+    public delegate void Spell2Equipped(Sprite spellSprite, bool visible, string uniqueAction);
     public event Spell2Equipped OnSpell2Equipped;
-    public delegate void Spell1Unequipped(Sprite spellSprite, bool visible);
+    public delegate void Spell1Unequipped(Sprite spellSprite, bool visible, string uniqueAction);
     public event Spell1Unequipped OnSpell1Unequipped;
-    public delegate void Spell2Unequipped(Sprite spellSprite, bool visible);
+    public delegate void Spell2Unequipped(Sprite spellSprite, bool visible, string uniqueAction);
     public event Spell2Unequipped OnSpell2Unequipped;
     // - Money
     public delegate void MoneyCountChanged(int money);
@@ -84,6 +84,8 @@ public class InventoryManager : MonoBehaviour
         _consumableManager.InitializeCounts();
         
         OnStartDone?.Invoke();
+        
+        GameManager.Instance.EquippedUI.SubscribeToEvents();
     }
     
     public int GetConsumableCount(ConsumableConfig config)
@@ -129,15 +131,15 @@ public class InventoryManager : MonoBehaviour
                 if (spellConfig2 == config)
                 {
                     _spellManager.EquipSpell1(spellConfig2);
-                    OnSpell1Equipped?.Invoke(spellConfig2?.icon, spellConfig2);
+                    OnSpell1Equipped?.Invoke(spellConfig2?.icon, spellConfig2, spellConfig2?.uniqueInput);
                     _spellManager.EquipSpell2(spellConfig1);
-                    OnSpell2Equipped?.Invoke(spellConfig1?.icon, spellConfig1);
+                    OnSpell2Equipped?.Invoke(spellConfig1?.icon, spellConfig1, spellConfig1?.uniqueInput);
                 }
                 // normal case
                 else
                 {
                     _spellManager.EquipSpell1(config);
-                    OnSpell1Equipped?.Invoke(config.icon, true); 
+                    OnSpell1Equipped?.Invoke(config.icon, true, config.uniqueInput); 
                 }
                 return true;
             case 2: 
@@ -145,15 +147,15 @@ public class InventoryManager : MonoBehaviour
                 if (spellConfig1 == config)
                 {
                     _spellManager.EquipSpell2(spellConfig1);
-                    OnSpell2Equipped?.Invoke(spellConfig1?.icon, spellConfig1);
+                    OnSpell2Equipped?.Invoke(spellConfig1?.icon, spellConfig1, spellConfig1?.uniqueInput);
                     _spellManager.EquipSpell1(spellConfig2);
-                    OnSpell1Equipped?.Invoke(spellConfig2?.icon, spellConfig2);
+                    OnSpell1Equipped?.Invoke(spellConfig2?.icon, spellConfig2, spellConfig2?.uniqueInput);
                 }
                 // normal case
                 else
                 {
                     _spellManager.EquipSpell2(config);
-                    OnSpell2Equipped?.Invoke(config.icon, true); 
+                    OnSpell2Equipped?.Invoke(config.icon, true, config.uniqueInput); 
                 }
                 return true;
         }
@@ -242,11 +244,11 @@ public class InventoryManager : MonoBehaviour
         {
             case 1: 
                 _spellManager.UnequipSpell1(); 
-                OnSpell1Unequipped?.Invoke(null, false);
+                OnSpell1Unequipped?.Invoke(null, false, "");
                 break;
             case 2: 
                 _spellManager.UnequipSpell2();
-                OnSpell2Unequipped?.Invoke(null, false);
+                OnSpell2Unequipped?.Invoke(null, false, "");
                 break;
         }
     }
@@ -266,8 +268,8 @@ public class InventoryManager : MonoBehaviour
             int spellEquipped = _spellManager.AddSpell(spellConfig);
             switch (spellEquipped)
             {
-                case 1: OnSpell1Equipped?.Invoke(spellConfig.icon, true); break;
-                case 2: OnSpell2Equipped?.Invoke(spellConfig.icon, true); break;
+                case 1: OnSpell1Equipped?.Invoke(spellConfig.icon, true, spellConfig.uniqueInput); break;
+                case 2: OnSpell2Equipped?.Invoke(spellConfig.icon, true, spellConfig.uniqueInput); break;
             }
             
             OnSpellAdded?.Invoke(spellConfig);
@@ -349,13 +351,13 @@ public class InventoryManager : MonoBehaviour
         {
             spellConfig = _spellDictionary.GetConfig(data.equippedSpell1.name);
             _spellManager.EquipSpell1(spellConfig);
-            OnSpell1Equipped?.Invoke(spellConfig.icon, true);
+            OnSpell1Equipped?.Invoke(spellConfig.icon, true, spellConfig.uniqueInput);
         }
         if (data.equippedSpell2.name != "")
         {
             spellConfig = _spellDictionary.GetConfig(data.equippedSpell2.name);
             _spellManager.EquipSpell2(spellConfig);
-            OnSpell2Equipped?.Invoke(spellConfig.icon, true);
+            OnSpell2Equipped?.Invoke(spellConfig.icon, true, spellConfig.uniqueInput);
         }
         
         // Load consumables
