@@ -16,8 +16,10 @@ public class InputIconDictionary
     public InputIconDictionary()
     {
         _keyboardIcons["UseConsumable"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_i");
+        _keyboardIcons["SwitchConsumable"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_u");
         _keyboardIcons["Spell 1"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_j");
         _keyboardIcons["Spell 2"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_l");
+        _keyboardIcons["Attack"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_k");
         _keyboardIcons["Cancel"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_q");
         _keyboardIcons["Submit"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_e");
         _keyboardIcons["Interact"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_e");
@@ -25,8 +27,10 @@ public class InputIconDictionary
         _keyboardIcons["Jump"] = Resources.Load<Sprite>("Data/ControlIcons/Keyboard/keyboard_space");
         
         _gamepadIcons["UseConsumable"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/lb_outline");
+        _gamepadIcons["SwitchConsumable"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/dpad_north");
         _gamepadIcons["Spell 1"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/lt_outline");
         _gamepadIcons["Spell 2"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/rt_outline");
+        _gamepadIcons["Attack"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/rb_outline");
         _gamepadIcons["Cancel"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/gp_east_outline");
         _gamepadIcons["Submit"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/gp_south_outline");
         _gamepadIcons["Interact"] = Resources.Load<Sprite>("Data/ControlIcons/Gamepad/gp_west_outline");
