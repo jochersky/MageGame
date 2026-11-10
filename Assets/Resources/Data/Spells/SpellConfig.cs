@@ -14,5 +14,5 @@ public class SpellConfig : ItemConfig
     public SpellStrategy strategy;
     public PassiveEffectsStrategy effectsStrategy;
 
-    public string uniqueInput;
+    public string uniqueInput = "";
 }

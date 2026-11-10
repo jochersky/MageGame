@@ -13,15 +13,19 @@ public class InputIcons : MonoBehaviour
     private string[] _updatedActionNames;
     
     private ControlSchemeType _currentControlScheme;
-    
-    private void Start()
+
+    private void Awake()
     {
         _updatedActionNames = new string[actionNames.Length];
         for (int i = 0; i < _updatedActionNames.Length; i++)
         {
             _updatedActionNames[i] = actionNames[i];
+            // Debug.Log(_updatedActionNames[i]);
         }
-
+    }
+    
+    private void Start()
+    {
         InputManager.Instance.OnSwitchedControlSchemes += UpdateIcons;
         
         // Update with initially set control scheme
@@ -34,7 +38,8 @@ public class InputIcons : MonoBehaviour
             throw new System.Exception("Input images length doesn't match input actions length.");
 
         _currentControlScheme = controlScheme;
-        
+
+        // Debug.Log(gameObject.name);
         for (int i = 0; i < inputImages.Length; i++)
         {
             Image image = inputImages[i];
@@ -62,6 +67,7 @@ public class InputIcons : MonoBehaviour
         {
             if (actionNames[i] == actionName)
             {
+                // Debug.Log($"_updated: {_updatedActionNames[i]}, action: {actionNames[i]}");
                 _updatedActionNames[i] = actionNames[i];
             }
         }

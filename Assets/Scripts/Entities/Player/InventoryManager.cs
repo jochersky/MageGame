@@ -85,7 +85,7 @@ public class InventoryManager : MonoBehaviour
         
         OnStartDone?.Invoke();
         
-        GameManager.Instance.EquippedUI.SubscribeToEvents();
+        // GameManager.Instance.EquippedUI.SubscribeToEvents();
     }
     
     public int GetConsumableCount(ConsumableConfig config)

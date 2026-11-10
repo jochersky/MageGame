@@ -41,6 +41,8 @@ public class InputIconDictionary
     public Sprite GetIcon(ControlSchemeType type, string inputActionName)
     {
         Dictionary<string, Sprite> icons = type == ControlSchemeType.KEYBOARD ? _keyboardIcons : _gamepadIcons;
+        // Debug.Log($"input action: {inputActionName}");
+        if (inputActionName == null) return null;
         return icons.GetValueOrDefault(inputActionName);
     }
 }

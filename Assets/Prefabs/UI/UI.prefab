@@ -4638,7 +4638,7 @@ MonoBehaviour:
   - {fileID: 4527599663681281532}
   - {fileID: 4147732535426650915}
   - {fileID: 6361321154931925757}
-  - {fileID: 0}
+  - {fileID: 6377370679110646341}
   actionNames:
   - UseConsumable
   - SwitchConsumable
