@@ -33,7 +33,8 @@ public class MenuButtons : MonoBehaviour
         _startAlreadyPressed = true;
         audioManager.PlayAudio(clickSFX, clickSFX.length);
         SaveSystem.ResetToStartingSaveState(); 
-        SceneManager.LoadScene(gameStartScene);
+        // SceneManager.LoadScene(gameStartScene);
+        SceneManagement.SwapScene(gameStartScene);
     }
 
     public void SettingsPressed()
