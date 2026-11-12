@@ -57,7 +57,8 @@ public class CharacterSelect : MonoBehaviour
         }
         
         SaveSystem.Save();
-        SceneManager.LoadScene(levelName);
+        
+        SceneManagement.SwapScene(levelName);
     }
 
     private void LoadNextScene()

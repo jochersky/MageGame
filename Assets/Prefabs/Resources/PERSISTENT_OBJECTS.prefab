@@ -107,9 +107,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneFadeManager
   fadeOutImage: {fileID: 2370474192944880690}
-  fadeOutSpeed: 3
-  fadeInSpeed: 0.5
-  fadeOutColor: {r: 0.18039216, g: 0.13333334, b: 0.16470589, a: 1}
+  fadeOutSpeed: 2
+  fadeInSpeed: 2
+  fadeOutColor: {r: 0.123, g: 0.09091305, b: 0.112304345, a: 1}
 --- !u!1 &2849388886692957785
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -245,7 +245,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!114 &4434307984657738563
 MonoBehaviour:

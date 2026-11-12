@@ -25,6 +25,7 @@ public class MenuButtons : MonoBehaviour
         audioManager = FindFirstObjectByType<AudioManager>();
         eventSystem.firstSelectedGameObject = defaultButton;
     }
+    
     // Button Press SFX courtesy of Sonic SoundFX
     public void StartPressed()
     {
@@ -32,8 +33,9 @@ public class MenuButtons : MonoBehaviour
         
         _startAlreadyPressed = true;
         audioManager.PlayAudio(clickSFX, clickSFX.length);
+
         SaveSystem.ResetToStartingSaveState(); 
-        // SceneManager.LoadScene(gameStartScene);
+        
         SceneManagement.SwapScene(gameStartScene);
     }
 
@@ -59,5 +61,4 @@ public class MenuButtons : MonoBehaviour
         Application.Quit();
         Debug.Log("Quitting game...");
     }
-    
 }

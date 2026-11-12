@@ -18,7 +18,6 @@ public class SceneManagement : MonoBehaviour
         if (Instance && Instance != this)
         {
             Destroy(this);
-            Debug.Log("Duplicate scene destruction");
             return;
         }
         Instance = this;
@@ -46,7 +45,6 @@ public class SceneManagement : MonoBehaviour
 
     public static void SwapScene(string sceneName)
     {
-        Debug.Log($"swapping to {sceneName}");
         Instance.StartCoroutine(Instance.FadeOutThenChangeScene(sceneName));
     }
 
