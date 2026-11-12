@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _playerComponentLoaded = value;
+            equippedUI?.SubscribeToEvents();
             SubscribeToPlayerInputEvents();
             LoadPlayerStatsAndItems();
             ConnectStatUpdates();
@@ -100,9 +101,9 @@ public class GameManager : MonoBehaviour
             
             // load player's items once these scripts have finished running
             Player.OnStartDone += () => { PlayerComponentLoaded = true; };
-            if (InventoryManager.Instance) InventoryManager.Instance.OnStartDone += () => { InventoryManagerLoaded = true; };
+           // InventoryManager.Instance.OnStartDone += () => { InventoryManagerLoaded = true; };
             
-            equippedUI?.SubscribeToEvents();
+            // equippedUI?.SubscribeToEvents();
             
             return;
         }
@@ -122,7 +123,7 @@ public class GameManager : MonoBehaviour
             InventoryManager.Instance.OnStartDone += () => { InventoryManagerLoaded = true; };
         }
         
-        equippedUI?.SubscribeToEvents();
+        // equippedUI?.SubscribeToEvents();
         
         _mapGenerator = FindFirstObjectByType<MapGenerator>();
         

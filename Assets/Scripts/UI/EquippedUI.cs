@@ -19,15 +19,11 @@ public class EquippedUI : MonoBehaviour
     private ConsumableConfig _equippedConsumable;
     private Material _spell1CooldownMat;
     private Material _spell2CooldownMat;
-    private PlayerInput _input;
 
     private static readonly int Progress = Shader.PropertyToID("_Progress");
 
     private void Start()
     {
-        _input = FindFirstObjectByType<PlayerInput>();
-        _input.onControlsChanged += input => Debug.Log($"{input.currentControlScheme}");
-        
         _spell1CooldownMat = spell1Cooldown.material;
         _spell2CooldownMat = spell2Cooldown.material;
     }
