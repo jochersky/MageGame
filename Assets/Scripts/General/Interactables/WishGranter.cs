@@ -20,8 +20,7 @@ public class WishGranter : MonoBehaviour, IInteractable
             }
         }
 
-        if (!_wishMenuUI.MenuOpen) _wishMenuUI.ShowMenu();
-        else _wishMenuUI.HideMenu();
+        _wishMenuUI.ShowMenu();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
