@@ -244,7 +244,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 98e78d23cdc2e29469cc6eabaa1fbe9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -337,7 +337,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 98e78d23cdc2e29469cc6eabaa1fbe9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -863,15 +863,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 097a6c011f6db0143a2c421f0ac13bb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SnakeStateMachine
-  snakeGO: {fileID: 4779656243962044350}
   spline: {fileID: 2982069864591783851}
   aggroSensor: {fileID: 7837625022088629093}
   health: {fileID: 3935934211721828769}
-  hitbox: {fileID: 7699429073600132249}
-  hurtbox: {fileID: 1908341998367669808}
+  hitboxes:
+  - {fileID: 7699429073600132249}
+  - {fileID: 5986296841310285603}
+  - {fileID: 7947982645298548067}
+  - {fileID: 4065521826742655440}
+  - {fileID: 6948539641080689500}
+  - {fileID: 1069335461883252688}
+  hurtboxes:
+  - {fileID: 1908341998367669808}
+  - {fileID: 1829461651465845495}
+  - {fileID: 3834890923746549937}
+  - {fileID: 5771699683713392170}
+  - {fileID: 5184861388841414011}
+  - {fileID: 1759903522081024677}
   chain: {fileID: 2344388653373051453}
   splineFollowSpeed: 5
   splineProgressSpeed: 0.01
+  fallDuration: 8
 --- !u!114 &3935934211721828769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -884,7 +896,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac7a9eba2942d234ca7f7d55869318f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  damageFlash: {fileID: 0}
+  damageFlash: {fileID: 6330320503490056136}
   hurtboxes:
   - {fileID: 1908341998367669808}
   - {fileID: 1829461651465845495}
@@ -892,8 +904,8 @@ MonoBehaviour:
   - {fileID: 5771699683713392170}
   - {fileID: 5184861388841414011}
   - {fileID: 1759903522081024677}
-  maxHealth: 5
-  invulnerabilityTime: 1.5
+  maxHealth: 1
+  invulnerabilityTime: 0.3
   capHealth: 1
   spawnInvulnerable: 0
   ignore: 0
@@ -932,12 +944,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4779656243962044350}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18d7fc9bfbb117d4ba24429ed8b2ea1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageFlash
   spriteRenderer: {fileID: 434446168596443436}
+  otherSprites:
+  - {fileID: 437780512765276525}
+  - {fileID: 7053245692659029345}
+  - {fileID: 6040039697661883310}
+  - {fileID: 1765507822017700856}
+  - {fileID: 7194874807511603490}
   _flashSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -1395,7 +1413,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 98e78d23cdc2e29469cc6eabaa1fbe9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1591,7 +1609,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 98e78d23cdc2e29469cc6eabaa1fbe9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1787,7 +1805,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 98e78d23cdc2e29469cc6eabaa1fbe9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

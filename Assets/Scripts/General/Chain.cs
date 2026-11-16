@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
+using Random = UnityEngine.Random;
 
 public class Chain : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class Chain : MonoBehaviour
     
     public float Progress => _progress;
     public List<GameObject> Links => links;
+    public GameObject Head => links[0];
     public float Distance { get => distance; set => distance = value; }
 
     private void Start()
@@ -80,6 +82,23 @@ public class Chain : MonoBehaviour
         _t += Time.fixedDeltaTime * progressSpeed;
     }
 
+    public void UpdateChainFollowingHead(Vector3 direction, float followDelay)
+    {
+        if (links.Count <= 1) return;
+
+        for (int i = 1; i < links.Count; i++)
+        {
+            float followThreshold = followDelay * i;
+            if (_t >= followThreshold)
+            {
+                GameObject link = links[i];
+                link.transform.position += direction + Random.insideUnitSphere * 0.01f;
+            }
+        }
+        
+        _t += Time.fixedDeltaTime;
+    }
+
     public void SyncChain()
     {
         foreach (GameObject go in links)
@@ -92,5 +111,11 @@ public class Chain : MonoBehaviour
             _progress = 0.25f;
             _t = 0.25f;
         }
+    }
+
+    public void ResetProgress(bool useStartProgress = false)
+    {
+        _t = useStartProgress ? startingProgress : 0f;
+        _progress = 0;
     }
 }
