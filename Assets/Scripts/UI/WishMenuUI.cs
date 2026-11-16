@@ -1,7 +1,7 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class WishMenuUI : MonoBehaviour
 {
@@ -28,29 +28,40 @@ public class WishMenuUI : MonoBehaviour
           foreach (WishButton wishButton in wishButtons)
           {
                wishButton.OnWishChosen += GrantWish;
+               wishButton.ToggleButton(false);
           }
      }
 
      private void GrantWish(Wish wish)
      {
+          if (!menu.activeInHierarchy) return;  
+          
           GameManager.Instance.Player.LevelUp(wish);
-          emberCount.text = $"Embers: \n{GameManager.Instance.Player.Embers}";
+          emberCount.text = $"*~ {GameManager.Instance.Player.Embers}";
           UpdateButtons();
      }
 
      public void ShowMenu()
      {
-          UpdateButtons();
-          emberCount.text = $"Embers: \n{GameManager.Instance.Player.Embers}";
+          emberCount.text = $"*~ {GameManager.Instance.Player.Embers}";
           
           menu.SetActive(true);
           _eventSystem.SetSelectedGameObject(wishButtons[0].gameObject);
           InputManager.Instance.ToggleInputsBesides(activeActions, true);
+
+          StartCoroutine(PauseButtons());
+          
+          UpdateButtons();
      }
 
      public void HideMenu()
      {
           if (!menu.activeInHierarchy) return;
+          
+          foreach (WishButton wishButton in wishButtons)
+          {
+               wishButton.ToggleButton(false);
+          }
           
           menu.SetActive(false);
           InputManager.Instance.ToggleInputsBesides(activeActions, false);
@@ -82,7 +93,7 @@ public class WishMenuUI : MonoBehaviour
           foreach (WishButton button in wishButtons)
           {
                button.UpdateWish();
-               button.ToggleButton(GameManager.Instance.Player.CanGetWish);
+               // button.ToggleButton(GameManager.Instance.Player.CanGetWish);
           }
      }
 
@@ -94,5 +105,15 @@ public class WishMenuUI : MonoBehaviour
           // bool menuVisible = menu.activeInHierarchy;
           // if (!menuVisible) InputManager.Instance.ToggleInputsBesides(activeActions, menuVisible);
           // if (menuVisible) ShowMenu();
+     }
+
+     private IEnumerator PauseButtons()
+     {
+          yield return new WaitForSeconds(0.2f);
+          
+          foreach (WishButton button in wishButtons)
+          {
+               button.ToggleButton(GameManager.Instance.Player.CanGetWish);
+          }
      }
 }

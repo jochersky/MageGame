@@ -6,6 +6,7 @@ public class InputManager : MonoBehaviour
 {
     [SerializeField] private PlayerInput playerInput;
     private InputActionMap _playerInputMap;
+    private InputIconDictionary _inputIconDictionary;
     
     public delegate void PlayerPressedInventory(bool pressed);
     public event PlayerPressedInventory OnPlayerPressedInventory;
@@ -16,6 +17,9 @@ public class InputManager : MonoBehaviour
 
     public delegate void PlayerPressedInteract();
     public event PlayerPressedInteract OnPlayerPressedInteract;
+
+    public delegate void SwitchedControlSchemes(ControlSchemeType controlScheme);
+    public event SwitchedControlSchemes OnSwitchedControlSchemes;
     
     private bool _inputDisabled;
     private string[] _inventoryMenuActiveActions = { "Inventory", "Cancel" };
@@ -33,13 +37,12 @@ public class InputManager : MonoBehaviour
         }
 
         Instance = this;
+        
+        _inputIconDictionary = new InputIconDictionary();
     }
     
     private void Start()
     {
-        // TODO: investigate why this event isn't firing
-        // playerInput.onControlsChanged += 
-        
         _playerInputMap = playerInput.actions.actionMaps[0];
     }
     
@@ -85,6 +88,17 @@ public class InputManager : MonoBehaviour
         if (context.performed || context.canceled) return;
         
         OnPlayerPressedInteract?.Invoke();
+    }
+    
+    public void InputDeviceChanged()
+    {
+        ControlSchemeType type = playerInput.currentControlScheme == "Keyboard&Mouse" ? ControlSchemeType.KEYBOARD : ControlSchemeType.GAMEPAD;
+        OnSwitchedControlSchemes?.Invoke(type);
+    }
+
+    public Sprite GetInputIcon(ControlSchemeType controlScheme, string inputActionName)
+    {
+        return _inputIconDictionary.GetIcon(controlScheme, inputActionName);
     }
 
     // Toggles all inputs besides the inputs with the names provided in activeActions.

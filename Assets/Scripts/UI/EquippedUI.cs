@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class EquippedUI : MonoBehaviour
@@ -12,9 +14,8 @@ public class EquippedUI : MonoBehaviour
     [SerializeField] private Image spell1Cooldown;
     [SerializeField] private Image spell2Image;
     [SerializeField] private Image spell2Cooldown;
-
-    private ConsumableConfig _consumableConfig1;
-    private ConsumableConfig _consumableConfig2;
+    [SerializeField] private InputIcons inputIcons;
+    
     private ConsumableConfig _equippedConsumable;
     private Material _spell1CooldownMat;
     private Material _spell2CooldownMat;
@@ -54,16 +55,20 @@ public class EquippedUI : MonoBehaviour
         consumableCountText.text = count.ToString();
     }
     
-    private void UpdateEquippedSpell1UI(Sprite spellSprite, bool visible)
+    private void UpdateEquippedSpell1UI(Sprite spellSprite, bool visible, string uniqueAction)
     {
         spell1Image.color = visible ? Color.white : Color.clear;
         spell1Image.sprite = spellSprite;
+        if (uniqueAction != "") inputIcons.UpdateActionName("Spell 1", uniqueAction);
+        else inputIcons.RevertActionName("Spell 1");
     }
 
-    private void UpdateEquippedSpell2UI(Sprite spellSprite, bool visible)
+    private void UpdateEquippedSpell2UI(Sprite spellSprite, bool visible, string uniqueAction)
     {
         spell2Image.color = visible ? Color.white : Color.clear;
         spell2Image.sprite = spellSprite;
+        if (uniqueAction != "") inputIcons.UpdateActionName("Spell 2", uniqueAction);
+        else inputIcons.RevertActionName("Spell 2");
     }
 
     IEnumerator CooldownSpell1(float duration)

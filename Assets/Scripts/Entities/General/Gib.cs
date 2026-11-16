@@ -37,7 +37,6 @@ public class Gib : MonoBehaviour, ILockedInteractable
         if (affects.canDevour)
         {
             GameManager.Instance.PlayerHealth.Heal(1);
-            Debug.Log(GameManager.Instance.PlayerHealth);
             StartCoroutine(DestroyProcedure());
         }
     }

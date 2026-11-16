@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PostRunStatsMenuUI : MonoBehaviour
@@ -13,7 +14,9 @@ public class PostRunStatsMenuUI : MonoBehaviour
     [SerializeField] private Image characterPortrait;
     [SerializeField] private TextMeshProUGUI characterNameText;
     [SerializeField] private GameObject spellsGrid;
+    [SerializeField] private GameObject retryButton;
     private GameObject[] _postRunSpellIcons = Array.Empty<GameObject>();
+    private EventSystem _eventSystem;
     
     [Header("Character Portraits")]
     [SerializeField] private Sprite pyroPortrait;
@@ -30,6 +33,7 @@ public class PostRunStatsMenuUI : MonoBehaviour
     
     private void Start()
     {
+        _eventSystem = FindFirstObjectByType<EventSystem>();
         menuUI.SetActive(false);
     }
     
@@ -37,6 +41,7 @@ public class PostRunStatsMenuUI : MonoBehaviour
     {
         UpdateInfo();
         runOutcomeText.text = runOutcome;
+        _eventSystem.SetSelectedGameObject(retryButton);
         menuUI.SetActive(true);
     }
 

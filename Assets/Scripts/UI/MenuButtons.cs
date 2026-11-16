@@ -12,6 +12,7 @@ public class MenuButtons : MonoBehaviour
     [SerializeField] EventSystem eventSystem;
     [SerializeField] GameObject defaultButton;
     [SerializeField] GameObject settings;
+    [SerializeField] private GameObject defaultSettingsButton;
     [SerializeField] GameObject menuButtons;
     [SerializeField] bool isMainMenu = false;
     [SerializeField] AudioManager audioManager;
@@ -24,6 +25,7 @@ public class MenuButtons : MonoBehaviour
         audioManager = FindFirstObjectByType<AudioManager>();
         eventSystem.firstSelectedGameObject = defaultButton;
     }
+    
     // Button Press SFX courtesy of Sonic SoundFX
     public void StartPressed()
     {
@@ -31,12 +33,15 @@ public class MenuButtons : MonoBehaviour
         
         _startAlreadyPressed = true;
         audioManager.PlayAudio(clickSFX, clickSFX.length);
+
         SaveSystem.ResetToStartingSaveState(); 
-        SceneManager.LoadScene(gameStartScene);
+        
+        SceneManagement.SwapScene(gameStartScene);
     }
 
     public void SettingsPressed()
     {
+        eventSystem.SetSelectedGameObject(defaultSettingsButton);
         audioManager.PlayAudio(clickSFX, clickSFX.length);
         menuButtons.SetActive(false);
         settings.SetActive(true);
@@ -44,6 +49,7 @@ public class MenuButtons : MonoBehaviour
 
     public void BackPressed()
     {
+        eventSystem.SetSelectedGameObject(defaultButton);
         audioManager.PlayAudio(clickSFX, clickSFX.length);
         menuButtons.SetActive(true);
         settings.SetActive(false);
@@ -55,5 +61,4 @@ public class MenuButtons : MonoBehaviour
         Application.Quit();
         Debug.Log("Quitting game...");
     }
-    
 }

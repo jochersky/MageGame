@@ -936,6 +936,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
   damageAmt: 1
   source: 
+  source: 
   cameraShakeAmt: 0
   cameraShakeDuration: 0
   knockBackForce: 15
@@ -1708,6 +1709,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStateMachine
   freezable: 1
   teleportable: 1
+  freezable: 1
+  teleportable: 1
   playerInput: {fileID: 8788688971398276464}
   environmentLayer:
     serializedVersion: 2
@@ -1720,7 +1723,7 @@ MonoBehaviour:
   statusEffectManager: {fileID: 7987879501707214221}
   maxWalkSpeed: 8
   minInputVecMag: 0.25
-  normalDrag: 1
+  normalDrag: 0.01
   maxJumpHeight: 8
   maxDoubleJumpHeight: 10
   jumpCheckTransform: {fileID: 1587937387225483812}
@@ -1744,12 +1747,16 @@ MonoBehaviour:
   climbDelayTime: 0.7
   minClimbFallInput: -0.95
   climbWithoutLedge: 0
+  climbWithoutLedge: 0
   climbDebug: 0
   _ropeHandler: {fileID: 7954448484511661488}
   ropeClimbSpeed: 5
   minVerticalInput: 0.95
   dirHoldDuration: 0.3
   reduceConst: 0.75
+  iceSlideMaxSpeed: 3
+  iceReduceConst: 0.95
+  iceCheckDepth: 1
   iceSlideMaxSpeed: 3
   iceReduceConst: 0.95
   iceCheckDepth: 1
@@ -1826,7 +1833,19 @@ MonoBehaviour:
       m_Calls: []
   m_ControlsChangedEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6106741817835769575}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: InputDeviceChanged
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
@@ -1881,7 +1900,19 @@ MonoBehaviour:
     m_ActionId: ae193616-fca4-46af-9e54-e09b10da35e1
     m_ActionName: 'UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6106741817835769575}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: OnSubmitPressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 27680f31-94b8-4af4-ba62-7c2a06e80948
     m_ActionName: 'UI/Submit[/Keyboard/enter]'
   - m_PersistentCalls:
@@ -2404,8 +2435,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   lighting: {fileID: 8899097152374815958}
+  lighting: {fileID: 8899097152374815958}
   isLit: 1
   litSound: {fileID: 0}
+  particles: {fileID: 0}
   particles: {fileID: 0}
   torchExp: 25
 --- !u!61 &8656288525767866780
