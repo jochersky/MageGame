@@ -408,7 +408,6 @@ public class PlayerStateMachine : Entity
         if (!hit) return;
     
         bool onIce = hit.collider.TryGetComponent<Ice>(out _);
-
         if (!onIce)
             _slideForce = Vector2.zero;
         // Only allow the player to slide on ice if they have moved on it already

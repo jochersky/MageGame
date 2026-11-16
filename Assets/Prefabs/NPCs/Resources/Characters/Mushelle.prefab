@@ -149,7 +149,7 @@ MonoBehaviour:
   npcName: Mushelle
   nameTextBox: {fileID: 2002676881725607004}
   text: {fileID: 5623922658667024253}
-  dialogueOptions: {fileID: 0}
+  dialogueOptions: {fileID: 3453528082441543188}
   dialogue:
   - Hi I am Mushelle!
   - My mush room has been invaded by RATS!
@@ -372,6 +372,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &3453528082441543188 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3829721022861908365, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}
+  m_PrefabInstance: {fileID: 1929937045623670681}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5623922658667024253 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6108196492627560676, guid: 6a63edcd7f5454b46a1a5a6edb6885a9, type: 3}

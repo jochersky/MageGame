@@ -250,3 +250,4 @@ MonoBehaviour:
     m_RuleTransform: 0
   connectableTiles:
   - {fileID: 11400000, guid: 044b3176b113a6b43989d35bfc8cef81, type: 2}
+  TileAssociatedPrefab: {fileID: 2833421623000999814, guid: 31cbf39a564f92f449fb268d1c4620d2, type: 3}

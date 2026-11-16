@@ -17,6 +17,7 @@ public class Axel : NPC
     private Enemy mark;
     private bool markSelected = false;
     private bool markDefeated = false;
+    private bool rewardGranted = false;
     const int HEALTH_FACTOR = 2;
     const int DAMAGE_INCREASE = 1;
 
@@ -93,8 +94,9 @@ public class Axel : NPC
     public override void CloseDialogue()
     {
         base.CloseDialogue();
-        if (markDefeated)
+        if (markDefeated && !rewardGranted)
         {
+            rewardGranted = true;
             GrantReward();
         } else
         {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Barrel : MonoBehaviour
 {
+    private static readonly WaitForSeconds _playerSearchDelay = new(1);
     [SerializeField] GameObject manaCapsule;
     [SerializeField] GameObject coin;
     [SerializeField] GameObject heart;
@@ -28,8 +30,15 @@ public class Barrel : MonoBehaviour
     System.Random randy;
     void Awake()
     {
-        FindAnyObjectByType<MapGenerator>().OnPlayerPlaced += (player) => {_player = player;};  
+        MapGenerator mapGenerator = FindAnyObjectByType<MapGenerator>();
+        if (mapGenerator)
+            mapGenerator.OnPlayerPlaced += (player) => {_player = player;};  
+        else
+        {
+            StartCoroutine(FindPlayer());
+        }
     }
+
     void Start()
     {
         chanceForBomb = defaultChanceForBomb;
@@ -78,13 +87,15 @@ public class Barrel : MonoBehaviour
                     }
                 }
             }
-            // if (potentialDrops[index].TryGetComponent<Health>(out Health health))
-            // {
-            //     health.spawnInvulnerable = true;
-            // }
             Instantiate(potentialDrops[index], transform.position, quaternion.identity);
         }
         Destroy(gameObject);
+    }
+
+    IEnumerator FindPlayer()
+    {
+        yield return _playerSearchDelay;
+        _player = FindAnyObjectByType<Player>();
     }
 
     private void RecalculateChances()

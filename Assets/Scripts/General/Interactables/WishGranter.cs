@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class WishGranter : MonoBehaviour, IInteractable
@@ -6,6 +7,15 @@ public class WishGranter : MonoBehaviour, IInteractable
     [SerializeField] private SpriteRenderer outline;
     
     private WishMenuUI _wishMenuUI;
+
+    void Awake()
+    {
+        MapGenerator _mapGenerator = FindAnyObjectByType<MapGenerator>();
+        if (_mapGenerator)
+        {
+            _mapGenerator.OnPlayerPlaced += value => { transform.position = _mapGenerator.GetWishGranterSpawnPos();};
+        };
+    }
     
     public void Interact()
     {
