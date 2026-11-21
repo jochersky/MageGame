@@ -42,6 +42,7 @@ public class SaveSystem
         {
             GameManager.Instance.Save(ref _saveData.gameSaveData); 
             if (GameManager.Instance.Player) GameManager.Instance.Player.Save(ref _saveData.playerData);
+            if (GameManager.Instance.EndDoor) GameManager.Instance.EndDoor.Save(ref _saveData.gameSaveData);
         }
         if (InventoryManager.Instance) InventoryManager.Instance.Save(ref _saveData.inventoryData);
     }

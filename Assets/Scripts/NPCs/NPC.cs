@@ -33,7 +33,7 @@ public class NPC : MonoBehaviour
     public Vector2 spawnPoint;
     protected MapGenerator mapGenerator;
     protected Player player;
-    private EventSystem _eventSystem;
+    protected EventSystem _eventSystem;
     [SerializeField] private string[] activeActions;
     // current line of dialogue in the list of lines
     int _lineIdx = 0;
@@ -43,6 +43,9 @@ public class NPC : MonoBehaviour
     private Coroutine talking;
     private const float FORWARD = 0.0f;
     private const float BACKWARD = 180.0f;
+    
+    public delegate void StoppedTalking();
+    public event StoppedTalking OnStoppedTalking;
 
     void Awake()
     {
@@ -185,6 +188,7 @@ public class NPC : MonoBehaviour
         dialogueBox.SetActive(false);
         
         _lineIdx = 0;
+        OnStoppedTalking?.Invoke();
     }
 
     // Define the dialogue options for when the player initiates a conversation

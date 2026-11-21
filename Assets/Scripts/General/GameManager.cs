@@ -7,8 +7,8 @@ using UnityEngine.TextCore.Text;
 public class GameManager : MonoBehaviour
 {
     [Header("Level References")]
-    [SerializeField] MapGenerator mapGenerator;
-    
+    [SerializeField] private MapGenerator mapGenerator;
+    [SerializeField] private EndDoor endDoor;
     [Header("Player References")]
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private GameObject baseCharacterPrefab;
@@ -48,9 +48,11 @@ public class GameManager : MonoBehaviour
     private int _damageTaken;
     private int _moneyCollected;
     private int _wishesMade;
+    private int[] _emberStats = { 0, 0 };
     
     // References
     public static GameManager Instance { get; private set; }
+    public EndDoor EndDoor { get { return endDoor; } }
     public Player Player { get; set; }
     public Health PlayerHealth => Player.Health;
     public SpellManager SpellManager { get; set; }
@@ -61,6 +63,7 @@ public class GameManager : MonoBehaviour
     
     public CharacterType CharacterType { get; set; }
     public int EnemiesSlain { get => _enemiesSlain; set => _enemiesSlain = value; }
+    public int[] EmberStats { get => _emberStats; set => _emberStats = value; }
 
     public bool PlayerComponentLoaded { get => _playerComponentLoaded;
         set
@@ -254,6 +257,8 @@ public class GameManager : MonoBehaviour
         _runSeed = data.gameSaveData.runSeed;
         _currentStage = data.gameSaveData.currentStage;
         // load for runTime unnecessary since it gets overridden to capture current time
+        _emberStats[0] = data.playerData.emberAmt;
+        _emberStats[1] = data.gameSaveData.embersDeposited;
     }
 
     private void ConnectStatUpdates()
@@ -300,4 +305,5 @@ public struct GameSaveData
     public int damageTaken;
     public int moneyCollected;
     public int wishesMade;
+    public int embersDeposited;
 }
